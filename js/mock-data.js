@@ -231,17 +231,39 @@ const MockAPI = {
     // Dashboard
     async getDashboardAdmin() {
         await mockDelay();
-        return MOCK_DATA.dashboardAdmin;
+        return {
+            ...MOCK_DATA.dashboardAdmin,
+            etudiants: MOCK_DATA.etudiants.slice(0, 5), // 5 derniers étudiants
+            enseignants: MOCK_DATA.enseignants,
+            paiements_recents: MOCK_DATA.paiements
+        };
     },
 
     async getDashboardProf() {
         await mockDelay();
-        return MOCK_DATA.dashboardProf;
+        const user = JSON.parse(localStorage.getItem('erp_user'));
+        return {
+            ...MOCK_DATA.dashboardProf,
+            matieres: MOCK_DATA.matieres.filter(m => m.id <= 2), // Matières de l'enseignant
+            etudiants: MOCK_DATA.etudiants, // Tous les étudiants
+            notes: MOCK_DATA.notes.filter(n => n.matiere <= 2), // Notes des matières de l'enseignant
+            emplois: MOCK_DATA.emploisDuTemps,
+            supports: MOCK_DATA.supports
+        };
     },
 
     async getDashboardEtudiant() {
         await mockDelay();
-        return MOCK_DATA.dashboardEtudiant;
+        const user = JSON.parse(localStorage.getItem('erp_user'));
+        const etudiantId = user?.etudiant?.id || 1;
+        
+        return {
+            ...MOCK_DATA.dashboardEtudiant,
+            notes: MOCK_DATA.notes.filter(n => n.etudiant === etudiantId),
+            paiements: MOCK_DATA.paiements.filter(p => p.etudiant === etudiantId),
+            emplois: MOCK_DATA.emploisDuTemps,
+            supports: MOCK_DATA.supports
+        };
     },
 
     // Étudiants
@@ -288,7 +310,12 @@ const MockAPI = {
         if (params.matiere) {
             notes = notes.filter(n => n.matiere == params.matiere);
         }
-        return notes;
+        // Ajouter les noms des étudiants et matières
+        return notes.map(n => ({
+            ...n,
+            etudiant_nom: MOCK_DATA.etudiants.find(e => e.id === n.etudiant)?.prenom + ' ' + MOCK_DATA.etudiants.find(e => e.id === n.etudiant)?.nom,
+            matiere_nom: MOCK_DATA.matieres.find(m => m.id === n.matiere)?.nom
+        }));
     },
 
     // Paiements
