@@ -45,8 +45,12 @@
                         <span class="nav-text-ultra">Enseignants</span>
                     </a>
                     <a class="nav-item-ultra" data-page="filieres" onclick="navToUltra('filieres',this)">
-                        <span class="nav-icon-ultra">�</span>
+                        <span class="nav-icon-ultra">📚</span>
                         <span class="nav-text-ultra">Filières</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="emploi" onclick="navToUltra('emploi',this)">
+                        <span class="nav-icon-ultra">📅</span>
+                        <span class="nav-text-ultra">Emploi du temps</span>
                     </a>
                 </div>
 
@@ -424,6 +428,35 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: EMPLOI DU TEMPS -->
+                <div class="page-ultra" id="page-emploi" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">📅 Emploi du temps</h1>
+                            <p class="page-subtitle-ultra">Planning des cours - Année 2024-2025</p>
+                        </div>
+                    </div>
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Jour</th>
+                                        <th>Heure</th>
+                                        <th>Matière</th>
+                                        <th>Enseignant</th>
+                                        <th>Filière</th>
+                                        <th>Salle</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyEmploiAdmin">
+                                    <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -1054,6 +1087,8 @@
                 chargerFilieresEtMatieres();
             } else if (page === 'paiements') {
                 chargerPaiements();
+            } else if (page === 'emploi') {
+                chargerEmploi();
             }
         }
 
@@ -2059,6 +2094,38 @@
             } catch (err) {
                 console.error('Erreur complète:', err);
                 showToast('Erreur : ' + err.message, 'danger');
+            }
+        }
+
+        async function chargerEmploi() {
+            try {
+                const emplois = await API.getEmploisDuTemps();
+                const tbody = document.getElementById('tbodyEmploiAdmin');
+                
+                if (emplois && emplois.length > 0) {
+                    const ordreJours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+                    emplois.sort((a, b) => {
+                        const jourA = ordreJours.indexOf(a.jour);
+                        const jourB = ordreJours.indexOf(b.jour);
+                        if (jourA !== jourB) return jourA - jourB;
+                        return a.heure_debut.localeCompare(b.heure_debut);
+                    });
+                    
+                    tbody.innerHTML = emplois.map(e => `
+                        <tr>
+                            <td><strong>${e.jour}</strong></td>
+                            <td>${e.heure_debut} - ${e.heure_fin}</td>
+                            <td>${e.matiere_nom}</td>
+                            <td>${e.enseignant_nom}</td>
+                            <td>${e.filiere_nom || 'N/A'}</td>
+                            <td><span class="badge-ultra primary">${e.salle}</span></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun cours programmé</td></tr>';
+                }
+            } catch (err) {
+                console.error('Erreur:', err);
             }
         }
 
