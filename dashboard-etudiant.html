@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Étudiant – ERP Universitaire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard-premium.css?v=3.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="dark-theme">
+
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar-premium" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo" style="background:linear-gradient(135deg,#F59E0B,#D97706);box-shadow:0 0 30px rgba(245,158,11,0.4)">🎓</div>
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-name">UniERP BF</div>
+                    <div class="sidebar-brand-tagline">Espace Étudiant</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-label">Principal</div>
+                    <a class="nav-item-premium active" data-page="dashboard" onclick="navToPremium('dashboard',this)">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Tableau de bord</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-label">Académique</div>
+                    <a class="nav-item-premium" data-page="notes" onclick="navToPremium('notes',this)">
+                        <span class="nav-icon">📝</span>
+                        <span class="nav-text">Mes notes</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="emploi" onclick="navToPremium('emploi',this)">
+                        <span class="nav-icon">📅</span>
+                        <span class="nav-text">Emploi du temps</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="supports" onclick="navToPremium('supports',this)">
+                        <span class="nav-icon">📄</span>
+                        <span class="nav-text">Supports de cours</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-label">Finance</div>
+                    <a class="nav-item-premium" data-page="paiements" onclick="navToPremium('paiements',this)">
+                        <span class="nav-icon">💰</span>
+                        <span class="nav-text">Mes paiements</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN WRAPPER -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar-premium">
+                <div class="topbar-left">
+                    <button class="btn-menu-toggle" onclick="toggleSidebarPremium()">☰</button>
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Rechercher...">
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-action">
+                        <span>🔔</span>
+                    </button>
+                    <div class="user-menu" onclick="logout()">
+                        <div class="user-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706)">ET</div>
+                        <div class="user-info">
+                            <div class="user-name">Étudiant</div>
+                            <div class="user-role">Étudiant</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT AREA -->
+            <main class="content-area">
+                <!-- PAGE: DASHBOARD -->
+                <div class="erp-page" id="page-dashboard">
+                    <div class="page-header">
+                        <div class="breadcrumb">
+                            <span class="breadcrumb-item">🏠 Accueil</span>
+                            <span class="breadcrumb-separator">›</span>
+                            <span class="breadcrumb-item">Tableau de bord</span>
+                        </div>
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">Tableau de bord</h1>
+                                <p class="page-subtitle">Espace étudiant · Année 2024-2025</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STATS CARDS -->
+                    <div class="stats-grid">
+                        <div class="stat-card-premium">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-wrapper warning">📚</div>
+                            </div>
+                            <div class="stat-value" id="statMatieres">0</div>
+                            <div class="stat-label">Matières inscrites</div>
+                        </div>
+
+                        <div class="stat-card-premium">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-wrapper success">📊</div>
+                            </div>
+                            <div class="stat-value" id="statMoyenne">0.00</div>
+                            <div class="stat-label">Moyenne générale</div>
+                        </div>
+
+                        <div class="stat-card-premium">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-wrapper primary">✅</div>
+                            </div>
+                            <div class="stat-value" id="statPresence">0%</div>
+                            <div class="stat-label">Taux de présence</div>
+                        </div>
+
+                        <div class="stat-card-premium">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-wrapper danger">💰</div>
+                            </div>
+                            <div class="stat-value" id="statSolde">0 FCFA</div>
+                            <div class="stat-label">Solde dû</div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENT CARDS -->
+                    <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px">
+                        <div class="card-premium">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">📈 Évolution de vos notes</h3>
+                            </div>
+                            <div class="card-body-premium">
+                                <canvas id="chartNotes" height="80"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card-premium">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">🎯 Répartition</h3>
+                            </div>
+                            <div class="card-body-premium">
+                                <canvas id="chartRepartition" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RECENT NOTES -->
+                    <div class="card-premium">
+                        <div class="card-header-premium">
+                            <h3 class="card-title-premium">📝 Notes récentes</h3>
+                            <button class="btn-premium btn-outline" onclick="navToPremium('notes')">Voir tout</button>
+                        </div>
+                        <div class="card-body-premium" style="padding:0">
+                            <table class="table-premium">
+                                <thead>
+                                    <tr>
+                                        <th>Matière</th>
+                                        <th>CC</th>
+                                        <th>Examen</th>
+                                        <th>Moyenne</th>
+                                        <th>Statut</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyNotes">
+                                    <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: NOTES -->
+                <div class="erp-page" id="page-notes" style="display:none">
+                    <div class="page-header">
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">Mes notes</h1>
+                                <p class="page-subtitle">Consultez vos résultats académiques</p>
+                            </div>
+                            <div class="page-actions">
+                                <button class="btn-premium btn-outline">📥 Télécharger bulletin</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-premium">
+                        <div class="card-body-premium" style="padding:0">
+                            <table class="table-premium">
+                                <thead>
+                                    <tr>
+                                        <th>Matière</th>
+                                        <th>Coefficient</th>
+                                        <th>CC</th>
+                                        <th>Examen</th>
+                                        <th>Moyenne</th>
+                                        <th>Statut</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyNotesComplete">
+                                    <tr><td colspan="7" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: EMPLOI -->
+                <div class="erp-page" id="page-emploi" style="display:none">
+                    <div class="page-header">
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">Emploi du temps</h1>
+                                <p class="page-subtitle">Votre programme de la semaine</p>
+                            </div>
+                            <div class="page-actions">
+                                <button class="btn-premium btn-outline" onclick="imprimerEmploi()">🖨️ Imprimer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <div style="overflow-x:auto">
+                                <table class="table-premium">
+                                    <thead>
+                                        <tr>
+                                            <th>Jour</th>
+                                            <th>Heure</th>
+                                            <th>Matière</th>
+                                            <th>Enseignant</th>
+                                            <th>Salle</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyEmploi">
+                                        <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: SUPPORTS -->
+                <div class="erp-page" id="page-supports" style="display:none">
+                    <div class="page-header">
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">Supports de cours</h1>
+                                <p class="page-subtitle">Documents pédagogiques mis à disposition par vos enseignants</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filtres -->
+                    <div class="card-premium" style="margin-bottom:24px">
+                        <div class="card-body-premium">
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+                                <div>
+                                    <input type="text" id="searchSupports" class="search-input-ultra" placeholder="🔍 Rechercher..." 
+                                        style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff"
+                                        onkeyup="filtrerSupports()">
+                                </div>
+                                <div>
+                                    <select id="filterTypeSupport" class="form-input-premium" onchange="filtrerSupports()" style="width:100%;padding:12px 16px">
+                                        <option value="">📄 Tous les types</option>
+                                        <option value="cours">Cours magistral</option>
+                                        <option value="td">TD</option>
+                                        <option value="tp">TP</option>
+                                        <option value="examen_corrige">Examen corrigé</option>
+                                        <option value="ressource">Ressource</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Liste des supports -->
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <div style="overflow-x:auto">
+                                <table class="table-premium">
+                                    <thead>
+                                        <tr>
+                                            <th>Titre</th>
+                                            <th>Matière</th>
+                                            <th>Enseignant</th>
+                                            <th>Type</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodySupports">
+                                        <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: PAIEMENTS -->
+                <div class="erp-page" id="page-paiements" style="display:none">
+                    <div class="page-header">
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">Mes paiements</h1>
+                                <p class="page-subtitle">Historique de vos paiements et situation financière</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Situation financière -->
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                        <div style="padding:20px;background:rgba(16,185,129,0.1);border-radius:12px;border:1px solid rgba(16,185,129,0.2)">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">FRAIS D'INSCRIPTION</div>
+                            <div style="font-size:24px;font-weight:700;color:#10b981" id="statFraisInscription">0 FCFA</div>
+                        </div>
+                        <div style="padding:20px;background:rgba(99,102,241,0.1);border-radius:12px;border:1px solid rgba(99,102,241,0.2)">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">MONTANT PAYÉ</div>
+                            <div style="font-size:24px;font-weight:700;color:#6366f1" id="statMontantPaye">0 FCFA</div>
+                        </div>
+                        <div style="padding:20px;background:rgba(239,68,68,0.1);border-radius:12px;border:1px solid rgba(239,68,68,0.2)">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">SOLDE DÛ</div>
+                            <div style="font-size:24px;font-weight:700;color:#ef4444" id="statSoldeDu">0 FCFA</div>
+                        </div>
+                    </div>
+
+                    <!-- Historique des paiements -->
+                    <div class="card-premium">
+                        <div class="card-header-premium">
+                            <h3 class="card-title-premium">💰 Historique des paiements</h3>
+                        </div>
+                        <div class="card-body-premium">
+                            <div style="overflow-x:auto">
+                                <table class="table-premium">
+                                    <thead>
+                                        <tr>
+                                            <th>N° Reçu</th>
+                                            <th>Date</th>
+                                            <th>Montant</th>
+                                            <th>Mode</th>
+                                            <th>Type</th>
+                                            <th>Statut</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyPaiements">
+                                        <tr><td colspan="7" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL RÉCLAMATION NOTE -->
+    <div class="modal-overlay-premium" id="modalReclamation">
+        <div class="modal-premium">
+            <div class="modal-header-premium">
+                <h3 class="modal-title-premium">⚠️ Signaler un problème sur une note</h3>
+                <button class="modal-close-premium" onclick="closeModalReclamation()">✕</button>
+            </div>
+            <form onsubmit="soumettreReclamation(event)">
+                <div class="modal-body-premium">
+                    <div class="alert-info-premium" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:14px;margin-bottom:20px;color:#fbbf24;font-size:13px;">
+                        ⚠️ Cette réclamation sera envoyée à l'enseignant pour vérification. Assurez-vous de bien décrire le problème.
+                    </div>
+                    
+                    <input type="hidden" id="reclamationNoteId" name="note_id">
+                    
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Matière concernée</label>
+                        <input type="text" class="form-input-premium" id="reclamationMatiere" readonly style="background:rgba(255,255,255,0.03);">
+                    </div>
+
+                    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                        <div class="form-group-premium">
+                            <label class="form-label-premium">Note CC actuelle</label>
+                            <input type="text" class="form-input-premium" id="reclamationCC" readonly style="background:rgba(255,255,255,0.03);">
+                        </div>
+                        <div class="form-group-premium">
+                            <label class="form-label-premium">Note Examen actuelle</label>
+                            <input type="text" class="form-input-premium" id="reclamationExamen" readonly style="background:rgba(255,255,255,0.03);">
+                        </div>
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Type de problème *</label>
+                        <select name="type_probleme" required class="form-input-premium">
+                            <option value="">Sélectionner</option>
+                            <option value="note_incorrecte">Note incorrecte / erreur de saisie</option>
+                            <option value="note_manquante">Note manquante</option>
+                            <option value="mauvaise_matiere">Note attribuée à la mauvaise matière</option>
+                            <option value="calcul_errone">Erreur de calcul de moyenne</option>
+                            <option value="autre">Autre problème</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Description du problème *</label>
+                        <textarea name="description" required class="form-input-premium" rows="4" placeholder="Décrivez précisément le problème constaté..."></textarea>
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Note correcte attendue (si applicable)</label>
+                        <input type="text" name="note_attendue" class="form-input-premium" placeholder="Ex: CC: 15/20, Examen: 14/20">
+                    </div>
+                </div>
+                <div class="modal-footer-premium">
+                    <button type="button" class="btn-premium btn-outline" onclick="closeModalReclamation()">Annuler</button>
+                    <button type="submit" class="btn-premium btn-primary" style="background:linear-gradient(135deg,#f59e0b,#d97706)">📤 Envoyer la réclamation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function navToPremium(page, el) {
+            document.querySelectorAll('.erp-page').forEach(p => p.style.display = 'none');
+            const target = document.getElementById('page-' + page);
+            if (target) target.style.display = 'block';
+            
+            document.querySelectorAll('.nav-item-premium').forEach(i => i.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            // Charger les données spécifiques à la page
+            if (page === 'paiements') {
+                chargerPaiements();
+            } else if (page === 'emploi') {
+                chargerEmploi();
+            } else if (page === 'supports') {
+                chargerSupports();
+            }
+        }
+
+        function toggleSidebarPremium() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function formatCFA(montant) {
+            return new Intl.NumberFormat('fr-FR').format(montant) + ' FCFA';
+        }
+
+        function ouvrirReclamation(noteId, matiere, noteCC, noteExamen) {
+            document.getElementById('reclamationNoteId').value = noteId;
+            document.getElementById('reclamationMatiere').value = matiere;
+            document.getElementById('reclamationCC').value = noteCC || 'Non saisie';
+            document.getElementById('reclamationExamen').value = noteExamen || 'Non saisie';
+            
+            const modal = document.getElementById('modalReclamation');
+            if (modal) {
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModalReclamation() {
+            const modal = document.getElementById('modalReclamation');
+            if (modal) {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        async function soumettreReclamation(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            try {
+                const data = {
+                    note: parseInt(document.getElementById('reclamationNoteId').value),
+                    type_probleme: formData.get('type_probleme'),
+                    description: formData.get('description'),
+                    note_attendue: formData.get('note_attendue') || '',
+                    statut: 'en_attente'
+                };
+
+                // Appel API pour créer la réclamation
+                const response = await fetch('http://127.0.0.1:8000/api/reclamations/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('erp_access_token')}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('Erreur lors de l\'envoi');
+
+                alert('✅ Réclamation envoyée avec succès! L\'enseignant sera notifié.');
+                closeModalReclamation();
+                form.reset();
+            } catch (err) {
+                alert('❌ Erreur: ' + err.message);
+            }
+        }
+
+        async function chargerDonnees() {
+            try {
+                const dashboard = await API.getDashboardEtudiant();
+                
+                // Stats
+                document.getElementById('statMatieres').textContent = dashboard.total_matieres || 0;
+                document.getElementById('statMoyenne').textContent = (dashboard.moyenne_generale || 0).toFixed(2);
+                document.getElementById('statPresence').textContent = (dashboard.taux_presence || 0) + '%';
+                document.getElementById('statSolde').textContent = formatCFA(dashboard.solde_du || 0);
+
+                // Notes récentes
+                if (dashboard.notes && dashboard.notes.length > 0) {
+                    const recent = dashboard.notes.slice(0, 5);
+                    document.getElementById('tbodyNotes').innerHTML = recent.map(n => `
+                        <tr>
+                            <td style="font-weight:600">${n.matiere_nom}</td>
+                            <td>${n.note_cc || '-'}</td>
+                            <td>${n.note_examen || '-'}</td>
+                            <td style="font-weight:700;color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'}">${n.moyenne ? n.moyenne.toFixed(2) : '-'}</td>
+                            <td><span style="background:${n.moyenne >= 10 ? 'var(--success-50)' : 'var(--danger-50)'};color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'};padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">${n.moyenne >= 10 ? 'Validé' : 'Non validé'}</span></td>
+                            <td>
+                                <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="ouvrirReclamation(${n.id}, '${n.matiere_nom}', '${n.note_cc || ''}', '${n.note_examen || ''}')">
+                                    ⚠️ Signaler
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+
+                    // Notes complètes
+                    document.getElementById('tbodyNotesComplete').innerHTML = dashboard.notes.map(n => `
+                        <tr>
+                            <td style="font-weight:600">${n.matiere_nom}</td>
+                            <td>${n.coefficient || 1}</td>
+                            <td>${n.note_cc || '-'}</td>
+                            <td>${n.note_examen || '-'}</td>
+                            <td style="font-weight:700;color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'}">${n.moyenne ? n.moyenne.toFixed(2) : '-'}</td>
+                            <td><span style="background:${n.moyenne >= 10 ? 'var(--success-50)' : 'var(--danger-50)'};color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'};padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">${n.moyenne >= 10 ? 'Validé' : 'Non validé'}</span></td>
+                            <td>
+                                <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="ouvrirReclamation(${n.id}, '${n.matiere_nom}', '${n.note_cc || ''}', '${n.note_examen || ''}')">
+                                    ⚠️ Signaler
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    document.getElementById('tbodyNotes').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--neutral-500)">Aucune note disponible</td></tr>';
+                    document.getElementById('tbodyNotesComplete').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--neutral-500)">Aucune note disponible</td></tr>';
+                }
+
+                // Charts
+                creerGraphiques(dashboard);
+            } catch (err) {
+                console.error('Erreur:', err);
+            }
+        }
+
+        function creerGraphiques(dashboard) {
+            // Chart évolution notes
+            new Chart(document.getElementById('chartNotes'), {
+                type: 'line',
+                data: {
+                    labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6'],
+                    datasets: [{
+                        label: 'Moyenne',
+                        data: [12, 13.5, 14, 13, 14.5, dashboard.moyenne_generale || 14],
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#F59E0B',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            display: false 
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            titleColor: '#F59E0B',
+                            bodyColor: '#e2e8f0',
+                            borderColor: '#F59E0B',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 20,
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.1)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#94a3b8'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#94a3b8'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart répartition
+            new Chart(document.getElementById('chartRepartition'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Validé', 'Non validé'],
+                    datasets: [{
+                        data: [70, 30],
+                        backgroundColor: ['#10B981', '#F43F5E'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                color: '#e2e8f0',
+                                padding: 15,
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            titleColor: '#F59E0B',
+                            bodyColor: '#e2e8f0',
+                            borderColor: '#F59E0B',
+                            borderWidth: 1,
+                            padding: 12
+                        }
+                    }
+                }
+            });
+        }
+
+        let tousLesSupports = [];
+        let supportsFiltres = [];
+
+        async function chargerPaiements() {
+            try {
+                const me = await API.getMe();
+                const etudiant = me.etudiant;
+                
+                // Charger les paiements de l'étudiant
+                const paiements = await API.getPaiements({ etudiant: etudiant.id });
+                
+                // Calculer les statistiques
+                const fraisInscription = etudiant.filiere_frais || 0;
+                const montantPaye = paiements
+                    .filter(p => p.statut === 'valide')
+                    .reduce((sum, p) => sum + parseFloat(p.montant), 0);
+                const soldeDu = etudiant.solde_du || 0;
+
+                document.getElementById('statFraisInscription').textContent = formatCFA(fraisInscription);
+                document.getElementById('statMontantPaye').textContent = formatCFA(montantPaye);
+                document.getElementById('statSoldeDu').textContent = formatCFA(soldeDu);
+
+                // Afficher les paiements
+                const tbody = document.getElementById('tbodyPaiements');
+                if (paiements.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun paiement enregistré</td></tr>';
+                    return;
+                }
+
+                const modeLabels = {
+                    'especes': 'Espèces',
+                    'orange_money': 'Orange Money',
+                    'moov_money': 'Moov Money',
+                    'virement': 'Virement',
+                    'cheque': 'Chèque'
+                };
+
+                const typeLabels = {
+                    'inscription': 'Inscription',
+                    'reinscription': 'Réinscription',
+                    'acompte': 'Acompte',
+                    'solde': 'Solde',
+                    'autre': 'Autre'
+                };
+
+                tbody.innerHTML = paiements.map(p => `
+                    <tr>
+                        <td data-label="N° Reçu" style="font-weight:600">${p.numero_recu}</td>
+                        <td data-label="Date">${formatDate(p.date_paiement)}</td>
+                        <td data-label="Montant" style="font-weight:600;color:#10b981">${formatCFA(p.montant)}</td>
+                        <td data-label="Mode"><span class="badge-ultra primary">${modeLabels[p.mode] || p.mode}</span></td>
+                        <td data-label="Type"><span class="badge-ultra warning">${typeLabels[p.type_paiement] || p.type_paiement}</span></td>
+                        <td data-label="Statut">
+                            <span class="badge-ultra ${p.statut === 'valide' ? 'success' : p.statut === 'rejete' ? 'danger' : 'warning'}">
+                                ${p.statut}
+                            </span>
+                        </td>
+                        <td data-label="Action">
+                            <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="telechargerRecu(${p.id})">
+                                📥 Reçu
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Erreur:', err);
+                document.getElementById('tbodyPaiements').innerHTML = 
+                    '<tr><td colspan="7" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Erreur de chargement</td></tr>';
+            }
+        }
+
+        async function chargerEmploi() {
+            try {
+                const me = await API.getMe();
+                const etudiant = me.etudiant;
+                
+                // Charger l'emploi du temps de la filière de l'étudiant
+                const emplois = await API.getEmploisDuTemps({ filiere: etudiant.filiere });
+                
+                const tbody = document.getElementById('tbodyEmploi');
+                if (emplois.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun cours programmé</td></tr>';
+                    return;
+                }
+
+                // Trier par jour et heure
+                const joursOrdre = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+                emplois.sort((a, b) => {
+                    const jourA = joursOrdre.indexOf(a.jour);
+                    const jourB = joursOrdre.indexOf(b.jour);
+                    if (jourA !== jourB) return jourA - jourB;
+                    return a.heure_debut.localeCompare(b.heure_debut);
+                });
+
+                tbody.innerHTML = emplois.map(e => `
+                    <tr>
+                        <td data-label="Jour" style="font-weight:600">${e.jour}</td>
+                        <td data-label="Heure">${e.heure_debut} - ${e.heure_fin}</td>
+                        <td data-label="Matière" style="font-weight:600;color:#6366f1">${e.matiere_nom || 'N/A'}</td>
+                        <td data-label="Enseignant">${e.enseignant_nom || 'Non assigné'}</td>
+                        <td data-label="Salle"><span class="badge-ultra primary">${e.salle}</span></td>
+                        <td data-label="Type"><span class="badge-ultra warning">${e.semaine === 'toutes' ? 'Toutes' : e.semaine}</span></td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Erreur:', err);
+                document.getElementById('tbodyEmploi').innerHTML = 
+                    '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Erreur de chargement</td></tr>';
+            }
+        }
+
+        async function chargerSupports() {
+            try {
+                const supports = await API.getSupports();
+                tousLesSupports = supports;
+                supportsFiltres = supports;
+                
+                afficherSupports();
+            } catch (err) {
+                console.error('Erreur:', err);
+                document.getElementById('tbodySupports').innerHTML = 
+                    '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Erreur de chargement</td></tr>';
+            }
+        }
+
+        function filtrerSupports() {
+            const searchValue = document.getElementById('searchSupports').value.toLowerCase();
+            const filterType = document.getElementById('filterTypeSupport').value;
+
+            supportsFiltres = tousLesSupports.filter(s => {
+                const matchSearch = !searchValue || 
+                    s.titre.toLowerCase().includes(searchValue) ||
+                    s.matiere_nom?.toLowerCase().includes(searchValue) ||
+                    s.enseignant_nom?.toLowerCase().includes(searchValue);
+                
+                const matchType = !filterType || s.type_support === filterType;
+
+                return matchSearch && matchType;
+            });
+
+            afficherSupports();
+        }
+
+        function afficherSupports() {
+            const tbody = document.getElementById('tbodySupports');
+            
+            if (supportsFiltres.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun support disponible</td></tr>';
+                return;
+            }
+
+            const typeLabels = {
+                'cours': 'Cours',
+                'td': 'TD',
+                'tp': 'TP',
+                'examen_corrige': 'Examen corrigé',
+                'ressource': 'Ressource'
+            };
+
+            tbody.innerHTML = supportsFiltres.map(s => `
+                <tr>
+                    <td data-label="Titre" style="font-weight:600">${s.titre}</td>
+                    <td data-label="Matière">${s.matiere_nom || 'N/A'}</td>
+                    <td data-label="Enseignant">${s.enseignant_nom || 'N/A'}</td>
+                    <td data-label="Type"><span class="badge-ultra primary">${typeLabels[s.type_support] || s.type_support}</span></td>
+                    <td data-label="Date">${formatDate(s.date_depot)}</td>
+                    <td data-label="Action">
+                        <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="telechargerSupport(${s.id})">
+                            📥 Télécharger
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '—';
+            return new Date(dateStr).toLocaleDateString('fr-FR');
+        }
+
+        function telechargerRecu(id) {
+            showToast('Fonctionnalité de téléchargement en cours de développement', 'info');
+        }
+
+        function telechargerSupport(id) {
+            showToast('Fonctionnalité de téléchargement en cours de développement', 'info');
+        }
+
+        function imprimerEmploi() {
+            window.print();
+        }
+
+        function showToast(message, type = 'info') {
+            const icons = { success: '✅', danger: '❌', warning: '⚠️', info: 'ℹ️' };
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            const colors = { success: '#059669', danger: '#dc2626', warning: '#d97706', info: '#2563eb' };
+            toast.style.cssText = `background:rgba(10,14,39,0.95);border-radius:12px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:12px;min-width:280px;max-width:400px;border-left:4px solid ${colors[type]};animation:slideIn .3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)`;
+            toast.innerHTML = `<span style="font-size:18px">${icons[type]}</span><span style="font-size:14px;font-weight:500;flex:1;color:#fff">${message}</span><span onclick="this.parentElement.remove()" style="cursor:pointer;color:#94a3b8;flex-shrink:0;font-size:18px">✕</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { if (toast.parentElement) toast.remove(); }, 3500);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = requireAuth(['etudiant']);
+            if (user) {
+                chargerDonnees();
+            }
+        });
+    </script>
+    
+    <script src="js/api.js"></script>
+    <script src="js/fix-navigation.js"></script>
+</body>
+</html>

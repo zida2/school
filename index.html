@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>UniERP BF - Système de Gestion Universitaire Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0e27;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Fond animé avec particules */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+            z-index: 0;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 50%;
+            animation: float-particle 20s infinite;
+        }
+
+        @keyframes float-particle {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Grille lumineuse en arrière-plan */
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Conteneur principal */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.5),
+                inset 0 0 80px rgba(99, 102, 241, 0.05);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            animation: card-appear 1s ease-out;
+        }
+
+        @keyframes card-appear {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Partie gauche - Branding */
+        .login-left {
+            padding: 35px 35px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            animation: rotate-gradient 20s linear infinite;
+        }
+
+        @keyframes rotate-gradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+            animation: fade-in 1s ease-out 0.3s both;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 16px;
+            box-shadow: 
+                0 12px 30px rgba(99, 102, 241, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border-radius: 18px;
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.5;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        .brand-title {
+            font-size: 34px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .brand-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .features-list {
+            animation: fade-in 1s ease-out 0.6s both;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateX(10px);
+        }
+
+        .feature-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* Partie droite - Formulaire */
+        .login-right {
+            padding: 35px 35px;
+            background: rgba(255, 255, 255, 0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: fade-in 1s ease-out 0.3s both;
+        }
+
+        .login-header {
+            margin-bottom: 25px;
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .login-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-login:active {
+            transform: translateY(-1px);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 22px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .divider span {
+            padding: 0 20px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quick-access-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .quick-access-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .quick-btn {
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .quick-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .quick-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .quick-role {
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 12px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .quick-email {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .alert {
+            padding: 10px 14px;
+            border-radius: 9px;
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid;
+        }
+
+        .alert.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.3);
+            display: flex;
+        }
+
+        .alert.success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #86efac;
+            border-color: rgba(34, 197, 94, 0.3);
+            display: flex;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .login-card {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+
+            .login-left {
+                padding: 60px 40px;
+            }
+
+            .login-right {
+                padding: 60px 40px;
+            }
+
+            .brand-title {
+                font-size: 36px;
+            }
+
+            .features-list {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .login-left,
+            .login-right {
+                padding: 40px 30px;
+            }
+
+            .brand-title {
+                font-size: 28px;
+            }
+
+            .login-title {
+                font-size: 28px;
+            }
+
+            .quick-access-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fond animé -->
+    <div class="background-animation">
+        <div class="grid-overlay"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- Conteneur principal -->
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Partie gauche -->
+            <div class="login-left">
+                <div class="brand-content">
+                    <div class="logo-container">
+                        <div class="logo-icon">🎓</div>
+                        <h1 class="brand-title">UniERP BF</h1>
+                        <p class="brand-subtitle">Système de Gestion Universitaire Premium</p>
+                    </div>
+
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">⚡</div>
+                            <div class="feature-text">Gestion complète et automatisée de votre établissement</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📊</div>
+                            <div class="feature-text">Analytics avancés et tableaux de bord en temps réel</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🔒</div>
+                            <div class="feature-text">Sécurité de niveau bancaire et conformité RGPD</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🌐</div>
+                            <div class="feature-text">Accessible partout, sur tous vos appareils</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Partie droite -->
+            <div class="login-right">
+                <div class="login-header">
+                    <h2 class="login-title">Connexion</h2>
+                    <p class="login-subtitle">Accédez à votre espace de gestion</p>
+                </div>
+
+                <div id="alertBox" class="alert"></div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">Adresse email</label>
+                        <div class="input-wrapper">
+                            <input type="email" class="form-input" id="email" placeholder="votre.email@example.bf" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mot de passe</label>
+                        <div class="input-wrapper">
+                            <input type="password" class="form-input" id="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-login">Se connecter</button>
+                </form>
+
+                <div class="divider"><span>Accès rapide</span></div>
+
+                <div class="quick-access">
+                    <div class="quick-access-title">Comptes de démonstration</div>
+                    <div class="quick-access-grid">
+                        <button class="quick-btn" onclick="quickLogin('admin@uan.bf', 'Admin2024!')">
+                            <span class="quick-dot" style="background:#6366f1;color:#6366f1"></span>
+                            <div class="quick-info">
+                                <span class="quick-role">Administrateur</span>
+                                <span class="quick-email">admin@uan.bf</span>
+                            </div>
+                        </button>
+
+                        <button class="quick-btn" onclick="quickLogin('j.ouedraogo@uan.bf', 'enseignant123')">
+                            <span class="quick-dot" style="background:#10b981;color:#10b981"></span>
+                            <div class="quick-info">
+                                <span class="quick-role">Enseignant</span>
+                                <span class="quick-email">j.ouedraogo@uan.bf</span>
+                            </div>
+                        </button>
+
+                        <button class="quick-btn" onclick="quickLogin('m.diallo@etu.bf', 'etudiant123')">
+                            <span class="quick-dot" style="background:#f59e0b;color:#f59e0b"></span>
+                            <div class="quick-info">
+                                <span class="quick-role">Étudiant L1</span>
+                                <span class="quick-email">m.diallo@etu.bf</span>
+                            </div>
+                        </button>
+
+                        <button class="quick-btn" onclick="quickLogin('superadmin@erp.bf', 'SuperAdmin2024!')">
+                            <span class="quick-dot" style="background:#a855f7;color:#a855f7"></span>
+                            <div class="quick-info">
+                                <span class="quick-role">Super Admin</span>
+                                <span class="quick-email">superadmin@erp.bf</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        // Créer les particules animées
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = 'alert ' + type;
+            alertBox.innerHTML = `<span>${type === 'error' ? '❌' : '✅'}</span><span>${message}</span>`;
+            setTimeout(() => alertBox.style.display = 'none', 5000);
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const data = await API.login(email, password);
+                showAlert('Connexion réussie ! Redirection...', 'success');
+                
+                setTimeout(() => {
+                    const role = data.user.role;
+                    if (role === 'admin' || role === 'superadmin') {
+                        window.location.href = 'dashboard-admin.html';
+                    } else if (role === 'professeur') {
+                        window.location.href = 'dashboard-prof.html';
+                    } else if (role === 'etudiant') {
+                        window.location.href = 'dashboard-etudiant.html';
+                    }
+                }, 1000);
+            } catch (err) {
+                showAlert(err.message || 'Email ou mot de passe incorrect');
+            }
+        }
+
+        function quickLogin(email, password) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = password;
+            document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        }
+
+        if (Auth && Auth.isLoggedIn()) {
+            const user = Auth.getUser();
+            if (user) {
+                const role = user.role;
+                if (role === 'admin' || role === 'superadmin') {
+                    window.location.href = 'dashboard-admin.html';
+                } else if (role === 'professeur') {
+                    window.location.href = 'dashboard-prof.html';
+                } else if (role === 'etudiant') {
+                    window.location.href = 'dashboard-etudiant.html';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

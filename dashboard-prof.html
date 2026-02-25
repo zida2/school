@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Enseignant – UniERP BF Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard-premium.css?v=3.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="dark-theme">
+
+    <div class="app-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar-ultra" id="sidebar" style="border-right-color: rgba(16, 185, 129, 0.1)">
+            <div class="sidebar-header">
+                <div class="logo-ultra">
+                    <div class="logo-icon-ultra" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%)">👨‍🏫</div>
+                    <div class="logo-text-ultra">
+                        <div class="logo-name-ultra">UniERP BF</div>
+                        <div class="logo-tag-ultra">Espace Enseignant</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav-ultra">
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">PRINCIPAL</div>
+                    <a class="nav-item-ultra active" data-page="dashboard" onclick="navToUltra('dashboard',this)">
+                        <span class="nav-icon-ultra">📊</span>
+                        <span class="nav-text-ultra">Tableau de bord</span>
+                        <span class="nav-indicator" style="background: linear-gradient(135deg, #10b981, #059669)"></span>
+                    </a>
+                </div>
+
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">ENSEIGNEMENT</div>
+                    <a class="nav-item-ultra" data-page="emploi" onclick="navToUltra('emploi',this)">
+                        <span class="nav-icon-ultra">📅</span>
+                        <span class="nav-text-ultra">Emploi du temps</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="notes" onclick="navToUltra('notes',this)">
+                        <span class="nav-icon-ultra">📝</span>
+                        <span class="nav-text-ultra">Saisie des notes</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="presences" onclick="navToUltra('presences',this)">
+                        <span class="nav-icon-ultra">✅</span>
+                        <span class="nav-text-ultra">Présences</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="supports" onclick="navToUltra('supports',this)">
+                        <span class="nav-icon-ultra">📄</span>
+                        <span class="nav-text-ultra">Supports de cours</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="etudiants" onclick="navToUltra('etudiants',this)">
+                        <span class="nav-icon-ultra">🎓</span>
+                        <span class="nav-text-ultra">Mes étudiants</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-ultra">
+            <!-- TOPBAR -->
+            <header class="topbar-ultra">
+                <div class="topbar-left-ultra">
+                    <button class="btn-menu-ultra" onclick="toggleSidebarUltra()">☰</button>
+                    <div class="search-ultra">
+                        <span class="search-icon-ultra">🔍</span>
+                        <input type="text" class="search-input-ultra" placeholder="Rechercher...">
+                    </div>
+                </div>
+                <div class="topbar-right-ultra">
+                    <button class="topbar-btn-ultra">
+                        <span>🔔</span>
+                    </button>
+                    <div class="user-menu-ultra" onclick="logout()">
+                        <div class="user-avatar-ultra" style="background: linear-gradient(135deg, #10b981, #059669)">PR</div>
+                        <div class="user-info-ultra">
+                            <div class="user-name-ultra">Professeur</div>
+                            <div class="user-role-ultra">Enseignant</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT -->
+            <div class="content-ultra">
+                <!-- PAGE: DASHBOARD -->
+                <div class="page-ultra" id="page-dashboard">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Tableau de bord</h1>
+                            <p class="page-subtitle-ultra">Espace enseignant · Année 2024-2025</p>
+                        </div>
+                    </div>
+
+                    <!-- STATS -->
+                    <div class="stats-grid-ultra">
+                        <div class="stat-card-ultra success-ultra">
+                            <div class="stat-icon-ultra">📚</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statMatieres">0</div>
+                                <div class="stat-label-ultra">Matières enseignées</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-ultra primary-ultra">
+                            <div class="stat-icon-ultra">🎓</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statEtudiants">0</div>
+                                <div class="stat-label-ultra">Étudiants</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-ultra warning-ultra">
+                            <div class="stat-icon-ultra">📝</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statNotes">0</div>
+                                <div class="stat-label-ultra">Notes saisies</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-ultra primary-ultra">
+                            <div class="stat-icon-ultra">📅</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statCours">0</div>
+                                <div class="stat-label-ultra">Cours cette semaine</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENT CARDS -->
+                    <div class="charts-grid-ultra">
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">📅 Emploi du temps</h3>
+                            </div>
+                            <div class="card-body-ultra">
+                                <p style="color:rgba(255,255,255,0.6)">Vos cours de la semaine</p>
+                            </div>
+                        </div>
+
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">📊 Statistiques</h3>
+                            </div>
+                            <div class="card-body-ultra">
+                                <p style="color:rgba(255,255,255,0.6)">Vue d'ensemble de vos cours</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: SUPPORTS -->
+                <div class="page-ultra" id="page-supports" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Supports de cours</h1>
+                            <p class="page-subtitle-ultra">Gérez vos documents pédagogiques</p>
+                        </div>
+                        <div class="page-actions-ultra">
+                            <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalSupport')" style="background: linear-gradient(135deg, #10b981, #059669)">+ Ajouter un support</button>
+                        </div>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Titre</th>
+                                        <th>Matière</th>
+                                        <th>Type</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodySupports">
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OTHER PAGES -->
+                <div class="page-ultra" id="page-emploi" style="display:none">
+                    <div class="page-header-ultra">
+                        <h1 class="page-title-ultra">Emploi du temps</h1>
+                    </div>
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
+                            <p style="color:rgba(255,255,255,0.6)">Consultation de votre emploi du temps</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: GESTION DES ÉVALUATIONS ET NOTES -->
+                <div class="page-ultra" id="page-notes" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Gestion des Évaluations et Notes</h1>
+                            <p class="page-subtitle-ultra">Créez des évaluations et saisissez les notes</p>
+                        </div>
+                    </div>
+
+                    <!-- Sélection de la matière -->
+                    <div class="card-ultra" style="margin-bottom:24px">
+                        <div class="card-body-ultra">
+                            <div class="form-group-ultra">
+                                <label class="form-label-ultra">Sélectionner une matière *</label>
+                                <select id="selectMatiereNotes" class="form-input-ultra" onchange="chargerEvaluationsMatiere()" style="padding:12px 16px">
+                                    <option value="">Choisir une matière...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenu principal (visible après sélection matière) -->
+                    <div id="contenuEvaluations" style="display:none">
+                        
+                        <!-- Statistiques -->
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                            <div style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:12px;padding:20px">
+                                <div style="font-size:28px;font-weight:700;color:#6366f1" id="statNbEvaluations">0</div>
+                                <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Évaluations créées</div>
+                            </div>
+                            <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px">
+                                <div style="font-size:28px;font-weight:700;color:#10b981" id="statNbEtudiants">0</div>
+                                <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Étudiants</div>
+                            </div>
+                            <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:20px">
+                                <div style="font-size:28px;font-weight:700;color:#f59e0b" id="statNotesSaisies">0</div>
+                                <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Notes saisies</div>
+                            </div>
+                        </div>
+
+                        <!-- Liste des évaluations -->
+                        <div class="card-ultra" style="margin-bottom:24px">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">📋 Évaluations</h3>
+                                <button class="btn-ultra btn-primary-ultra" onclick="ouvrirModalEvaluation()" style="background: linear-gradient(135deg, #10b981, #059669)">
+                                    + Nouvelle évaluation
+                                </button>
+                            </div>
+                            <div class="card-body-ultra">
+                                <div id="listeEvaluations" style="display:grid;gap:16px">
+                                    <div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">
+                                        Aucune évaluation. Créez-en une pour commencer.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="page-ultra" id="page-presences" style="display:none">
+                    <div class="page-header-ultra">
+                        <h1 class="page-title-ultra">Gestion des présences</h1>
+                    </div>
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
+                            <p style="color:rgba(255,255,255,0.6)">Suivi des présences étudiants</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-ultra" id="page-etudiants" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Mes étudiants</h1>
+                            <p class="page-subtitle-ultra">Étudiants inscrits dans vos matières</p>
+                        </div>
+                    </div>
+
+                    <!-- Filtres -->
+                    <div class="card-ultra" style="margin-bottom:24px">
+                        <div class="card-body-ultra">
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+                                <div>
+                                    <input type="text" id="searchEtudiantsProf" class="search-input-ultra" placeholder="🔍 Rechercher..." 
+                                        style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff"
+                                        onkeyup="filtrerEtudiantsProf()">
+                                </div>
+                                <div>
+                                    <select id="filterMatiereProf" class="form-input-ultra" onchange="filtrerEtudiantsProf()" style="width:100%;padding:12px 16px">
+                                        <option value="">📚 Toutes mes matières</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select id="filterNiveauProf" class="form-input-ultra" onchange="filtrerEtudiantsProf()" style="width:100%;padding:12px 16px">
+                                        <option value="">🎓 Tous les niveaux</option>
+                                        <option value="L1">Licence 1</option>
+                                        <option value="L2">Licence 2</option>
+                                        <option value="L3">Licence 3</option>
+                                        <option value="M1">Master 1</option>
+                                        <option value="M2">Master 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistiques -->
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px">
+                        <div style="padding:16px;background:rgba(16,185,129,0.1);border-radius:12px;border:1px solid rgba(16,185,129,0.2);text-align:center">
+                            <div style="font-size:24px;font-weight:700;color:#10b981" id="statTotalEtudiantsProf">0</div>
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6)">Total étudiants</div>
+                        </div>
+                        <div style="padding:16px;background:rgba(99,102,241,0.1);border-radius:12px;border:1px solid rgba(99,102,241,0.2);text-align:center">
+                            <div style="font-size:24px;font-weight:700;color:#6366f1" id="statFilieresProf">0</div>
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6)">Filières</div>
+                        </div>
+                    </div>
+
+                    <!-- Tableau -->
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
+                            <div style="overflow-x:auto">
+                                <table class="table-ultra">
+                                    <thead>
+                                        <tr>
+                                            <th>Matricule</th>
+                                            <th>Nom complet</th>
+                                            <th>Filière</th>
+                                            <th>Niveau</th>
+                                            <th>Email</th>
+                                            <th>Téléphone</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyEtudiantsProf">
+                                        <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL SUPPORT -->
+    <div class="modal-ultra" id="modalSupport" style="display:none">
+        <div class="modal-content-ultra">
+            <div class="modal-header-ultra">
+                <h3>📄 Ajouter un support</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalSupport')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <form id="formSupport" onsubmit="ajouterSupport(event)">
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Titre</label>
+                        <input type="text" name="titre" required class="form-input-ultra">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Matière</label>
+                        <select name="matiere" required id="selectMatiereSupport" class="form-input-ultra">
+                            <option value="">Sélectionner</option>
+                        </select>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Type</label>
+                        <select name="type_support" required class="form-input-ultra">
+                            <option value="cours">Cours</option>
+                            <option value="td">TD</option>
+                            <option value="tp">TP</option>
+                            <option value="examen_corrige">Examen corrigé</option>
+                            <option value="ressource">Ressource</option>
+                        </select>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Fichier (optionnel)</label>
+                        <input type="file" name="fichier" accept=".pdf,.doc,.docx,.ppt,.pptx" class="form-input-ultra">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Description</label>
+                        <textarea name="description" rows="3" class="form-input-ultra"></textarea>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.8)">
+                            <input type="checkbox" name="visible" checked>
+                            <span>Visible pour les étudiants</span>
+                        </label>
+                    </div>
+                    <div class="modal-footer-ultra">
+                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalSupport')">Annuler</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra" style="background: linear-gradient(135deg, #10b981, #059669)">Publier</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CRÉER/MODIFIER ÉVALUATION -->
+    <div class="modal-ultra" id="modalEvaluation" style="display:none">
+        <div class="modal-content-ultra" style="max-width:600px">
+            <div class="modal-header-ultra">
+                <h3 id="modalEvaluationTitle">📝 Nouvelle évaluation</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalEvaluation')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <form id="formEvaluation" onsubmit="sauvegarderEvaluation(event)">
+                    <input type="hidden" id="editEvalId">
+                    
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Titre *</label>
+                        <input type="text" name="titre" id="editEvalTitre" required class="form-input-ultra" 
+                            placeholder="Ex: Devoir 1 - Algorithmique">
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Type *</label>
+                            <select name="type_evaluation" id="editEvalType" required class="form-input-ultra">
+                                <option value="devoir">📝 Devoir</option>
+                                <option value="interrogation">📄 Interrogation</option>
+                                <option value="tp">🔬 TP</option>
+                                <option value="projet">💼 Projet</option>
+                                <option value="examen">📋 Examen</option>
+                                <option value="oral">🎤 Oral</option>
+                            </select>
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Catégorie *</label>
+                            <select name="categorie" id="editEvalCategorie" required class="form-input-ultra">
+                                <option value="cc">CC (40%)</option>
+                                <option value="examen">Examen (60%)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Coefficient *</label>
+                            <input type="number" name="coefficient" id="editEvalCoef" required class="form-input-ultra" 
+                                min="1" max="10" value="1">
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Note sur *</label>
+                            <input type="number" name="note_sur" id="editEvalNoteSur" required class="form-input-ultra" 
+                                min="1" max="100" value="20" step="0.01">
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Date *</label>
+                            <input type="date" name="date_evaluation" id="editEvalDate" required class="form-input-ultra">
+                        </div>
+                    </div>
+
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Description</label>
+                        <textarea name="description" id="editEvalDescription" class="form-input-ultra" rows="3" 
+                            placeholder="Description de l'évaluation..."></textarea>
+                    </div>
+
+                    <div class="modal-footer-ultra">
+                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalEvaluation')">Annuler</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra" style="background: linear-gradient(135deg, #10b981, #059669)">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: SAISIR LES NOTES D'UNE ÉVALUATION -->
+    <div class="modal-ultra" id="modalSaisieNotes" style="display:none">
+        <div class="modal-content-ultra" style="max-width:1000px;max-height:90vh;overflow-y:auto">
+            <div class="modal-header-ultra">
+                <h3 id="modalSaisieTitle">📝 Saisie des notes</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalSaisieNotes')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <div id="infoEvaluation" style="background:rgba(99,102,241,0.1);padding:16px;border-radius:8px;margin-bottom:20px">
+                    <!-- Info évaluation -->
+                </div>
+                
+                <div style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+                    <div>
+                        <span id="progressNotes" style="color:rgba(255,255,255,0.7)">0/0 notes saisies</span>
+                    </div>
+                    <button class="btn-ultra btn-primary-ultra" onclick="sauvegarderToutesNotesEval()" style="background: linear-gradient(135deg, #10b981, #059669)">
+                        💾 Sauvegarder tout
+                    </button>
+                </div>
+
+                <div style="overflow-x:auto">
+                    <table class="table-ultra">
+                        <thead>
+                            <tr>
+                                <th style="width:50px">#</th>
+                                <th>Matricule</th>
+                                <th>Nom complet</th>
+                                <th style="width:150px">Note</th>
+                                <th style="width:100px">Absent</th>
+                                <th style="width:200px">Commentaire</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyNotesEval">
+                            <!-- Lignes étudiants -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navToUltra(page, el) {
+            document.querySelectorAll('.page-ultra').forEach(p => p.style.display = 'none');
+            const target = document.getElementById('page-' + page);
+            if (target) target.style.display = 'block';
+            
+            document.querySelectorAll('.nav-item-ultra').forEach(i => i.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            // Charger les données spécifiques à la page
+            if (page === 'etudiants') {
+                chargerMesEtudiants();
+            } else if (page === 'supports') {
+                chargerSupports();
+            } else if (page === 'notes') {
+                chargerMatieresNotes();
+            }
+        }
+
+        function toggleSidebarUltra() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const icons = { success: '✅', danger: '❌', warning: '⚠️', info: 'ℹ️' };
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            const colors = { success: '#059669', danger: '#dc2626', warning: '#d97706', info: '#2563eb' };
+            toast.style.cssText = `background:rgba(10,14,39,0.95);border-radius:12px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:12px;min-width:280px;max-width:400px;border-left:4px solid ${colors[type]};animation:slideIn .3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)`;
+            toast.innerHTML = `<span style="font-size:18px">${icons[type]}</span><span style="font-size:14px;font-weight:500;flex:1;color:#fff">${message}</span><span onclick="this.parentElement.remove()" style="cursor:pointer;color:#94a3b8;flex-shrink:0;font-size:18px">✕</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { if (toast.parentElement) toast.remove(); }, 3500);
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('fr-FR');
+        }
+
+        async function chargerMatieres() {
+            try {
+                const dashboard = await API.getDashboardProf();
+                if (dashboard && dashboard.matieres) {
+                    const select = document.getElementById('selectMatiereSupport');
+                    select.innerHTML = '<option value="">Sélectionner</option>' + 
+                        dashboard.matieres.map(m => `<option value="${m.id}">${m.nom}</option>`).join('');
+                }
+            } catch (err) {
+                console.error('Erreur:', err);
+            }
+        }
+
+        async function chargerSupports() {
+            try {
+                const supports = await API.getSupports();
+                const tbody = document.getElementById('tbodySupports');
+                
+                if (supports && supports.length > 0) {
+                    tbody.innerHTML = supports.map(s => `
+                        <tr>
+                            <td style="font-weight:600">${s.titre}</td>
+                            <td>${s.matiere_nom || 'N/A'}</td>
+                            <td><span class="badge-ultra success">${s.type_support}</span></td>
+                            <td>${formatDate(s.date_depot)}</td>
+                            <td>
+                                <button class="btn-ultra btn-ghost-ultra btn-sm-ultra">📥</button>
+                                <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="supprimerSupport(${s.id})">🗑️</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun support</td></tr>';
+                }
+            } catch (err) {
+                console.error('Erreur:', err);
+            }
+        }
+
+        async function ajouterSupport(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            try {
+                const me = await API.getMe();
+                const uploadData = new FormData();
+                uploadData.append('titre', formData.get('titre'));
+                uploadData.append('matiere', formData.get('matiere'));
+                uploadData.append('enseignant', me.enseignant.id);
+                uploadData.append('type_support', formData.get('type_support'));
+                uploadData.append('description', formData.get('description') || '');
+                uploadData.append('visible', formData.get('visible') ? 'true' : 'false');
+                
+                const fichier = formData.get('fichier');
+                if (fichier && fichier.size > 0) {
+                    uploadData.append('fichier', fichier);
+                }
+
+                await API.createSupport(uploadData);
+                showToast('Support publié !', 'success');
+                closeModal('modalSupport');
+                form.reset();
+                chargerSupports();
+            } catch (err) {
+                showToast('Erreur : ' + err.message, 'danger');
+            }
+        }
+
+        async function supprimerSupport(id) {
+            if (!confirm('Supprimer ce support ?')) return;
+            try {
+                await API.deleteSupport(id);
+                showToast('Support supprimé', 'success');
+                chargerSupports();
+            } catch (err) {
+                showToast('Erreur', 'danger');
+            }
+        }
+
+        let tousLesEtudiantsProf = [];
+        let etudiantsProfFiltres = [];
+        let mesMatieres = [];
+
+        async function chargerMesEtudiants() {
+            try {
+                const dashboard = await API.getDashboardProf();
+                mesMatieres = dashboard.matieres || [];
+
+                // Récupérer toutes les filières de mes matières
+                const filieresIds = [...new Set(mesMatieres.map(m => m.filiere))];
+                
+                // Récupérer tous les étudiants de ces filières
+                const promesses = filieresIds.map(filiereId => API.getEtudiants({ filiere: filiereId }));
+                const resultats = await Promise.all(promesses);
+                
+                // Fusionner tous les étudiants et supprimer les doublons
+                const etudiantsMap = new Map();
+                resultats.flat().forEach(e => {
+                    if (!etudiantsMap.has(e.id)) {
+                        etudiantsMap.set(e.id, e);
+                    }
+                });
+                
+                tousLesEtudiantsProf = Array.from(etudiantsMap.values());
+                etudiantsProfFiltres = tousLesEtudiantsProf;
+
+                // Remplir le filtre des matières
+                document.getElementById('filterMatiereProf').innerHTML = 
+                    '<option value="">📚 Toutes mes matières</option>' +
+                    mesMatieres.map(m => `<option value="${m.filiere}">${m.nom}</option>`).join('');
+
+                // Mettre à jour les stats
+                document.getElementById('statTotalEtudiantsProf').textContent = tousLesEtudiantsProf.length;
+                document.getElementById('statFilieresProf').textContent = filieresIds.length;
+                document.getElementById('statEtudiants').textContent = tousLesEtudiantsProf.length;
+
+                afficherEtudiantsProf();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de chargement: ' + err.message, 'danger');
+                document.getElementById('tbodyEtudiantsProf').innerHTML = 
+                    '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Erreur de chargement</td></tr>';
+            }
+        }
+
+        function filtrerEtudiantsProf() {
+            const searchValue = document.getElementById('searchEtudiantsProf').value.toLowerCase();
+            const filterMatiere = document.getElementById('filterMatiereProf').value;
+            const filterNiveau = document.getElementById('filterNiveauProf').value;
+
+            etudiantsProfFiltres = tousLesEtudiantsProf.filter(e => {
+                const matchSearch = !searchValue || 
+                    e.matricule.toLowerCase().includes(searchValue) ||
+                    e.prenom.toLowerCase().includes(searchValue) ||
+                    e.nom.toLowerCase().includes(searchValue) ||
+                    e.email.toLowerCase().includes(searchValue);
+                
+                const matchMatiere = !filterMatiere || e.filiere == filterMatiere;
+                const matchNiveau = !filterNiveau || e.niveau === filterNiveau;
+
+                return matchSearch && matchMatiere && matchNiveau;
+            });
+
+            afficherEtudiantsProf();
+        }
+
+        function afficherEtudiantsProf() {
+            const tbody = document.getElementById('tbodyEtudiantsProf');
+            
+            if (etudiantsProfFiltres.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun étudiant trouvé</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = etudiantsProfFiltres.map(e => `
+                <tr>
+                    <td data-label="Matricule" style="font-weight:600">${e.matricule}</td>
+                    <td data-label="Nom">${e.prenom} ${e.nom}</td>
+                    <td data-label="Filière">${e.filiere_nom || 'N/A'}</td>
+                    <td data-label="Niveau"><span class="badge-ultra primary">${e.niveau}</span></td>
+                    <td data-label="Email">${e.email}</td>
+                    <td data-label="Téléphone">${e.telephone || 'N/A'}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function chargerDashboard() {
+            try {
+                // Charger les vraies données
+                const me = await API.getMe();
+                const enseignant = me.enseignant;
+                
+                // Charger les matières
+                const dashboard = await API.getDashboardProf();
+                const matieres = dashboard.matieres || [];
+                
+                // Récupérer les filières de toutes les matières
+                const filieresIds = [...new Set(matieres.map(m => m.filiere))];
+                
+                // Charger tous les étudiants des filières
+                const promesses = filieresIds.map(filiereId => API.getEtudiants({ filiere: filiereId }));
+                const resultats = await Promise.all(promesses);
+                
+                // Fusionner et dédupliquer les étudiants
+                const etudiantsMap = new Map();
+                resultats.flat().forEach(e => {
+                    if (!etudiantsMap.has(e.id)) {
+                        etudiantsMap.set(e.id, e);
+                    }
+                });
+                const totalEtudiants = etudiantsMap.size;
+                
+                // Charger toutes les notes de l'enseignant
+                const toutesLesNotes = [];
+                for (const matiere of matieres) {
+                    const notes = await API.getNotes({ matiere: matiere.id });
+                    toutesLesNotes.push(...notes);
+                }
+                
+                // Compter les notes saisies (au moins CC ou Examen)
+                const notesSaisies = toutesLesNotes.filter(n => 
+                    n.note_cc !== null || n.note_examen !== null
+                ).length;
+                
+                // Charger l'emploi du temps
+                let totalCours = 0;
+                for (const filiereId of filieresIds) {
+                    const emplois = await API.getEmploisDuTemps({ filiere: filiereId });
+                    totalCours += emplois.length;
+                }
+                
+                // Mettre à jour les statistiques
+                document.getElementById('statMatieres').textContent = matieres.length;
+                document.getElementById('statEtudiants').textContent = totalEtudiants;
+                document.getElementById('statNotes').textContent = notesSaisies;
+                document.getElementById('statCours').textContent = totalCours;
+                
+                console.log('Dashboard chargé:', {
+                    matieres: matieres.length,
+                    etudiants: totalEtudiants,
+                    notes: notesSaisies,
+                    cours: totalCours
+                });
+                
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de chargement du dashboard', 'danger');
+            }
+        }
+
+        let matiereSelectionnee = null;
+        let etudiantsMatiere = [];
+        let evaluationsMatiere = [];
+        let evaluationEnCours = null;
+        let notesEvalEnCours = {};
+
+        async function chargerMatieresNotes() {
+            try {
+                const dashboard = await API.getDashboardProf();
+                const matieres = dashboard.matieres || [];
+                
+                const select = document.getElementById('selectMatiereNotes');
+                select.innerHTML = '<option value="">Choisir une matière...</option>' +
+                    matieres.map(m => `<option value="${m.id}" data-coef="${m.coefficient}" data-nom="${m.nom}" data-filiere="${m.filiere}">${m.nom} (${m.filiere_nom || 'N/A'})</option>`).join('');
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de chargement des matières', 'danger');
+            }
+        }
+
+        async function chargerEtudiantsMatiere() {
+            const selectMatiere = document.getElementById('selectMatiereNotes');
+            const matiereId = selectMatiere.value;
+            
+            if (!matiereId) {
+                document.getElementById('infoMatiere').style.display = 'none';
+                document.getElementById('tbodyNotes').innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">
+                            <div style="font-size:48px;margin-bottom:16px">📝</div>
+                            <div style="font-size:16px;font-weight:600;margin-bottom:8px">Sélectionnez une matière</div>
+                            <div style="font-size:14px">Choisissez une matière ci-dessus pour commencer la saisie des notes</div>
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            try {
+                // Récupérer les infos de la matière
+                const selectedOption = selectMatiere.options[selectMatiere.selectedIndex];
+                const matiereNom = selectedOption.getAttribute('data-nom');
+                const matiereCoef = selectedOption.getAttribute('data-coef');
+                
+                matiereSelectionnee = {
+                    id: matiereId,
+                    nom: matiereNom,
+                    coefficient: matiereCoef
+                };
+
+                // Récupérer la matière complète pour avoir la filière
+                const matieres = await API.getMatieres();
+                const matiere = matieres.find(m => m.id == matiereId);
+                
+                if (!matiere) {
+                    showToast('Matière non trouvée', 'danger');
+                    return;
+                }
+
+                // Récupérer tous les étudiants de la filière
+                const etudiants = await API.getEtudiants({ filiere: matiere.filiere });
+                etudiantsMatiere = etudiants;
+
+                // Récupérer les notes existantes
+                const notes = await API.getNotes({ matiere: matiereId });
+                
+                // Créer un map des notes par étudiant
+                const notesMap = {};
+                notes.forEach(n => {
+                    notesMap[n.etudiant] = n;
+                });
+
+                // Afficher les infos
+                document.getElementById('infoMatiere').style.display = 'block';
+                document.getElementById('infoMatiereNom').textContent = matiereNom;
+                document.getElementById('infoMatiereCoef').textContent = matiereCoef;
+                document.getElementById('infoMatiereEtudiants').textContent = etudiants.length;
+                
+                const notesSaisies = notes.filter(n => n.note_cc !== null || n.note_examen !== null).length;
+                document.getElementById('infoMatiereNotesSaisies').textContent = notesSaisies;
+
+                // Afficher le tableau
+                const tbody = document.getElementById('tbodyNotes');
+                if (etudiants.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun étudiant dans cette filière</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = etudiants.map((e, index) => {
+                    const note = notesMap[e.id];
+                    const noteCC = note?.note_cc || '';
+                    const noteExamen = note?.note_examen || '';
+                    const moyenne = calculerMoyenne(noteCC, noteExamen);
+                    const noteId = note?.id || null;
+
+                    return `
+                        <tr data-etudiant-id="${e.id}" data-note-id="${noteId || ''}">
+                            <td style="text-align:center;color:rgba(255,255,255,0.5)">${index + 1}</td>
+                            <td style="font-weight:600">${e.matricule}</td>
+                            <td>${e.prenom} ${e.nom}</td>
+                            <td><span class="badge-ultra primary">${e.niveau}</span></td>
+                            <td>
+                                <input type="number" 
+                                    class="form-input-ultra" 
+                                    style="padding:8px;text-align:center;background:rgba(255,255,255,0.05)"
+                                    min="0" 
+                                    max="20" 
+                                    step="0.25"
+                                    value="${noteCC}"
+                                    placeholder="0.00"
+                                    onchange="updateNote(${e.id}, 'cc', this.value)"
+                                    onblur="sauvegarderNote(${e.id})">
+                            </td>
+                            <td>
+                                <input type="number" 
+                                    class="form-input-ultra" 
+                                    style="padding:8px;text-align:center;background:rgba(255,255,255,0.05)"
+                                    min="0" 
+                                    max="20" 
+                                    step="0.25"
+                                    value="${noteExamen}"
+                                    placeholder="0.00"
+                                    onchange="updateNote(${e.id}, 'examen', this.value)"
+                                    onblur="sauvegarderNote(${e.id})">
+                            </td>
+                            <td style="text-align:center">
+                                <span style="font-weight:700;font-size:16px;color:${moyenne >= 10 ? '#10b981' : moyenne > 0 ? '#ef4444' : 'rgba(255,255,255,0.3)'}" id="moyenne-${e.id}">
+                                    ${moyenne > 0 ? moyenne.toFixed(2) : '-'}
+                                </span>
+                            </td>
+                            <td style="text-align:center">
+                                <span class="badge-ultra ${moyenne >= 10 ? 'success' : moyenne > 0 ? 'danger' : ''}" id="statut-${e.id}">
+                                    ${moyenne >= 10 ? 'Validé' : moyenne > 0 ? 'Ajourné' : '-'}
+                                </span>
+                            </td>
+                            <td style="text-align:center">
+                                <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="supprimerNote(${e.id}, ${noteId})" title="Supprimer" ${!noteId ? 'disabled' : ''}>
+                                    🗑️
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                // Activer le bouton publier si des notes existent
+                document.getElementById('btnPublier').disabled = notesSaisies === 0;
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de chargement: ' + err.message, 'danger');
+            }
+        }
+
+        function calculerMoyenne(noteCC, noteExamen) {
+            const cc = parseFloat(noteCC) || 0;
+            const examen = parseFloat(noteExamen) || 0;
+            
+            if (cc === 0 && examen === 0) return 0;
+            
+            return cc * 0.4 + examen * 0.6;
+        }
+
+        function updateNote(etudiantId, type, valeur) {
+            if (!notesEnCours[etudiantId]) {
+                notesEnCours[etudiantId] = { note_cc: null, note_examen: null };
+            }
+            
+            if (type === 'cc') {
+                notesEnCours[etudiantId].note_cc = valeur ? parseFloat(valeur) : null;
+            } else {
+                notesEnCours[etudiantId].note_examen = valeur ? parseFloat(valeur) : null;
+            }
+
+            // Mettre à jour l'affichage de la moyenne
+            const row = document.querySelector(`tr[data-etudiant-id="${etudiantId}"]`);
+            const inputCC = row.querySelector('input[type="number"]:nth-of-type(1)');
+            const inputExamen = row.querySelector('input[type="number"]:nth-of-type(2)');
+            
+            const moyenne = calculerMoyenne(inputCC.value, inputExamen.value);
+            
+            const moyenneSpan = document.getElementById(`moyenne-${etudiantId}`);
+            const statutSpan = document.getElementById(`statut-${etudiantId}`);
+            
+            if (moyenne > 0) {
+                moyenneSpan.textContent = moyenne.toFixed(2);
+                moyenneSpan.style.color = moyenne >= 10 ? '#10b981' : '#ef4444';
+                
+                statutSpan.textContent = moyenne >= 10 ? 'Validé' : 'Ajourné';
+                statutSpan.className = `badge-ultra ${moyenne >= 10 ? 'success' : 'danger'}`;
+            } else {
+                moyenneSpan.textContent = '-';
+                moyenneSpan.style.color = 'rgba(255,255,255,0.3)';
+                statutSpan.textContent = '-';
+                statutSpan.className = 'badge-ultra';
+            }
+        }
+
+        async function sauvegarderNote(etudiantId) {
+            if (!matiereSelectionnee) {
+                showToast('Veuillez sélectionner une matière', 'warning');
+                return;
+            }
+
+            const noteData = notesEnCours[etudiantId];
+            if (!noteData) return;
+
+            try {
+                const annees = await API.getAnnees();
+                const anneeActive = annees.find(a => a.active) || annees[0];
+
+                const row = document.querySelector(`tr[data-etudiant-id="${etudiantId}"]`);
+                const noteId = row.getAttribute('data-note-id');
+
+                const data = {
+                    etudiant: etudiantId,
+                    matiere: matiereSelectionnee.id,
+                    annee_academique: anneeActive.id,
+                    note_cc: noteData.note_cc,
+                    note_examen: noteData.note_examen,
+                    publie: false
+                };
+
+                if (noteId) {
+                    // Mise à jour
+                    await API.updateNote(noteId, data);
+                } else {
+                    // Création
+                    const newNote = await API.createNote(data);
+                    row.setAttribute('data-note-id', newNote.id);
+                }
+
+                // Petit feedback visuel
+                row.style.background = 'rgba(16,185,129,0.1)';
+                setTimeout(() => {
+                    row.style.background = '';
+                }, 500);
+
+                delete notesEnCours[etudiantId];
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de sauvegarde: ' + err.message, 'danger');
+            }
+        }
+
+        async function sauvegarderToutesLesNotes() {
+            if (Object.keys(notesEnCours).length === 0) {
+                showToast('Aucune modification à sauvegarder', 'info');
+                return;
+            }
+
+            const etudiantIds = Object.keys(notesEnCours);
+            let saved = 0;
+
+            for (const etudiantId of etudiantIds) {
+                await sauvegarderNote(parseInt(etudiantId));
+                saved++;
+            }
+
+            showToast(`${saved} note(s) sauvegardée(s) avec succès`, 'success');
+            chargerEtudiantsMatiere(); // Recharger pour mettre à jour les stats
+        }
+
+        async function publierNotes() {
+            if (!matiereSelectionnee) {
+                showToast('Veuillez sélectionner une matière', 'warning');
+                return;
+            }
+
+            if (!confirm('Êtes-vous sûr de vouloir publier les notes ? Les étudiants pourront les consulter.')) {
+                return;
+            }
+
+            try {
+                const annees = await API.getAnnees();
+                const anneeActive = annees.find(a => a.active) || annees[0];
+
+                await API.publierNotes(matiereSelectionnee.id, anneeActive.id);
+                showToast('Notes publiées avec succès !', 'success');
+                chargerEtudiantsMatiere();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de publication: ' + err.message, 'danger');
+            }
+        }
+
+        let notesEnCours = {};
+        let matiereSelectionnee = null;
+        let etudiantsMatiere = [];
+        let evaluationsMatiere = [];
+        let evaluationEnCours = null;
+        let notesEvalEnCours = {};
+
+        async function chargerMatieresNotes() {
+            try {
+                const dashboard = await API.getDashboardProf();
+                const matieres = dashboard.matieres || [];
+                
+                const select = document.getElementById('selectMatiereNotes');
+                select.innerHTML = '<option value="">Choisir une matière...</option>' +
+                    matieres.map(m => `<option value="${m.id}" data-coef="${m.coefficient}" data-nom="${m.nom}" data-filiere="${m.filiere}">${m.nom} (${m.filiere_nom || 'N/A'})</option>`).join('');
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de chargement des matières', 'danger');
+            }
+        }
+
+        async function chargerEvaluationsMatiere() {
+            const selectMatiere = document.getElementById('selectMatiereNotes');
+            const matiereId = selectMatiere.value;
+            
+            if (!matiereId) {
+                document.getElementById('contenuEvaluations').style.display = 'none';
+                return;
+            }
+
+            try {
+                // Récupérer les infos de la matière
+                const selectedOption = selectMatiere.options[selectMatiere.selectedIndex];
+                const matiereNom = selectedOption.getAttribute('data-nom');
+                const matiereCoef = selectedOption.getAttribute('data-coef');
+                const filiereId = selectedOption.getAttribute('data-filiere');
+                
+                matiereSelectionnee = {
+                    id: matiereId,
+                    nom: matiereNom,
+                    coefficient: matiereCoef,
+                    filiere: filiereId
+                };
+
+                // Récupérer les étudiants de la filière
+                const etudiants = await API.getEtudiants({ filiere: filiereId });
+                etudiantsMatiere = etudiants;
+
+                // Récupérer l'année académique active
+                const annees = await API.getAnnees();
+                const anneeActive = annees.find(a => a.active) || annees[0];
+
+                // Récupérer les évaluations de cette matière
+                const evaluations = await API.getEvaluations({ 
+                    matiere: matiereId,
+                    annee_academique: anneeActive.id
+                });
+                evaluationsMatiere = evaluations;
+
+                // Récupérer toutes les notes d'évaluations
+                const notesEvals = await API.getNotesEvaluations({ matiere: matiereId });
+
+                // Compter les notes saisies
+                const notesSaisies = notesEvals.filter(n => n.note !== null && !n.absent).length;
+
+                // Afficher le contenu
+                document.getElementById('contenuEvaluations').style.display = 'block';
+                document.getElementById('statNbEvaluations').textContent = evaluations.length;
+                document.getElementById('statNbEtudiants').textContent = etudiants.length;
+                document.getElementById('statNotesSaisies').textContent = notesSaisies;
+
+                // Afficher les évaluations
+                afficherEvaluations();
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de chargement: ' + err.message, 'danger');
+            }
+        }
+
+        function afficherEvaluations() {
+            const container = document.getElementById('listeEvaluations');
+            
+            if (evaluationsMatiere.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucune évaluation. Créez-en une pour commencer.</div>';
+                return;
+            }
+
+            const typeIcons = {
+                devoir: '📝',
+                interrogation: '📄',
+                tp: '🔬',
+                projet: '💼',
+                examen: '📋',
+                oral: '🎤'
+            };
+
+            const categorieColors = {
+                cc: { bg: 'rgba(99,102,241,0.1)', border: 'rgba(99,102,241,0.3)', text: '#6366f1' },
+                examen: { bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.3)', text: '#ef4444' }
+            };
+
+            container.innerHTML = evaluationsMatiere.map(eval => {
+                const color = categorieColors[eval.categorie];
+                return `
+                    <div style="background:${color.bg};border:1px solid ${color.border};border-radius:12px;padding:20px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start">
+                        <div>
+                            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                                <span style="font-size:24px">${typeIcons[eval.type_evaluation]}</span>
+                                <div>
+                                    <div style="font-size:16px;font-weight:600;color:#fff">${eval.titre}</div>
+                                    <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:2px">
+                                        ${eval.type_evaluation.charAt(0).toUpperCase() + eval.type_evaluation.slice(1)} · 
+                                        <span style="color:${color.text};font-weight:600">${eval.categorie.toUpperCase()}</span> · 
+                                        Coef. ${eval.coefficient} · 
+                                        Note sur ${eval.note_sur} · 
+                                        ${formatDate(eval.date_evaluation)}
+                                    </div>
+                                </div>
+                            </div>
+                            ${eval.description ? `<div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:8px">${eval.description}</div>` : ''}
+                        </div>
+                        <div style="display:flex;gap:8px">
+                            <button class="btn-ultra btn-primary-ultra btn-sm-ultra" onclick="ouvrirSaisieNotes(${eval.id})" style="background: linear-gradient(135deg, #10b981, #059669)">
+                                📝 Saisir notes
+                            </button>
+                            <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="modifierEvaluation(${eval.id})" title="Modifier">
+                                ✏️
+                            </button>
+                            <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="supprimerEvaluation(${eval.id})" title="Supprimer">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function ouvrirModalEvaluation() {
+            document.getElementById('modalEvaluationTitle').textContent = '📝 Nouvelle évaluation';
+            document.getElementById('editEvalId').value = '';
+            document.getElementById('formEvaluation').reset();
+            
+            // Date par défaut: aujourd'hui
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('editEvalDate').value = today;
+            
+            openModal('modalEvaluation');
+        }
+
+        async function modifierEvaluation(evalId) {
+            try {
+                const evaluation = await API.getEvaluation(evalId);
+                
+                document.getElementById('modalEvaluationTitle').textContent = '✏️ Modifier l\'évaluation';
+                document.getElementById('editEvalId').value = evaluation.id;
+                document.getElementById('editEvalTitre').value = evaluation.titre;
+                document.getElementById('editEvalType').value = evaluation.type_evaluation;
+                document.getElementById('editEvalCategorie').value = evaluation.categorie;
+                document.getElementById('editEvalCoef').value = evaluation.coefficient;
+                document.getElementById('editEvalNoteSur').value = evaluation.note_sur;
+                document.getElementById('editEvalDate').value = evaluation.date_evaluation;
+                document.getElementById('editEvalDescription').value = evaluation.description || '';
+                
+                openModal('modalEvaluation');
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de chargement: ' + err.message, 'danger');
+            }
+        }
+
+        async function sauvegarderEvaluation(event) {
+            event.preventDefault();
+            
+            if (!matiereSelectionnee) {
+                showToast('Veuillez sélectionner une matière', 'warning');
+                return;
+            }
+
+            try {
+                const form = event.target;
+                const evalId = document.getElementById('editEvalId').value;
+                
+                // Récupérer l'année académique active
+                const annees = await API.getAnnees();
+                const anneeActive = annees.find(a => a.active) || annees[0];
+
+                const data = {
+                    matiere: matiereSelectionnee.id,
+                    annee_academique: anneeActive.id,
+                    titre: form.titre.value,
+                    type_evaluation: form.type_evaluation.value,
+                    categorie: form.categorie.value,
+                    coefficient: parseInt(form.coefficient.value),
+                    note_sur: parseFloat(form.note_sur.value),
+                    date_evaluation: form.date_evaluation.value,
+                    description: form.description.value
+                };
+
+                if (evalId) {
+                    // Modification
+                    await API.updateEvaluation(evalId, data);
+                    showToast('Évaluation modifiée avec succès', 'success');
+                } else {
+                    // Création
+                    const newEval = await API.createEvaluation(data);
+                    showToast('Évaluation créée avec succès', 'success');
+                    
+                    // Générer les notes vides pour tous les étudiants
+                    await API.genererNotesEvaluation(newEval.id);
+                }
+
+                closeModal('modalEvaluation');
+                chargerEvaluationsMatiere();
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur: ' + err.message, 'danger');
+            }
+        }
+
+        async function supprimerEvaluation(evalId) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cette évaluation ? Toutes les notes associées seront également supprimées.')) {
+                return;
+            }
+
+            try {
+                await API.deleteEvaluation(evalId);
+                showToast('Évaluation supprimée', 'success');
+                chargerEvaluationsMatiere();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur: ' + err.message, 'danger');
+            }
+        }
+
+        async function ouvrirSaisieNotes(evalId) {
+            try {
+                // Récupérer l'évaluation
+                const evaluation = await API.getEvaluation(evalId);
+                evaluationEnCours = evaluation;
+
+                // Récupérer les notes de cette évaluation
+                const notes = await API.getNotesEvaluations({ evaluation: evalId });
+                
+                // Créer un map des notes par étudiant
+                const notesMap = {};
+                notes.forEach(n => {
+                    notesMap[n.etudiant] = n;
+                });
+
+                // Afficher les infos de l'évaluation
+                const typeIcons = {
+                    devoir: '📝',
+                    interrogation: '📄',
+                    tp: '🔬',
+                    projet: '💼',
+                    examen: '📋',
+                    oral: '🎤'
+                };
+
+                document.getElementById('infoEvaluation').innerHTML = `
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <span style="font-size:28px">${typeIcons[evaluation.type_evaluation]}</span>
+                        <div style="flex:1">
+                            <div style="font-size:16px;font-weight:600;color:#fff">${evaluation.titre}</div>
+                            <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">
+                                ${evaluation.type_evaluation.charAt(0).toUpperCase() + evaluation.type_evaluation.slice(1)} · 
+                                ${evaluation.categorie.toUpperCase()} · 
+                                Coef. ${evaluation.coefficient} · 
+                                Note sur ${evaluation.note_sur} · 
+                                ${formatDate(evaluation.date_evaluation)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Afficher le tableau des étudiants
+                const tbody = document.getElementById('tbodyNotesEval');
+                tbody.innerHTML = etudiantsMatiere.map((e, index) => {
+                    const note = notesMap[e.id];
+                    const noteValue = note?.note || '';
+                    const absent = note?.absent || false;
+                    const commentaire = note?.commentaire || '';
+                    const noteId = note?.id || null;
+
+                    return `
+                        <tr data-etudiant-id="${e.id}" data-note-id="${noteId || ''}">
+                            <td style="text-align:center;color:rgba(255,255,255,0.5)">${index + 1}</td>
+                            <td style="font-weight:600">${e.matricule}</td>
+                            <td>${e.prenom} ${e.nom}</td>
+                            <td>
+                                <input type="number" 
+                                    class="form-input-ultra" 
+                                    style="padding:8px;text-align:center;background:rgba(255,255,255,0.05)"
+                                    min="0" 
+                                    max="${evaluation.note_sur}" 
+                                    step="0.25"
+                                    value="${noteValue}"
+                                    placeholder="0.00"
+                                    ${absent ? 'disabled' : ''}
+                                    onchange="updateNoteEval(${e.id}, this.value)">
+                            </td>
+                            <td style="text-align:center">
+                                <input type="checkbox" 
+                                    ${absent ? 'checked' : ''}
+                                    onchange="toggleAbsent(${e.id}, this.checked)"
+                                    style="width:20px;height:20px;cursor:pointer">
+                            </td>
+                            <td>
+                                <input type="text" 
+                                    class="form-input-ultra" 
+                                    style="padding:8px;font-size:12px;background:rgba(255,255,255,0.05)"
+                                    value="${commentaire}"
+                                    placeholder="Commentaire..."
+                                    onchange="updateCommentaire(${e.id}, this.value)">
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                // Mettre à jour le compteur
+                const notesSaisies = notes.filter(n => n.note !== null || n.absent).length;
+                document.getElementById('progressNotes').textContent = `${notesSaisies}/${etudiantsMatiere.length} notes saisies`;
+
+                openModal('modalSaisieNotes');
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur: ' + err.message, 'danger');
+            }
+        }
+
+        function updateNoteEval(etudiantId, valeur) {
+            if (!notesEvalEnCours[etudiantId]) {
+                notesEvalEnCours[etudiantId] = {};
+            }
+            notesEvalEnCours[etudiantId].note = valeur ? parseFloat(valeur) : null;
+        }
+
+        function toggleAbsent(etudiantId, absent) {
+            if (!notesEvalEnCours[etudiantId]) {
+                notesEvalEnCours[etudiantId] = {};
+            }
+            notesEvalEnCours[etudiantId].absent = absent;
+
+            // Désactiver/activer le champ de note
+            const row = document.querySelector(`#tbodyNotesEval tr[data-etudiant-id="${etudiantId}"]`);
+            const inputNote = row.querySelector('input[type="number"]');
+            inputNote.disabled = absent;
+            if (absent) {
+                inputNote.value = '';
+                notesEvalEnCours[etudiantId].note = null;
+            }
+        }
+
+        function updateCommentaire(etudiantId, commentaire) {
+            if (!notesEvalEnCours[etudiantId]) {
+                notesEvalEnCours[etudiantId] = {};
+            }
+            notesEvalEnCours[etudiantId].commentaire = commentaire;
+        }
+
+        async function sauvegarderToutesNotesEval() {
+            if (!evaluationEnCours) {
+                showToast('Aucune évaluation sélectionnée', 'warning');
+                return;
+            }
+
+            try {
+                let saved = 0;
+                const rows = document.querySelectorAll('#tbodyNotesEval tr');
+
+                for (const row of rows) {
+                    const etudiantId = parseInt(row.getAttribute('data-etudiant-id'));
+                    const noteId = row.getAttribute('data-note-id');
+                    
+                    const inputNote = row.querySelector('input[type="number"]');
+                    const inputAbsent = row.querySelector('input[type="checkbox"]');
+                    const inputCommentaire = row.querySelector('input[type="text"]');
+
+                    const data = {
+                        evaluation: evaluationEnCours.id,
+                        etudiant: etudiantId,
+                        note: inputNote.value ? parseFloat(inputNote.value) : null,
+                        absent: inputAbsent.checked,
+                        commentaire: inputCommentaire.value
+                    };
+
+                    if (noteId) {
+                        // Mise à jour
+                        await API.updateNoteEvaluation(noteId, data);
+                    } else {
+                        // Création
+                        const newNote = await API.createNoteEvaluation(data);
+                        row.setAttribute('data-note-id', newNote.id);
+                    }
+                    saved++;
+                }
+
+                showToast(`${saved} note(s) sauvegardée(s) avec succès`, 'success');
+                notesEvalEnCours = {};
+                
+                // Mettre à jour le compteur
+                const notes = await API.getNotesEvaluations({ evaluation: evaluationEnCours.id });
+                const notesSaisies = notes.filter(n => n.note !== null || n.absent).length;
+                document.getElementById('progressNotes').textContent = `${notesSaisies}/${etudiantsMatiere.length} notes saisies`;
+                
+                // Recharger les stats
+                chargerEvaluationsMatiere();
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de sauvegarde: ' + err.message, 'danger');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = requireAuth(['professeur']);
+            if (user) {
+                chargerMatieres();
+                chargerSupports();
+                chargerDashboard();
+                chargerMatieresNotes();
+            }
+        });
+    </script>
+    
+    <script src="js/api.js"></script>
+    <script src="js/fix-navigation.js"></script>
+</body>
+</html>

@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Administration – UniERP BF Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard-premium.css?v=3.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="dark-theme">
+
+    <div class="app-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar-ultra" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-ultra">
+                    <div class="logo-icon-ultra">🎓</div>
+                    <div class="logo-text-ultra">
+                        <div class="logo-name-ultra">UniERP BF</div>
+                        <div class="logo-tag-ultra">Premium Edition</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav-ultra">
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">PRINCIPAL</div>
+                    <a class="nav-item-ultra active" data-page="dashboard" onclick="navToUltra('dashboard',this)">
+                        <span class="nav-icon-ultra">📊</span>
+                        <span class="nav-text-ultra">Tableau de bord</span>
+                        <span class="nav-indicator"></span>
+                    </a>
+                </div>
+
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">ACADÉMIQUE</div>
+                    <a class="nav-item-ultra" data-page="etudiants" onclick="navToUltra('etudiants',this)">
+                        <span class="nav-icon-ultra">🎓</span>
+                        <span class="nav-text-ultra">Étudiants</span>
+                        <span class="nav-badge-ultra" id="badgeEtudiants">0</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="enseignants" onclick="navToUltra('enseignants',this)">
+                        <span class="nav-icon-ultra">�‍🏫</span>
+                        <span class="nav-text-ultra">Enseignants</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="filieres" onclick="navToUltra('filieres',this)">
+                        <span class="nav-icon-ultra">�</span>
+                        <span class="nav-text-ultra">Filières</span>
+                    </a>
+                </div>
+
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">FINANCE</div>
+                    <a class="nav-item-ultra" data-page="paiements" onclick="navToUltra('paiements',this)">
+                        <span class="nav-icon-ultra">💰</span>
+                        <span class="nav-text-ultra">Paiements</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-ultra">
+            <!-- TOPBAR -->
+            <header class="topbar-ultra">
+                <div class="topbar-left-ultra">
+                    <button class="btn-menu-ultra" onclick="toggleSidebarUltra()">☰</button>
+                    <div class="search-ultra">
+                        <span class="search-icon-ultra">🔍</span>
+                        <input type="text" class="search-input-ultra" placeholder="Rechercher...">
+                    </div>
+                </div>
+                <div class="topbar-right-ultra">
+                    <button class="topbar-btn-ultra">
+                        <span>�</span>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <div class="user-menu-ultra" onclick="logout()">
+                        <div class="user-avatar-ultra">AD</div>
+                        <div class="user-info-ultra">
+                            <div class="user-name-ultra">Administrateur</div>
+                            <div class="user-role-ultra">Admin</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT -->
+            <div class="content-ultra">
+                <!-- PAGE: DASHBOARD -->
+                <div class="page-ultra" id="page-dashboard">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Tableau de bord</h1>
+                            <p class="page-subtitle-ultra">Vue d'ensemble · Année 2024-2025</p>
+                        </div>
+                        <div class="page-actions-ultra">
+                            <button class="btn-ultra btn-secondary-ultra">📊 Rapports</button>
+                            <button class="btn-ultra btn-primary-ultra">+ Nouvelle action</button>
+                        </div>
+                    </div>
+
+                    <!-- STATS -->
+                    <div class="stats-grid-ultra">
+                        <div class="stat-card-ultra primary-ultra">
+                            <div class="stat-icon-ultra">🎓</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statEtudiants">0</div>
+                                <div class="stat-label-ultra">Étudiants inscrits</div>
+                                <div class="stat-trend-ultra up">↑ 12%</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-ultra success-ultra">
+                            <div class="stat-icon-ultra">👨‍🏫</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statEnseignants">0</div>
+                                <div class="stat-label-ultra">Enseignants actifs</div>
+                                <div class="stat-trend-ultra up">↑ 5%</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-ultra warning-ultra">
+                            <div class="stat-icon-ultra">💰</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statPaiements">0 FCFA</div>
+                                <div class="stat-label-ultra">Paiements ce mois</div>
+                                <div class="stat-trend-ultra up">↑ 8%</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-ultra danger-ultra">
+                            <div class="stat-icon-ultra">⚠️</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statImpayes">0</div>
+                                <div class="stat-label-ultra">Impayés</div>
+                                <div class="stat-trend-ultra down">↓ 3%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CHARTS -->
+                    <div class="charts-grid-ultra">
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">📈 Évolution des inscriptions</h3>
+                            </div>
+                            <div class="card-body-ultra">
+                                <canvas id="chartInscriptions" height="80"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">🎯 Répartition par filière</h3>
+                            </div>
+                            <div class="card-body-ultra">
+                                <canvas id="chartFilieres" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STATISTIQUES ENSEIGNANTS PAR GRADE -->
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">🎓 Répartition des enseignants par grade</h3>
+                        </div>
+                        <div class="card-body-ultra">
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px" id="statsGrades">
+                                <div style="text-align:center;padding:20px">Chargement...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TABLE -->
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">🎓 Étudiants récents</h3>
+                            <button class="btn-ultra btn-ghost-ultra" onclick="navToUltra('etudiants')">Voir tout</button>
+                        </div>
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Matricule</th>
+                                        <th>Nom complet</th>
+                                        <th>Filière</th>
+                                        <th>Niveau</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyRecentEtudiants">
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: ÉTUDIANTS -->
+                <div class="page-ultra" id="page-etudiants" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Gestion des étudiants</h1>
+                            <p class="page-subtitle-ultra">Liste complète des étudiants inscrits</p>
+                        </div>
+                        <div class="page-actions-ultra">
+                            <button class="btn-ultra btn-secondary-ultra" onclick="exportTableCSV('tableEtudiants', 'etudiants.csv')">📥 Exporter</button>
+                            <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalEtudiant')">+ Nouvel étudiant</button>
+                        </div>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
+                            <!-- Filtres avancés -->
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                                <div>
+                                    <input type="text" id="searchEtudiants" class="search-input-ultra" placeholder="🔍 Rechercher (nom, matricule, email)..." 
+                                        style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff"
+                                        onkeyup="filtrerEtudiants()">
+                                </div>
+                                <div>
+                                    <select id="filterFiliere" class="form-input-ultra" onchange="filtrerEtudiants()" style="width:100%;padding:12px 16px">
+                                        <option value="">📚 Toutes les filières</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select id="filterNiveau" class="form-input-ultra" onchange="filtrerEtudiants()" style="width:100%;padding:12px 16px">
+                                        <option value="">🎓 Tous les niveaux</option>
+                                        <option value="L1">Licence 1</option>
+                                        <option value="L2">Licence 2</option>
+                                        <option value="L3">Licence 3</option>
+                                        <option value="M1">Master 1</option>
+                                        <option value="M2">Master 2</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select id="filterStatut" class="form-input-ultra" onchange="filtrerEtudiants()" style="width:100%;padding:12px 16px">
+                                        <option value="">✅ Tous les statuts</option>
+                                        <option value="inscrit">Inscrit</option>
+                                        <option value="reinscrit">Réinscrit</option>
+                                        <option value="bloque">Bloqué</option>
+                                        <option value="diplome">Diplômé</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Statistiques rapides -->
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px;padding:16px;background:rgba(99,102,241,0.1);border-radius:12px;border:1px solid rgba(99,102,241,0.2)">
+                                <div style="text-align:center">
+                                    <div style="font-size:24px;font-weight:700;color:#6366f1" id="statTotalEtu">0</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6)">Total</div>
+                                </div>
+                                <div style="text-align:center">
+                                    <div style="font-size:24px;font-weight:700;color:#10b981" id="statInscrits">0</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6)">Inscrits</div>
+                                </div>
+                                <div style="text-align:center">
+                                    <div style="font-size:24px;font-weight:700;color:#f59e0b" id="statL1">0</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6)">L1</div>
+                                </div>
+                                <div style="text-align:center">
+                                    <div style="font-size:24px;font-weight:700;color:#8b5cf6" id="statL2">0</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6)">L2</div>
+                                </div>
+                                <div style="text-align:center">
+                                    <div style="font-size:24px;font-weight:700;color:#ec4899" id="statL3">0</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6)">L3</div>
+                                </div>
+                            </div>
+
+                            <!-- Tableau responsive -->
+                            <div style="overflow-x:auto">
+                                <table class="table-ultra" id="tableEtudiants">
+                                    <thead>
+                                        <tr>
+                                            <th>Matricule</th>
+                                            <th>Nom complet</th>
+                                            <th>Filière</th>
+                                            <th>Niveau</th>
+                                            <th>Statut</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyEtudiants">
+                                        <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div id="paginationEtudiants" style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:20px;flex-wrap:wrap">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OTHER PAGES -->
+                <div class="page-ultra" id="page-enseignants" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Gestion des enseignants</h1>
+                            <p class="page-subtitle-ultra">Liste des enseignants de l'université</p>
+                        </div>
+                        <div class="page-actions-ultra">
+                            <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalEnseignant')">+ Nouvel enseignant</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Filtres enseignants -->
+                    <div class="card-ultra" style="margin-bottom:24px">
+                        <div class="card-body-ultra">
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px">
+                                <div>
+                                    <input type="text" id="searchEnseignant" placeholder="🔍 Rechercher un enseignant..." class="form-input-ultra" onkeyup="filtrerEnseignants()" style="width:100%;padding:12px 16px">
+                                </div>
+                                <div>
+                                    <select id="filterGrade" class="form-input-ultra" onchange="filtrerEnseignants()" style="width:100%;padding:12px 16px">
+                                        <option value="">🎓 Tous les grades</option>
+                                        <option value="assistant">🎓 Assistant</option>
+                                        <option value="maitre_assistant">👨‍🏫 Maître-Assistant</option>
+                                        <option value="maitre_conferences">🎖️ Maître de Conférences</option>
+                                        <option value="professeur_titulaire">👑 Professeur Titulaire</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select id="filterStatutEns" class="form-input-ultra" onchange="filtrerEnseignants()" style="width:100%;padding:12px 16px">
+                                        <option value="">✅ Tous les statuts</option>
+                                        <option value="actif">Actif</option>
+                                        <option value="conge">En congé</option>
+                                        <option value="suspendu">Suspendu</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Nom complet</th>
+                                        <th>Email</th>
+                                        <th>Spécialité</th>
+                                        <th>Grade</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyEnseignants">
+                                    <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-ultra" id="page-filieres" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Filières & Matières</h1>
+                            <p class="page-subtitle-ultra">Gestion des filières et matières de l'université</p>
+                        </div>
+                        <div class="page-actions-ultra">
+                            <button class="btn-ultra btn-secondary-ultra" onclick="openModal('modalMatiere')">+ Nouvelle matière</button>
+                            <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalFiliere')">+ Nouvelle filière</button>
+                        </div>
+                    </div>
+
+                    <!-- Filières -->
+                    <div class="card-ultra" style="margin-bottom:24px">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">📚 Filières</h3>
+                        </div>
+                        <div class="card-body-ultra">
+                            <div style="overflow-x:auto">
+                                <table class="table-ultra">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Nom</th>
+                                            <th>Niveau</th>
+                                            <th>Frais inscription</th>
+                                            <th>Nb étudiants</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyFilieres">
+                                        <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Matières -->
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">📖 Matières</h3>
+                            <div style="display:flex;gap:12px;align-items:center">
+                                <select id="filterMatiereFiliere" class="form-input-ultra" onchange="filtrerMatieres()" style="padding:8px 12px;min-width:200px">
+                                    <option value="">Toutes les filières</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body-ultra">
+                            <div style="overflow-x:auto">
+                                <table class="table-ultra">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Nom</th>
+                                            <th>Filière</th>
+                                            <th>Semestre</th>
+                                            <th>Coefficient</th>
+                                            <th>Enseignant</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyMatieres">
+                                        <tr><td colspan="7" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-ultra" id="page-paiements" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Gestion des paiements</h1>
+                            <p class="page-subtitle-ultra">Suivi des paiements et encaissements</p>
+                        </div>
+                        <div class="page-actions-ultra">
+                            <button class="btn-ultra btn-secondary-ultra" onclick="exportTableCSV('tablePaiements', 'paiements.csv')">📥 Exporter</button>
+                            <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalPaiement')">+ Nouveau paiement</button>
+                        </div>
+                    </div>
+
+                    <!-- Statistiques rapides -->
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                        <div style="padding:20px;background:rgba(16,185,129,0.1);border-radius:12px;border:1px solid rgba(16,185,129,0.2)">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">TOTAL ENCAISSÉ</div>
+                            <div style="font-size:24px;font-weight:700;color:#10b981" id="statTotalEncaisse">0 FCFA</div>
+                        </div>
+                        <div style="padding:20px;background:rgba(239,68,68,0.1);border-radius:12px;border:1px solid rgba(239,68,68,0.2)">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">TOTAL IMPAYÉS</div>
+                            <div style="font-size:24px;font-weight:700;color:#ef4444" id="statTotalImpayes">0 FCFA</div>
+                        </div>
+                        <div style="padding:20px;background:rgba(99,102,241,0.1);border-radius:12px;border:1px solid rgba(99,102,241,0.2)">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">PAIEMENTS CE MOIS</div>
+                            <div style="font-size:24px;font-weight:700;color:#6366f1" id="statPaiementsMois">0</div>
+                        </div>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
+                            <!-- Filtres -->
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                                <div>
+                                    <input type="text" id="searchPaiements" class="search-input-ultra" placeholder="🔍 Rechercher (matricule, nom, reçu)..." 
+                                        style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff"
+                                        onkeyup="filtrerPaiements()">
+                                </div>
+                                <div>
+                                    <select id="filterModePaiement" class="form-input-ultra" onchange="filtrerPaiements()" style="width:100%;padding:12px 16px">
+                                        <option value="">💳 Tous les modes</option>
+                                        <option value="especes">Espèces</option>
+                                        <option value="orange_money">Orange Money</option>
+                                        <option value="moov_money">Moov Money</option>
+                                        <option value="virement">Virement</option>
+                                        <option value="cheque">Chèque</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select id="filterStatutPaiement" class="form-input-ultra" onchange="filtrerPaiements()" style="width:100%;padding:12px 16px">
+                                        <option value="">✅ Tous les statuts</option>
+                                        <option value="valide">Validé</option>
+                                        <option value="en_attente">En attente</option>
+                                        <option value="rejete">Rejeté</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Tableau -->
+                            <div style="overflow-x:auto">
+                                <table class="table-ultra" id="tablePaiements">
+                                    <thead>
+                                        <tr>
+                                            <th>N° Reçu</th>
+                                            <th>Étudiant</th>
+                                            <th>Montant</th>
+                                            <th>Mode</th>
+                                            <th>Type</th>
+                                            <th>Date</th>
+                                            <th>Statut</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyPaiements">
+                                        <tr><td colspan="8" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL PAIEMENT -->
+                <div class="modal-ultra" id="modalPaiement">
+                    <div class="modal-content-ultra">
+                        <div class="modal-header-ultra">
+                            <h3>💰 Nouveau paiement</h3>
+                            <span class="modal-close-ultra" onclick="closeModal('modalPaiement')">&times;</span>
+                        </div>
+                        <div class="modal-body-ultra">
+                            <form id="formPaiement" onsubmit="ajouterPaiement(event)">
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Étudiant *</label>
+                                    <select name="etudiant" id="selectPaiementEtudiant" required class="form-input-ultra">
+                                        <option value="">Sélectionner un étudiant</option>
+                                    </select>
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                                    <div class="form-group-ultra">
+                                        <label class="form-label-ultra">Montant (FCFA) *</label>
+                                        <input type="number" name="montant" required class="form-input-ultra" min="1000" step="1000" placeholder="Ex: 50000">
+                                    </div>
+                                    <div class="form-group-ultra">
+                                        <label class="form-label-ultra">Date de paiement *</label>
+                                        <input type="date" name="date_paiement" required class="form-input-ultra">
+                                    </div>
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                                    <div class="form-group-ultra">
+                                        <label class="form-label-ultra">Mode de paiement *</label>
+                                        <select name="mode" required class="form-input-ultra">
+                                            <option value="">Sélectionner</option>
+                                            <option value="especes">Espèces</option>
+                                            <option value="orange_money">Orange Money</option>
+                                            <option value="moov_money">Moov Money</option>
+                                            <option value="virement">Virement Bancaire</option>
+                                            <option value="cheque">Chèque</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-ultra">
+                                        <label class="form-label-ultra">Type de paiement *</label>
+                                        <select name="type_paiement" required class="form-input-ultra">
+                                            <option value="inscription">Inscription</option>
+                                            <option value="reinscription">Réinscription</option>
+                                            <option value="acompte">Acompte</option>
+                                            <option value="solde">Solde</option>
+                                            <option value="autre">Autre</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Référence mobile (optionnel)</label>
+                                    <input type="text" name="reference_mobile" class="form-input-ultra" placeholder="Ex: TXN123456789">
+                                </div>
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Observations</label>
+                                    <textarea name="observations" rows="2" class="form-input-ultra" placeholder="Notes complémentaires..."></textarea>
+                                </div>
+                                <div class="modal-footer-ultra">
+                                    <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalPaiement')">Annuler</button>
+                                    <button type="submit" class="btn-ultra btn-primary-ultra">Enregistrer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL ÉTUDIANT -->
+    <div class="modal-ultra" id="modalEtudiant">
+        <div class="modal-content-ultra">
+            <div class="modal-header-ultra">
+                <h3>➕ Nouvel étudiant</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalEtudiant')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <form id="formEtudiant" onsubmit="ajouterEtudiant(event)">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Prénom</label>
+                            <input type="text" name="prenom" required class="form-input-ultra">
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Nom</label>
+                            <input type="text" name="nom" required class="form-input-ultra">
+                        </div>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Email</label>
+                        <input type="email" name="email" required class="form-input-ultra">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Téléphone</label>
+                        <input type="tel" name="telephone" required class="form-input-ultra">
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Filière</label>
+                            <select name="filiere" required id="selectFiliere" class="form-input-ultra">
+                                <option value="">Sélectionner</option>
+                            </select>
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Niveau</label>
+                            <select name="niveau" required class="form-input-ultra">
+                                <option value="">Sélectionner</option>
+                                <option value="L1">Licence 1</option>
+                                <option value="L2">Licence 2</option>
+                                <option value="L3">Licence 3</option>
+                                <option value="M1">Master 1</option>
+                                <option value="M2">Master 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer-ultra">
+                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalEtudiant')">Annuler</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ENSEIGNANT (Ajout) -->
+    <div class="modal-ultra" id="modalEnseignant">
+        <div class="modal-content-ultra">
+            <div class="modal-header-ultra">
+                <h3>➕ Nouvel enseignant</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalEnseignant')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <form id="formEnseignant" onsubmit="ajouterEnseignant(event)">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Prénom *</label>
+                            <input type="text" name="prenom" required class="form-input-ultra">
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Nom *</label>
+                            <input type="text" name="nom" required class="form-input-ultra">
+                        </div>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Email *</label>
+                        <input type="email" name="email" required class="form-input-ultra">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Téléphone</label>
+                        <input type="tel" name="telephone" class="form-input-ultra" placeholder="+226 XX XX XX XX">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Spécialité *</label>
+                        <input type="text" name="specialite" required class="form-input-ultra" placeholder="Ex: Informatique, Mathématiques...">
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Grade *</label>
+                            <select name="grade" class="form-input-ultra">
+                                <option value="assistant">🎓 Assistant</option>
+                                <option value="maitre_assistant" selected>👨‍🏫 Maître-Assistant</option>
+                                <option value="maitre_conferences">🎖️ Maître de Conférences</option>
+                                <option value="professeur_titulaire">👑 Professeur Titulaire</option>
+                            </select>
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Statut</label>
+                            <select name="statut" class="form-input-ultra">
+                                <option value="actif" selected>Actif</option>
+                                <option value="conge">En congé</option>
+                                <option value="suspendu">Suspendu</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer-ultra">
+                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalEnseignant')">Annuler</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MODIFIER ENSEIGNANT -->
+    <div class="modal-ultra" id="modalModifierEnseignant">
+        <div class="modal-content-ultra">
+            <div class="modal-header-ultra">
+                <h3>✏️ Modifier enseignant</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalModifierEnseignant')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <form id="formModifierEnseignant" onsubmit="sauvegarderEnseignant(event)">
+                    <input type="hidden" name="id" id="editEnsId">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Prénom *</label>
+                            <input type="text" name="prenom" id="editEnsPrenom" required class="form-input-ultra">
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Nom *</label>
+                            <input type="text" name="nom" id="editEnsNom" required class="form-input-ultra">
+                        </div>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Email *</label>
+                        <input type="email" name="email" id="editEnsEmail" required class="form-input-ultra">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Téléphone</label>
+                        <input type="tel" name="telephone" id="editEnsTel" class="form-input-ultra">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Spécialité *</label>
+                        <input type="text" name="specialite" id="editEnsSpec" required class="form-input-ultra">
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Grade *</label>
+                            <select name="grade" id="editEnsGrade" class="form-input-ultra">
+                                <option value="assistant">🎓 Assistant</option>
+                                <option value="maitre_assistant">👨‍🏫 Maître-Assistant</option>
+                                <option value="maitre_conferences">🎖️ Maître de Conférences</option>
+                                <option value="professeur_titulaire">👑 Professeur Titulaire</option>
+                            </select>
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Statut</label>
+                            <select name="statut" id="editEnsStatut" class="form-input-ultra">
+                                <option value="actif">Actif</option>
+                                <option value="conge">En congé</option>
+                                <option value="suspendu">Suspendu</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer-ultra">
+                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalModifierEnseignant')">Annuler</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra">Sauvegarder</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MODIFIER ÉTUDIANT -->
+    <div class="modal-ultra" id="modalModifierEtudiant">
+        <div class="modal-content-ultra">
+            <div class="modal-header-ultra">
+                <h3>✏️ Modifier étudiant</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalModifierEtudiant')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <form id="formModifierEtudiant" onsubmit="sauvegarderEtudiant(event)">
+                    <input type="hidden" name="id" id="editEtuId">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Prénom *</label>
+                            <input type="text" name="prenom" id="editEtuPrenom" required class="form-input-ultra">
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Nom *</label>
+                            <input type="text" name="nom" id="editEtuNom" required class="form-input-ultra">
+                        </div>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Email *</label>
+                        <input type="email" name="email" id="editEtuEmail" required class="form-input-ultra">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Téléphone *</label>
+                        <input type="tel" name="telephone" id="editEtuTel" required class="form-input-ultra">
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Filière *</label>
+                            <select name="filiere" id="editEtuFiliere" required class="form-input-ultra">
+                                <option value="">Sélectionner</option>
+                            </select>
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Niveau *</label>
+                            <select name="niveau" id="editEtuNiveau" required class="form-input-ultra">
+                                <option value="">Sélectionner</option>
+                                <option value="L1">Licence 1</option>
+                                <option value="L2">Licence 2</option>
+                                <option value="L3">Licence 3</option>
+                                <option value="M1">Master 1</option>
+                                <option value="M2">Master 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer-ultra">
+                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalModifierEtudiant')">Annuler</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra">Sauvegarder</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DÉTAILS ENSEIGNANT -->
+    <div class="modal-ultra" id="modalDetailsEnseignant">
+        <div class="modal-content-ultra">
+            <div class="modal-header-ultra">
+                <h3>👁️ Détails enseignant</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalDetailsEnseignant')">&times;</span>
+            </div>
+            <div class="modal-body-ultra" id="detailsEnseignantContent">
+                <div style="text-align:center;padding:40px">Chargement...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DÉTAILS ÉTUDIANT -->
+    <div class="modal-ultra" id="modalDetailsEtudiant">
+        <div class="modal-content-ultra" style="max-width:1000px;max-height:90vh;overflow-y:auto">
+            <div class="modal-header-ultra">
+                <h3>👁️ Détails étudiant</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalDetailsEtudiant')">&times;</span>
+            </div>
+            <div class="modal-body-ultra" id="detailsEtudiantContent">
+                <div style="text-align:center;padding:40px">Chargement...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FILIÈRE -->
+    <div class="modal-ultra" id="modalFiliere">
+        <div class="modal-content-ultra">
+            <div class="modal-header-ultra">
+                <h3>📚 Nouvelle filière</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalFiliere')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <form id="formFiliere" onsubmit="ajouterFiliere(event)">
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Code *</label>
+                        <input type="text" name="code" required class="form-input-ultra" placeholder="Ex: L-INFO">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Nom *</label>
+                        <input type="text" name="nom" required class="form-input-ultra" placeholder="Ex: Licence Informatique">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Niveau *</label>
+                        <select name="niveau" required class="form-input-ultra">
+                            <option value="">Sélectionner</option>
+                            <option value="Licence">Licence</option>
+                            <option value="Master">Master</option>
+                            <option value="Doctorat">Doctorat</option>
+                        </select>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Frais d'inscription (FCFA) *</label>
+                        <input type="number" name="frais_inscription" required class="form-input-ultra" placeholder="Ex: 150000">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Description</label>
+                        <textarea name="description" class="form-input-ultra" rows="3" placeholder="Description de la filière..."></textarea>
+                    </div>
+                    <div class="modal-footer-ultra">
+                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalFiliere')">Annuler</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MATIÈRE -->
+    <div class="modal-ultra" id="modalMatiere">
+        <div class="modal-content-ultra">
+            <div class="modal-header-ultra">
+                <h3>📖 Nouvelle matière</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalMatiere')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <form id="formMatiere" onsubmit="ajouterMatiere(event)">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Code *</label>
+                            <input type="text" name="code" required class="form-input-ultra" placeholder="Ex: INFO101">
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Coefficient *</label>
+                            <input type="number" name="coefficient" required class="form-input-ultra" min="1" max="10" value="3">
+                        </div>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Nom *</label>
+                        <input type="text" name="nom" required class="form-input-ultra" placeholder="Ex: Algorithmique et Programmation">
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Filière *</label>
+                            <select name="filiere" id="selectMatiereFiliere" required class="form-input-ultra">
+                                <option value="">Sélectionner</option>
+                            </select>
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Semestre *</label>
+                            <select name="semestre" required class="form-input-ultra">
+                                <option value="">Sélectionner</option>
+                                <option value="1">Semestre 1</option>
+                                <option value="2">Semestre 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Enseignant</label>
+                        <select name="enseignant" id="selectMatiereEnseignant" class="form-input-ultra">
+                            <option value="">Non assigné</option>
+                        </select>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Description</label>
+                        <textarea name="description" class="form-input-ultra" rows="2" placeholder="Description de la matière..."></textarea>
+                    </div>
+                    <div class="modal-footer-ultra">
+                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalMatiere')">Annuler</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MODIFIER MATIÈRE -->
+    <div class="modal-ultra" id="modalModifierMatiere">
+        <div class="modal-content-ultra">
+            <div class="modal-header-ultra">
+                <h3>✏️ Modifier matière</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalModifierMatiere')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <form id="formModifierMatiere" onsubmit="sauvegarderMatiere(event)">
+                    <input type="hidden" name="id" id="editMatiereId">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Code *</label>
+                            <input type="text" name="code" id="editMatiereCode" required class="form-input-ultra">
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Coefficient *</label>
+                            <input type="number" name="coefficient" id="editMatiereCoef" required class="form-input-ultra" min="1" max="10">
+                        </div>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Nom *</label>
+                        <input type="text" name="nom" id="editMatiereNom" required class="form-input-ultra">
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Filière *</label>
+                            <select name="filiere" id="editMatiereFiliere" required class="form-input-ultra">
+                                <option value="">Sélectionner</option>
+                            </select>
+                        </div>
+                        <div class="form-group-ultra">
+                            <label class="form-label-ultra">Semestre *</label>
+                            <select name="semestre" id="editMatiereSemestre" required class="form-input-ultra">
+                                <option value="1">Semestre 1</option>
+                                <option value="2">Semestre 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Enseignant</label>
+                        <select name="enseignant" id="editMatiereEnseignant" class="form-input-ultra">
+                            <option value="">Non assigné</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer-ultra">
+                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalModifierMatiere')">Annuler</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra">Sauvegarder</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MODIFIER FILIÈRE -->
+    <div class="modal-ultra" id="modalModifierFiliere">
+        <div class="modal-content-ultra">
+            <div class="modal-header-ultra">
+                <h3>✏️ Modifier filière</h3>
+                <span class="modal-close-ultra" onclick="closeModal('modalModifierFiliere')">&times;</span>
+            </div>
+            <div class="modal-body-ultra">
+                <form id="formModifierFiliere" onsubmit="sauvegarderFiliere(event)">
+                    <input type="hidden" name="id" id="editFiliereId">
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Code *</label>
+                        <input type="text" name="code" id="editFiliereCode" required class="form-input-ultra" placeholder="Ex: L-INFO">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Nom *</label>
+                        <input type="text" name="nom" id="editFiliereNom" required class="form-input-ultra" placeholder="Ex: Licence Informatique">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Niveau *</label>
+                        <select name="niveau" id="editFiliereNiveau" required class="form-input-ultra">
+                            <option value="">Sélectionner</option>
+                            <option value="Licence">Licence</option>
+                            <option value="Master">Master</option>
+                            <option value="Doctorat">Doctorat</option>
+                            <option value="BTS">BTS</option>
+                            <option value="DUT">DUT</option>
+                        </select>
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Frais d'inscription (FCFA) *</label>
+                        <input type="number" name="frais_inscription" id="editFiliereFrais" required class="form-input-ultra" placeholder="Ex: 150000">
+                    </div>
+                    <div class="form-group-ultra">
+                        <label class="form-label-ultra">Description</label>
+                        <textarea name="description" id="editFiliereDescription" class="form-input-ultra" rows="3" placeholder="Description de la filière..."></textarea>
+                    </div>
+                    <div class="modal-footer-ultra">
+                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalModifierFiliere')">Annuler</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra">Sauvegarder</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts externes d'abord -->
+    <script src="js/api.js"></script>
+    <script src="js/fix-navigation.js"></script>
+
+    <!-- Script inline après -->
+    <script>
+        function navToUltra(page, el) {
+            document.querySelectorAll('.page-ultra').forEach(p => p.style.display = 'none');
+            const target = document.getElementById('page-' + page);
+            if (target) target.style.display = 'block';
+            
+            document.querySelectorAll('.nav-item-ultra').forEach(i => i.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            // Charger les données spécifiques à la page
+            if (page === 'filieres') {
+                chargerFilieresEtMatieres();
+            } else if (page === 'paiements') {
+                chargerPaiements();
+            }
+        }
+
+        function toggleSidebarUltra() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.toggle('active');
+            
+            if (!overlay) {
+                const newOverlay = document.createElement('div');
+                newOverlay.id = 'sidebarOverlay';
+                newOverlay.className = 'sidebar-overlay';
+                newOverlay.onclick = toggleSidebarUltra;
+                document.body.appendChild(newOverlay);
+            }
+            
+            document.getElementById('sidebarOverlay')?.classList.toggle('active');
+        }
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const icons = { success: '✅', danger: '❌', warning: '⚠️', info: 'ℹ️' };
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            const colors = { success: '#059669', danger: '#dc2626', warning: '#d97706', info: '#2563eb' };
+            toast.style.cssText = `background:rgba(10,14,39,0.95);border-radius:12px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:12px;min-width:280px;max-width:400px;border-left:4px solid ${colors[type]};animation:slideIn .3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)`;
+            toast.innerHTML = `<span style="font-size:18px">${icons[type]}</span><span style="font-size:14px;font-weight:500;flex:1;color:#fff">${message}</span><span onclick="this.parentElement.remove()" style="cursor:pointer;color:#94a3b8;flex-shrink:0;font-size:18px">✕</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { if (toast.parentElement) toast.remove(); }, 3500);
+        }
+
+        let tousLesEtudiants = [];
+        let etudiantsFiltres = [];
+        let toutesLesMatieres = [];
+        let matieresFiltrees = [];
+        let currentPage = 1;
+        const itemsPerPage = 20;
+
+        function filtrerEtudiants() {
+            const searchValue = document.getElementById('searchEtudiants').value.toLowerCase();
+            const filterFiliere = document.getElementById('filterFiliere').value;
+            const filterNiveau = document.getElementById('filterNiveau').value;
+            const filterStatut = document.getElementById('filterStatut').value;
+
+            etudiantsFiltres = tousLesEtudiants.filter(e => {
+                const matchSearch = !searchValue || 
+                    e.matricule.toLowerCase().includes(searchValue) ||
+                    e.prenom.toLowerCase().includes(searchValue) ||
+                    e.nom.toLowerCase().includes(searchValue) ||
+                    e.email.toLowerCase().includes(searchValue);
+                
+                const matchFiliere = !filterFiliere || e.filiere == filterFiliere;
+                const matchNiveau = !filterNiveau || e.niveau === filterNiveau;
+                const matchStatut = !filterStatut || e.statut === filterStatut;
+
+                return matchSearch && matchFiliere && matchNiveau && matchStatut;
+            });
+
+            currentPage = 1;
+            afficherEtudiants();
+        }
+
+        function afficherEtudiants() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const etudiantsPage = etudiantsFiltres.slice(start, end);
+
+            document.getElementById('tbodyEtudiants').innerHTML = etudiantsPage.map(e => `
+                <tr>
+                    <td data-label="Matricule" style="font-weight:600">${e.matricule}</td>
+                    <td data-label="Nom">${e.prenom} ${e.nom}</td>
+                    <td data-label="Filière">${e.filiere_nom || 'N/A'}</td>
+                    <td data-label="Niveau"><span class="badge-ultra primary">${e.niveau}</span></td>
+                    <td data-label="Statut"><span class="badge-ultra ${e.statut === 'inscrit' ? 'success' : e.statut === 'bloque' ? 'danger' : 'warning'}">${e.statut}</span></td>
+                    <td data-label="Actions" style="white-space:nowrap">
+                        <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="modifierEtudiant(${e.id})" title="Modifier">✏️</button>
+                        <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="voirDetailsEtudiant(${e.id})" title="Détails">👁️</button>
+                        <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="supprimerEtudiant(${e.id})" title="Supprimer">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            afficherPagination();
+            mettreAJourStatistiques();
+        }
+
+        function afficherPagination() {
+            const totalPages = Math.ceil(etudiantsFiltres.length / itemsPerPage);
+            const container = document.getElementById('paginationEtudiants');
+            
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            
+            // Bouton précédent
+            html += `<button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="changerPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>◀</button>`;
+            
+            // Numéros de page
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    html += `<button class="btn-ultra ${i === currentPage ? 'btn-primary-ultra' : 'btn-ghost-ultra'} btn-sm-ultra" onclick="changerPage(${i})">${i}</button>`;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    html += `<span style="color:rgba(255,255,255,0.5)">...</span>`;
+                }
+            }
+            
+            // Bouton suivant
+            html += `<button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="changerPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>▶</button>`;
+            
+            container.innerHTML = html;
+        }
+
+        function changerPage(page) {
+            const totalPages = Math.ceil(etudiantsFiltres.length / itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            afficherEtudiants();
+        }
+
+        function mettreAJourStatistiques() {
+            document.getElementById('statTotalEtu').textContent = etudiantsFiltres.length;
+            document.getElementById('statInscrits').textContent = etudiantsFiltres.filter(e => e.statut === 'inscrit').length;
+            document.getElementById('statL1').textContent = etudiantsFiltres.filter(e => e.niveau === 'L1').length;
+            document.getElementById('statL2').textContent = etudiantsFiltres.filter(e => e.niveau === 'L2').length;
+            document.getElementById('statL3').textContent = etudiantsFiltres.filter(e => e.niveau === 'L3').length;
+        }
+
+        // Fonction pour formater le grade avec icône et couleur
+        function formatGrade(grade) {
+            const grades = {
+                'assistant': { icon: '🎓', label: 'Assistant', color: '#3b82f6' },
+                'maitre_assistant': { icon: '👨‍🏫', label: 'Maître-Assistant', color: '#8b5cf6' },
+                'maitre_conferences': { icon: '🎖️', label: 'Maître de Conférences', color: '#f59e0b' },
+                'professeur_titulaire': { icon: '👑', label: 'Professeur Titulaire', color: '#ef4444' }
+            };
+            
+            const g = grades[grade] || { icon: '📋', label: grade || 'N/A', color: '#6b7280' };
+            return `<span class="badge-ultra" style="background:${g.color}20;color:${g.color};border:1px solid ${g.color}40">${g.icon} ${g.label}</span>`;
+        }
+
+        // Variables globales pour les enseignants
+        let tousEnseignants = [];
+        let enseignantsFiltres = [];
+
+        // Fonction de filtrage des enseignants
+        function filtrerEnseignants() {
+            const search = document.getElementById('searchEnseignant').value.toLowerCase();
+            const grade = document.getElementById('filterGrade').value;
+            const statut = document.getElementById('filterStatutEns').value;
+
+            enseignantsFiltres = tousEnseignants.filter(ens => {
+                const matchSearch = !search || 
+                    ens.prenom.toLowerCase().includes(search) || 
+                    ens.nom.toLowerCase().includes(search) ||
+                    ens.email.toLowerCase().includes(search) ||
+                    (ens.specialite && ens.specialite.toLowerCase().includes(search));
+                const matchGrade = !grade || ens.grade === grade;
+                const matchStatut = !statut || ens.statut === statut;
+                
+                return matchSearch && matchGrade && matchStatut;
+            });
+
+            afficherEnseignants();
+        }
+
+        // Fonction d'affichage des enseignants
+        function afficherEnseignants() {
+            if (enseignantsFiltres && enseignantsFiltres.length > 0) {
+                document.getElementById('tbodyEnseignants').innerHTML = enseignantsFiltres.map(ens => `
+                    <tr>
+                        <td style="font-weight:600">${ens.prenom} ${ens.nom}</td>
+                        <td>${ens.email}</td>
+                        <td>${ens.specialite || 'N/A'}</td>
+                        <td>${formatGrade(ens.grade)}</td>
+                        <td><span class="badge-ultra ${ens.statut === 'actif' ? 'success' : 'danger'}">${ens.statut}</span></td>
+                        <td style="white-space:nowrap">
+                            <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="modifierEnseignant(${ens.id})" title="Modifier">✏️</button>
+                            <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="voirDetailsEnseignant(${ens.id})" title="Détails">👁️</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                document.getElementById('tbodyEnseignants').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun enseignant trouvé</td></tr>';
+            }
+        }
+
+        async function chargerDonnees() {
+            try {
+                const [etudiants, enseignants, filieres] = await Promise.all([
+                    API.getEtudiants(),
+                    API.getEnseignants(),
+                    API.getFilieres()
+                ]);
+
+                // Stocker les étudiants globalement
+                tousLesEtudiants = etudiants;
+                etudiantsFiltres = etudiants;
+
+                document.getElementById('statEtudiants').textContent = etudiants.length;
+                document.getElementById('statEnseignants').textContent = enseignants.length;
+                document.getElementById('badgeEtudiants').textContent = etudiants.length;
+
+                // Statistiques par grade
+                const statsParGrade = {
+                    'assistant': { count: 0, icon: '🎓', label: 'Assistants', color: '#3b82f6' },
+                    'maitre_assistant': { count: 0, icon: '👨‍🏫', label: 'Maîtres-Assistants', color: '#8b5cf6' },
+                    'maitre_conferences': { count: 0, icon: '🎖️', label: 'Maîtres de Conférences', color: '#f59e0b' },
+                    'professeur_titulaire': { count: 0, icon: '👑', label: 'Professeurs Titulaires', color: '#ef4444' }
+                };
+
+                enseignants.forEach(ens => {
+                    if (statsParGrade[ens.grade]) {
+                        statsParGrade[ens.grade].count++;
+                    }
+                });
+
+                document.getElementById('statsGrades').innerHTML = Object.entries(statsParGrade).map(([grade, data]) => `
+                    <div style="background:${data.color}10;border:1px solid ${data.color}30;border-radius:12px;padding:20px;text-align:center">
+                        <div style="font-size:32px;margin-bottom:8px">${data.icon}</div>
+                        <div style="font-size:28px;font-weight:700;color:${data.color};margin-bottom:4px">${data.count}</div>
+                        <div style="font-size:13px;color:rgba(255,255,255,0.7)">${data.label}</div>
+                    </div>
+                `).join('');
+
+                // Tableau de bord - étudiants récents
+                const recent = etudiants.slice(0, 5);
+                document.getElementById('tbodyRecentEtudiants').innerHTML = recent.map(e => `
+                    <tr>
+                        <td style="font-weight:600">${e.matricule}</td>
+                        <td>${e.prenom} ${e.nom}</td>
+                        <td>${e.filiere_nom || 'N/A'}</td>
+                        <td><span class="badge-ultra primary">${e.niveau}</span></td>
+                        <td><span class="badge-ultra success">${e.statut}</span></td>
+                    </tr>
+                `).join('');
+
+                // Remplir les filtres de filières
+                const optionsFilieres = filieres.map(f => `<option value="${f.id}">${f.nom}</option>`).join('');
+                document.getElementById('filterFiliere').innerHTML = '<option value="">📚 Toutes les filières</option>' + optionsFilieres;
+                document.getElementById('selectFiliere').innerHTML = '<option value="">Sélectionner</option>' + optionsFilieres;
+                document.getElementById('editEtuFiliere').innerHTML = '<option value="">Sélectionner</option>' + optionsFilieres;
+
+                // Afficher les étudiants avec pagination
+                afficherEtudiants();
+
+                // Afficher les enseignants
+                tousEnseignants = enseignants || [];
+                enseignantsFiltres = tousEnseignants;
+                afficherEnseignants();
+
+                creerGraphiques(etudiants, filieres);
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de chargement: ' + err.message, 'danger');
+            }
+        }
+
+        async function chargerFilieresEtMatieres() {
+            try {
+                const [filieres, matieres, enseignants] = await Promise.all([
+                    API.getFilieres(),
+                    API.getMatieres(),
+                    API.getEnseignants()
+                ]);
+
+                // Afficher les filières
+                document.getElementById('tbodyFilieres').innerHTML = filieres.map(f => `
+                    <tr>
+                        <td data-label="Code" style="font-weight:600">${f.code}</td>
+                        <td data-label="Nom">${f.nom}</td>
+                        <td data-label="Niveau"><span class="badge-ultra primary">${f.niveau || 'N/A'}</span></td>
+                        <td data-label="Frais">${formatCFA(f.frais_inscription || 0)}</td>
+                        <td data-label="Étudiants">${f.nb_etudiants || 0}</td>
+                        <td data-label="Actions" style="white-space:nowrap">
+                            <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="modifierFiliere(${f.id})" title="Modifier">✏️</button>
+                            <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="supprimerFiliere(${f.id})" title="Supprimer">🗑️</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                // Stocker les matières
+                toutesLesMatieres = matieres;
+                matieresFiltrees = matieres;
+
+                // Remplir les selects
+                const optionsFilieres = filieres.map(f => `<option value="${f.id}">${f.nom}</option>`).join('');
+                document.getElementById('selectMatiereFiliere').innerHTML = '<option value="">Sélectionner</option>' + optionsFilieres;
+                document.getElementById('editMatiereFiliere').innerHTML = '<option value="">Sélectionner</option>' + optionsFilieres;
+                document.getElementById('filterMatiereFiliere').innerHTML = '<option value="">Toutes les filières</option>' + optionsFilieres;
+
+                const optionsEnseignants = enseignants.map(e => `<option value="${e.id}">${e.prenom} ${e.nom}</option>`).join('');
+                document.getElementById('selectMatiereEnseignant').innerHTML = '<option value="">Non assigné</option>' + optionsEnseignants;
+                document.getElementById('editMatiereEnseignant').innerHTML = '<option value="">Non assigné</option>' + optionsEnseignants;
+
+                afficherMatieres();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de chargement: ' + err.message, 'danger');
+            }
+        }
+
+        function filtrerMatieres() {
+            const filterFiliere = document.getElementById('filterMatiereFiliere').value;
+            matieresFiltrees = filterFiliere ? 
+                toutesLesMatieres.filter(m => m.filiere == filterFiliere) : 
+                toutesLesMatieres;
+            afficherMatieres();
+        }
+
+        function afficherMatieres() {
+            document.getElementById('tbodyMatieres').innerHTML = matieresFiltrees.map(m => `
+                <tr>
+                    <td data-label="Code" style="font-weight:600">${m.code}</td>
+                    <td data-label="Nom">${m.nom}</td>
+                    <td data-label="Filière">${m.filiere_nom || 'N/A'}</td>
+                    <td data-label="Semestre"><span class="badge-ultra primary">S${m.semestre}</span></td>
+                    <td data-label="Coefficient"><span class="badge-ultra warning">${m.coefficient}</span></td>
+                    <td data-label="Enseignant">${m.enseignant_nom || '<span style="color:rgba(255,255,255,0.4)">Non assigné</span>'}</td>
+                    <td data-label="Actions" style="white-space:nowrap">
+                        <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="modifierMatiere(${m.id})" title="Modifier">✏️</button>
+                        <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="supprimerMatiere(${m.id})" title="Supprimer">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Gestion des filières
+        async function ajouterFiliere(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            try {
+                const user = await API.getMe();
+                const universite = user.enseignant?.universite || user.universite || 1;
+
+                const data = {
+                    code: formData.get('code'),
+                    nom: formData.get('nom'),
+                    niveau: formData.get('niveau'),
+                    frais_inscription: parseInt(formData.get('frais_inscription')),
+                    description: formData.get('description'),
+                    universite: universite
+                };
+
+                await API.createFiliere(data);
+                showToast('Filière ajoutée avec succès', 'success');
+                closeModal('modalFiliere');
+                form.reset();
+                chargerFilieresEtMatieres();
+                chargerDonnees(); // Recharger pour mettre à jour les selects
+            } catch (err) {
+                showToast('Erreur: ' + err.message, 'danger');
+            }
+        }
+
+        function modifierFiliere(id) {
+            API.getFilieres().then(filieres => {
+                const filiere = filieres.find(f => f.id === id);
+                if (!filiere) {
+                    showToast('Filière non trouvée', 'danger');
+                    return;
+                }
+
+                document.getElementById('editFiliereId').value = filiere.id;
+                document.getElementById('editFiliereCode').value = filiere.code;
+                document.getElementById('editFiliereNom').value = filiere.nom;
+                document.getElementById('editFiliereNiveau').value = filiere.niveau;
+                document.getElementById('editFiliereFrais').value = filiere.frais_inscription;
+                document.getElementById('editFiliereDescription').value = filiere.description || '';
+
+                openModal('modalModifierFiliere');
+            }).catch(err => {
+                showToast('Erreur: ' + err.message, 'danger');
+            });
+        }
+
+        function sauvegarderFiliere(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const id = formData.get('id');
+
+            const data = {
+                code: formData.get('code'),
+                nom: formData.get('nom'),
+                niveau: formData.get('niveau'),
+                frais_inscription: parseInt(formData.get('frais_inscription')),
+                description: formData.get('description')
+            };
+
+            API.updateFiliere(id, data).then(() => {
+                showToast('Filière modifiée avec succès', 'success');
+                closeModal('modalModifierFiliere');
+                chargerFilieresEtMatieres();
+                chargerDonnees(); // Recharger pour mettre à jour les selects
+            }).catch(err => {
+                showToast('Erreur: ' + err.message, 'danger');
+            });
+        }
+
+        function supprimerFiliere(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette filière ? Cela affectera tous les étudiants inscrits.')) {
+                API.deleteFiliere(id).then(() => {
+                    showToast('Filière supprimée avec succès', 'success');
+                    chargerFilieresEtMatieres();
+                    chargerDonnees(); // Recharger pour mettre à jour les selects
+                }).catch(err => {
+                    showToast('Erreur: ' + err.message, 'danger');
+                });
+            }
+        }
+
+        // Gestion des matières
+        async function ajouterMatiere(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            try {
+                const data = {
+                    code: formData.get('code'),
+                    nom: formData.get('nom'),
+                    filiere: parseInt(formData.get('filiere')),
+                    semestre: parseInt(formData.get('semestre')),
+                    coefficient: parseInt(formData.get('coefficient')),
+                    enseignant: formData.get('enseignant') ? parseInt(formData.get('enseignant')) : null,
+                    description: formData.get('description')
+                };
+
+                await API.createMatiere(data);
+                showToast('Matière ajoutée avec succès', 'success');
+                closeModal('modalMatiere');
+                form.reset();
+                chargerFilieresEtMatieres();
+            } catch (err) {
+                showToast('Erreur: ' + err.message, 'danger');
+            }
+        }
+
+        function modifierMatiere(id) {
+            API.getMatieres().then(matieres => {
+                const matiere = matieres.find(m => m.id === id);
+                if (!matiere) {
+                    showToast('Matière non trouvée', 'danger');
+                    return;
+                }
+
+                document.getElementById('editMatiereId').value = matiere.id;
+                document.getElementById('editMatiereCode').value = matiere.code;
+                document.getElementById('editMatiereNom').value = matiere.nom;
+                document.getElementById('editMatiereCoef').value = matiere.coefficient;
+                document.getElementById('editMatiereFiliere').value = matiere.filiere;
+                document.getElementById('editMatiereSemestre').value = matiere.semestre;
+                document.getElementById('editMatiereEnseignant').value = matiere.enseignant || '';
+
+                openModal('modalModifierMatiere');
+            }).catch(err => {
+                showToast('Erreur: ' + err.message, 'danger');
+            });
+        }
+
+        function sauvegarderMatiere(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const id = formData.get('id');
+
+            const data = {
+                code: formData.get('code'),
+                nom: formData.get('nom'),
+                filiere: parseInt(formData.get('filiere')),
+                semestre: parseInt(formData.get('semestre')),
+                coefficient: parseInt(formData.get('coefficient')),
+                enseignant: formData.get('enseignant') ? parseInt(formData.get('enseignant')) : null
+            };
+
+            API.updateMatiere(id, data).then(() => {
+                showToast('Matière modifiée avec succès', 'success');
+                closeModal('modalModifierMatiere');
+                chargerFilieresEtMatieres();
+            }).catch(err => {
+                showToast('Erreur: ' + err.message, 'danger');
+            });
+        }
+
+        function supprimerMatiere(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette matière ?')) {
+                API.deleteMatiere(id).then(() => {
+                    showToast('Matière supprimée avec succès', 'success');
+                    chargerFilieresEtMatieres();
+                }).catch(err => {
+                    showToast('Erreur: ' + err.message, 'danger');
+                });
+            }
+        }
+
+        function formatCFA(montant) {
+            return new Intl.NumberFormat('fr-FR').format(montant) + ' FCFA';
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '—';
+            return new Date(dateStr).toLocaleDateString('fr-FR');
+        }
+
+        function modifierEtudiant(id) {
+            // Récupérer les données de l'étudiant
+            API.getEtudiant(id).then(etudiant => {
+                document.getElementById('editEtuId').value = etudiant.id;
+                document.getElementById('editEtuPrenom').value = etudiant.prenom;
+                document.getElementById('editEtuNom').value = etudiant.nom;
+                document.getElementById('editEtuEmail').value = etudiant.email;
+                document.getElementById('editEtuTel').value = etudiant.telephone || '';
+                document.getElementById('editEtuFiliere').value = etudiant.filiere;
+                document.getElementById('editEtuNiveau').value = etudiant.niveau;
+                
+                // Charger les filières dans le select
+                API.getFilieres().then(filieres => {
+                    document.getElementById('editEtuFiliere').innerHTML = '<option value="">Sélectionner</option>' + 
+                        filieres.map(f => `<option value="${f.id}" ${f.id === etudiant.filiere ? 'selected' : ''}>${f.nom}</option>`).join('');
+                });
+                
+                openModal('modalModifierEtudiant');
+            }).catch(err => {
+                showToast('Erreur: ' + err.message, 'danger');
+            });
+        }
+
+        function sauvegarderEtudiant(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const id = formData.get('id');
+            
+            const data = {
+                prenom: formData.get('prenom'),
+                nom: formData.get('nom'),
+                email: formData.get('email'),
+                telephone: formData.get('telephone'),
+                filiere: parseInt(formData.get('filiere')),
+                niveau: formData.get('niveau')
+            };
+
+            API.updateEtudiant(id, data).then(() => {
+                showToast('Étudiant modifié avec succès', 'success');
+                closeModal('modalModifierEtudiant');
+                chargerDonnees();
+            }).catch(err => {
+                showToast('Erreur: ' + err.message, 'danger');
+            });
+        }
+
+        async function voirDetailsEtudiant(id) {
+            try {
+                // Charger toutes les données en parallèle
+                const [etudiant, notes, paiements] = await Promise.all([
+                    API.getEtudiant(id),
+                    API.getNotes({ etudiant: id }),
+                    API.getPaiementsEtudiant(id)
+                ]);
+
+                // Calculer les statistiques des notes
+                const notesPubliees = notes.filter(n => n.publie);
+                const moyenneGenerale = notesPubliees.length > 0 
+                    ? notesPubliees.reduce((sum, n) => sum + (n.moyenne || 0), 0) / notesPubliees.length 
+                    : 0;
+                const notesReussies = notesPubliees.filter(n => (n.moyenne || 0) >= 10).length;
+                const tauxReussite = notesPubliees.length > 0 
+                    ? (notesReussies / notesPubliees.length * 100) 
+                    : 0;
+
+                // Calculer les statistiques des paiements
+                const totalPaye = paiements.reduce((sum, p) => sum + (p.montant || 0), 0);
+                const fraisInscription = etudiant.filiere_frais || 0;
+                const solde = fraisInscription - totalPaye;
+
+                // Calculer le taux de réussite de la classe
+                const tousEtudiants = await API.getEtudiants({ filiere: etudiant.filiere, niveau: etudiant.niveau });
+                let tauxReussiteClasse = 0;
+                if (tousEtudiants.length > 0) {
+                    const toutesNotes = await API.getNotes();
+                    const etudiantsClasse = tousEtudiants.map(e => e.id);
+                    const notesClasse = toutesNotes.filter(n => etudiantsClasse.includes(n.etudiant) && n.publie);
+                    
+                    // Grouper par étudiant
+                    const moyennesParEtudiant = {};
+                    notesClasse.forEach(n => {
+                        if (!moyennesParEtudiant[n.etudiant]) {
+                            moyennesParEtudiant[n.etudiant] = [];
+                        }
+                        moyennesParEtudiant[n.etudiant].push(n.moyenne || 0);
+                    });
+                    
+                    // Calculer le taux de réussite
+                    const etudiantsAvecNotes = Object.keys(moyennesParEtudiant).length;
+                    if (etudiantsAvecNotes > 0) {
+                        const etudiantsReussis = Object.values(moyennesParEtudiant).filter(moyennes => {
+                            const moy = moyennes.reduce((a, b) => a + b, 0) / moyennes.length;
+                            return moy >= 10;
+                        }).length;
+                        tauxReussiteClasse = (etudiantsReussis / etudiantsAvecNotes * 100);
+                    }
+                }
+
+                const content = `
+                    <div style="padding:20px">
+                        <!-- Informations personnelles -->
+                        <div style="background:rgba(99,102,241,0.1);border-left:4px solid #6366f1;padding:16px;border-radius:8px;margin-bottom:24px">
+                            <h4 style="margin:0 0 16px 0;color:#6366f1;font-size:14px;font-weight:700;text-transform:uppercase">📋 Informations Personnelles</h4>
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+                                <div>
+                                    <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">MATRICULE</label>
+                                    <div style="font-weight:600;font-size:16px">${etudiant.matricule}</div>
+                                </div>
+                                <div>
+                                    <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">NOM COMPLET</label>
+                                    <div style="font-weight:600">${etudiant.prenom} ${etudiant.nom}</div>
+                                </div>
+                                <div>
+                                    <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">EMAIL</label>
+                                    <div>${etudiant.email}</div>
+                                </div>
+                                <div>
+                                    <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">TÉLÉPHONE</label>
+                                    <div>${etudiant.telephone || 'Non renseigné'}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Informations académiques -->
+                        <div style="background:rgba(168,85,247,0.1);border-left:4px solid #a855f7;padding:16px;border-radius:8px;margin-bottom:24px">
+                            <h4 style="margin:0 0 16px 0;color:#a855f7;font-size:14px;font-weight:700;text-transform:uppercase">🎓 Informations Académiques</h4>
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+                                <div>
+                                    <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">FILIÈRE</label>
+                                    <div style="font-weight:600">${etudiant.filiere_nom || 'N/A'}</div>
+                                </div>
+                                <div>
+                                    <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">NIVEAU</label>
+                                    <span class="badge-ultra primary">${etudiant.niveau}</span>
+                                </div>
+                                <div>
+                                    <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">STATUT</label>
+                                    <span class="badge-ultra ${etudiant.statut === 'inscrit' ? 'success' : etudiant.statut === 'bloque' ? 'danger' : 'warning'}">${etudiant.statut}</span>
+                                </div>
+                                <div>
+                                    <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">DATE D'INSCRIPTION</label>
+                                    <div>${formatDate(etudiant.date_inscription)}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Statistiques académiques -->
+                        <div style="background:rgba(34,197,94,0.1);border-left:4px solid #22c55e;padding:16px;border-radius:8px;margin-bottom:24px">
+                            <h4 style="margin:0 0 16px 0;color:#22c55e;font-size:14px;font-weight:700;text-transform:uppercase">📊 Performance Académique</h4>
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px">
+                                <div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">
+                                    <div style="font-size:28px;font-weight:700;color:#22c55e">${moyenneGenerale.toFixed(2)}</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px">Moyenne Générale</div>
+                                </div>
+                                <div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">
+                                    <div style="font-size:28px;font-weight:700;color:#6366f1">${notesPubliees.length}</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px">Notes Publiées</div>
+                                </div>
+                                <div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">
+                                    <div style="font-size:28px;font-weight:700;color:#a855f7">${tauxReussite.toFixed(0)}%</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px">Taux de Réussite</div>
+                                </div>
+                                <div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">
+                                    <div style="font-size:28px;font-weight:700;color:#f59e0b">${tauxReussiteClasse.toFixed(0)}%</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px">Taux Classe</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notes détaillées -->
+                        <div style="background:rgba(59,130,246,0.1);border-left:4px solid #3b82f6;padding:16px;border-radius:8px;margin-bottom:24px">
+                            <h4 style="margin:0 0 16px 0;color:#3b82f6;font-size:14px;font-weight:700;text-transform:uppercase">📝 Notes (${notesPubliees.length})</h4>
+                            ${notesPubliees.length > 0 ? `
+                                <div style="overflow-x:auto">
+                                    <table style="width:100%;border-collapse:collapse">
+                                        <thead>
+                                            <tr style="border-bottom:1px solid rgba(255,255,255,0.1)">
+                                                <th style="padding:8px;text-align:left;font-size:12px;color:rgba(255,255,255,0.6)">MATIÈRE</th>
+                                                <th style="padding:8px;text-align:center;font-size:12px;color:rgba(255,255,255,0.6)">CC</th>
+                                                <th style="padding:8px;text-align:center;font-size:12px;color:rgba(255,255,255,0.6)">EXAMEN</th>
+                                                <th style="padding:8px;text-align:center;font-size:12px;color:rgba(255,255,255,0.6)">MOYENNE</th>
+                                                <th style="padding:8px;text-align:center;font-size:12px;color:rgba(255,255,255,0.6)">STATUT</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${notesPubliees.map(n => `
+                                                <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                                                    <td style="padding:8px">${n.matiere_nom || 'N/A'}</td>
+                                                    <td style="padding:8px;text-align:center">${n.note_cc !== null ? n.note_cc.toFixed(2) : '-'}</td>
+                                                    <td style="padding:8px;text-align:center">${n.note_examen !== null ? n.note_examen.toFixed(2) : '-'}</td>
+                                                    <td style="padding:8px;text-align:center;font-weight:700">${n.moyenne !== null ? n.moyenne.toFixed(2) : '-'}</td>
+                                                    <td style="padding:8px;text-align:center">
+                                                        <span class="badge-ultra ${(n.moyenne || 0) >= 10 ? 'success' : 'danger'}">${(n.moyenne || 0) >= 10 ? 'Admis' : 'Échec'}</span>
+                                                    </td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ` : '<p style="color:rgba(255,255,255,0.5);text-align:center;padding:20px">Aucune note publiée</p>'}
+                        </div>
+
+                        <!-- Paiements -->
+                        <div style="background:rgba(245,158,11,0.1);border-left:4px solid #f59e0b;padding:16px;border-radius:8px">
+                            <h4 style="margin:0 0 16px 0;color:#f59e0b;font-size:14px;font-weight:700;text-transform:uppercase">💰 Situation Financière</h4>
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:16px">
+                                <div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">
+                                    <div style="font-size:20px;font-weight:700;color:#f59e0b">${formatCFA(fraisInscription)}</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px">Frais Total</div>
+                                </div>
+                                <div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">
+                                    <div style="font-size:20px;font-weight:700;color:#22c55e">${formatCFA(totalPaye)}</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px">Payé</div>
+                                </div>
+                                <div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">
+                                    <div style="font-size:20px;font-weight:700;color:${solde > 0 ? '#ef4444' : '#22c55e'}">${formatCFA(Math.abs(solde))}</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px">${solde > 0 ? 'Reste à payer' : 'Solde'}</div>
+                                </div>
+                            </div>
+                            ${paiements.length > 0 ? `
+                                <div style="overflow-x:auto">
+                                    <table style="width:100%;border-collapse:collapse">
+                                        <thead>
+                                            <tr style="border-bottom:1px solid rgba(255,255,255,0.1)">
+                                                <th style="padding:8px;text-align:left;font-size:12px;color:rgba(255,255,255,0.6)">DATE</th>
+                                                <th style="padding:8px;text-align:left;font-size:12px;color:rgba(255,255,255,0.6)">TYPE</th>
+                                                <th style="padding:8px;text-align:center;font-size:12px;color:rgba(255,255,255,0.6)">MONTANT</th>
+                                                <th style="padding:8px;text-align:center;font-size:12px;color:rgba(255,255,255,0.6)">MODE</th>
+                                                <th style="padding:8px;text-align:center;font-size:12px;color:rgba(255,255,255,0.6)">STATUT</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${paiements.map(p => `
+                                                <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                                                    <td style="padding:8px">${formatDate(p.date_paiement)}</td>
+                                                    <td style="padding:8px">${p.type_paiement || 'N/A'}</td>
+                                                    <td style="padding:8px;text-align:center;font-weight:700">${formatCFA(p.montant)}</td>
+                                                    <td style="padding:8px;text-align:center">${p.mode || 'N/A'}</td>
+                                                    <td style="padding:8px;text-align:center">
+                                                        <span class="badge-ultra ${p.statut === 'valide' ? 'success' : 'warning'}">${p.statut || 'N/A'}</span>
+                                                    </td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ` : '<p style="color:rgba(255,255,255,0.5);text-align:center;padding:20px">Aucun paiement enregistré</p>'}
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('detailsEtudiantContent').innerHTML = content;
+                openModal('modalDetailsEtudiant');
+            } catch (err) {
+                showToast('Erreur: ' + err.message, 'danger');
+            }
+        }
+
+        function supprimerEtudiant(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')) {
+                API.deleteEtudiant(id).then(() => {
+                    showToast('Étudiant supprimé', 'success');
+                    chargerDonnees();
+                }).catch(err => {
+                    showToast('Erreur: ' + err.message, 'danger');
+                });
+            }
+        }
+
+        function modifierEnseignant(id) {
+            // Récupérer les données de l'enseignant
+            API.getEnseignant(id).then(enseignant => {
+                document.getElementById('editEnsId').value = enseignant.id;
+                document.getElementById('editEnsPrenom').value = enseignant.prenom;
+                document.getElementById('editEnsNom').value = enseignant.nom;
+                document.getElementById('editEnsEmail').value = enseignant.email;
+                document.getElementById('editEnsTel').value = enseignant.telephone || '';
+                document.getElementById('editEnsSpec').value = enseignant.specialite || '';
+                document.getElementById('editEnsGrade').value = enseignant.grade || 'maitre_assistant';
+                document.getElementById('editEnsStatut').value = enseignant.statut || 'actif';
+                
+                openModal('modalModifierEnseignant');
+            }).catch(err => {
+                showToast('Erreur: ' + err.message, 'danger');
+            });
+        }
+
+        function sauvegarderEnseignant(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const id = formData.get('id');
+            
+            const data = {
+                prenom: formData.get('prenom'),
+                nom: formData.get('nom'),
+                email: formData.get('email'),
+                telephone: formData.get('telephone'),
+                specialite: formData.get('specialite'),
+                grade: formData.get('grade'),
+                statut: formData.get('statut')
+            };
+
+            API.updateEnseignant(id, data).then(() => {
+                showToast('Enseignant modifié avec succès', 'success');
+                closeModal('modalModifierEnseignant');
+                chargerDonnees();
+            }).catch(err => {
+                showToast('Erreur: ' + err.message, 'danger');
+            });
+        }
+
+        function voirDetailsEnseignant(id) {
+            API.getEnseignant(id).then(enseignant => {
+                const content = `
+                    <div style="padding:20px">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+                            <div>
+                                <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">MATRICULE</label>
+                                <div style="font-weight:600;font-size:16px">${enseignant.matricule}</div>
+                            </div>
+                            <div>
+                                <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">STATUT</label>
+                                <span class="badge-ultra ${enseignant.statut === 'actif' ? 'success' : 'danger'}">${enseignant.statut}</span>
+                            </div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+                            <div>
+                                <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">PRÉNOM</label>
+                                <div style="font-weight:600">${enseignant.prenom}</div>
+                            </div>
+                            <div>
+                                <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">NOM</label>
+                                <div style="font-weight:600">${enseignant.nom}</div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom:20px">
+                            <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">EMAIL</label>
+                            <div>${enseignant.email}</div>
+                        </div>
+                        <div style="margin-bottom:20px">
+                            <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">TÉLÉPHONE</label>
+                            <div>${enseignant.telephone || 'Non renseigné'}</div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+                            <div>
+                                <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">SPÉCIALITÉ</label>
+                                <div>${enseignant.specialite || 'N/A'}</div>
+                            </div>
+                            <div>
+                                <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">GRADE</label>
+                                ${formatGrade(enseignant.grade)}
+                            </div>
+                        </div>
+                        <div style="margin-bottom:20px">
+                            <label style="color:rgba(255,255,255,0.6);font-size:12px;display:block;margin-bottom:5px">UNIVERSITÉ</label>
+                            <div>${enseignant.universite_nom || 'N/A'}</div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('detailsEnseignantContent').innerHTML = content;
+                openModal('modalDetailsEnseignant');
+            }).catch(err => {
+                showToast('Erreur: ' + err.message, 'danger');
+            });
+        }
+
+        function filterTable(searchValue, tableId) {
+            const query = searchValue.toLowerCase();
+            const table = document.getElementById(tableId);
+            if (!table) return;
+            
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        function creerGraphiques(etudiants, filieres) {
+            new Chart(document.getElementById('chartInscriptions'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+                    datasets: [{
+                        label: 'Inscriptions',
+                        data: [12, 19, 15, 25, 22, 30],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.6)' } },
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.6)' } }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('chartFilieres'), {
+                type: 'doughnut',
+                data: {
+                    labels: filieres.slice(0, 5).map(f => f.nom),
+                    datasets: [{
+                        data: filieres.slice(0, 5).map(() => Math.floor(Math.random() * 50) + 10),
+                        backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.8)' } } }
+                }
+            });
+        }
+
+        async function ajouterEtudiant(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            try {
+                const annees = await API.getAnnees();
+                const anneeActive = annees.find(a => a.active) || annees[0];
+                
+                const data = {
+                    prenom: formData.get('prenom'),
+                    nom: formData.get('nom'),
+                    email: formData.get('email'),
+                    telephone: formData.get('telephone'),
+                    filiere: parseInt(formData.get('filiere')),
+                    niveau: formData.get('niveau'),
+                    universite: anneeActive.universite,
+                    annee_academique: anneeActive.id,
+                    statut: 'inscrit'
+                };
+
+                await API.createEtudiant(data);
+                showToast('Étudiant ajouté avec succès', 'success');
+                closeModal('modalEtudiant');
+                form.reset();
+                chargerDonnees();
+            } catch (err) {
+                showToast('Erreur : ' + err.message, 'danger');
+            }
+        }
+
+        async function ajouterEnseignant(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            try {
+                // Récupérer l'utilisateur connecté pour obtenir l'université
+                const user = await API.getMe();
+                
+                // Déterminer l'université
+                let universite = 1; // Par défaut
+                if (user.role === 'admin' && user.enseignant && user.enseignant.universite) {
+                    universite = user.enseignant.universite;
+                } else if (user.universite) {
+                    universite = user.universite;
+                }
+                
+                const data = {
+                    prenom: formData.get('prenom'),
+                    nom: formData.get('nom'),
+                    email: formData.get('email'),
+                    telephone: formData.get('telephone') || '',
+                    specialite: formData.get('specialite'),
+                    grade: formData.get('grade'),
+                    statut: formData.get('statut'),
+                    universite: universite
+                };
+
+                console.log('Données à envoyer:', data);
+                
+                await API.createEnseignant(data);
+                showToast('Enseignant ajouté avec succès', 'success');
+                closeModal('modalEnseignant');
+                form.reset();
+                chargerDonnees();
+            } catch (err) {
+                console.error('Erreur complète:', err);
+                showToast('Erreur : ' + err.message, 'danger');
+            }
+        }
+
+        let tousLesPaiements = [];
+        let paiementsFiltres = [];
+
+        async function chargerPaiements() {
+            try {
+                const paiements = await API.getPaiements();
+                tousLesPaiements = paiements;
+                paiementsFiltres = paiements;
+
+                // Calculer les statistiques
+                const totalEncaisse = paiements
+                    .filter(p => p.statut === 'valide')
+                    .reduce((sum, p) => sum + parseFloat(p.montant), 0);
+                
+                const etudiants = await API.getEtudiants();
+                const totalImpayes = etudiants.reduce((sum, e) => sum + parseFloat(e.solde_du || 0), 0);
+                
+                const currentMonth = new Date().getMonth();
+                const paiementsMois = paiements.filter(p => {
+                    const pDate = new Date(p.date_paiement);
+                    return pDate.getMonth() === currentMonth && p.statut === 'valide';
+                }).length;
+
+                document.getElementById('statTotalEncaisse').textContent = formatCFA(totalEncaisse);
+                document.getElementById('statTotalImpayes').textContent = formatCFA(totalImpayes);
+                document.getElementById('statPaiementsMois').textContent = paiementsMois;
+
+                // Remplir le select des étudiants
+                document.getElementById('selectPaiementEtudiant').innerHTML = 
+                    '<option value="">Sélectionner un étudiant</option>' +
+                    etudiants.map(e => `<option value="${e.id}">${e.matricule} - ${e.prenom} ${e.nom}</option>`).join('');
+
+                afficherPaiements();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur de chargement des paiements: ' + err.message, 'danger');
+            }
+        }
+
+        function filtrerPaiements() {
+            const searchValue = document.getElementById('searchPaiements').value.toLowerCase();
+            const filterMode = document.getElementById('filterModePaiement').value;
+            const filterStatut = document.getElementById('filterStatutPaiement').value;
+
+            paiementsFiltres = tousLesPaiements.filter(p => {
+                const matchSearch = !searchValue || 
+                    p.numero_recu.toLowerCase().includes(searchValue) ||
+                    p.etudiant_matricule?.toLowerCase().includes(searchValue) ||
+                    p.etudiant_nom?.toLowerCase().includes(searchValue);
+                
+                const matchMode = !filterMode || p.mode === filterMode;
+                const matchStatut = !filterStatut || p.statut === filterStatut;
+
+                return matchSearch && matchMode && matchStatut;
+            });
+
+            afficherPaiements();
+        }
+
+        function afficherPaiements() {
+            const tbody = document.getElementById('tbodyPaiements');
+            
+            if (paiementsFiltres.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun paiement</td></tr>';
+                return;
+            }
+
+            const modeLabels = {
+                'especes': 'Espèces',
+                'orange_money': 'Orange Money',
+                'moov_money': 'Moov Money',
+                'virement': 'Virement',
+                'cheque': 'Chèque'
+            };
+
+            const typeLabels = {
+                'inscription': 'Inscription',
+                'reinscription': 'Réinscription',
+                'acompte': 'Acompte',
+                'solde': 'Solde',
+                'autre': 'Autre'
+            };
+
+            tbody.innerHTML = paiementsFiltres.map(p => `
+                <tr>
+                    <td data-label="N° Reçu" style="font-weight:600">${p.numero_recu}</td>
+                    <td data-label="Étudiant">${p.etudiant_matricule || 'N/A'} - ${p.etudiant_nom || 'N/A'}</td>
+                    <td data-label="Montant" style="font-weight:600;color:#10b981">${formatCFA(p.montant)}</td>
+                    <td data-label="Mode"><span class="badge-ultra primary">${modeLabels[p.mode] || p.mode}</span></td>
+                    <td data-label="Type"><span class="badge-ultra warning">${typeLabels[p.type_paiement] || p.type_paiement}</span></td>
+                    <td data-label="Date">${formatDate(p.date_paiement)}</td>
+                    <td data-label="Statut">
+                        <span class="badge-ultra ${p.statut === 'valide' ? 'success' : p.statut === 'rejete' ? 'danger' : 'warning'}">
+                            ${p.statut}
+                        </span>
+                    </td>
+                    <td data-label="Actions" style="white-space:nowrap">
+                        <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="voirDetailsPaiement(${p.id})" title="Détails">👁️</button>
+                        <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="imprimerRecu(${p.id})" title="Imprimer">🖨️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function ajouterPaiement(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            try {
+                const annees = await API.getAnnees();
+                const anneeActive = annees.find(a => a.active) || annees[0];
+                
+                const data = {
+                    etudiant: parseInt(formData.get('etudiant')),
+                    montant: parseInt(formData.get('montant')),
+                    mode: formData.get('mode'),
+                    type_paiement: formData.get('type_paiement'),
+                    date_paiement: formData.get('date_paiement'),
+                    reference_mobile: formData.get('reference_mobile') || '',
+                    observations: formData.get('observations') || '',
+                    annee_academique: anneeActive.id,
+                    statut: 'valide'
+                };
+
+                await API.createPaiement(data);
+                showToast('Paiement enregistré avec succès', 'success');
+                closeModal('modalPaiement');
+                form.reset();
+                chargerPaiements();
+                chargerDonnees(); // Recharger pour mettre à jour les stats
+            } catch (err) {
+                showToast('Erreur : ' + err.message, 'danger');
+            }
+        }
+
+        function voirDetailsPaiement(id) {
+            const paiement = tousLesPaiements.find(p => p.id === id);
+            if (!paiement) {
+                showToast('Paiement non trouvé', 'danger');
+                return;
+            }
+
+            const modeLabels = {
+                'especes': 'Espèces',
+                'orange_money': 'Orange Money',
+                'moov_money': 'Moov Money',
+                'virement': 'Virement Bancaire',
+                'cheque': 'Chèque'
+            };
+
+            alert(`Détails du paiement\n\nN° Reçu: ${paiement.numero_recu}\nÉtudiant: ${paiement.etudiant_nom}\nMontant: ${formatCFA(paiement.montant)}\nMode: ${modeLabels[paiement.mode]}\nDate: ${formatDate(paiement.date_paiement)}\nStatut: ${paiement.statut}`);
+        }
+
+        function imprimerRecu(id) {
+            showToast('Fonctionnalité d\'impression en cours de développement', 'info');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = requireAuth(['admin', 'superadmin']);
+            if (user) {
+                chargerDonnees();
+                chargerPaiements();
+            }
+        });
+    </script>
+</body>
+</html>

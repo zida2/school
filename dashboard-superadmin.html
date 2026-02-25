@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Super Administrateur – ERP Universitaire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard-premium.css?v=3.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body class="dark-theme">
+
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar-premium" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo" style="background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 0 30px rgba(220,38,38,0.4)">⚙️</div>
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-name">UniERP BF</div>
+                    <div class="sidebar-brand-tagline">Super Admin</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-label">Système</div>
+                    <a class="nav-item-premium active" data-page="dashboard" onclick="navToPremium('dashboard',this)">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Vue d'ensemble</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="universites" onclick="navToPremium('universites',this)">
+                        <span class="nav-icon">🏛️</span>
+                        <span class="nav-text">Universités clientes</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="licences" onclick="navToPremium('licences',this)">
+                        <span class="nav-icon">🔑</span>
+                        <span class="nav-text">Gestion licences</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="monitoring" onclick="navToPremium('monitoring',this)">
+                        <span class="nav-icon">📡</span>
+                        <span class="nav-text">Monitoring système</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="utilisateurs" onclick="navToPremium('utilisateurs',this)">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-text">Utilisateurs globaux</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN WRAPPER -->
+        <div class="main-wrapper">
+            <!-- TOPBAR -->
+            <header class="topbar-premium">
+                <div class="topbar-left">
+                    <button class="btn-menu-toggle" onclick="toggleSidebarPremium()">☰</button>
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Rechercher...">
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-action">
+                        <span>🔔</span>
+                    </button>
+                    <div class="user-menu" onclick="logout()">
+                        <div class="user-avatar" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">SA</div>
+                        <div class="user-info">
+                            <div class="user-name">Super Admin</div>
+                            <div class="user-role">Accès total système</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT AREA -->
+            <main class="content-area">
+
+                <!-- DASHBOARD SUPER ADMIN -->
+                <div class="erp-page" id="page-dashboard">
+                    <div class="page-header">
+                        <div class="breadcrumb">
+                            <span class="breadcrumb-item">🏠 Accueil</span>
+                            <span class="breadcrumb-separator">›</span>
+                            <span class="breadcrumb-item">Vue d'ensemble</span>
+                        </div>
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">Vue d'ensemble</h1>
+                                <p class="page-subtitle">Monitoring global du système ERP · Burkina Faso</p>
+                            </div>
+                            <div class="page-actions">
+                                <button class="btn-premium btn-danger">⚠️ SUPER ADMIN</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Global stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card-premium">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-wrapper danger">🏛️</div>
+                                <div class="stat-trend positive">
+                                    <span class="trend-icon">↑</span>
+                                    <span class="trend-value">+1</span>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="stat-univs">4</div>
+                            <div class="stat-label">Universités clientes</div>
+                        </div>
+
+                        <div class="stat-card-premium">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-wrapper primary">🎓</div>
+                                <div class="stat-trend positive">
+                                    <span class="trend-icon">↑</span>
+                                    <span class="trend-value">+340</span>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="stat-etudiants">8,260</div>
+                            <div class="stat-label">Étudiants total</div>
+                        </div>
+
+                        <div class="stat-card-premium">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-wrapper success">💰</div>
+                            </div>
+                            <div class="stat-value" id="stat-revenus">0 FCFA</div>
+                            <div class="stat-label">Revenus SaaS</div>
+                        </div>
+
+                        <div class="stat-card-premium">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-wrapper warning">🔑</div>
+                                <div class="stat-trend negative">
+                                    <span class="trend-icon">↓</span>
+                                    <span class="trend-value">1 exp.</span>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="stat-licences">3</div>
+                            <div class="stat-label">Licences actives</div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px">
+                        <!-- Universités -->
+                        <div class="card-premium">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">🏛️ Statut des universités</h3>
+                            </div>
+                            <div class="card-body-premium" style="padding:0">
+                                <table class="table-premium" id="tableUnivStatus">
+                                    <thead>
+                                        <tr>
+                                            <th>Université</th>
+                                            <th>Étudiants</th>
+                                            <th>Licence</th>
+                                            <th>Statut</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyUnivStatus"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Monitoring -->
+                        <div class="card-premium">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">📡 Santé du système</h3>
+                            </div>
+                            <div class="card-body-premium" id="systemHealth"></div>
+                        </div>
+                    </div>
+
+                    <!-- Revenus SaaS -->
+                    <div class="card-premium">
+                        <div class="card-header-premium">
+                            <h3 class="card-title-premium">💵 Revenus SaaS – Licences</h3>
+                            <button class="btn-premium btn-outline" onclick="showToast('Rapport mensuel exporté','success')">📥 Exporter</button>
+                        </div>
+                        <div class="card-body-premium" id="revenuChart"></div>
+                    </div>
+                </div>
+
+                <!-- UNIVERSITÉS -->
+                <div class="erp-page" id="page-universites" style="display:none">
+                    <div class="page-header">
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">Universités Clientes</h1>
+                                <p class="page-subtitle">Gestion des établissements partenaires</p>
+                            </div>
+                            <div class="page-actions">
+                                <button class="btn-premium btn-primary" onclick="openModalPremium('modalUniv')">+ Nouvelle université</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-premium">
+                        <div class="card-body-premium" style="padding:0">
+                            <table class="table-premium" id="tableUniversites">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Université</th>
+                                        <th>Ville</th>
+                                        <th>Étudiants</th>
+                                        <th>Licence</th>
+                                        <th>Expiration</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyUniversites"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LICENCES -->
+                <div class="erp-page" id="page-licences" style="display:none">
+                    <div class="page-header">
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">Gestion des Licences</h1>
+                                <p class="page-subtitle">Plans et tarification SaaS</p>
+                            </div>
+                            <div class="page-actions">
+                                <button class="btn-premium btn-primary" onclick="openModalPremium('modalLicence')">+ Nouvelle licence</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px" id="licencesGrid"></div>
+                </div>
+
+                <!-- MONITORING -->
+                <div class="erp-page" id="page-monitoring" style="display:none">
+                    <div class="page-header">
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">Monitoring Système</h1>
+                                <p class="page-subtitle">Surveillance en temps réel</p>
+                            </div>
+                            <div class="page-actions">
+                                <button class="btn-premium btn-outline" onclick="refreshMonitoring()">🔄 Rafraîchir</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid" id="monitorStats"></div>
+
+                    <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-top:24px">
+                        <div class="card-premium">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">📋 Logs système récents</h3>
+                            </div>
+                            <div class="card-body-premium" style="font-family:monospace;font-size:12px;max-height:300px;overflow-y:auto;background:rgba(0,0,0,0.3);color:#10b981;border-radius:8px;padding:14px" id="systemLogs"></div>
+                        </div>
+
+                        <div class="card-premium">
+                            <div class="card-header-premium">
+                                <h3 class="card-title-premium">💾 Sauvegardes automatiques</h3>
+                            </div>
+                            <div class="card-body-premium" id="backupList"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UTILISATEURS -->
+                <div class="erp-page" id="page-utilisateurs" style="display:none">
+                    <div class="page-header">
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">Utilisateurs Globaux</h1>
+                                <p class="page-subtitle">Vue d'ensemble des comptes</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-premium">
+                        <div class="card-body-premium" style="padding:0">
+                            <table class="table-premium">
+                                <thead>
+                                    <tr>
+                                        <th>Université</th>
+                                        <th>Admins</th>
+                                        <th>Profs</th>
+                                        <th>Étudiants</th>
+                                        <th>Total</th>
+                                        <th>Dernière connexion</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyUsers"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL UNIVERSITÉ -->
+    <div class="modal-overlay-premium" id="modalUniv">
+        <div class="modal-premium">
+            <div class="modal-header-premium">
+                <h3 class="modal-title-premium">🏛️ Nouvelle Université</h3>
+                <button class="modal-close-premium" onclick="closeModalPremium('modalUniv')">✕</button>
+            </div>
+            <div class="modal-body-premium">
+                <div class="form-row">
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Code *</label>
+                        <input class="form-input-premium" id="univCode" placeholder="UPN">
+                    </div>
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Ville</label>
+                        <input class="form-input-premium" id="univVille" placeholder="Ouagadougou">
+                    </div>
+                </div>
+                <div class="form-group-premium">
+                    <label class="form-label-premium">Nom complet *</label>
+                    <input class="form-input-premium" id="univNom" placeholder="Université Polytechnique de...">
+                </div>
+                <div class="form-row">
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Type de licence</label>
+                        <select class="form-input-premium" id="univLicence">
+                            <option value="BASIC">BASIC – 50 000 FCFA/an</option>
+                            <option value="STANDARD">STANDARD – 150 000 FCFA/an</option>
+                            <option value="PRO">PRO – 350 000 FCFA/an</option>
+                        </select>
+                    </div>
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Expiration</label>
+                        <input class="form-input-premium" type="date" id="univExpiration">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer-premium">
+                <button class="btn-premium btn-outline" onclick="closeModalPremium('modalUniv')">Annuler</button>
+                <button class="btn-premium btn-primary" onclick="saveUniv()">💾 Créer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LICENCE -->
+    <div class="modal-overlay-premium" id="modalLicence">
+        <div class="modal-premium">
+            <div class="modal-header-premium">
+                <h3 class="modal-title-premium">🔑 Générer une Licence</h3>
+                <button class="modal-close-premium" onclick="closeModalPremium('modalLicence')">✕</button>
+            </div>
+            <div class="modal-body-premium">
+                <div class="form-group-premium">
+                    <label class="form-label-premium">Université</label>
+                    <select class="form-input-premium" id="licenceUniv"></select>
+                </div>
+                <div class="form-group-premium">
+                    <label class="form-label-premium">Type</label>
+                    <select class="form-input-premium" id="licenceType">
+                        <option>BASIC</option>
+                        <option>STANDARD</option>
+                        <option>PRO</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Durée (mois)</label>
+                        <input class="form-input-premium" type="number" id="licenceDuree" value="12">
+                    </div>
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Expiration</label>
+                        <input class="form-input-premium" type="date" id="licenceExp">
+                    </div>
+                </div>
+                <div class="form-group-premium">
+                    <label class="form-label-premium">Clé de licence générée</label>
+                    <div style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:12px;font-family:monospace;font-size:14px;color:#818cf8;letter-spacing:1px" id="licenceKey">Cliquez sur "Générer" pour créer une clé</div>
+                    <button class="btn-premium btn-outline" style="margin-top:12px" onclick="generateLicenceKey()">🔄 Générer clé</button>
+                </div>
+            </div>
+            <div class="modal-footer-premium">
+                <button class="btn-premium btn-outline" onclick="closeModalPremium('modalLicence')">Annuler</button>
+                <button class="btn-premium btn-primary" onclick="saveLicence()">✅ Activer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentData = { stats: null, univs: [], user: null };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = requireAuth(['superadmin']);
+            if (!user) return;
+            currentData.user = user;
+
+            await loadSuperAdminData();
+
+            // Populate univ select for modals
+            const univSelect = document.getElementById('licenceUniv');
+            if (univSelect) {
+                currentData.univs.forEach(u => {
+                    univSelect.insertAdjacentHTML('beforeend', `<option value="${u.id}">${u.nom}</option>`);
+                });
+            }
+        });
+
+        async function loadSuperAdminData() {
+            try {
+                const [stats, univs] = await Promise.all([
+                    API.getDashboardAdmin(),
+                    API.getUniversites()
+                ]);
+
+                currentData.stats = stats;
+                currentData.univs = univs;
+
+                renderHeader();
+                renderDashboard();
+                renderUniversites();
+                renderLicences();
+                renderMonitoring();
+                renderUtilisateurs();
+            } catch (err) {
+                showToast('Erreur de chargement', 'danger');
+            }
+        }
+
+        function renderHeader() {
+            const u = currentData.user;
+            document.querySelector('.user-name').textContent = `${u.prenom} ${u.nom}`;
+            const initials = (u.prenom?.[0] || '') + (u.nom?.[0] || '');
+            document.querySelector('.user-avatar').textContent = initials || 'SA';
+        }
+
+        function navToPremium(page, el) {
+            document.querySelectorAll('.erp-page').forEach(p => p.style.display = 'none');
+            document.getElementById('page-' + page).style.display = 'block';
+            document.querySelectorAll('.nav-item-premium').forEach(i => i.classList.remove('active'));
+            if (el) el.classList.add('active');
+        }
+
+        function toggleSidebarPremium() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function renderDashboard() {
+            const s = currentData.stats;
+            if (!s) return;
+
+            document.getElementById('stat-univs').textContent = currentData.univs.length;
+            document.getElementById('stat-etudiants').textContent = s.total_etudiants.toLocaleString();
+            document.getElementById('stat-revenus').textContent = formatCFA(s.total_encaisse);
+            document.getElementById('stat-licences').textContent = currentData.univs.length;
+
+            document.getElementById('tbodyUnivStatus').innerHTML = currentData.univs.map(u => `
+                <tr>
+                  <td style="font-weight:600">${u.nom.slice(0, 30)}...</td>
+                  <td><span style="background:rgba(99,102,241,0.2);color:#818cf8;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">N/A</span></td>
+                  <td><span style="background:rgba(245,158,11,0.2);color:#fbbf24;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">PRO</span></td>
+                  <td><span style="background:rgba(16,185,129,0.2);color:#10b981;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">✓ Actif</span></td>
+                </tr>`).join('');
+
+            document.getElementById('systemHealth').innerHTML = ['API REST', 'Base de données', 'Email SMTP', 'Sauvegardes', 'Mobile Money API'].map((srv, i) => `
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(148,163,184,0.1)">
+                  <span style="font-size:14px;font-weight:500;color:#e2e8f0">${srv}</span>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div style="width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 10px rgba(16,185,129,0.5)"></div>
+                    <span style="font-size:12px;font-weight:600;color:#10b981">Opérationnel</span>
+                  </div>
+                </div>`).join('');
+
+            document.getElementById('revenuChart').innerHTML = `
+                <div style="font-size:32px;font-weight:800;color:#10b981;font-family:'Outfit',sans-serif;margin-bottom:20px;text-shadow:0 0 20px rgba(16,185,129,0.3)">
+                  ${formatCFA(s.total_encaisse)}<span style="font-size:14px;font-weight:400;color:#94a3b8;margin-left:8px">total</span>
+                </div>
+                ${currentData.univs.slice(0, 5).map(u => `
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(148,163,184,0.1)">
+                    <span style="font-weight:600;font-size:14px;color:#e2e8f0">${u.code}</span>
+                    <span style="font-weight:700;color:#10b981">Actif</span>
+                  </div>`).join('')}`;
+        }
+
+        function renderUniversites() {
+            document.getElementById('tbodyUniversites').innerHTML = currentData.univs.map(u => `
+                <tr>
+                  <td style="font-family:monospace;font-weight:600">${u.code}</td>
+                  <td style="font-weight:600">${u.nom}</td>
+                  <td>${u.ville}</td>
+                  <td><span style="background:rgba(99,102,241,0.2);color:#818cf8;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">N/A</span></td>
+                  <td><span style="background:rgba(245,158,11,0.2);color:#fbbf24;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">PRO</span></td>
+                  <td style="font-size:13px">Illimité</td>
+                  <td><span style="background:rgba(16,185,129,0.2);color:#10b981;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">✓ Actif</span></td>
+                  <td><div style="display:flex;gap:8px">
+                    <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:13px" onclick="showToast('Admin accès simulé','info')">🔑 Accéder</button>
+                    <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:13px" onclick="toggleUniv(${u.id})">⏸️</button>
+                  </div></td>
+                </tr>`).join('');
+        }
+
+        function toggleUniv(id) { showToast('Action restreinte', 'warning'); }
+
+        async function saveUniv() {
+            const nom = document.getElementById('univNom').value.trim();
+            const code = document.getElementById('univCode').value.trim();
+            const ville = document.getElementById('univVille').value.trim();
+            if (!nom || !code) { showToast('Nom et code requis', 'warning'); return; }
+            try {
+                await API.createUniversite({ nom, code, ville });
+                closeModalPremium('modalUniv');
+                await loadSuperAdminData();
+                showToast('Université créée', 'success');
+            } catch (err) { showToast(err.message, 'danger'); }
+        }
+
+        function renderLicences() {
+            const types = {
+                BASIC: { prix: '50 000 FCFA/an', couleur: '#64748b', cap: '≤ 500 étudiants', foncs: ['Gestion de base', 'Notes & bulletins', 'Rapport minimal'] },
+                STANDARD: { prix: '150 000 FCFA/an', couleur: '#6366f1', cap: '≤ 2 000 étudiants', foncs: ['Toutes fonctions BASIC', 'Gestion financière', 'Export Excel & PDF'] },
+                PRO: { prix: '350 000 FCFA/an', couleur: '#f59e0b', cap: 'Illimité', foncs: ['Toutes fonctions STANDARD', 'Mobile Money intégré', 'API REST & Webhooks', 'Support prioritaire 24/7'] },
+            };
+            document.getElementById('licencesGrid').innerHTML = Object.entries(types).map(([key, t]) => `
+                <div class="card-premium" style="border-top:3px solid ${t.couleur}">
+                  <div class="card-body-premium">
+                    <div style="font-size:24px;font-weight:800;color:${t.couleur};font-family:'Outfit',sans-serif;margin-bottom:6px;text-shadow:0 0 20px ${t.couleur}40">${key}</div>
+                    <div style="font-size:20px;font-weight:700;margin-bottom:6px;color:#e2e8f0">${t.prix}</div>
+                    <div style="font-size:12px;color:#94a3b8;margin-bottom:16px">${t.cap}</div>
+                    ${t.foncs.map(f => `<div style="font-size:13px;margin-bottom:8px;display:flex;gap:8px;color:#cbd5e1"><span style="color:${t.couleur}">✓</span>${f}</div>`).join('')}
+                    <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(148,163,184,0.1)">
+                        <button class="btn-premium btn-outline w-full" onclick="openModalPremium('modalLicence')">Gérer les clés</button>
+                    </div>
+                  </div>
+                </div>`).join('');
+        }
+
+        function generateLicenceKey() {
+            const type = document.getElementById('licenceType').value || 'PRO';
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const rand = n => [...Array(n)].map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
+            document.getElementById('licenceKey').textContent = `ERP-${type}-${rand(4)}-${rand(4)}-${rand(8)}-2025`;
+        }
+
+        function saveLicence() { closeModalPremium('modalLicence'); showToast('Clé activée', 'success'); }
+
+        function renderMonitoring() {
+            document.getElementById('monitorStats').innerHTML = [
+                { icon: '⚡', val: '100%', lbl: 'Disponibilité', cls: 'success' },
+                { icon: '⏱️', val: '92ms', lbl: 'Réponse API', cls: '' },
+                { icon: '👥', val: 'Connecté', lbl: 'Statut Session', cls: 'primary' },
+                { icon: '💾', val: 'Active', lbl: 'Base de données', cls: 'warning' },
+            ].map(s => `
+                <div class="stat-card-premium">
+                    <div class="stat-card-header">
+                        <div class="stat-icon-wrapper ${s.cls}">${s.icon}</div>
+                    </div>
+                    <div class="stat-value" style="font-size:24px">${s.val}</div>
+                    <div class="stat-label">${s.lbl}</div>
+                </div>`).join('');
+
+            document.getElementById('systemLogs').innerHTML = `<div style="margin-bottom:6px"><span style="color:#64748b">[${new Date().toLocaleTimeString()}]</span> <span style="color:#10b981">[OK]</span> Dashboard chargé avec succès.</div>`;
+            document.getElementById('backupList').innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(148,163,184,0.1)"><div><div style="font-size:13px;font-weight:600;color:#e2e8f0">Dernier backup system</div><div style="font-size:11px;color:#94a3b8">${new Date().toLocaleDateString()}</div></div><span style="background:rgba(16,185,129,0.2);color:#10b981;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">✓</span></div>`;
+        }
+
+        function refreshMonitoring() { renderMonitoring(); showToast('Données actualisées', 'success'); }
+
+        function renderUtilisateurs() {
+            document.getElementById('tbodyUsers').innerHTML = currentData.univs.map(u => `
+                <tr>
+                  <td style="font-weight:600">${u.nom}</td>
+                  <td><span style="background:rgba(99,102,241,0.2);color:#818cf8;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">${u.code}</span></td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td style="font-weight:600">Admin Univ</td>
+                  <td style="font-size:13px;color:#94a3b8">Actif</td>
+                </tr>`).join('');
+        }
+
+        function logout() { if (confirm('Se déconnecter ?')) { API.logout(); } }
+        function openModalPremium(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeModalPremium(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+        
+        function showToast(message, type = 'info') {
+            console.log(`[${type.toUpperCase()}] ${message}`);
+            alert(message);
+        }
+
+        function formatCFA(montant) {
+            return new Intl.NumberFormat('fr-FR').format(montant) + ' FCFA';
+        }
+    </script>
+    
+    <script src="js/api.js"></script>
+    <script src="js/fix-navigation.js"></script>
+</body>
+
+</html>
