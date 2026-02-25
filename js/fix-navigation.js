@@ -299,7 +299,10 @@ window.requireAuth = function(allowedRoles = []) {
 
 // Fonction d'authentification
 window.requireAuth = function(allowedRoles = []) {
+    console.log('🔐 requireAuth appelé avec rôles:', allowedRoles);
+    
     const user = Auth.getUser();
+    console.log('👤 Utilisateur récupéré:', user);
     
     if (!user) {
         console.warn('⚠️ Utilisateur non connecté, redirection vers login');
@@ -310,6 +313,8 @@ window.requireAuth = function(allowedRoles = []) {
     // Vérifier le rôle si spécifié
     if (allowedRoles.length > 0) {
         const userRole = user.role;
+        console.log('🎭 Rôle utilisateur:', userRole, 'Rôles autorisés:', allowedRoles);
+        
         const isAllowed = allowedRoles.some(role => {
             if (role === 'admin') return userRole === 'administrateur' || userRole === 'admin';
             if (role === 'superadmin') return userRole === 'superadmin';
@@ -317,6 +322,8 @@ window.requireAuth = function(allowedRoles = []) {
             if (role === 'etudiant') return userRole === 'etudiant';
             return userRole === role;
         });
+        
+        console.log('✅ Accès autorisé:', isAllowed);
         
         if (!isAllowed) {
             console.warn('⚠️ Accès refusé, rôle:', userRole, 'requis:', allowedRoles);
