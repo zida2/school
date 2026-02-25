@@ -7,7 +7,7 @@
 const API_BASE = 'http://localhost:8000/api';
 
 // MODE MOCK pour démo sans backend
-const USE_MOCK = true; // Mettre à false quand le backend est prêt
+const USE_MOCK = false; // Mettre à false quand le backend est prêt
 
 // ===== GESTION DES TOKENS =====
 const Auth = {
