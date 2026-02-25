@@ -381,12 +381,6 @@ const MockAPI = {
         return [];
     },
 
-    // Emplois du temps
-    async getEmploisDuTemps() {
-        await mockDelay();
-        return [];
-    },
-
     // Méthodes vides pour les autres appels
     async createEtudiant() { await mockDelay(); return { id: Date.now() }; },
     async updateEtudiant() { await mockDelay(); return {}; },
