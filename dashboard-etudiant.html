@@ -413,9 +413,51 @@
                         <h1 class="page-title">📋 Mes absences</h1>
                         <p class="page-subtitle">Suivi de vos absences et présences</p>
                     </div>
+                    
+                    <!-- Stats absences -->
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                        <div class="stat-card-ultra success-ultra">
+                            <div class="stat-icon-ultra">✅</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statPresences">0</div>
+                                <div class="stat-label-ultra">Présences</div>
+                            </div>
+                        </div>
+                        <div class="stat-card-ultra warning-ultra">
+                            <div class="stat-icon-ultra">⚠️</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statAbsences">0</div>
+                                <div class="stat-label-ultra">Absences</div>
+                            </div>
+                        </div>
+                        <div class="stat-card-ultra primary-ultra">
+                            <div class="stat-icon-ultra">📊</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statTauxPresence">0%</div>
+                                <div class="stat-label-ultra">Taux de présence</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card-premium">
-                        <div class="card-body-premium">
-                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        <div class="card-header-premium">
+                            <h3 class="card-title-premium">Historique des absences</h3>
+                        </div>
+                        <div class="card-body-premium" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Matière</th>
+                                        <th>Type</th>
+                                        <th>Statut</th>
+                                        <th>Justification</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyAbsences">
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune absence enregistrée</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -426,9 +468,10 @@
                         <h1 class="page-title">📚 Mes cours</h1>
                         <p class="page-subtitle">Liste de vos cours et matières</p>
                     </div>
-                    <div class="card-premium">
-                        <div class="card-body-premium">
-                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+                        <div id="listeCours">
+                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Chargement...</p>
                         </div>
                     </div>
                 </div>
@@ -439,9 +482,26 @@
                         <h1 class="page-title">✍️ Évaluations</h1>
                         <p class="page-subtitle">Calendrier des évaluations et examens</p>
                     </div>
+                    
                     <div class="card-premium">
-                        <div class="card-body-premium">
-                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        <div class="card-header-premium">
+                            <h3 class="card-title-premium">Prochaines évaluations</h3>
+                        </div>
+                        <div class="card-body-premium" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Matière</th>
+                                        <th>Type</th>
+                                        <th>Durée</th>
+                                        <th>Salle</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyEvaluations">
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune évaluation programmée</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -449,12 +509,29 @@
                 <!-- PAGE: DEMANDE -->
                 <div class="erp-page" id="page-demande" style="display:none">
                     <div class="page-header">
-                        <h1 class="page-title">📨 Mes demandes</h1>
-                        <p class="page-subtitle">Soumettre et suivre vos demandes administratives</p>
+                        <div>
+                            <h1 class="page-title">📨 Mes demandes</h1>
+                            <p class="page-subtitle">Soumettre et suivre vos demandes administratives</p>
+                        </div>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalDemande')">+ Nouvelle demande</button>
                     </div>
+                    
                     <div class="card-premium">
-                        <div class="card-body-premium">
-                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        <div class="card-body-premium" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Objet</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyDemandes">
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune demande</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -465,10 +542,9 @@
                         <h1 class="page-title">📰 Publications</h1>
                         <p class="page-subtitle">Actualités et annonces de l'université</p>
                     </div>
-                    <div class="card-premium">
-                        <div class="card-body-premium">
-                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
-                        </div>
+                    
+                    <div id="listePublications" style="display:grid;gap:20px">
+                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Aucune publication</p>
                     </div>
                 </div>
 
@@ -478,10 +554,9 @@
                         <h1 class="page-title">📊 Sondages</h1>
                         <p class="page-subtitle">Participez aux sondages de l'université</p>
                     </div>
-                    <div class="card-premium">
-                        <div class="card-body-premium">
-                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
-                        </div>
+                    
+                    <div id="listeSondages" style="display:grid;gap:20px">
+                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Aucun sondage disponible</p>
                     </div>
                 </div>
 
@@ -489,24 +564,40 @@
                 <div class="erp-page" id="page-questionnaire" style="display:none">
                     <div class="page-header">
                         <h1 class="page-title">📝 Questionnaires</h1>
-                        <p class="page-subtitle">Répondez aux questionnaires d'évaluation</p>
+                        <p class="page-subtitle">Évaluez vos enseignants et cours</p>
                     </div>
-                    <div class="card-premium">
-                        <div class="card-body-premium">
-                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
-                        </div>
+                    
+                    <div id="listeQuestionnaires" style="display:grid;gap:20px">
+                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Aucun questionnaire disponible</p>
                     </div>
                 </div>
 
                 <!-- PAGE: OBJET PERDU -->
                 <div class="erp-page" id="page-objetperdu" style="display:none">
                     <div class="page-header">
-                        <h1 class="page-title">🔍 Objets perdus</h1>
-                        <p class="page-subtitle">Déclarer ou rechercher des objets perdus</p>
+                        <div>
+                            <h1 class="page-title">🔍 Objets perdus</h1>
+                            <p class="page-subtitle">Déclarer ou rechercher des objets perdus</p>
+                        </div>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalObjetPerdu')">+ Déclarer un objet</button>
                     </div>
+                    
                     <div class="card-premium">
-                        <div class="card-body-premium">
-                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        <div class="card-body-premium" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Objet</th>
+                                        <th>Lieu</th>
+                                        <th>Type</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyObjetsPerdu">
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucun objet déclaré</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
