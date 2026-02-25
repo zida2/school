@@ -431,6 +431,12 @@
         </div>
     </div>
 
+    <!-- Charger les scripts externes d'abord -->
+    <script src="js/mock-data.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/fix-navigation.js"></script>
+
+    <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
         function navToPremium(page, el) {
             document.querySelectorAll('.erp-page').forEach(p => p.style.display = 'none');
@@ -885,9 +891,5 @@
             }
         });
     </script>
-    
-    <script src="js/mock-data.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/fix-navigation.js"></script>
 </body>
 </html>
