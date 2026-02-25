@@ -1057,23 +1057,6 @@
             }
         }
 
-        function toggleSidebarUltra() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            
-            sidebar.classList.toggle('active');
-            
-            if (!overlay) {
-                const newOverlay = document.createElement('div');
-                newOverlay.id = 'sidebarOverlay';
-                newOverlay.className = 'sidebar-overlay';
-                newOverlay.onclick = toggleSidebarUltra;
-                document.body.appendChild(newOverlay);
-            }
-            
-            document.getElementById('sidebarOverlay')?.classList.toggle('active');
-        }
-
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {

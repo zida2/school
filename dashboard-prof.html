@@ -537,10 +537,6 @@
             }
         }
 
-        function toggleSidebarUltra() {
-            document.getElementById('sidebar').classList.toggle('open');
-        }
-
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
@@ -1097,9 +1093,7 @@
         }
 
         let notesEnCours = {};
-        let matiereSelectionnee = null;
-        let etudiantsMatiere = [];
-        let evaluationsMatiere = [];
+        // matiereSelectionnee, etudiantsMatiere, evaluationsMatiere déjà déclarés plus haut
         let evaluationEnCours = null;
         let notesEvalEnCours = {};
 

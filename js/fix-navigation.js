@@ -58,6 +58,34 @@ window.toggleSidebar = function() {
     }
 };
 
+// Toggle sidebar ultra (pour dashboard-prof et dashboard-admin)
+window.toggleSidebarUltra = function() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('open');
+        sidebar.classList.toggle('active');
+        
+        // Gérer l'overlay pour mobile
+        let overlay = document.getElementById('sidebarOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'sidebarOverlay';
+            overlay.className = 'sidebar-overlay';
+            overlay.onclick = window.toggleSidebarUltra;
+            document.body.appendChild(overlay);
+        }
+        overlay.classList.toggle('active');
+    }
+};
+
+// Toggle sidebar premium (pour dashboard-etudiant)
+window.toggleSidebarPremium = function() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('open');
+    }
+};
+
 // Fermer sidebar en cliquant à l'extérieur (mobile)
 if (window.innerWidth <= 1024) {
     document.addEventListener('click', function(e) {
