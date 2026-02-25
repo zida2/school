@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Dashboard Prof</title>
+</head>
+<body>
+    <h1>Test Dashboard Prof</h1>
+    <button onclick="testDashboard()">Tester Dashboard</button>
+    <pre id="result"></pre>
+
+    <script src="js/mock-data.js?v=6"></script>
+    <script src="js/api.js?v=6"></script>
+    <script>
+        // Simuler une connexion
+        localStorage.setItem('erp_user', JSON.stringify({
+            email: 'j.ouedraogo@uan.bf',
+            role: 'professeur',
+            prenom: 'Jean',
+            nom: 'Ouedraogo',
+            enseignant: { id: 1 }
+        }));
+
+        async function testDashboard() {
+            const result = document.getElementById('result');
+            try {
+                console.log('Test 1: getMe()');
+                const me = await API.getMe();
+                console.log('Me:', me);
+
+                console.log('\nTest 2: getDashboardProf()');
+                const dashboard = await API.getDashboardProf();
+                console.log('Dashboard:', dashboard);
+
+                console.log('\nTest 3: Matières');
+                const matieres = dashboard.matieres || [];
+                console.log('Matières:', matieres);
+
+                console.log('\nTest 4: getEtudiants avec filiere=1');
+                const etudiants = await API.getEtudiants({ filiere: 1 });
+                console.log('Étudiants:', etudiants);
+
+                console.log('\nTest 5: getNotes avec matiere=1');
+                const notes = await API.getNotes({ matiere: 1 });
+                console.log('Notes:', notes);
+
+                console.log('\nTest 6: getEmploisDuTemps');
+                const emplois = await API.getEmploisDuTemps();
+                console.log('Emplois:', emplois);
+
+                result.textContent = JSON.stringify({
+                    me,
+                    dashboard,
+                    matieres,
+                    etudiants: etudiants ? etudiants.length : 'NULL',
+                    notes: notes ? notes.length : 'NULL',
+                    emplois: emplois ? emplois.length : 'NULL'
+                }, null, 2);
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                result.textContent = 'ERREUR: ' + err.message + '\n\n' + err.stack;
+            }
+        }
+
+        // Test automatique au chargement
+        window.addEventListener('load', () => {
+            setTimeout(testDashboard, 500);
+        });
+    </script>
+</body>
+</html>

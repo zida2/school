@@ -819,20 +819,31 @@
 
         async function chargerDashboard() {
             try {
-                // Charger les vraies données
-                const me = await API.getMe();
-                const enseignant = me.enseignant;
+                console.log('🔄 Chargement du dashboard...');
                 
-                // Charger les matières
+                // Charger les données
+                const me = await API.getMe();
+                console.log('✅ Me:', me);
+                
                 const dashboard = await API.getDashboardProf();
+                console.log('✅ Dashboard:', dashboard);
+                
                 const matieres = dashboard.matieres || [];
+                console.log('✅ Matières:', matieres.length);
+                
+                if (matieres.length === 0) {
+                    console.warn('⚠️ Aucune matière trouvée');
+                    return;
+                }
                 
                 // Récupérer les filières de toutes les matières
                 const filieresIds = [...new Set(matieres.map(m => m.filiere))];
+                console.log('✅ Filières:', filieresIds);
                 
                 // Charger tous les étudiants des filières
                 const promesses = filieresIds.map(filiereId => API.getEtudiants({ filiere: filiereId }));
                 const resultats = await Promise.all(promesses);
+                console.log('✅ Résultats étudiants:', resultats);
                 
                 // Fusionner et dédupliquer les étudiants
                 const etudiantsMap = new Map();
@@ -842,6 +853,7 @@
                     }
                 });
                 const totalEtudiants = etudiantsMap.size;
+                console.log('✅ Total étudiants:', totalEtudiants);
                 
                 // Charger toutes les notes de l'enseignant
                 const toutesLesNotes = [];
@@ -849,26 +861,32 @@
                     const notes = await API.getNotes({ matiere: matiere.id });
                     toutesLesNotes.push(...notes);
                 }
+                console.log('✅ Total notes:', toutesLesNotes.length);
                 
                 // Compter les notes saisies (au moins CC ou Examen)
                 const notesSaisies = toutesLesNotes.filter(n => 
                     n.note_cc !== null || n.note_examen !== null
                 ).length;
+                console.log('✅ Notes saisies:', notesSaisies);
                 
                 // Charger l'emploi du temps
-                let totalCours = 0;
-                for (const filiereId of filieresIds) {
-                    const emplois = await API.getEmploisDuTemps({ filiere: filiereId });
-                    totalCours += emplois.length;
-                }
+                const emplois = await API.getEmploisDuTemps();
+                const mesEmplois = emplois.filter(e => matieres.some(m => m.id === e.matiere));
+                const totalCours = mesEmplois.length;
+                console.log('✅ Total cours:', totalCours);
                 
                 // Mettre à jour les statistiques
-                document.getElementById('statMatieres').textContent = matieres.length;
-                document.getElementById('statEtudiants').textContent = totalEtudiants;
-                document.getElementById('statNotes').textContent = notesSaisies;
-                document.getElementById('statCours').textContent = totalCours;
+                const statMatieres = document.getElementById('statMatieres');
+                const statEtudiants = document.getElementById('statEtudiants');
+                const statNotes = document.getElementById('statNotes');
+                const statCours = document.getElementById('statCours');
                 
-                console.log('Dashboard chargé:', {
+                if (statMatieres) statMatieres.textContent = matieres.length;
+                if (statEtudiants) statEtudiants.textContent = totalEtudiants;
+                if (statNotes) statNotes.textContent = notesSaisies;
+                if (statCours) statCours.textContent = totalCours;
+                
+                console.log('✅ Dashboard chargé avec succès:', {
                     matieres: matieres.length,
                     etudiants: totalEtudiants,
                     notes: notesSaisies,
@@ -876,7 +894,7 @@
                 });
                 
             } catch (err) {
-                console.error('Erreur:', err);
+                console.error('❌ Erreur chargement dashboard:', err);
                 showToast('Erreur de chargement du dashboard', 'danger');
             }
         }
