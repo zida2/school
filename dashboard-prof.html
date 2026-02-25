@@ -187,11 +187,28 @@
                 <!-- OTHER PAGES -->
                 <div class="page-ultra" id="page-emploi" style="display:none">
                     <div class="page-header-ultra">
-                        <h1 class="page-title-ultra">Emploi du temps</h1>
+                        <h1 class="page-title-ultra">📅 Emploi du temps</h1>
+                        <p class="page-subtitle-ultra">Votre planning de la semaine</p>
                     </div>
                     <div class="card-ultra">
                         <div class="card-body-ultra">
-                            <p style="color:rgba(255,255,255,0.6)">Consultation de votre emploi du temps</p>
+                            <div style="overflow-x:auto">
+                                <table class="table-ultra">
+                                    <thead>
+                                        <tr>
+                                            <th>Jour</th>
+                                            <th>Heure</th>
+                                            <th>Matière</th>
+                                            <th>Filière</th>
+                                            <th>Salle</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyEmploiProf">
+                                        <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -534,6 +551,8 @@
                 chargerSupports();
             } else if (page === 'notes') {
                 chargerMatieresNotes();
+            } else if (page === 'emploi') {
+                chargerEmploiProf();
             }
         }
 
@@ -653,6 +672,61 @@
                 chargerSupports();
             } catch (err) {
                 showToast('Erreur', 'danger');
+            }
+        }
+
+        // Charger l'emploi du temps de l'enseignant
+        async function chargerEmploiProf() {
+            try {
+                const tbody = document.getElementById('tbodyEmploiProf');
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>';
+
+                // Récupérer les données du dashboard pour avoir les matières de l'enseignant
+                const dashboard = await API.getDashboardProf();
+                const mesMatieres = dashboard.matieres || [];
+                const mesMatieresIds = mesMatieres.map(m => m.id);
+
+                // Récupérer tous les emplois du temps
+                const emplois = await API.getEmploisDuTemps();
+                
+                // Filtrer pour ne garder que les cours de l'enseignant
+                const mesEmplois = emplois.filter(e => mesMatieresIds.includes(e.matiere));
+
+                // Ordre des jours
+                const ordreJours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+                
+                // Trier par jour puis par heure
+                mesEmplois.sort((a, b) => {
+                    const jourA = ordreJours.indexOf(a.jour);
+                    const jourB = ordreJours.indexOf(b.jour);
+                    if (jourA !== jourB) return jourA - jourB;
+                    return a.heure_debut.localeCompare(b.heure_debut);
+                });
+
+                if (mesEmplois.length > 0) {
+                    tbody.innerHTML = mesEmplois.map(e => {
+                        // Trouver le nom de la filière
+                        const matiere = mesMatieres.find(m => m.id === e.matiere);
+                        const filiereNom = matiere ? matiere.filiere_nom : 'N/A';
+                        
+                        return `
+                            <tr>
+                                <td><strong>${e.jour}</strong></td>
+                                <td>${e.heure_debut} - ${e.heure_fin}</td>
+                                <td>${e.matiere_nom}</td>
+                                <td>${filiereNom}</td>
+                                <td><span class="badge-ultra primary">${e.salle}</span></td>
+                                <td><span class="badge-ultra success">Cours</span></td>
+                            </tr>
+                        `;
+                    }).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun cours programmé</td></tr>';
+                }
+            } catch (err) {
+                console.error('Erreur chargement emploi:', err);
+                const tbody = document.getElementById('tbodyEmploiProf');
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Erreur de chargement</td></tr>';
             }
         }
 
