@@ -121,18 +121,6 @@ function extractError(data) {
 }
 
 // ===== API CALLS =====
-// Wrapper pour utiliser MockAPI si USE_MOCK est activé
-function wrapAPI(realFunc, mockFunc) {
-    return async function(...args) {
-        if (USE_MOCK && typeof MockAPI !== 'undefined' && mockFunc) {
-            return mockFunc(...args);
-        }
-        return realFunc(...args);
-    };
-}
-
-const API = {
-// ===== API CALLS =====
 const API = {
     // Auth
     async login(email, password) {
@@ -354,5 +342,14 @@ const API = {
     async getNoteEvaluation(id) { return apiRequest(`/notes-evaluations/${id}/`); },
     async createNoteEvaluation(data) { return apiRequest('/notes-evaluations/', { method: 'POST', body: JSON.stringify(data) }); },
     async updateNoteEvaluation(id, data) { return apiRequest(`/notes-evaluations/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }); },
-    async deleteNoteEvaluation(id) { return apiRequest(`/notes-evaluations/${id}/`, { method: 'DELETE' }); },
+    async deleteNoteEvaluation(id) { return apiRequest(`/notes-evaluations/${id}/`, { method: 'DELETE' }); }
 };
+
+// Exposer API globalement
+window.API = API;
+window.Auth = Auth;
+window.USE_MOCK = USE_MOCK;
+
+console.log('✅ API chargée:', typeof API);
+console.log('✅ Auth chargé:', typeof Auth);
+console.log('✅ USE_MOCK:', USE_MOCK);
