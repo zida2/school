@@ -57,8 +57,49 @@ async function apiRequest(endpoint, options = {}) {
     // Si mode MOCK activé, utiliser MockAPI
     if (typeof USE_MOCK !== 'undefined' && USE_MOCK && typeof MockAPI !== 'undefined') {
         console.log('🎭 Mock API:', endpoint);
-        // Pas de vraie requête, juste retourner les données mock
-        return null;
+        
+        // Router vers les bonnes fonctions MockAPI selon l'endpoint
+        const method = options.method || 'GET';
+        
+        // Extraire les paramètres de l'URL
+        const [path, queryString] = endpoint.split('?');
+        const params = {};
+        if (queryString) {
+            const urlParams = new URLSearchParams(queryString);
+            for (const [key, value] of urlParams) {
+                params[key] = value;
+            }
+        }
+        
+        // Router selon le path
+        if (path.includes('/emplois-du-temps/')) {
+            return MockAPI.getEmploisDuTemps(params);
+        }
+        if (path.includes('/supports/')) {
+            return MockAPI.getSupports(params);
+        }
+        if (path.includes('/notes/')) {
+            return MockAPI.getNotes(params);
+        }
+        if (path.includes('/etudiants/')) {
+            return MockAPI.getEtudiants(params);
+        }
+        if (path.includes('/enseignants/')) {
+            return MockAPI.getEnseignants();
+        }
+        if (path.includes('/matieres/')) {
+            return MockAPI.getMatieres();
+        }
+        if (path.includes('/filieres/')) {
+            return MockAPI.getFilieres();
+        }
+        if (path.includes('/paiements/')) {
+            return MockAPI.getPaiements(params);
+        }
+        
+        // Par défaut, retourner un tableau vide
+        console.warn('⚠️ Endpoint mock non géré:', endpoint);
+        return [];
     }
 
     const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
