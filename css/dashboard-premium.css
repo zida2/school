@@ -1425,3 +1425,203 @@ select.form-input-ultra {
         touch-action: manipulation;
     }
 }
+
+
+/* ===== THEME LIGHT ===== */
+body.light-theme {
+    background: #f5f7fa;
+    color: #1a1d2e;
+}
+
+body.light-theme .app-wrapper {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 50%, #f5f7fa 100%);
+}
+
+body.light-theme .sidebar-ultra {
+    background: rgba(255, 255, 255, 0.95);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .logo-name-ultra,
+body.light-theme .logo-tag-ultra,
+body.light-theme .nav-label-ultra,
+body.light-theme .nav-text-ultra,
+body.light-theme .user-name-ultra,
+body.light-theme .user-role-ultra {
+    color: #1a1d2e;
+}
+
+body.light-theme .nav-item-ultra {
+    color: #64748b;
+}
+
+body.light-theme .nav-item-ultra:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: #6366f1;
+}
+
+body.light-theme .nav-item-ultra.active {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15));
+    color: #6366f1;
+}
+
+body.light-theme .main-ultra {
+    background: transparent;
+}
+
+body.light-theme .topbar-ultra {
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .search-input-ultra {
+    background: rgba(0, 0, 0, 0.05);
+    color: #1a1d2e;
+}
+
+body.light-theme .search-input-ultra::placeholder {
+    color: #64748b;
+}
+
+body.light-theme .card-ultra {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .stat-card-ultra {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .page-title-ultra,
+body.light-theme .page-subtitle-ultra,
+body.light-theme .card-title-ultra,
+body.light-theme .stat-value-ultra,
+body.light-theme .stat-label-ultra {
+    color: #1a1d2e;
+}
+
+body.light-theme .table-ultra {
+    color: #1a1d2e;
+}
+
+body.light-theme .table-ultra thead {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .table-ultra tbody tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .table-ultra tbody tr:hover {
+    background: rgba(99, 102, 241, 0.05);
+}
+
+body.light-theme .form-input-ultra,
+body.light-theme .form-textarea-ultra {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #1a1d2e;
+}
+
+body.light-theme .form-label-ultra {
+    color: #1a1d2e;
+}
+
+body.light-theme .modal-ultra {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+body.light-theme .modal-content-ultra {
+    background: #ffffff;
+    color: #1a1d2e;
+}
+
+body.light-theme .badge-ultra {
+    background: rgba(99, 102, 241, 0.15);
+    color: #6366f1;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* Appliquer les animations */
+.page-ultra {
+    animation: fadeInUp 0.5s ease;
+}
+
+.card-ultra {
+    animation: fadeInUp 0.6s ease;
+}
+
+.stat-card-ultra {
+    animation: fadeInUp 0.4s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card-ultra:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.nav-item-ultra {
+    transition: all 0.3s ease;
+}
+
+.btn-ultra {
+    transition: all 0.3s ease;
+}
+
+.btn-ultra:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.table-ultra tbody tr {
+    transition: background 0.2s ease;
+}
+
+/* Animation de chargement */
+.loading-shimmer {
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
