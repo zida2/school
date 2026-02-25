@@ -269,7 +269,11 @@ const MockAPI = {
     // Étudiants
     async getEtudiants(params = {}) {
         await mockDelay();
-        return MOCK_DATA.etudiants;
+        let etudiants = MOCK_DATA.etudiants;
+        if (params.filiere) {
+            etudiants = etudiants.filter(e => e.filiere == params.filiere);
+        }
+        return etudiants;
     },
 
     async getEtudiant(id) {
