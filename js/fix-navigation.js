@@ -297,6 +297,49 @@ window.requireAuth = function(allowedRoles = []) {
     }
 };
 
+// Fonction d'authentification
+window.requireAuth = function(allowedRoles = []) {
+    const user = Auth.getUser();
+    
+    if (!user) {
+        console.warn('⚠️ Utilisateur non connecté, redirection vers login');
+        window.location.href = 'index.html';
+        return null;
+    }
+    
+    // Vérifier le rôle si spécifié
+    if (allowedRoles.length > 0) {
+        const userRole = user.role;
+        const isAllowed = allowedRoles.some(role => {
+            if (role === 'admin') return userRole === 'administrateur' || userRole === 'admin';
+            if (role === 'superadmin') return userRole === 'superadmin';
+            if (role === 'professeur') return userRole === 'professeur';
+            if (role === 'etudiant') return userRole === 'etudiant';
+            return userRole === role;
+        });
+        
+        if (!isAllowed) {
+            console.warn('⚠️ Accès refusé, rôle:', userRole, 'requis:', allowedRoles);
+            window.location.href = 'index.html';
+            return null;
+        }
+    }
+    
+    console.log('✅ Utilisateur authentifié:', user.prenom, user.nom, '(' + user.role + ')');
+    return user;
+};
+
+// Fonction de déconnexion
+window.logout = async function() {
+    try {
+        await API.logout();
+    } catch (err) {
+        console.error('Erreur logout:', err);
+    }
+    Auth.clear();
+    window.location.href = 'index.html';
+};
+
 // Initialisation au chargement
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Fix navigation chargé');
