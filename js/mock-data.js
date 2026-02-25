@@ -350,8 +350,6 @@ const MockAPI = {
         return [
             { id: 1, nom: '2024-2025', date_debut: '2024-10-01', date_fin: '2025-06-30', active: true }
         ];
-    }
-        return paiements;
     },
 
     async getPaiementsEtudiant(id) {
@@ -363,7 +361,7 @@ const MockAPI = {
     async getAnnees() {
         await mockDelay();
         return [
-            { id: 1, annee: '2024-2025', active: true }
+            { id: 1, nom: '2024-2025', date_debut: '2024-10-01', date_fin: '2025-06-30', active: true }
         ];
     },
 
