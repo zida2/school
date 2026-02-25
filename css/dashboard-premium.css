@@ -646,7 +646,8 @@ body.dark-theme {
 }
 
 /* ===== MODALS ===== */
-.modal-ultra {
+.modal-ultra,
+.modal-overlay-premium {
     position: fixed;
     top: 0;
     left: 0;
@@ -661,11 +662,13 @@ body.dark-theme {
     padding: 20px;
 }
 
-.modal-ultra.open {
+.modal-ultra.open,
+.modal-overlay-premium.open {
     display: flex; /* Visible quand la classe open est ajoutée */
 }
 
-.modal-content-ultra {
+.modal-content-ultra,
+.modal-premium {
     background: rgba(26, 31, 58, 0.95);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -688,7 +691,8 @@ body.dark-theme {
     }
 }
 
-.modal-header-ultra {
+.modal-header-ultra,
+.modal-header-premium {
     padding: 25px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
@@ -696,13 +700,16 @@ body.dark-theme {
     justify-content: space-between;
 }
 
-.modal-header-ultra h3 {
+.modal-header-ultra h3,
+.modal-header-premium h3,
+.modal-title-premium {
     font-size: 20px;
     font-weight: 700;
     color: #ffffff;
 }
 
-.modal-close-ultra {
+.modal-close-ultra,
+.modal-close-premium {
     width: 36px;
     height: 36px;
     background: rgba(255, 255, 255, 0.05);
@@ -716,16 +723,19 @@ body.dark-theme {
     transition: all 0.3s ease;
 }
 
-.modal-close-ultra:hover {
+.modal-close-ultra:hover,
+.modal-close-premium:hover {
     background: rgba(255, 255, 255, 0.1);
     color: #ffffff;
 }
 
-.modal-body-ultra {
+.modal-body-ultra,
+.modal-body-premium {
     padding: 25px;
 }
 
-.modal-footer-ultra {
+.modal-footer-ultra,
+.modal-footer-premium {
     padding: 25px;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
