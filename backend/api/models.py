@@ -28,6 +28,7 @@ class Utilisateur(AbstractBaseUser, PermissionsMixin):
         ('admin', 'Administration'),
         ('professeur', 'Enseignant'),
         ('etudiant', 'Étudiant'),
+        ('bureau_executif', 'Bureau Exécutif'),
     ]
     email = models.EmailField(unique=True)
     prenom = models.CharField(max_length=100)
@@ -462,3 +463,311 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.titre} → {self.destinataire.email}"
+
+
+# ===== MEMBRE BUREAU EXÉCUTIF =====
+class MembreBureau(models.Model):
+    POSTES = [
+        ('president', 'Président(e)'),
+        ('vice_president', 'Vice-Président(e)'),
+        ('secretaire', 'Secrétaire Général(e)'),
+        ('tresorier', 'Trésorier(ère)'),
+        ('charge_communication', 'Chargé(e) de Communication'),
+        ('charge_evenements', 'Chargé(e) des Événements'),
+        ('charge_academique', 'Chargé(e) des Affaires Académiques'),
+        ('membre', 'Membre'),
+    ]
+    
+    utilisateur = models.OneToOneField(Utilisateur, on_delete=models.CASCADE, related_name='membre_bureau')
+    etudiant = models.OneToOneField(Etudiant, on_delete=models.CASCADE, related_name='membre_bureau', null=True, blank=True)
+    poste = models.CharField(max_length=50, choices=POSTES)
+    date_debut_mandat = models.DateField()
+    date_fin_mandat = models.DateField(null=True, blank=True)
+    actif = models.BooleanField(default=True)
+    biographie = models.TextField(blank=True)
+    photo = models.ImageField(upload_to='bureau/', null=True, blank=True)
+    
+    class Meta:
+        verbose_name = 'Membre du Bureau'
+        verbose_name_plural = 'Membres du Bureau'
+        ordering = ['poste', 'utilisateur__nom']
+    
+    def __str__(self):
+        return f"{self.utilisateur.prenom} {self.utilisateur.nom} - {self.get_poste_display()}"
+
+
+# ===== PUBLICATION =====
+class Publication(models.Model):
+    CATEGORIES = [
+        ('actualite', 'Actualité'),
+        ('evenement', 'Événement'),
+        ('annonce', 'Annonce'),
+        ('info', 'Information'),
+        ('urgent', 'Urgent'),
+    ]
+    
+    STATUTS = [
+        ('brouillon', 'Brouillon'),
+        ('publie', 'Publié'),
+        ('archive', 'Archivé'),
+    ]
+    
+    titre = models.CharField(max_length=200)
+    contenu = models.TextField()
+    categorie = models.CharField(max_length=20, choices=CATEGORIES)
+    statut = models.CharField(max_length=20, choices=STATUTS, default='brouillon')
+    auteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='publications')
+    image = models.ImageField(upload_to='publications/', null=True, blank=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    date_publication = models.DateTimeField(null=True, blank=True)
+    vues = models.IntegerField(default=0)
+    epingle = models.BooleanField(default=False)
+    
+    class Meta:
+        verbose_name = 'Publication'
+        verbose_name_plural = 'Publications'
+        ordering = ['-date_creation']
+    
+    def __str__(self):
+        return self.titre
+
+
+# ===== SONDAGE =====
+class Sondage(models.Model):
+    STATUTS = [
+        ('brouillon', 'Brouillon'),
+        ('actif', 'Actif'),
+        ('termine', 'Terminé'),
+        ('archive', 'Archivé'),
+    ]
+    
+    titre = models.CharField(max_length=200)
+    description = models.TextField()
+    createur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='sondages')
+    date_debut = models.DateTimeField()
+    date_fin = models.DateTimeField()
+    statut = models.CharField(max_length=20, choices=STATUTS, default='brouillon')
+    anonyme = models.BooleanField(default=True)
+    multiple_reponses = models.BooleanField(default=False)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Sondage'
+        verbose_name_plural = 'Sondages'
+        ordering = ['-date_creation']
+    
+    def __str__(self):
+        return self.titre
+
+
+# ===== QUESTION SONDAGE =====
+class QuestionSondage(models.Model):
+    TYPES = [
+        ('choix_unique', 'Choix unique'),
+        ('choix_multiple', 'Choix multiple'),
+        ('texte', 'Texte libre'),
+        ('note', 'Note (1-5)'),
+    ]
+    
+    sondage = models.ForeignKey(Sondage, on_delete=models.CASCADE, related_name='questions')
+    texte = models.TextField()
+    type_question = models.CharField(max_length=20, choices=TYPES)
+    ordre = models.IntegerField(default=0)
+    obligatoire = models.BooleanField(default=True)
+    
+    class Meta:
+        verbose_name = 'Question de Sondage'
+        verbose_name_plural = 'Questions de Sondage'
+        ordering = ['sondage', 'ordre']
+    
+    def __str__(self):
+        return f"{self.sondage.titre} - Q{self.ordre}"
+
+
+# ===== OPTION QUESTION =====
+class OptionQuestion(models.Model):
+    question = models.ForeignKey(QuestionSondage, on_delete=models.CASCADE, related_name='options')
+    texte = models.CharField(max_length=200)
+    ordre = models.IntegerField(default=0)
+    
+    class Meta:
+        verbose_name = 'Option de Question'
+        verbose_name_plural = 'Options de Question'
+        ordering = ['question', 'ordre']
+    
+    def __str__(self):
+        return self.texte
+
+
+# ===== RÉPONSE SONDAGE =====
+class ReponseSondage(models.Model):
+    sondage = models.ForeignKey(Sondage, on_delete=models.CASCADE, related_name='reponses')
+    question = models.ForeignKey(QuestionSondage, on_delete=models.CASCADE, related_name='reponses')
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='reponses_sondages', null=True, blank=True)
+    option = models.ForeignKey(OptionQuestion, on_delete=models.CASCADE, null=True, blank=True, related_name='reponses')
+    texte_reponse = models.TextField(blank=True)
+    note = models.IntegerField(null=True, blank=True)
+    date_reponse = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Réponse de Sondage'
+        verbose_name_plural = 'Réponses de Sondage'
+        ordering = ['-date_reponse']
+    
+    def __str__(self):
+        return f"Réponse - {self.sondage.titre}"
+
+
+# ===== ÉVÉNEMENT =====
+class Evenement(models.Model):
+    TYPES = [
+        ('conference', 'Conférence'),
+        ('atelier', 'Atelier'),
+        ('competition', 'Compétition'),
+        ('culturel', 'Événement Culturel'),
+        ('sportif', 'Événement Sportif'),
+        ('social', 'Événement Social'),
+        ('autre', 'Autre'),
+    ]
+    
+    STATUTS = [
+        ('planifie', 'Planifié'),
+        ('en_cours', 'En cours'),
+        ('termine', 'Terminé'),
+        ('annule', 'Annulé'),
+    ]
+    
+    titre = models.CharField(max_length=200)
+    description = models.TextField()
+    type_evenement = models.CharField(max_length=20, choices=TYPES)
+    organisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='evenements')
+    date_debut = models.DateTimeField()
+    date_fin = models.DateTimeField()
+    lieu = models.CharField(max_length=200)
+    capacite_max = models.IntegerField(null=True, blank=True)
+    statut = models.CharField(max_length=20, choices=STATUTS, default='planifie')
+    image = models.ImageField(upload_to='evenements/', null=True, blank=True)
+    inscription_requise = models.BooleanField(default=False)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Événement'
+        verbose_name_plural = 'Événements'
+        ordering = ['-date_debut']
+    
+    def __str__(self):
+        return self.titre
+
+
+# ===== INSCRIPTION ÉVÉNEMENT =====
+class InscriptionEvenement(models.Model):
+    STATUTS = [
+        ('en_attente', 'En attente'),
+        ('confirme', 'Confirmé'),
+        ('annule', 'Annulé'),
+    ]
+    
+    evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE, related_name='inscriptions')
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='inscriptions_evenements')
+    statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente')
+    date_inscription = models.DateTimeField(auto_now_add=True)
+    present = models.BooleanField(default=False)
+    
+    class Meta:
+        verbose_name = 'Inscription Événement'
+        verbose_name_plural = 'Inscriptions Événements'
+        unique_together = ['evenement', 'etudiant']
+        ordering = ['-date_inscription']
+    
+    def __str__(self):
+        return f"{self.etudiant} - {self.evenement.titre}"
+
+
+# ===== MESSAGE BUREAU =====
+class MessageBureau(models.Model):
+    expediteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='messages_envoyes')
+    destinataire = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='messages_recus', null=True, blank=True)
+    groupe = models.BooleanField(default=False)  # True si message à tout le bureau
+    sujet = models.CharField(max_length=200, blank=True)
+    contenu = models.TextField()
+    date_envoi = models.DateTimeField(auto_now_add=True)
+    lu = models.BooleanField(default=False)
+    
+    class Meta:
+        verbose_name = 'Message Bureau'
+        verbose_name_plural = 'Messages Bureau'
+        ordering = ['-date_envoi']
+    
+    def __str__(self):
+        return f"{self.expediteur} -> {self.destinataire or 'Groupe'}"
+
+
+# ===== DEMANDE ADMINISTRATIVE =====
+class DemandeAdministrative(models.Model):
+    TYPES = [
+        ('attestation', 'Attestation d\'inscription'),
+        ('releve', 'Relevé de notes'),
+        ('certificat', 'Certificat de scolarité'),
+        ('carte', 'Carte d\'étudiant'),
+        ('stage', 'Convention de stage'),
+        ('autre', 'Autre'),
+    ]
+    
+    STATUTS = [
+        ('en_attente', 'En attente'),
+        ('en_traitement', 'En traitement'),
+        ('approuve', 'Approuvé'),
+        ('rejete', 'Rejeté'),
+        ('termine', 'Terminé'),
+    ]
+    
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='demandes')
+    type_demande = models.CharField(max_length=20, choices=TYPES)
+    objet = models.CharField(max_length=200)
+    description = models.TextField()
+    statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente')
+    date_demande = models.DateTimeField(auto_now_add=True)
+    date_traitement = models.DateTimeField(null=True, blank=True)
+    traite_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True, related_name='demandes_traitees')
+    commentaire_admin = models.TextField(blank=True)
+    
+    class Meta:
+        verbose_name = 'Demande Administrative'
+        verbose_name_plural = 'Demandes Administratives'
+        ordering = ['-date_demande']
+    
+    def __str__(self):
+        return f"{self.etudiant} - {self.get_type_demande_display()}"
+
+
+# ===== OBJET PERDU =====
+class ObjetPerdu(models.Model):
+    TYPES = [
+        ('perdu', 'Objet perdu'),
+        ('trouve', 'Objet trouvé'),
+    ]
+    
+    STATUTS = [
+        ('actif', 'Actif'),
+        ('recupere', 'Récupéré'),
+        ('archive', 'Archivé'),
+    ]
+    
+    declarant = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='objets_declares')
+    type_declaration = models.CharField(max_length=10, choices=TYPES)
+    nom_objet = models.CharField(max_length=200)
+    description = models.TextField()
+    lieu = models.CharField(max_length=200)
+    date_declaration = models.DateTimeField(auto_now_add=True)
+    date_perte = models.DateField()
+    statut = models.CharField(max_length=20, choices=STATUTS, default='actif')
+    image = models.ImageField(upload_to='objets_perdus/', null=True, blank=True)
+    contact = models.CharField(max_length=100)
+    
+    class Meta:
+        verbose_name = 'Objet Perdu'
+        verbose_name_plural = 'Objets Perdus'
+        ordering = ['-date_declaration']
+    
+    def __str__(self):
+        return f"{self.nom_objet} - {self.get_type_declaration_display()}"
