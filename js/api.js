@@ -132,9 +132,15 @@ function wrapAPI(realFunc, mockFunc) {
 }
 
 const API = {
+// ===== API CALLS =====
+const API = {
     // Auth
     async login(email, password) {
-        if (USE_MOCK && typeof MockAPI !== 'undefined') return MockAPI.login(email, password);
+        // Utiliser MockAPI si activé
+        if (USE_MOCK && typeof MockAPI !== 'undefined') {
+            return MockAPI.login(email, password);
+        }
+        
         const data = await apiRequest('/auth/login/', {
             method: 'POST',
             body: JSON.stringify({ email, password })
@@ -194,6 +200,9 @@ const API = {
 
     // Filières
     async getFilieres(params = {}) {
+        if (USE_MOCK && typeof MockAPI !== 'undefined') {
+            return MockAPI.getFilieres();
+        }
         const q = new URLSearchParams(params).toString();
         return apiRequest(`/filieres/${q ? '?' + q : ''}`);
     },
@@ -203,6 +212,9 @@ const API = {
 
     // Matières
     async getMatieres(params = {}) {
+        if (USE_MOCK && typeof MockAPI !== 'undefined') {
+            return MockAPI.getMatieres();
+        }
         const q = new URLSearchParams(params).toString();
         return apiRequest(`/matieres/${q ? '?' + q : ''}`);
     },
@@ -212,19 +224,35 @@ const API = {
 
     // Enseignants
     async getEnseignants(search = '') {
+        if (USE_MOCK && typeof MockAPI !== 'undefined') {
+            return MockAPI.getEnseignants();
+        }
         return apiRequest(`/enseignants/${search ? '?search=' + search : ''}`);
     },
-    async getEnseignant(id) { return apiRequest(`/enseignants/${id}/`); },
+    async getEnseignant(id) { 
+        if (USE_MOCK && typeof MockAPI !== 'undefined') {
+            return MockAPI.getEnseignant(id);
+        }
+        return apiRequest(`/enseignants/${id}/`); 
+    },
     async createEnseignant(data) { return apiRequest('/enseignants/', { method: 'POST', body: JSON.stringify(data) }); },
     async updateEnseignant(id, data) { return apiRequest(`/enseignants/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }); },
     async resetPasswordEnseignant(id) { return apiRequest(`/enseignants/${id}/reset_password/`, { method: 'POST' }); },
 
     // Étudiants
     async getEtudiants(params = {}) {
+        if (USE_MOCK && typeof MockAPI !== 'undefined') {
+            return MockAPI.getEtudiants(params);
+        }
         const q = new URLSearchParams(params).toString();
         return apiRequest(`/etudiants/${q ? '?' + q : ''}`);
     },
-    async getEtudiant(id) { return apiRequest(`/etudiants/${id}/`); },
+    async getEtudiant(id) { 
+        if (USE_MOCK && typeof MockAPI !== 'undefined') {
+            return MockAPI.getEtudiant(id);
+        }
+        return apiRequest(`/etudiants/${id}/`); 
+    },
     async createEtudiant(data) { return apiRequest('/etudiants/', { method: 'POST', body: JSON.stringify(data) }); },
     async updateEtudiant(id, data) { return apiRequest(`/etudiants/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }); },
     async deleteEtudiant(id) { return apiRequest(`/etudiants/${id}/`, { method: 'DELETE' }); },
@@ -235,6 +263,9 @@ const API = {
 
     // Notes
     async getNotes(params = {}) {
+        if (USE_MOCK && typeof MockAPI !== 'undefined') {
+            return MockAPI.getNotes(params);
+        }
         const q = new URLSearchParams(params).toString();
         return apiRequest(`/notes/${q ? '?' + q : ''}`);
     },
@@ -249,6 +280,9 @@ const API = {
 
     // Paiements
     async getPaiements(params = {}) {
+        if (USE_MOCK && typeof MockAPI !== 'undefined') {
+            return MockAPI.getPaiements(params);
+        }
         const q = new URLSearchParams(params).toString();
         return apiRequest(`/paiements/${q ? '?' + q : ''}`);
     },
@@ -292,6 +326,9 @@ const API = {
 
     // Années académiques
     async getAnnees(params = {}) {
+        if (USE_MOCK && typeof MockAPI !== 'undefined') {
+            return MockAPI.getAnnees();
+        }
         const q = new URLSearchParams(params).toString();
         return apiRequest(`/annees/${q ? '?' + q : ''}`);
     },

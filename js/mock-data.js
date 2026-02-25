@@ -141,11 +141,16 @@ const MockAPI = {
         const user = MOCK_USERS[email];
         if (user && user.password === password) {
             const token = 'mock-token-' + Date.now();
-            return {
+            const result = {
                 access: token,
                 refresh: token,
                 user: user
             };
+            // Sauvegarder dans localStorage comme le vrai API
+            localStorage.setItem('erp_access_token', token);
+            localStorage.setItem('erp_refresh_token', token);
+            localStorage.setItem('erp_user', JSON.stringify(user));
+            return result;
         }
         throw new Error('Email ou mot de passe incorrect');
     },
