@@ -4,12 +4,10 @@
  */
 
 // Configuration de l'API
-// Pour le développement local: 'http://localhost:8000/api'
-// Pour la production: Remplacer par votre URL PythonAnywhere
 const API_BASE = 'http://localhost:8000/api';
 
-// IMPORTANT: Après déploiement du backend sur PythonAnywhere,
-// remplacer par: 'https://votrenom.pythonanywhere.com/api'
+// MODE MOCK pour démo sans backend
+const USE_MOCK = true; // Mettre à false quand le backend est prêt
 
 // ===== GESTION DES TOKENS =====
 const Auth = {
@@ -56,6 +54,13 @@ const Auth = {
 
 // ===== REQUÊTE API CENTRALE =====
 async function apiRequest(endpoint, options = {}) {
+    // Si mode MOCK activé, utiliser MockAPI
+    if (typeof USE_MOCK !== 'undefined' && USE_MOCK && typeof MockAPI !== 'undefined') {
+        console.log('🎭 Mock API:', endpoint);
+        // Pas de vraie requête, juste retourner les données mock
+        return null;
+    }
+
     const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
     const headers = {
         'Content-Type': 'application/json',
@@ -116,9 +121,20 @@ function extractError(data) {
 }
 
 // ===== API CALLS =====
+// Wrapper pour utiliser MockAPI si USE_MOCK est activé
+function wrapAPI(realFunc, mockFunc) {
+    return async function(...args) {
+        if (USE_MOCK && typeof MockAPI !== 'undefined' && mockFunc) {
+            return mockFunc(...args);
+        }
+        return realFunc(...args);
+    };
+}
+
 const API = {
     // Auth
     async login(email, password) {
+        if (USE_MOCK && typeof MockAPI !== 'undefined') return MockAPI.login(email, password);
         const data = await apiRequest('/auth/login/', {
             method: 'POST',
             body: JSON.stringify({ email, password })
@@ -132,20 +148,24 @@ const API = {
     async logout() {
         const refresh = Auth.getRefreshToken();
         try {
-            await apiRequest('/auth/logout/', {
-                method: 'POST',
-                body: JSON.stringify({ refresh })
-            });
+            if (!USE_MOCK) {
+                await apiRequest('/auth/logout/', {
+                    method: 'POST',
+                    body: JSON.stringify({ refresh })
+                });
+            }
         } catch (e) { }
         Auth.clear();
         window.location.href = 'index.html';
     },
 
     async getMe() {
+        if (USE_MOCK && typeof MockAPI !== 'undefined') return MockAPI.getMe();
         return apiRequest('/auth/me/');
     },
 
     async changePassword(old_password, new_password) {
+        if (USE_MOCK) return {};
         return apiRequest('/auth/change-password/', {
             method: 'POST',
             body: JSON.stringify({ old_password, new_password })
@@ -153,9 +173,18 @@ const API = {
     },
 
     // Dashboard
-    async getDashboardAdmin() { return apiRequest('/dashboard/admin/'); },
-    async getDashboardProf() { return apiRequest('/dashboard/prof/'); },
-    async getDashboardEtudiant() { return apiRequest('/dashboard/etudiant/'); },
+    async getDashboardAdmin() { 
+        if (USE_MOCK && typeof MockAPI !== 'undefined') return MockAPI.getDashboardAdmin();
+        return apiRequest('/dashboard/admin/'); 
+    },
+    async getDashboardProf() { 
+        if (USE_MOCK && typeof MockAPI !== 'undefined') return MockAPI.getDashboardProf();
+        return apiRequest('/dashboard/prof/'); 
+    },
+    async getDashboardEtudiant() { 
+        if (USE_MOCK && typeof MockAPI !== 'undefined') return MockAPI.getDashboardEtudiant();
+        return apiRequest('/dashboard/etudiant/'); 
+    },
 
     // Universités
     async getUniversites() { return apiRequest('/universites/'); },

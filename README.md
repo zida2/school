@@ -1,44 +1,44 @@
-# 🎓 UniERP BF - Système de Gestion Universitaire Premium
+# 🎓 ERP Universitaire - Université Aube Nouvelle (UAN)
 
-Plateforme ERP ultra premium pour la gestion complète des universités au Burkina Faso.
+Système de gestion universitaire complet pour l'Université Aube Nouvelle du Burkina Faso.
 
-## 🚀 Démarrage rapide
+## 🚀 Fonctionnalités
 
-### 1. Lancer le backend Django
-```bash
-cd backend
-python manage.py runserver
-```
+### 👨‍💼 Espace Administrateur
+- Gestion des universités et filières
+- Gestion des matières et enseignants
+- Gestion des étudiants et inscriptions
+- Suivi des paiements
+- Statistiques et tableaux de bord
+- Gestion des années académiques
 
-### 2. Ouvrir le frontend
-Ouvrir `index.html` dans un navigateur moderne
+### 👨‍🏫 Espace Enseignant
+- Consultation des matières enseignées
+- Gestion des évaluations (devoirs, interrogations, TP, projets, examens)
+- Saisie des notes par évaluation
+- Gestion des absences
+- Publication des notes
+- Consultation des étudiants
+- Gestion des supports de cours
 
-### 3. Se connecter avec les comptes de démonstration
+### 🎓 Espace Étudiant
+- Consultation des notes et moyennes
+- Téléchargement du bulletin
+- Consultation des paiements
+- Accès aux supports de cours
+- Emploi du temps
+- Notifications
 
-| Rôle | Email | Mot de passe |
-|------|-------|--------------|
-| Super Admin | superadmin@erp.bf | SuperAdmin2024! |
-| Admin | admin@uan.bf | Admin2024! |
-| Enseignant | j.ouedraogo@uan.bf | enseignant123 |
-| Étudiant | m.diallo@etu.bf | etudiant123 |
+## 🛠️ Technologies
 
-## 📁 Structure du projet
+### Backend
+- **Django 5.0** - Framework Python
+- **Django REST Framework** - API REST
+- **SQLite** - Base de données (développement)
+- **PostgreSQL** - Base de données (production)
 
-```
-├── backend/                    # Backend Django REST
-│   ├── api/                   # Application principale
-│   ├── erp_backend/           # Configuration Django
-│   └── manage.py              # Script de gestion
-├── css/
-│   └── dashboard-premium.css  # Design ultra premium
-├── js/
-│   ├── api.js                 # Fonctions API
-│   ├── app.js                 # Application
-│   └── data.js                # Données
-├── index.html                 # Page de connexion
-├── dashboard-admin.html       # Dashboard administrateur
-├── dashboard-prof.html        # Dashboard enseignant
-├── dashboard-etudiant.html    # Dashboard étudiant
+### Frontend
+- **HTML5/CSS3etudiant.html    # Dashboard étudiant
 ├── dashboard-superadmin.html  # Dashboard super admin
 └── README.md
 ```
