@@ -40,9 +40,49 @@
                         <span class="nav-icon">📅</span>
                         <span class="nav-text">Emploi du temps</span>
                     </a>
+                    <a class="nav-item-premium" data-page="absence" onclick="navToPremium('absence',this)">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">Absences</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="cours" onclick="navToPremium('cours',this)">
+                        <span class="nav-icon">📚</span>
+                        <span class="nav-text">Cours</span>
+                    </a>
                     <a class="nav-item-premium" data-page="supports" onclick="navToPremium('supports',this)">
                         <span class="nav-icon">📄</span>
                         <span class="nav-text">Supports de cours</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="evaluation" onclick="navToPremium('evaluation',this)">
+                        <span class="nav-icon">✍️</span>
+                        <span class="nav-text">Évaluations</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-label">Services</div>
+                    <a class="nav-item-premium" data-page="demande" onclick="navToPremium('demande',this)">
+                        <span class="nav-icon">📨</span>
+                        <span class="nav-text">Demandes</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="reclamation" onclick="navToPremium('reclamation',this)">
+                        <span class="nav-icon">📢</span>
+                        <span class="nav-text">Réclamations</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="publications" onclick="navToPremium('publications',this)">
+                        <span class="nav-icon">📰</span>
+                        <span class="nav-text">Publications</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="sondage" onclick="navToPremium('sondage',this)">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Sondages</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="questionnaire" onclick="navToPremium('questionnaire',this)">
+                        <span class="nav-icon">📝</span>
+                        <span class="nav-text">Questionnaires</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="objetperdu" onclick="navToPremium('objetperdu',this)">
+                        <span class="nav-icon">🔍</span>
+                        <span class="nav-text">Objets perdus</span>
                     </a>
                 </div>
 
@@ -363,6 +403,110 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: ABSENCE -->
+                <div class="erp-page" id="page-absence" style="display:none">
+                    <div class="page-header">
+                        <h1 class="page-title">📋 Mes absences</h1>
+                        <p class="page-subtitle">Suivi de vos absences et présences</p>
+                    </div>
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: COURS -->
+                <div class="erp-page" id="page-cours" style="display:none">
+                    <div class="page-header">
+                        <h1 class="page-title">📚 Mes cours</h1>
+                        <p class="page-subtitle">Liste de vos cours et matières</p>
+                    </div>
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: EVALUATION -->
+                <div class="erp-page" id="page-evaluation" style="display:none">
+                    <div class="page-header">
+                        <h1 class="page-title">✍️ Évaluations</h1>
+                        <p class="page-subtitle">Calendrier des évaluations et examens</p>
+                    </div>
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: DEMANDE -->
+                <div class="erp-page" id="page-demande" style="display:none">
+                    <div class="page-header">
+                        <h1 class="page-title">📨 Mes demandes</h1>
+                        <p class="page-subtitle">Soumettre et suivre vos demandes administratives</p>
+                    </div>
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: PUBLICATIONS -->
+                <div class="erp-page" id="page-publications" style="display:none">
+                    <div class="page-header">
+                        <h1 class="page-title">📰 Publications</h1>
+                        <p class="page-subtitle">Actualités et annonces de l'université</p>
+                    </div>
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: SONDAGE -->
+                <div class="erp-page" id="page-sondage" style="display:none">
+                    <div class="page-header">
+                        <h1 class="page-title">📊 Sondages</h1>
+                        <p class="page-subtitle">Participez aux sondages de l'université</p>
+                    </div>
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: QUESTIONNAIRE -->
+                <div class="erp-page" id="page-questionnaire" style="display:none">
+                    <div class="page-header">
+                        <h1 class="page-title">📝 Questionnaires</h1>
+                        <p class="page-subtitle">Répondez aux questionnaires d'évaluation</p>
+                    </div>
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: OBJET PERDU -->
+                <div class="erp-page" id="page-objetperdu" style="display:none">
+                    <div class="page-header">
+                        <h1 class="page-title">🔍 Objets perdus</h1>
+                        <p class="page-subtitle">Déclarer ou rechercher des objets perdus</p>
+                    </div>
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Module en cours de développement</p>
                         </div>
                     </div>
                 </div>
