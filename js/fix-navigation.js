@@ -320,6 +320,7 @@ window.requireAuth = function(allowedRoles = []) {
             if (role === 'superadmin') return userRole === 'superadmin';
             if (role === 'professeur') return userRole === 'professeur';
             if (role === 'etudiant') return userRole === 'etudiant';
+            if (role === 'bureau_executif') return userRole === 'bureau_executif';
             return userRole === role;
         });
         

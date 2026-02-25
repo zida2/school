@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Bureau Exécutif – UniERP BF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard-premium.css?v=7.0">
+</head>
+<body class="dark-theme">
+
+    <div class="app-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar-ultra" id="sidebar" style="border-right-color: rgba(139, 92, 246, 0.1)">
+            <div class="sidebar-header">
+                <div class="logo-ultra">
+                    <div class="logo-icon-ultra" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)">👥</div>
+                    <div class="logo-text-ultra">
+                        <div class="logo-name-ultra">UniERP BF</div>
+                        <div class="logo-tag-ultra">Bureau Exécutif</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav-ultra">
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">PRINCIPAL</div>
+                    <a href="javascript:void(0)" class="nav-item-ultra active" data-page="dashboard" onclick="navToUltra('dashboard',this)">
+                        <span class="nav-icon-ultra">📊</span>
+                        <span class="nav-text-ultra">Tableau de bord</span>
+                        <span class="nav-indicator" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed)"></span>
+                    </a>
+                </div>
+
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">COMMUNICATION</div>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="messagerie" onclick="navToUltra('messagerie',this)">
+                        <span class="nav-icon-ultra">💬</span>
+                        <span class="nav-text-ultra">Messagerie interne</span>
+                        <span class="nav-badge-ultra" id="badgeMessages">0</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="publications" onclick="navToUltra('publications',this)">
+                        <span class="nav-icon-ultra">📰</span>
+                        <span class="nav-text-ultra">Publications</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="annonces" onclick="navToUltra('annonces',this)">
+                        <span class="nav-icon-ultra">📢</span>
+                        <span class="nav-text-ultra">Annonces</span>
+                    </a>
+                </div>
+
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">GESTION</div>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="sondages" onclick="navToUltra('sondages',this)">
+                        <span class="nav-icon-ultra">📊</span>
+                        <span class="nav-text-ultra">Sondages</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="evenements" onclick="navToUltra('evenements',this)">
+                        <span class="nav-icon-ultra">🎉</span>
+                        <span class="nav-text-ultra">Événements</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="membres" onclick="navToUltra('membres',this)">
+                        <span class="nav-icon-ultra">👥</span>
+                        <span class="nav-text-ultra">Membres du bureau</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-ultra">
+            <!-- TOPBAR -->
+            <header class="topbar-ultra">
+                <div class="topbar-left-ultra">
+                    <button class="btn-menu-ultra" onclick="toggleSidebarUltra()">☰</button>
+                    <div class="search-ultra">
+                        <span class="search-icon-ultra">🔍</span>
+                        <input type="text" class="search-input-ultra" placeholder="Rechercher...">
+                    </div>
+                </div>
+                <div class="topbar-right-ultra">
+                    <button class="topbar-btn-ultra">
+                        <span>🔔</span>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <div class="user-menu-ultra" onclick="logout()">
+                        <div class="user-avatar-ultra" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed)">BE</div>
+                        <div class="user-info-ultra">
+                            <div class="user-name-ultra">Bureau Exécutif</div>
+                            <div class="user-role-ultra">Membre</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT -->
+            <div class="content-ultra">
+                <!-- PAGE: DASHBOARD -->
+                <div class="page-ultra" id="page-dashboard">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Tableau de bord</h1>
+                            <p class="page-subtitle-ultra">Bureau Exécutif · Année 2024-2025</p>
+                        </div>
+                    </div>
+
+                    <!-- STATS -->
+                    <div class="stats-grid-ultra">
+                        <div class="stat-card-ultra primary-ultra">
+                            <div class="stat-icon-ultra">📰</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statPublications">0</div>
+                                <div class="stat-label-ultra">Publications</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-ultra success-ultra">
+                            <div class="stat-icon-ultra">🎉</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statEvenements">0</div>
+                                <div class="stat-label-ultra">Événements</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-ultra warning-ultra">
+                            <div class="stat-icon-ultra">📊</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statSondages">0</div>
+                                <div class="stat-label-ultra">Sondages actifs</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card-ultra primary-ultra">
+                            <div class="stat-icon-ultra">👥</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statMembres">0</div>
+                                <div class="stat-label-ultra">Membres</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACTIVITÉS RÉCENTES -->
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">📋 Activités récentes</h3>
+                        </div>
+                        <div class="card-body-ultra">
+                            <div id="activitesRecentes">
+                                <p style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucune activité récente</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: MESSAGERIE -->
+                <div class="page-ultra" id="page-messagerie" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">💬 Messagerie interne</h1>
+                            <p class="page-subtitle-ultra">Communication entre membres du bureau</p>
+                        </div>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalMessage')">+ Nouveau message</button>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:300px 1fr;gap:20px;height:600px">
+                        <!-- Liste des conversations -->
+                        <div class="card-ultra" style="overflow-y:auto">
+                            <div class="card-body-ultra">
+                                <div id="listeConversations">
+                                    <p style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucune conversation</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Zone de messages -->
+                        <div class="card-ultra" style="display:flex;flex-direction:column">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra" id="conversationTitre">Sélectionnez une conversation</h3>
+                            </div>
+                            <div class="card-body-ultra" style="flex:1;overflow-y:auto" id="zoneMessages">
+                                <p style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Sélectionnez une conversation pour voir les messages</p>
+                            </div>
+                            <div style="padding:20px;border-top:1px solid rgba(255,255,255,0.1)">
+                                <div style="display:flex;gap:10px">
+                                    <input type="text" class="form-input-ultra" placeholder="Votre message..." id="inputMessage">
+                                    <button class="btn-ultra btn-primary-ultra" onclick="envoyerMessage()">Envoyer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: PUBLICATIONS -->
+                <div class="page-ultra" id="page-publications" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">📰 Publications</h1>
+                            <p class="page-subtitle-ultra">Gérer les publications pour les étudiants</p>
+                        </div>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalPublication')">+ Nouvelle publication</button>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Titre</th>
+                                        <th>Catégorie</th>
+                                        <th>Statut</th>
+                                        <th>Vues</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyPublications">
+                                    <tr><td colspan="6" style="text-align:center;padding:40px">Aucune publication</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: SONDAGES -->
+                <div class="page-ultra" id="page-sondages" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">📊 Sondages</h1>
+                            <p class="page-subtitle-ultra">Créer et gérer les sondages</p>
+                        </div>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalSondage')">+ Nouveau sondage</button>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Titre</th>
+                                        <th>Date début</th>
+                                        <th>Date fin</th>
+                                        <th>Réponses</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodySondages">
+                                    <tr><td colspan="6" style="text-align:center;padding:40px">Aucun sondage</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: ÉVÉNEMENTS -->
+                <div class="page-ultra" id="page-evenements" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">🎉 Événements</h1>
+                            <p class="page-subtitle-ultra">Organiser des événements étudiants</p>
+                        </div>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalEvenement')">+ Nouvel événement</button>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:20px" id="listeEvenements">
+                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5);grid-column:1/-1">Aucun événement</p>
+                    </div>
+                </div>
+
+                <!-- PAGE: MEMBRES -->
+                <div class="page-ultra" id="page-membres" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">👥 Membres du bureau</h1>
+                            <p class="page-subtitle-ultra">Gestion des membres du bureau exécutif</p>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px" id="listeMembres">
+                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5);grid-column:1/-1">Chargement...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/mock-data.js?v=6"></script>
+    <script src="js/api.js?v=6"></script>
+    <script src="js/fix-navigation.js?v=6"></script>
+    <script src="js/theme-toggle.js?v=6"></script>
+
+    <script>
+        function navToUltra(page, el) {
+            document.querySelectorAll('.page-ultra').forEach(p => p.style.display = 'none');
+            const target = document.getElementById('page-' + page);
+            if (target) target.style.display = 'block';
+            
+            document.querySelectorAll('.nav-item-ultra').forEach(i => i.classList.remove('active'));
+            if (el) el.classList.add('active');
+        }
+
+        function toggleSidebarUltra() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        }
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const icons = { success: '✅', danger: '❌', warning: '⚠️', info: 'ℹ️' };
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            const colors = { success: '#059669', danger: '#dc2626', warning: '#d97706', info: '#2563eb' };
+            toast.style.cssText = `background:rgba(10,14,39,0.95);border-radius:12px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:12px;min-width:280px;border-left:4px solid ${colors[type]}`;
+            toast.innerHTML = `<span style="font-size:18px">${icons[type]}</span><span style="font-size:14px;font-weight:500;flex:1;color:#fff">${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { if (toast.parentElement) toast.remove(); }, 3500);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = requireAuth(['bureau_executif']);
+            if (user) {
+                // Charger les données
+                showToast('Bienvenue dans l\'espace Bureau Exécutif', 'success');
+            }
+        });
+    </script>
+</body>
+</html>
