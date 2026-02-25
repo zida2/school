@@ -3,7 +3,13 @@
  * Connexion au backend Django REST Framework
  */
 
+// Configuration de l'API
+// Pour le développement local: 'http://localhost:8000/api'
+// Pour la production: Remplacer par votre URL PythonAnywhere
 const API_BASE = 'http://localhost:8000/api';
+
+// IMPORTANT: Après déploiement du backend sur PythonAnywhere,
+// remplacer par: 'https://votrenom.pythonanywhere.com/api'
 
 // ===== GESTION DES TOKENS =====
 const Auth = {
