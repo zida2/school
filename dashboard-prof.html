@@ -26,7 +26,7 @@
             <nav class="sidebar-nav-ultra">
                 <div class="nav-section-ultra">
                     <div class="nav-label-ultra">PRINCIPAL</div>
-                    <a class="nav-item-ultra active" data-page="dashboard" onclick="navToUltra('dashboard',this)">
+                    <a href="javascript:void(0)" class="nav-item-ultra active" data-page="dashboard" onclick="navToUltra('dashboard',this)">
                         <span class="nav-icon-ultra">📊</span>
                         <span class="nav-text-ultra">Tableau de bord</span>
                         <span class="nav-indicator" style="background: linear-gradient(135deg, #10b981, #059669)"></span>
@@ -35,23 +35,23 @@
 
                 <div class="nav-section-ultra">
                     <div class="nav-label-ultra">ENSEIGNEMENT</div>
-                    <a class="nav-item-ultra" data-page="emploi" onclick="navToUltra('emploi',this)">
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="emploi" onclick="navToUltra('emploi',this)">
                         <span class="nav-icon-ultra">📅</span>
                         <span class="nav-text-ultra">Emploi du temps</span>
                     </a>
-                    <a class="nav-item-ultra" data-page="notes" onclick="navToUltra('notes',this)">
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="notes" onclick="navToUltra('notes',this)">
                         <span class="nav-icon-ultra">📝</span>
                         <span class="nav-text-ultra">Saisie des notes</span>
                     </a>
-                    <a class="nav-item-ultra" data-page="presences" onclick="navToUltra('presences',this)">
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="presences" onclick="navToUltra('presences',this)">
                         <span class="nav-icon-ultra">✅</span>
                         <span class="nav-text-ultra">Présences</span>
                     </a>
-                    <a class="nav-item-ultra" data-page="supports" onclick="navToUltra('supports',this)">
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="supports" onclick="navToUltra('supports',this)">
                         <span class="nav-icon-ultra">📄</span>
                         <span class="nav-text-ultra">Supports de cours</span>
                     </a>
-                    <a class="nav-item-ultra" data-page="etudiants" onclick="navToUltra('etudiants',this)">
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="etudiants" onclick="navToUltra('etudiants',this)">
                         <span class="nav-icon-ultra">🎓</span>
                         <span class="nav-text-ultra">Mes étudiants</span>
                     </a>
@@ -514,9 +514,15 @@
     <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
         function navToUltra(page, el) {
+            console.log('🔄 Navigation vers:', page);
             document.querySelectorAll('.page-ultra').forEach(p => p.style.display = 'none');
             const target = document.getElementById('page-' + page);
-            if (target) target.style.display = 'block';
+            if (target) {
+                target.style.display = 'block';
+                console.log('✅ Page affichée:', page);
+            } else {
+                console.error('❌ Page non trouvée:', 'page-' + page);
+            }
             
             document.querySelectorAll('.nav-item-ultra').forEach(i => i.classList.remove('active'));
             if (el) el.classList.add('active');
