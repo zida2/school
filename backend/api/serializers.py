@@ -5,7 +5,10 @@ from .models import (
     Utilisateur, Universite, AnneeAcademique, Filiere, Matiere,
     Enseignant, Etudiant, Note, Paiement, EmploiDuTemps,
     Presence, SupportCours, Notification, ReclamationNote,
-    Evaluation, NoteEvaluation
+    Evaluation, NoteEvaluation, MembreBureau, Publication,
+    Sondage, QuestionSondage, OptionQuestion, ReponseSondage,
+    Evenement, InscriptionEvenement, MessageBureau,
+    DemandeAdministrative, ObjetPerdu
 )
 
 
@@ -382,4 +385,177 @@ class ReclamationNoteSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         if hasattr(user, 'etudiant'):
             validated_data['etudiant'] = user.etudiant
+        return super().create(validated_data)
+
+
+# ===== BUREAU EXÉCUTIF =====
+class MembreBureauSerializer(serializers.ModelSerializer):
+    utilisateur_nom = serializers.SerializerMethodField()
+    utilisateur_email = serializers.CharField(source='utilisateur.email', read_only=True)
+    etudiant_matricule = serializers.CharField(source='etudiant.matricule', read_only=True)
+    
+    class Meta:
+        model = MembreBureau
+        fields = '__all__'
+    
+    def get_utilisateur_nom(self, obj):
+        return obj.utilisateur.get_full_name()
+
+
+class PublicationSerializer(serializers.ModelSerializer):
+    auteur_nom = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Publication
+        fields = '__all__'
+        read_only_fields = ['auteur', 'date_creation', 'vues']
+    
+    def get_auteur_nom(self, obj):
+        return obj.auteur.get_full_name()
+    
+    def create(self, validated_data):
+        validated_data['auteur'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+class OptionQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OptionQuestion
+        fields = '__all__'
+
+
+class QuestionSondageSerializer(serializers.ModelSerializer):
+    options = OptionQuestionSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = QuestionSondage
+        fields = '__all__'
+
+
+class SondageSerializer(serializers.ModelSerializer):
+    createur_nom = serializers.SerializerMethodField()
+    questions = QuestionSondageSerializer(many=True, read_only=True)
+    nb_reponses = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Sondage
+        fields = '__all__'
+        read_only_fields = ['createur', 'date_creation']
+    
+    def get_createur_nom(self, obj):
+        return obj.createur.get_full_name()
+    
+    def get_nb_reponses(self, obj):
+        return obj.reponses.values('etudiant').distinct().count()
+    
+    def create(self, validated_data):
+        validated_data['createur'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+class ReponseSondageSerializer(serializers.ModelSerializer):
+    etudiant_nom = serializers.SerializerMethodField()
+    question_texte = serializers.CharField(source='question.texte', read_only=True)
+    option_texte = serializers.CharField(source='option.texte', read_only=True)
+    
+    class Meta:
+        model = ReponseSondage
+        fields = '__all__'
+        read_only_fields = ['etudiant', 'date_reponse']
+    
+    def get_etudiant_nom(self, obj):
+        return obj.etudiant.get_full_name() if obj.etudiant else 'Anonyme'
+
+
+class InscriptionEvenementSerializer(serializers.ModelSerializer):
+    etudiant_nom = serializers.SerializerMethodField()
+    etudiant_matricule = serializers.CharField(source='etudiant.matricule', read_only=True)
+    evenement_titre = serializers.CharField(source='evenement.titre', read_only=True)
+    
+    class Meta:
+        model = InscriptionEvenement
+        fields = '__all__'
+        read_only_fields = ['date_inscription']
+    
+    def get_etudiant_nom(self, obj):
+        return obj.etudiant.get_full_name()
+
+
+class EvenementSerializer(serializers.ModelSerializer):
+    organisateur_nom = serializers.SerializerMethodField()
+    nb_inscrits = serializers.SerializerMethodField()
+    inscriptions = InscriptionEvenementSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Evenement
+        fields = '__all__'
+        read_only_fields = ['organisateur', 'date_creation']
+    
+    def get_organisateur_nom(self, obj):
+        return obj.organisateur.get_full_name()
+    
+    def get_nb_inscrits(self, obj):
+        return obj.inscriptions.filter(statut='confirme').count()
+    
+    def create(self, validated_data):
+        validated_data['organisateur'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+class MessageBureauSerializer(serializers.ModelSerializer):
+    expediteur_nom = serializers.SerializerMethodField()
+    destinataire_nom = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = MessageBureau
+        fields = '__all__'
+        read_only_fields = ['expediteur', 'date_envoi']
+    
+    def get_expediteur_nom(self, obj):
+        return obj.expediteur.get_full_name()
+    
+    def get_destinataire_nom(self, obj):
+        return obj.destinataire.get_full_name() if obj.destinataire else 'Groupe'
+    
+    def create(self, validated_data):
+        validated_data['expediteur'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+class DemandeAdministrativeSerializer(serializers.ModelSerializer):
+    etudiant_nom = serializers.SerializerMethodField()
+    etudiant_matricule = serializers.CharField(source='etudiant.matricule', read_only=True)
+    traite_par_nom = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = DemandeAdministrative
+        fields = '__all__'
+        read_only_fields = ['etudiant', 'date_demande', 'date_traitement', 'traite_par']
+    
+    def get_etudiant_nom(self, obj):
+        return obj.etudiant.get_full_name()
+    
+    def get_traite_par_nom(self, obj):
+        return obj.traite_par.get_full_name() if obj.traite_par else None
+    
+    def create(self, validated_data):
+        user = self.context['request'].user
+        if hasattr(user, 'etudiant'):
+            validated_data['etudiant'] = user.etudiant
+        return super().create(validated_data)
+
+
+class ObjetPerduSerializer(serializers.ModelSerializer):
+    declarant_nom = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = ObjetPerdu
+        fields = '__all__'
+        read_only_fields = ['declarant', 'date_declaration']
+    
+    def get_declarant_nom(self, obj):
+        return obj.declarant.get_full_name()
+    
+    def create(self, validated_data):
+        validated_data['declarant'] = self.context['request'].user
         return super().create(validated_data)

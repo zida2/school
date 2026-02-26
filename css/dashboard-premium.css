@@ -357,13 +357,20 @@ body.dark-theme {
 }
 
 /* ===== CONTENT ===== */
-.content-ultra {
+.content-ultra,
+.content-area {
     flex: 1;
     padding: 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    height: calc(100vh - 70px);
 }
 
-.page-ultra {
+.page-ultra,
+.erp-page {
     animation: fadeIn 0.3s ease;
+    min-height: 100%;
 }
 
 @keyframes fadeIn {
@@ -669,7 +676,7 @@ body.dark-theme {
 
 .modal-content-ultra,
 .modal-premium {
-    background: rgba(26, 31, 58, 0.95);
+    background: rgba(26, 31, 58, 0.98);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
@@ -678,6 +685,7 @@ body.dark-theme {
     max-height: 90vh;
     overflow-y: auto;
     animation: modalAppear 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 @keyframes modalAppear {
@@ -744,11 +752,13 @@ body.dark-theme {
 }
 
 /* ===== FORMS ===== */
-.form-group-ultra {
+.form-group-ultra,
+.form-group-premium {
     margin-bottom: 20px;
 }
 
-.form-label-ultra {
+.form-label-ultra,
+.form-label-premium {
     display: block;
     font-size: 13px;
     font-weight: 600;
@@ -756,7 +766,8 @@ body.dark-theme {
     margin-bottom: 8px;
 }
 
-.form-input-ultra {
+.form-input-ultra,
+.form-input-premium {
     width: 100%;
     padding: 12px 16px;
     background: rgba(255, 255, 255, 0.05);
@@ -764,42 +775,57 @@ body.dark-theme {
     border-radius: 10px;
     font-size: 14px;
     color: #ffffff;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
     transition: all 0.3s ease;
 }
 
-.form-input-ultra::placeholder {
+.form-input-ultra::placeholder,
+.form-input-premium::placeholder {
     color: rgba(255, 255, 255, 0.3);
 }
 
-.form-input-ultra:focus {
+.form-input-ultra:focus,
+.form-input-premium:focus {
     outline: none;
     background: rgba(255, 255, 255, 0.08);
-    border-color: #6366f1;
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    border-color: #F59E0B;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
 }
 
 /* Styles pour les options des selects */
-.form-input-ultra option {
+.form-input-ultra option,
+.form-input-premium option {
     background: #1a1f3a;
     color: #ffffff;
     padding: 10px;
 }
 
 .form-input-ultra option:hover,
-.form-input-ultra option:checked {
-    background: #6366f1;
+.form-input-ultra option:checked,
+.form-input-premium option:hover,
+.form-input-premium option:checked {
+    background: #F59E0B;
     color: #ffffff;
 }
 
 /* Style pour les selects spécifiquement */
-select.form-input-ultra {
+select.form-input-ultra,
+select.form-input-premium {
     cursor: pointer;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
     padding-right: 36px;
+}
+
+/* Style pour les textarea */
+textarea.form-input-ultra,
+textarea.form-input-premium {
+    resize: vertical;
+    min-height: 100px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -868,7 +894,7 @@ select.form-input-ultra {
 .nav-icon { font-size: 20px; width: 24px; text-align: center; }
 .nav-text { flex: 1; font-size: 14px; font-weight: 500; }
 
-.main-wrapper { flex: 1; margin-left: 280px; display: flex; flex-direction: column; min-height: 100vh; position: relative; z-index: 1; }
+.main-wrapper { flex: 1; margin-left: 280px; display: flex; flex-direction: column; min-height: 100vh; max-height: 100vh; overflow: hidden; position: relative; z-index: 1; }
 .topbar-premium { height: 70px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; position: sticky; top: 0; z-index: 50; }
 .topbar-left { display: flex; align-items: center; gap: 20px; }
 .btn-menu-toggle { width: 40px; height: 40px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; color: #ffffff; cursor: pointer; transition: all 0.3s ease; font-size: 18px; display: none; }
@@ -1362,12 +1388,19 @@ select.form-input-ultra {
         height: auto;
     }
     
-    /* Empêcher le débordement horizontal */
+    /* Empêcher le débordement horizontal mais permettre le scroll vertical */
     .app-wrapper,
     .main-content-ultra,
-    .card-ultra,
-    .card-body-ultra {
+    .card-ultra {
         overflow-x: hidden;
+        overflow-y: auto;
+    }
+    
+    .card-body-premium,
+    .card-body-ultra {
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
     }
     
     /* Assurer que les tableaux ne cassent pas la mise en page */

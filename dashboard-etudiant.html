@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Étudiant – ERP Universitaire</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/dashboard-premium.css?v=7.0">
+    <link rel="stylesheet" href="css/dashboard-premium.css?v=12">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body class="dark-theme">
@@ -39,6 +39,10 @@
                     <a class="nav-item-premium" data-page="emploi" onclick="navToPremium('emploi',this)">
                         <span class="nav-icon">📅</span>
                         <span class="nav-text">Emploi du temps</span>
+                    </a>
+                    <a class="nav-item-premium" data-page="enseignants" onclick="navToPremium('enseignants',this)">
+                        <span class="nav-icon">👨‍🏫</span>
+                        <span class="nav-text">Mes enseignants</span>
                     </a>
                     <a class="nav-item-premium" data-page="absence" onclick="navToPremium('absence',this)">
                         <span class="nav-icon">📋</span>
@@ -294,6 +298,22 @@
                     </div>
                 </div>
 
+                <!-- PAGE: MES ENSEIGNANTS -->
+                <div class="erp-page" id="page-enseignants" style="display:none">
+                    <div class="page-header">
+                        <div class="page-title-row">
+                            <div>
+                                <h1 class="page-title">👨‍🏫 Mes enseignants</h1>
+                                <p class="page-subtitle">Liste de vos enseignants et leurs matières</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px" id="listeEnseignants">
+                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5);grid-column:1/-1">Chargement...</p>
+                    </div>
+                </div>
+
                 <!-- PAGE: SUPPORTS -->
                 <div class="erp-page" id="page-supports" style="display:none">
                     <div class="page-header">
@@ -511,17 +531,18 @@
                     <div class="page-header">
                         <div>
                             <h1 class="page-title">📨 Mes demandes</h1>
-                            <p class="page-subtitle">Soumettre et suivre vos demandes administratives</p>
+                            <p class="page-subtitle">Soumettre et suivre vos demandes administratives et pédagogiques</p>
                         </div>
-                        <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalDemande')">+ Nouvelle demande</button>
+                        <button class="btn-premium btn-primary" onclick="openModalDemande()">+ Nouvelle demande</button>
                     </div>
                     
                     <div class="card-premium">
                         <div class="card-body-premium" style="padding:0">
-                            <table class="table-ultra">
+                            <table class="table-premium">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
+                                        <th>Destinataire</th>
                                         <th>Type</th>
                                         <th>Objet</th>
                                         <th>Statut</th>
@@ -529,7 +550,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyDemandes">
-                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune demande</td></tr>
+                                    <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -544,7 +565,7 @@
                     </div>
                     
                     <div id="listePublications" style="display:grid;gap:20px">
-                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Aucune publication</p>
+                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Chargement...</p>
                     </div>
                 </div>
 
@@ -556,7 +577,7 @@
                     </div>
                     
                     <div id="listeSondages" style="display:grid;gap:20px">
-                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Aucun sondage disponible</p>
+                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Chargement...</p>
                     </div>
                 </div>
 
@@ -568,7 +589,38 @@
                     </div>
                     
                     <div id="listeQuestionnaires" style="display:grid;gap:20px">
-                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Aucun questionnaire disponible</p>
+                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Chargement...</p>
+                    </div>
+                </div>
+
+                <!-- PAGE: RECLAMATION -->
+                <div class="erp-page" id="page-reclamation" style="display:none">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">📢 Mes réclamations</h1>
+                            <p class="page-subtitle">Suivez vos réclamations sur les notes</p>
+                        </div>
+                        <button class="btn-premium btn-primary" onclick="openModalReclamation()">+ Nouvelle réclamation</button>
+                    </div>
+                    
+                    <div class="card-premium">
+                        <div class="card-body-premium" style="padding:0">
+                            <table class="table-premium">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Matière</th>
+                                        <th>Type de problème</th>
+                                        <th>Description</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyReclamations">
+                                    <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -579,23 +631,24 @@
                             <h1 class="page-title">🔍 Objets perdus</h1>
                             <p class="page-subtitle">Déclarer ou rechercher des objets perdus</p>
                         </div>
-                        <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalObjetPerdu')">+ Déclarer un objet</button>
+                        <button class="btn-premium btn-primary" onclick="openModalObjetPerdu()">+ Déclarer un objet</button>
                     </div>
                     
                     <div class="card-premium">
                         <div class="card-body-premium" style="padding:0">
-                            <table class="table-ultra">
+                            <table class="table-premium">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
                                         <th>Objet</th>
+                                        <th>Description</th>
                                         <th>Lieu</th>
                                         <th>Type</th>
                                         <th>Statut</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyObjetsPerdu">
-                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucun objet déclaré</td></tr>
+                                    <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -620,7 +673,15 @@
                     
                     <input type="hidden" id="reclamationNoteId" name="note_id">
                     
-                    <div class="form-group-premium">
+                    <!-- Sélecteur de note (visible uniquement si ouvert depuis l'onglet réclamations) -->
+                    <div class="form-group-premium" id="groupeSelectNote" style="display:none">
+                        <label class="form-label-premium">Sélectionner la note concernée *</label>
+                        <select id="reclamationSelectNote" class="form-input-premium" onchange="updateNoteReclamation()">
+                            <option value="">Chargement...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group-premium" id="groupeMatiereReadonly">
                         <label class="form-label-premium">Matière concernée</label>
                         <input type="text" class="form-input-premium" id="reclamationMatiere" readonly style="background:rgba(255,255,255,0.03);">
                     </div>
@@ -666,11 +727,119 @@
         </div>
     </div>
 
+    <!-- MODAL DEMANDE -->
+    <div class="modal-overlay-premium" id="modalDemande" style="display:none">
+        <div class="modal-premium">
+            <div class="modal-header-premium">
+                <h3 class="modal-title-premium">📨 Nouvelle demande</h3>
+                <button class="modal-close-premium" onclick="closeModalDemande()">✕</button>
+            </div>
+            <form onsubmit="soumettreDemande(event)">
+                <div class="modal-body-premium">
+                    <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:14px;margin-bottom:20px;display:flex;align-items:start;gap:12px">
+                        <span style="font-size:20px;flex-shrink:0">💡</span>
+                        <div style="color:#fbbf24;font-size:13px;line-height:1.5">
+                            <strong>Conseil:</strong> Soyez précis dans votre demande pour obtenir une réponse rapide et adaptée.
+                        </div>
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Destinataire *</label>
+                        <select id="demandeDestinataire" name="destinataire" required class="form-input-premium" onchange="updateTypeDemande()">
+                            <option value="">Sélectionner</option>
+                            <option value="administration">🏛️ Administration (Service administratif)</option>
+                            <option value="professeur">👨‍🏫 Professeur (Enseignant spécifique)</option>
+                        </select>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:6px">
+                            Choisissez qui doit traiter votre demande
+                        </div>
+                    </div>
+
+                    <div class="form-group-premium" id="groupeProfesseur" style="display:none">
+                        <label class="form-label-premium">Professeur concerné *</label>
+                        <select id="demandeProfesseur" name="professeur" class="form-input-premium">
+                            <option value="">Chargement...</option>
+                        </select>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:6px">
+                            Votre demande sera envoyée directement à ce professeur
+                        </div>
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Type de demande *</label>
+                        <select id="demandeType" name="type" required class="form-input-premium">
+                            <option value="">Sélectionner d'abord un destinataire</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Objet *</label>
+                        <input type="text" name="objet" required class="form-input-premium" placeholder="Résumé de votre demande">
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Description *</label>
+                        <textarea name="description" required class="form-input-premium" rows="5" placeholder="Décrivez votre demande en détail..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer-premium">
+                    <button type="button" class="btn-premium btn-outline" onclick="closeModalDemande()">Annuler</button>
+                    <button type="submit" class="btn-premium btn-primary">📤 Envoyer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL OBJET PERDU -->
+    <div class="modal-overlay-premium" id="modalObjetPerdu" style="display:none">
+        <div class="modal-premium">
+            <div class="modal-header-premium">
+                <h3 class="modal-title-premium">🔍 Déclarer un objet perdu/trouvé</h3>
+                <button class="modal-close-premium" onclick="closeModalObjetPerdu()">✕</button>
+            </div>
+            <form onsubmit="soumettreObjetPerdu(event)">
+                <div class="modal-body-premium">
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Type *</label>
+                        <select name="type" required class="form-input-premium">
+                            <option value="perdu">J'ai perdu un objet</option>
+                            <option value="trouve">J'ai trouvé un objet</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Nom de l'objet *</label>
+                        <input type="text" name="nom_objet" required class="form-input-premium" placeholder="Ex: Téléphone Samsung, Clés, Sac...">
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Description *</label>
+                        <textarea name="description" required class="form-input-premium" rows="3" placeholder="Décrivez l'objet (couleur, marque, signes distinctifs...)"></textarea>
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Lieu *</label>
+                        <input type="text" name="lieu" required class="form-input-premium" placeholder="Ex: Amphithéâtre A, Bibliothèque, Cantine...">
+                    </div>
+
+                    <div class="form-group-premium">
+                        <label class="form-label-premium">Date</label>
+                        <input type="date" name="date" class="form-input-premium">
+                    </div>
+                </div>
+                <div class="modal-footer-premium">
+                    <button type="button" class="btn-premium btn-outline" onclick="closeModalObjetPerdu()">Annuler</button>
+                    <button type="submit" class="btn-premium btn-primary">📤 Déclarer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Charger les scripts externes d'abord -->
-    <script src="js/mock-data.js?v=6"></script>
-    <script src="js/api.js?v=6"></script>
-    <script src="js/fix-navigation.js?v=6"></script>
-    <script src="js/theme-toggle.js?v=6"></script>
+    <script src="js/mock-data.js?v=10"></script>
+    <script src="js/api.js?v=10"></script>
+    <script src="js/fix-navigation.js?v=10"></script>
+    <script src="js/theme-toggle.js?v=10"></script>
 
     <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
@@ -689,6 +858,20 @@
                 chargerEmploi();
             } else if (page === 'supports') {
                 chargerSupports();
+            } else if (page === 'demande') {
+                chargerDemandes();
+            } else if (page === 'publications') {
+                chargerPublications();
+            } else if (page === 'sondage') {
+                chargerSondages();
+            } else if (page === 'questionnaire') {
+                chargerQuestionnaires();
+            } else if (page === 'objetperdu') {
+                chargerObjetsPerdu();
+            } else if (page === 'reclamation') {
+                chargerReclamations();
+            } else if (page === 'enseignants') {
+                chargerMesEnseignants();
             }
         }
 
@@ -697,14 +880,19 @@
         }
 
         function ouvrirReclamation(noteId, matiere, noteCC, noteExamen) {
+            // Ouverture depuis une note spécifique (depuis la page notes)
             document.getElementById('reclamationNoteId').value = noteId;
             document.getElementById('reclamationMatiere').value = matiere;
             document.getElementById('reclamationCC').value = noteCC || 'Non saisie';
             document.getElementById('reclamationExamen').value = noteExamen || 'Non saisie';
             
+            // Cacher le sélecteur, afficher les champs en lecture seule
+            document.getElementById('groupeSelectNote').style.display = 'none';
+            document.getElementById('groupeMatiereReadonly').style.display = 'block';
+            
             const modal = document.getElementById('modalReclamation');
             if (modal) {
-                modal.classList.add('open');
+                modal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             }
         }
@@ -712,8 +900,55 @@
         function closeModalReclamation() {
             const modal = document.getElementById('modalReclamation');
             if (modal) {
-                modal.classList.remove('open');
+                modal.style.display = 'none';
                 document.body.style.overflow = '';
+            }
+        }
+
+        let notesDisponibles = [];
+
+        async function chargerNotesPourReclamation() {
+            try {
+                const dashboard = await API.getDashboardEtudiant();
+                notesDisponibles = dashboard.notes || [];
+                
+                const select = document.getElementById('reclamationSelectNote');
+                if (notesDisponibles.length === 0) {
+                    select.innerHTML = '<option value="">Aucune note disponible</option>';
+                    return;
+                }
+                
+                select.innerHTML = '<option value="">Sélectionner une matière</option>' + 
+                    notesDisponibles.map(n => 
+                        `<option value="${n.id}" data-matiere="${n.matiere_nom}" data-cc="${n.note_cc || ''}" data-examen="${n.note_examen || ''}">
+                            ${n.matiere_nom} - CC: ${n.note_cc || '-'} / Examen: ${n.note_examen || '-'}
+                        </option>`
+                    ).join('');
+                
+                // Afficher le sélecteur, cacher les champs en lecture seule
+                document.getElementById('groupeSelectNote').style.display = 'block';
+                document.getElementById('groupeMatiereReadonly').style.display = 'none';
+                
+                // Vider les champs
+                document.getElementById('reclamationNoteId').value = '';
+                document.getElementById('reclamationMatiere').value = '';
+                document.getElementById('reclamationCC').value = '';
+                document.getElementById('reclamationExamen').value = '';
+            } catch (err) {
+                console.error('Erreur chargement notes:', err);
+                showToast('Erreur lors du chargement des notes', 'danger');
+            }
+        }
+
+        function updateNoteReclamation() {
+            const select = document.getElementById('reclamationSelectNote');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (selectedOption.value) {
+                document.getElementById('reclamationNoteId').value = selectedOption.value;
+                document.getElementById('reclamationMatiere').value = selectedOption.dataset.matiere;
+                document.getElementById('reclamationCC').value = selectedOption.dataset.cc || 'Non saisie';
+                document.getElementById('reclamationExamen').value = selectedOption.dataset.examen || 'Non saisie';
             }
         }
 
@@ -722,9 +957,15 @@
             const form = e.target;
             const formData = new FormData(form);
             
+            const noteId = document.getElementById('reclamationNoteId').value;
+            if (!noteId) {
+                showToast('Veuillez sélectionner une note', 'warning');
+                return;
+            }
+            
             try {
                 const data = {
-                    note: parseInt(document.getElementById('reclamationNoteId').value),
+                    note: parseInt(noteId),
                     type_probleme: formData.get('type_probleme'),
                     description: formData.get('description'),
                     note_attendue: formData.get('note_attendue') || '',
@@ -743,11 +984,18 @@
 
                 if (!response.ok) throw new Error('Erreur lors de l\'envoi');
 
-                alert('✅ Réclamation envoyée avec succès! L\'enseignant sera notifié.');
+                showToast('✅ Réclamation envoyée avec succès! L\'enseignant sera notifié.', 'success');
                 closeModalReclamation();
                 form.reset();
+                
+                // Recharger la liste des réclamations si on est sur cette page
+                const pageReclamation = document.getElementById('page-reclamation');
+                if (pageReclamation && pageReclamation.style.display !== 'none') {
+                    chargerReclamations();
+                }
             } catch (err) {
-                alert('❌ Erreur: ' + err.message);
+                console.error('Erreur:', err);
+                showToast('❌ Erreur: ' + err.message, 'danger');
             }
         }
 
@@ -1097,6 +1345,936 @@
 
         function imprimerEmploi() {
             window.print();
+        }
+
+        // ========== MES ENSEIGNANTS ==========
+
+        async function chargerMesEnseignants() {
+            console.log('🔍 Chargement des enseignants...');
+            try {
+                const dashboard = await API.getDashboardEtudiant();
+                console.log('📊 Dashboard reçu:', dashboard);
+                const notes = dashboard.notes || [];
+                console.log('📝 Notes:', notes);
+                
+                // Grouper les matières par enseignant
+                const enseignantsMap = new Map();
+                notes.forEach(note => {
+                    console.log('Note:', note);
+                    if (note.enseignant_id && note.enseignant_nom) {
+                        if (!enseignantsMap.has(note.enseignant_id)) {
+                            enseignantsMap.set(note.enseignant_id, {
+                                id: note.enseignant_id,
+                                nom: note.enseignant_nom,
+                                matieres: []
+                            });
+                        }
+                        
+                        const enseignant = enseignantsMap.get(note.enseignant_id);
+                        if (!enseignant.matieres.includes(note.matiere_nom)) {
+                            enseignant.matieres.push(note.matiere_nom);
+                        }
+                    }
+                });
+                
+                console.log('👨‍🏫 Enseignants trouvés:', enseignantsMap.size);
+                const mesEnseignants = Array.from(enseignantsMap.values());
+                const container = document.getElementById('listeEnseignants');
+                
+                if (mesEnseignants.length === 0) {
+                    console.log('⚠️ Aucun enseignant trouvé');
+                    container.innerHTML = `
+                        <div style="grid-column:1/-1;text-align:center;padding:60px">
+                            <div style="font-size:48px;margin-bottom:20px;opacity:0.3">👨‍🏫</div>
+                            <h3 style="color:rgba(255,255,255,0.8);margin-bottom:12px;font-size:18px">Aucun enseignant trouvé</h3>
+                            <p style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:20px">
+                                Vos enseignants apparaîtront ici une fois que vos notes seront saisies.
+                            </p>
+                            <div style="padding:16px;background:rgba(245,158,11,0.1);border-radius:10px;border:1px solid rgba(245,158,11,0.2);max-width:500px;margin:0 auto">
+                                <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6">
+                                    💡 <strong>Info:</strong> Les enseignants sont automatiquement détectés à partir de vos notes.<br>
+                                    Si vous n'avez pas encore de notes, cette liste sera vide.
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                console.log('✅ Affichage de', mesEnseignants.length, 'enseignant(s)');
+                container.innerHTML = mesEnseignants.map(e => `
+                    <div class="card-premium" style="transition:all 0.3s ease">
+                        <div class="card-body-premium">
+                            <!-- Avatar et nom -->
+                            <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.05)">
+                                <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#F59E0B,#D97706);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:0 4px 12px rgba(245,158,11,0.3)">
+                                    👨‍🏫
+                                </div>
+                                <div style="flex:1">
+                                    <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px">${e.nom}</h3>
+                                    <div style="font-size:13px;color:rgba(255,255,255,0.6)">
+                                        ${e.matieres.length} matière${e.matieres.length > 1 ? 's' : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Liste des matières -->
+                            <div style="margin-bottom:16px">
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:10px;font-weight:600">MATIÈRES ENSEIGNÉES</div>
+                                <div style="display:flex;flex-direction:column;gap:8px">
+                                    ${e.matieres.map(m => `
+                                        <div style="padding:8px 12px;background:rgba(245,158,11,0.1);border-radius:8px;border:1px solid rgba(245,158,11,0.2);font-size:13px;color:rgba(255,255,255,0.9)">
+                                            📚 ${m}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <!-- Actions -->
+                            <div style="display:flex;gap:8px">
+                                <button class="btn-premium btn-outline" style="flex:1;padding:10px;font-size:13px" onclick="contacterEnseignant(${e.id}, '${e.nom.replace(/'/g, "\\'")}')">
+                                    📨 Contacter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error('❌ Erreur chargement enseignants:', err);
+                document.getElementById('listeEnseignants').innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:60px">
+                        <div style="font-size:48px;margin-bottom:20px;opacity:0.3">⚠️</div>
+                        <h3 style="color:rgba(255,255,255,0.8);margin-bottom:12px;font-size:18px">Erreur de chargement</h3>
+                        <p style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:20px">
+                            Impossible de charger la liste des enseignants.
+                        </p>
+                        <button class="btn-premium btn-primary" onclick="chargerMesEnseignants()">
+                            🔄 Réessayer
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function contacterEnseignant(enseignantId, enseignantNom) {
+            // Ouvrir le modal de demande avec le professeur pré-sélectionné
+            openModalDemande();
+            
+            // Attendre que le modal soit ouvert et les professeurs chargés
+            setTimeout(() => {
+                document.getElementById('demandeDestinataire').value = 'professeur';
+                updateTypeDemande();
+                
+                // Attendre que la liste des professeurs soit chargée
+                setTimeout(() => {
+                    document.getElementById('demandeProfesseur').value = enseignantId;
+                }, 300);
+            }, 100);
+        }
+
+        // ========== FONCTIONS SERVICES ==========
+
+        async function chargerDemandes() {
+            try {
+                const demandes = await API.get('/demandes-administratives/');
+                const tbody = document.getElementById('tbodyDemandes');
+                
+                if (!demandes || demandes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucune demande pour le moment</td></tr>';
+                    return;
+                }
+
+                const destinataireLabels = { 'administration': 'Administration', 'professeur': 'Professeur' };
+                const statutColors = {
+                    'en_attente': 'warning',
+                    'en_cours': 'primary',
+                    'traitee': 'success',
+                    'rejetee': 'danger'
+                };
+
+                tbody.innerHTML = demandes.map(d => `
+                    <tr>
+                        <td>${formatDate(d.date_creation)}</td>
+                        <td>
+                            <div style="display:flex;flex-direction:column;gap:4px">
+                                <span style="font-weight:600">${destinataireLabels[d.destinataire] || d.destinataire}</span>
+                                ${d.professeur_nom ? `
+                                    <span style="font-size:12px;color:rgba(255,255,255,0.6)">
+                                        👨‍🏫 ${d.professeur_nom}
+                                    </span>
+                                ` : ''}
+                            </div>
+                        </td>
+                        <td><span class="badge-ultra primary">${d.type}</span></td>
+                        <td style="font-weight:600">${d.objet}</td>
+                        <td><span class="badge-ultra ${statutColors[d.statut]}">${d.statut.replace('_', ' ')}</span></td>
+                        <td>
+                            <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="voirDetailDemande(${d.id})">
+                                👁️ Voir
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Erreur chargement demandes:', err);
+                document.getElementById('tbodyDemandes').innerHTML = 
+                    '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Erreur de chargement</td></tr>';
+            }
+        }
+
+        async function chargerReclamations() {
+            try {
+                const reclamations = await API.get('/reclamations/');
+                const tbody = document.getElementById('tbodyReclamations');
+                
+                if (!reclamations || reclamations.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucune réclamation</td></tr>';
+                    return;
+                }
+
+                const typeLabels = {
+                    'note_incorrecte': 'Note incorrecte',
+                    'note_manquante': 'Note manquante',
+                    'mauvaise_matiere': 'Mauvaise matière',
+                    'calcul_errone': 'Calcul erroné',
+                    'autre': 'Autre'
+                };
+
+                const statutColors = {
+                    'en_attente': 'warning',
+                    'en_cours': 'primary',
+                    'resolue': 'success',
+                    'rejetee': 'danger'
+                };
+
+                tbody.innerHTML = reclamations.map(r => `
+                    <tr>
+                        <td>${formatDate(r.date_creation)}</td>
+                        <td style="font-weight:600">${r.matiere_nom || 'N/A'}</td>
+                        <td><span class="badge-ultra warning">${typeLabels[r.type_probleme] || r.type_probleme}</span></td>
+                        <td>${r.description.substring(0, 50)}${r.description.length > 50 ? '...' : ''}</td>
+                        <td><span class="badge-ultra ${statutColors[r.statut]}">${r.statut.replace('_', ' ')}</span></td>
+                        <td>
+                            ${r.reponse_enseignant ? `
+                                <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="voirReponseReclamation(${r.id})">
+                                    👁️ Voir réponse
+                                </button>
+                            ` : `
+                                <span style="color:rgba(255,255,255,0.5);font-size:13px">En attente</span>
+                            `}
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Erreur chargement réclamations:', err);
+                document.getElementById('tbodyReclamations').innerHTML = 
+                    '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Erreur de chargement</td></tr>';
+            }
+        }
+
+        async function chargerPublications() {
+            try {
+                const publications = await API.get('/publications/');
+                const container = document.getElementById('listePublications');
+                
+                if (!publications || publications.length === 0) {
+                    container.innerHTML = '<p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Aucune publication</p>';
+                    return;
+                }
+
+                container.innerHTML = publications.map(p => `
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <div style="display:flex;align-items:start;gap:16px;margin-bottom:12px">
+                                <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#a855f7);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">
+                                    📰
+                                </div>
+                                <div style="flex:1">
+                                    <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:6px">${p.titre}</h3>
+                                    <div style="display:flex;gap:12px;font-size:13px;color:rgba(255,255,255,0.6)">
+                                        <span>📅 ${formatDate(p.date_publication)}</span>
+                                        <span>👤 ${p.auteur_nom || 'Bureau Exécutif'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:12px">${p.contenu}</p>
+                            ${p.fichier ? `<a href="${p.fichier}" target="_blank" class="btn-premium btn-outline" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px">📎 Pièce jointe</a>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error('Erreur chargement publications:', err);
+                document.getElementById('listePublications').innerHTML = 
+                    '<p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Erreur de chargement</p>';
+            }
+        }
+
+        async function chargerSondages() {
+            console.log('🔍 Chargement des sondages...');
+            try {
+                const sondages = await API.get('/sondages/');
+                console.log('📊 Sondages reçus:', sondages);
+                const container = document.getElementById('listeSondages');
+                console.log('📦 Container trouvé:', container);
+                
+                if (!sondages || sondages.length === 0) {
+                    console.log('⚠️ Aucun sondage trouvé');
+                    container.innerHTML = '<p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Aucun sondage disponible</p>';
+                    return;
+                }
+
+                console.log(`✅ ${sondages.length} sondage(s) trouvé(s)`);
+                
+                const html = sondages.map(s => {
+                    console.log('Génération HTML pour:', s.titre);
+                    return `
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:16px">
+                                <div>
+                                    <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px">${s.titre}</h3>
+                                    <p style="color:rgba(255,255,255,0.6);font-size:14px">${s.description || ''}</p>
+                                </div>
+                                <span class="badge-ultra ${s.statut === 'actif' ? 'success' : 'danger'}">${s.statut}</span>
+                            </div>
+                            <div style="display:flex;gap:12px;font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px">
+                                <span>📅 ${formatDate(s.date_debut)} - ${formatDate(s.date_fin)}</span>
+                            </div>
+                            ${s.statut === 'actif' ? `<button class="btn-premium btn-primary" onclick="participerSondage(${s.id})">Participer</button>` : ''}
+                        </div>
+                    </div>
+                `;
+                }).join('');
+                
+                console.log('📝 HTML généré, longueur:', html.length);
+                container.innerHTML = html;
+                console.log('✅ HTML inséré dans le container');
+            } catch (err) {
+                console.error('❌ Erreur chargement sondages:', err);
+                document.getElementById('listeSondages').innerHTML = 
+                    '<p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Erreur de chargement</p>';
+            }
+        }
+
+        async function chargerQuestionnaires() {
+            try {
+                const evaluations = await API.get('/evaluations/');
+                const container = document.getElementById('listeQuestionnaires');
+                
+                if (!evaluations || evaluations.length === 0) {
+                    container.innerHTML = '<p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Aucun questionnaire disponible</p>';
+                    return;
+                }
+
+                container.innerHTML = evaluations.map(e => `
+                    <div class="card-premium">
+                        <div class="card-body-premium">
+                            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:16px">
+                                <div>
+                                    <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px">${e.titre}</h3>
+                                    <p style="color:rgba(255,255,255,0.6);font-size:14px">Matière: ${e.matiere_nom || 'N/A'}</p>
+                                    <p style="color:rgba(255,255,255,0.6);font-size:14px">Enseignant: ${e.enseignant_nom || 'N/A'}</p>
+                                </div>
+                                <span class="badge-ultra ${e.actif ? 'success' : 'danger'}">${e.actif ? 'Actif' : 'Fermé'}</span>
+                            </div>
+                            <div style="display:flex;gap:12px;font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px">
+                                <span>📅 ${formatDate(e.date_debut)} - ${formatDate(e.date_fin)}</span>
+                            </div>
+                            ${e.actif ? `<button class="btn-premium btn-primary" onclick="remplirQuestionnaire(${e.id})">Remplir le questionnaire</button>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error('Erreur chargement questionnaires:', err);
+                document.getElementById('listeQuestionnaires').innerHTML = 
+                    '<p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Erreur de chargement</p>';
+            }
+        }
+
+        async function chargerObjetsPerdu() {
+            console.log('🔍 Chargement des objets perdus...');
+            try {
+                const objets = await API.get('/objets-perdus/');
+                console.log('📦 Objets reçus:', objets);
+                const tbody = document.getElementById('tbodyObjetsPerdu');
+                
+                if (!objets || objets.length === 0) {
+                    console.log('⚠️ Aucun objet trouvé');
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun objet déclaré</td></tr>';
+                    return;
+                }
+
+                console.log(`✅ ${objets.length} objet(s) trouvé(s)`);
+                const typeLabels = { 'perdu': 'Perdu', 'trouve': 'Trouvé' };
+                const statutColors = {
+                    'actif': 'warning',
+                    'recupere': 'success',
+                    'archive': 'danger'
+                };
+
+                tbody.innerHTML = objets.map(o => `
+                    <tr>
+                        <td>${formatDate(o.date_declaration)}</td>
+                        <td style="font-weight:600">${o.nom_objet}</td>
+                        <td>${o.description.substring(0, 40)}${o.description.length > 40 ? '...' : ''}</td>
+                        <td>${o.lieu}</td>
+                        <td><span class="badge-ultra ${o.type_declaration === 'perdu' ? 'danger' : 'success'}">${typeLabels[o.type_declaration]}</span></td>
+                        <td><span class="badge-ultra ${statutColors[o.statut]}">${o.statut}</span></td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('❌ Erreur chargement objets perdus:', err);
+                document.getElementById('tbodyObjetsPerdu').innerHTML = 
+                    '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Erreur de chargement</td></tr>';
+            }
+        }
+
+        // Fonctions modales
+        function openModalReclamation() {
+            document.getElementById('modalReclamation').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            chargerNotesPourReclamation();
+        }
+
+        function openModalDemande() {
+            document.getElementById('modalDemande').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            chargerProfesseursPourDemande();
+        }
+
+        function closeModalDemande() {
+            document.getElementById('modalDemande').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function openModalObjetPerdu() {
+            document.getElementById('modalObjetPerdu').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModalObjetPerdu() {
+            document.getElementById('modalObjetPerdu').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        async function chargerProfesseursPourDemande() {
+            try {
+                // Charger les notes de l'étudiant pour obtenir ses matières et enseignants
+                const dashboard = await API.getDashboardEtudiant();
+                const notes = dashboard.notes || [];
+                
+                // Extraire les enseignants uniques de ses matières
+                const enseignantsMap = new Map();
+                notes.forEach(note => {
+                    if (note.enseignant_id && note.enseignant_nom) {
+                        enseignantsMap.set(note.enseignant_id, {
+                            id: note.enseignant_id,
+                            nom: note.enseignant_nom,
+                            matiere: note.matiere_nom
+                        });
+                    }
+                });
+                
+                const mesEnseignants = Array.from(enseignantsMap.values());
+                
+                const select = document.getElementById('demandeProfesseur');
+                
+                if (mesEnseignants.length === 0) {
+                    select.innerHTML = '<option value="">Aucun enseignant trouvé</option>';
+                    return;
+                }
+                
+                // Grouper par enseignant pour afficher leurs matières
+                select.innerHTML = '<option value="">Sélectionner un professeur</option>' + 
+                    mesEnseignants.map(e => {
+                        // Trouver toutes les matières de cet enseignant
+                        const matieres = notes
+                            .filter(n => n.enseignant_id === e.id)
+                            .map(n => n.matiere_nom)
+                            .filter((v, i, a) => a.indexOf(v) === i); // Unique
+                        
+                        return `<option value="${e.id}">${e.nom} (${matieres.join(', ')})</option>`;
+                    }).join('');
+            } catch (err) {
+                console.error('Erreur chargement professeurs:', err);
+                const select = document.getElementById('demandeProfesseur');
+                select.innerHTML = '<option value="">Erreur de chargement</option>';
+            }
+        }
+
+        function updateTypeDemande() {
+            const destinataire = document.getElementById('demandeDestinataire').value;
+            const typeSelect = document.getElementById('demandeType');
+            const groupeProfesseur = document.getElementById('groupeProfesseur');
+
+            if (destinataire === 'administration') {
+                groupeProfesseur.style.display = 'none';
+                typeSelect.innerHTML = `
+                    <option value="">Sélectionner</option>
+                    <option value="attestation_scolarite">Attestation de scolarité</option>
+                    <option value="releve_notes">Relevé de notes</option>
+                    <option value="certificat_inscription">Certificat d'inscription</option>
+                    <option value="changement_filiere">Changement de filière</option>
+                    <option value="report_paiement">Report de paiement</option>
+                    <option value="autre">Autre</option>
+                `;
+            } else if (destinataire === 'professeur') {
+                groupeProfesseur.style.display = 'block';
+                typeSelect.innerHTML = `
+                    <option value="">Sélectionner</option>
+                    <option value="rendez_vous">Demande de rendez-vous</option>
+                    <option value="explication_cours">Explication de cours</option>
+                    <option value="rattrapage">Demande de rattrapage</option>
+                    <option value="support_cours">Support de cours</option>
+                    <option value="autre">Autre</option>
+                `;
+            } else {
+                groupeProfesseur.style.display = 'none';
+                typeSelect.innerHTML = '<option value="">Sélectionner d\'abord un destinataire</option>';
+            }
+        }
+
+        async function soumettreDemande(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            try {
+                const data = {
+                    destinataire: formData.get('destinataire'),
+                    type: formData.get('type'),
+                    objet: formData.get('objet'),
+                    description: formData.get('description'),
+                    statut: 'en_attente'
+                };
+
+                if (formData.get('destinataire') === 'professeur') {
+                    data.professeur = parseInt(formData.get('professeur'));
+                }
+
+                await API.post('/demandes-administratives/', data);
+                showToast('✅ Demande envoyée avec succès!', 'success');
+                closeModalDemande();
+                form.reset();
+                chargerDemandes();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('❌ Erreur lors de l\'envoi de la demande', 'danger');
+            }
+        }
+
+        async function soumettreObjetPerdu(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            try {
+                const data = {
+                    type_declaration: formData.get('type'),
+                    nom_objet: formData.get('nom_objet'),
+                    description: formData.get('description'),
+                    lieu: formData.get('lieu'),
+                    date_perte: formData.get('date') || new Date().toISOString().split('T')[0],
+                    contact: Auth.getUser().email,
+                    statut: 'actif'
+                };
+
+                await API.post('/objets-perdus/', data);
+                showToast('✅ Objet déclaré avec succès!', 'success');
+                closeModalObjetPerdu();
+                form.reset();
+                chargerObjetsPerdu();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('❌ Erreur lors de la déclaration', 'danger');
+            }
+        }
+
+        let demandeSelectionnee = null;
+
+        async function voirDetailDemande(id) {
+            try {
+                const demandes = await API.get('/demandes-administratives/');
+                demandeSelectionnee = demandes.find(d => d.id === id);
+                
+                if (!demandeSelectionnee) {
+                    showToast('Demande introuvable', 'danger');
+                    return;
+                }
+
+                // Ouvrir le modal de détail
+                const modal = document.getElementById('modalDetailDemande');
+                if (!modal) {
+                    creerModalDetailDemande();
+                }
+                
+                afficherDetailDemande();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur lors du chargement des détails', 'danger');
+            }
+        }
+
+        function creerModalDetailDemande() {
+            const modalHTML = `
+                <div class="modal-overlay-premium" id="modalDetailDemande" style="display:none">
+                    <div class="modal-premium" style="max-width:600px">
+                        <div class="modal-header-premium">
+                            <h3 class="modal-title-premium">📨 Détails de la demande</h3>
+                            <button class="modal-close-premium" onclick="closeModalDetailDemande()">✕</button>
+                        </div>
+                        <div class="modal-body-premium" id="modalDetailDemandeBody">
+                            <!-- Contenu dynamique -->
+                        </div>
+                        <div class="modal-footer-premium">
+                            <button type="button" class="btn-premium btn-outline" onclick="closeModalDetailDemande()">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        function afficherDetailDemande() {
+            const modal = document.getElementById('modalDetailDemande');
+            const body = document.getElementById('modalDetailDemandeBody');
+            
+            if (!demandeSelectionnee) return;
+
+            const destinataireLabels = { 'administration': 'Administration', 'professeur': 'Professeur' };
+            const statutColors = {
+                'en_attente': 'warning',
+                'en_cours': 'primary',
+                'traitee': 'success',
+                'rejetee': 'danger'
+            };
+            const statutLabels = {
+                'en_attente': 'En attente',
+                'en_cours': 'En cours de traitement',
+                'traitee': 'Traitée',
+                'rejetee': 'Rejetée'
+            };
+
+            body.innerHTML = `
+                <div style="display:grid;gap:20px">
+                    <!-- Informations générales -->
+                    <div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(255,255,255,0.1)">
+                        <div style="display:grid;gap:12px">
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">DESTINATAIRE</div>
+                                <div style="font-weight:600;color:#fff">${destinataireLabels[demandeSelectionnee.destinataire] || demandeSelectionnee.destinataire}</div>
+                                ${demandeSelectionnee.professeur_nom ? `
+                                    <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">
+                                        👨‍🏫 ${demandeSelectionnee.professeur_nom}
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">TYPE</div>
+                                <div><span class="badge-ultra primary">${demandeSelectionnee.type}</span></div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">DATE DE CRÉATION</div>
+                                <div style="color:#fff">${formatDate(demandeSelectionnee.date_creation)}</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">STATUT</div>
+                                <div><span class="badge-ultra ${statutColors[demandeSelectionnee.statut]}">${statutLabels[demandeSelectionnee.statut]}</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Objet -->
+                    <div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">OBJET</div>
+                        <div style="padding:12px;background:rgba(255,255,255,0.03);border-radius:8px;color:#fff">${demandeSelectionnee.objet}</div>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">DESCRIPTION</div>
+                        <div style="padding:12px;background:rgba(255,255,255,0.03);border-radius:8px;color:rgba(255,255,255,0.8);line-height:1.6">${demandeSelectionnee.description}</div>
+                    </div>
+
+                    <!-- Réponse (si disponible) -->
+                    ${demandeSelectionnee.reponse ? `
+                        <div style="padding:16px;background:rgba(16,185,129,0.1);border-radius:10px;border:1px solid rgba(16,185,129,0.3)">
+                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+                                <span style="font-size:20px">💬</span>
+                                <div style="font-size:14px;font-weight:700;color:#10b981">
+                                    RÉPONSE ${demandeSelectionnee.destinataire === 'professeur' && demandeSelectionnee.professeur_nom ? 
+                                        'DE ' + demandeSelectionnee.professeur_nom.toUpperCase() : 
+                                        'DE L\'ADMINISTRATION'}
+                                </div>
+                            </div>
+                            <div style="color:rgba(255,255,255,0.9);line-height:1.6">${demandeSelectionnee.reponse}</div>
+                            ${demandeSelectionnee.date_reponse ? `
+                                <div style="margin-top:12px;font-size:12px;color:rgba(255,255,255,0.6)">
+                                    Répondu le ${formatDate(demandeSelectionnee.date_reponse)}
+                                </div>
+                            ` : ''}
+                        </div>
+                    ` : demandeSelectionnee.statut === 'en_attente' ? `
+                        <div style="padding:16px;background:rgba(245,158,11,0.1);border-radius:10px;border:1px solid rgba(245,158,11,0.3)">
+                            <div style="display:flex;align-items:center;gap:8px;color:#fbbf24">
+                                <span style="font-size:20px">⏳</span>
+                                <div style="font-size:14px;font-weight:600">
+                                    Votre demande est en attente de traitement${demandeSelectionnee.destinataire === 'professeur' && demandeSelectionnee.professeur_nom ? 
+                                        ' par ' + demandeSelectionnee.professeur_nom : 
+                                        ' par l\'administration'}
+                                </div>
+                            </div>
+                        </div>
+                    ` : demandeSelectionnee.statut === 'en_cours' ? `
+                        <div style="padding:16px;background:rgba(99,102,241,0.1);border-radius:10px;border:1px solid rgba(99,102,241,0.3)">
+                            <div style="display:flex;align-items:center;gap:8px;color:#6366f1">
+                                <span style="font-size:20px">🔄</span>
+                                <div style="font-size:14px;font-weight:600">
+                                    Votre demande est en cours de traitement${demandeSelectionnee.destinataire === 'professeur' && demandeSelectionnee.professeur_nom ? 
+                                        ' par ' + demandeSelectionnee.professeur_nom : 
+                                        ' par l\'administration'}
+                                </div>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModalDetailDemande() {
+            const modal = document.getElementById('modalDetailDemande');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        // ========== RÉCLAMATIONS - DÉTAILS ==========
+
+        let reclamationSelectionnee = null;
+
+        async function voirReponseReclamation(id) {
+            try {
+                const reclamations = await API.get('/reclamations/');
+                reclamationSelectionnee = reclamations.find(r => r.id === id);
+                
+                if (!reclamationSelectionnee) {
+                    showToast('Réclamation introuvable', 'danger');
+                    return;
+                }
+
+                // Ouvrir le modal de détail
+                const modal = document.getElementById('modalDetailReclamation');
+                if (!modal) {
+                    creerModalDetailReclamation();
+                }
+                
+                afficherDetailReclamation();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur lors du chargement des détails', 'danger');
+            }
+        }
+
+        function creerModalDetailReclamation() {
+            const modalHTML = `
+                <div class="modal-overlay-premium" id="modalDetailReclamation" style="display:none">
+                    <div class="modal-premium" style="max-width:700px">
+                        <div class="modal-header-premium">
+                            <h3 class="modal-title-premium">📢 Détails de la réclamation</h3>
+                            <button class="modal-close-premium" onclick="closeModalDetailReclamation()">✕</button>
+                        </div>
+                        <div class="modal-body-premium" id="modalDetailReclamationBody">
+                            <!-- Contenu dynamique -->
+                        </div>
+                        <div class="modal-footer-premium">
+                            <button type="button" class="btn-premium btn-outline" onclick="closeModalDetailReclamation()">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        function afficherDetailReclamation() {
+            const modal = document.getElementById('modalDetailReclamation');
+            const body = document.getElementById('modalDetailReclamationBody');
+            
+            if (!reclamationSelectionnee) return;
+
+            const typeLabels = {
+                'note_incorrecte': 'Note incorrecte / erreur de saisie',
+                'note_manquante': 'Note manquante',
+                'mauvaise_matiere': 'Note attribuée à la mauvaise matière',
+                'calcul_errone': 'Erreur de calcul de moyenne',
+                'autre': 'Autre problème'
+            };
+
+            const statutColors = {
+                'en_attente': 'warning',
+                'en_cours': 'primary',
+                'resolue': 'success',
+                'rejetee': 'danger'
+            };
+
+            const statutLabels = {
+                'en_attente': 'En attente',
+                'en_cours': 'En cours de traitement',
+                'resolue': 'Résolue',
+                'rejetee': 'Rejetée'
+            };
+
+            const decisionLabels = {
+                'accepter': 'Acceptée',
+                'rejeter': 'Rejetée',
+                'en_cours': 'En cours'
+            };
+
+            body.innerHTML = `
+                <div style="display:grid;gap:20px">
+                    <!-- Informations générales -->
+                    <div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(255,255,255,0.1)">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">MATIÈRE</div>
+                                <div style="font-weight:600;color:#fff">${reclamationSelectionnee.matiere_nom || 'N/A'}</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">ENSEIGNANT</div>
+                                <div style="color:#fff">${reclamationSelectionnee.enseignant_nom || 'N/A'}</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">DATE DE CRÉATION</div>
+                                <div style="color:#fff">${formatDate(reclamationSelectionnee.date_creation)}</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">STATUT</div>
+                                <div><span class="badge-ultra ${statutColors[reclamationSelectionnee.statut]}">${statutLabels[reclamationSelectionnee.statut]}</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div style="padding:16px;background:rgba(99,102,241,0.1);border-radius:10px;border:1px solid rgba(99,102,241,0.3)">
+                        <div style="font-size:14px;font-weight:700;color:#6366f1;margin-bottom:12px">📊 NOTES CONCERNÉES</div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">NOTE CC</div>
+                                <div style="font-size:18px;font-weight:700;color:#fff">${reclamationSelectionnee.note_cc || '-'}/20</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">NOTE EXAMEN</div>
+                                <div style="font-size:18px;font-weight:700;color:#fff">${reclamationSelectionnee.note_examen || '-'}/20</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">MOYENNE</div>
+                                <div style="font-size:18px;font-weight:700;color:#fff">${reclamationSelectionnee.moyenne || '-'}/20</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Type de problème -->
+                    <div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">TYPE DE PROBLÈME</div>
+                        <div><span class="badge-ultra warning">${typeLabels[reclamationSelectionnee.type_probleme] || reclamationSelectionnee.type_probleme}</span></div>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">VOTRE DESCRIPTION</div>
+                        <div style="padding:12px;background:rgba(255,255,255,0.03);border-radius:8px;color:rgba(255,255,255,0.8);line-height:1.6">${reclamationSelectionnee.description}</div>
+                    </div>
+
+                    ${reclamationSelectionnee.note_attendue ? `
+                        <div>
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">NOTE ATTENDUE</div>
+                            <div style="padding:12px;background:rgba(255,255,255,0.03);border-radius:8px;color:rgba(255,255,255,0.8)">${reclamationSelectionnee.note_attendue}</div>
+                        </div>
+                    ` : ''}
+
+                    <!-- Réponse de l'enseignant -->
+                    ${reclamationSelectionnee.reponse_enseignant ? `
+                        <div style="padding:16px;background:${reclamationSelectionnee.statut === 'resolue' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)'};border-radius:10px;border:1px solid ${reclamationSelectionnee.statut === 'resolue' ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}">
+                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+                                <span style="font-size:20px">${reclamationSelectionnee.statut === 'resolue' ? '✅' : '❌'}</span>
+                                <div style="font-size:14px;font-weight:700;color:${reclamationSelectionnee.statut === 'resolue' ? '#10b981' : '#ef4444'}">
+                                    RÉPONSE DE L'ENSEIGNANT
+                                    ${reclamationSelectionnee.decision ? ` - ${decisionLabels[reclamationSelectionnee.decision] || reclamationSelectionnee.decision}` : ''}
+                                </div>
+                            </div>
+                            <div style="color:rgba(255,255,255,0.9);line-height:1.6;margin-bottom:12px">${reclamationSelectionnee.reponse_enseignant}</div>
+                            
+                            ${reclamationSelectionnee.nouvelle_note_cc || reclamationSelectionnee.nouvelle_note_examen ? `
+                                <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1)">
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">NOTES CORRIGÉES</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+                                        ${reclamationSelectionnee.nouvelle_note_cc ? `
+                                            <div>
+                                                <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px">NOUVELLE NOTE CC</div>
+                                                <div style="font-size:16px;font-weight:700;color:#10b981">${reclamationSelectionnee.nouvelle_note_cc}/20</div>
+                                            </div>
+                                        ` : ''}
+                                        ${reclamationSelectionnee.nouvelle_note_examen ? `
+                                            <div>
+                                                <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px">NOUVELLE NOTE EXAMEN</div>
+                                                <div style="font-size:16px;font-weight:700;color:#10b981">${reclamationSelectionnee.nouvelle_note_examen}/20</div>
+                                            </div>
+                                        ` : ''}
+                                        ${reclamationSelectionnee.nouvelle_moyenne ? `
+                                            <div>
+                                                <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px">NOUVELLE MOYENNE</div>
+                                                <div style="font-size:16px;font-weight:700;color:#10b981">${reclamationSelectionnee.nouvelle_moyenne}/20</div>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${reclamationSelectionnee.date_traitement ? `
+                                <div style="margin-top:12px;font-size:12px;color:rgba(255,255,255,0.6)">
+                                    Traitée le ${formatDate(reclamationSelectionnee.date_traitement)}
+                                </div>
+                            ` : ''}
+                        </div>
+                    ` : reclamationSelectionnee.statut === 'en_attente' ? `
+                        <div style="padding:16px;background:rgba(245,158,11,0.1);border-radius:10px;border:1px solid rgba(245,158,11,0.3)">
+                            <div style="display:flex;align-items:center;gap:8px;color:#fbbf24">
+                                <span style="font-size:20px">⏳</span>
+                                <div style="font-size:14px;font-weight:600">Votre réclamation est en attente de traitement par l'enseignant</div>
+                            </div>
+                        </div>
+                    ` : reclamationSelectionnee.statut === 'en_cours' ? `
+                        <div style="padding:16px;background:rgba(99,102,241,0.1);border-radius:10px;border:1px solid rgba(99,102,241,0.3)">
+                            <div style="display:flex;align-items:center;gap:8px;color:#6366f1">
+                                <span style="font-size:20px">🔄</span>
+                                <div style="font-size:14px;font-weight:600">Votre réclamation est en cours de traitement</div>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModalDetailReclamation() {
+            const modal = document.getElementById('modalDetailReclamation');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        function participerSondage(id) {
+            showToast('Fonctionnalité en cours de développement', 'info');
+        }
+
+        function remplirQuestionnaire(id) {
+            showToast('Fonctionnalité en cours de développement', 'info');
         }
 
         function showToast(message, type = 'info') {

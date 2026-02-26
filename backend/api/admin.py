@@ -2,7 +2,10 @@ from django.contrib import admin
 from .models import (
     Utilisateur, Universite, AnneeAcademique, Filiere, Matiere,
     Enseignant, Etudiant, Note, Paiement, EmploiDuTemps,
-    Presence, SupportCours, Notification
+    Presence, SupportCours, Notification, MembreBureau,
+    Publication, Sondage, QuestionSondage, OptionQuestion,
+    ReponseSondage, Evenement, InscriptionEvenement,
+    MessageBureau, DemandeAdministrative, ObjetPerdu
 )
 
 
@@ -91,3 +94,76 @@ class SupportCoursAdmin(admin.ModelAdmin):
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ['titre', 'destinataire', 'type_notif', 'lue', 'date_creation']
     list_filter = ['type_notif', 'lue']
+
+
+
+# ===== BUREAU EXÉCUTIF =====
+@admin.register(MembreBureau)
+class MembreBureauAdmin(admin.ModelAdmin):
+    list_display = ['utilisateur', 'poste', 'date_debut_mandat', 'date_fin_mandat', 'actif']
+    list_filter = ['poste', 'actif']
+    search_fields = ['utilisateur__prenom', 'utilisateur__nom']
+
+
+@admin.register(Publication)
+class PublicationAdmin(admin.ModelAdmin):
+    list_display = ['titre', 'categorie', 'statut', 'auteur', 'date_publication', 'vues', 'epingle']
+    list_filter = ['categorie', 'statut', 'epingle']
+    search_fields = ['titre', 'contenu']
+
+
+@admin.register(Sondage)
+class SondageAdmin(admin.ModelAdmin):
+    list_display = ['titre', 'createur', 'date_debut', 'date_fin', 'statut', 'anonyme']
+    list_filter = ['statut', 'anonyme']
+    search_fields = ['titre', 'description']
+
+
+@admin.register(QuestionSondage)
+class QuestionSondageAdmin(admin.ModelAdmin):
+    list_display = ['sondage', 'texte', 'type_question', 'ordre', 'obligatoire']
+    list_filter = ['type_question', 'obligatoire']
+
+
+@admin.register(OptionQuestion)
+class OptionQuestionAdmin(admin.ModelAdmin):
+    list_display = ['question', 'texte', 'ordre']
+
+
+@admin.register(ReponseSondage)
+class ReponseSondageAdmin(admin.ModelAdmin):
+    list_display = ['sondage', 'question', 'etudiant', 'date_reponse']
+    list_filter = ['sondage', 'date_reponse']
+
+
+@admin.register(Evenement)
+class EvenementAdmin(admin.ModelAdmin):
+    list_display = ['titre', 'type_evenement', 'organisateur', 'date_debut', 'lieu', 'statut', 'capacite_max']
+    list_filter = ['type_evenement', 'statut']
+    search_fields = ['titre', 'description', 'lieu']
+
+
+@admin.register(InscriptionEvenement)
+class InscriptionEvenementAdmin(admin.ModelAdmin):
+    list_display = ['evenement', 'etudiant', 'statut', 'date_inscription', 'present']
+    list_filter = ['statut', 'present']
+
+
+@admin.register(MessageBureau)
+class MessageBureauAdmin(admin.ModelAdmin):
+    list_display = ['expediteur', 'destinataire', 'sujet', 'groupe', 'date_envoi', 'lu']
+    list_filter = ['groupe', 'lu', 'date_envoi']
+
+
+@admin.register(DemandeAdministrative)
+class DemandeAdministrativeAdmin(admin.ModelAdmin):
+    list_display = ['etudiant', 'type_demande', 'objet', 'statut', 'date_demande', 'traite_par']
+    list_filter = ['type_demande', 'statut']
+    search_fields = ['etudiant__matricule', 'objet']
+
+
+@admin.register(ObjetPerdu)
+class ObjetPerduAdmin(admin.ModelAdmin):
+    list_display = ['nom_objet', 'type_declaration', 'declarant', 'lieu', 'date_perte', 'statut']
+    list_filter = ['type_declaration', 'statut']
+    search_fields = ['nom_objet', 'description', 'lieu']

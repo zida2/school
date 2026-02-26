@@ -3,8 +3,8 @@
  * Simule les réponses de l'API
  */
 
-// Mode MOCK activé
-const MOCK_MODE = true;
+// Mode MOCK désactivé - Utilisation de la vraie base de données
+const MOCK_MODE = false;
 
 // Utilisateurs de test
 const MOCK_USERS = {
@@ -405,5 +405,6 @@ const MockAPI = {
     async updateNoteEvaluation() { await mockDelay(); return {}; },
 };
 
-console.log('🎭 MODE MOCK ACTIVÉ - Données de démonstration chargées');
+// Message désactivé - Utilisation de la vraie base de données
+// console.log('🎭 MODE MOCK ACTIVÉ - Données de démonstration chargées');
  

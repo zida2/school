@@ -64,6 +64,46 @@
                         <span class="nav-text-ultra">Membres du bureau</span>
                     </a>
                 </div>
+
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">ESPACE ÉTUDIANT</div>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="notes" onclick="navToUltra('notes',this)">
+                        <span class="nav-icon-ultra">📝</span>
+                        <span class="nav-text-ultra">Mes notes</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="emploi" onclick="navToUltra('emploi',this)">
+                        <span class="nav-icon-ultra">📅</span>
+                        <span class="nav-text-ultra">Emploi du temps</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="supports" onclick="navToUltra('supports',this)">
+                        <span class="nav-icon-ultra">📚</span>
+                        <span class="nav-text-ultra">Supports de cours</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="paiements" onclick="navToUltra('paiements',this)">
+                        <span class="nav-icon-ultra">💰</span>
+                        <span class="nav-text-ultra">Paiements</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="absences" onclick="navToUltra('absences',this)">
+                        <span class="nav-icon-ultra">📋</span>
+                        <span class="nav-text-ultra">Absences</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="cours" onclick="navToUltra('cours',this)">
+                        <span class="nav-icon-ultra">🎓</span>
+                        <span class="nav-text-ultra">Cours</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="evaluations-etudiant" onclick="navToUltra('evaluations-etudiant',this)">
+                        <span class="nav-icon-ultra">📊</span>
+                        <span class="nav-text-ultra">Évaluations</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="demandes" onclick="navToUltra('demandes',this)">
+                        <span class="nav-icon-ultra">📄</span>
+                        <span class="nav-text-ultra">Demandes</span>
+                    </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="objets-perdus" onclick="navToUltra('objets-perdus',this)">
+                        <span class="nav-icon-ultra">🔍</span>
+                        <span class="nav-text-ultra">Objets perdus</span>
+                    </a>
+                </div>
             </nav>
         </aside>
 
@@ -280,15 +320,335 @@
                         <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5);grid-column:1/-1">Chargement...</p>
                     </div>
                 </div>
+
+                <!-- ========== PAGES ÉTUDIANTES ========== -->
+
+                <!-- PAGE: NOTES -->
+                <div class="page-ultra" id="page-notes" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">📝 Mes notes</h1>
+                            <p class="page-subtitle-ultra">Consultez vos résultats académiques</p>
+                        </div>
+                        <button class="btn-ultra btn-outline-ultra">📥 Télécharger bulletin</button>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Matière</th>
+                                        <th>Coefficient</th>
+                                        <th>CC</th>
+                                        <th>Examen</th>
+                                        <th>Moyenne</th>
+                                        <th>Statut</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyNotesComplete">
+                                    <tr><td colspan="7" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: EMPLOI -->
+                <div class="page-ultra" id="page-emploi" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">📅 Emploi du temps</h1>
+                            <p class="page-subtitle-ultra">Votre programme de la semaine</p>
+                        </div>
+                        <button class="btn-ultra btn-outline-ultra" onclick="window.print()">🖨️ Imprimer</button>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
+                            <div style="overflow-x:auto">
+                                <table class="table-ultra">
+                                    <thead>
+                                        <tr>
+                                            <th>Jour</th>
+                                            <th>Heure</th>
+                                            <th>Matière</th>
+                                            <th>Enseignant</th>
+                                            <th>Salle</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyEmploi">
+                                        <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: SUPPORTS -->
+                <div class="page-ultra" id="page-supports" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">📚 Supports de cours</h1>
+                            <p class="page-subtitle-ultra">Documents pédagogiques mis à disposition</p>
+                        </div>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
+                            <div style="overflow-x:auto">
+                                <table class="table-ultra">
+                                    <thead>
+                                        <tr>
+                                            <th>Titre</th>
+                                            <th>Matière</th>
+                                            <th>Enseignant</th>
+                                            <th>Type</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodySupports">
+                                        <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: PAIEMENTS -->
+                <div class="page-ultra" id="page-paiements" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">💰 Mes paiements</h1>
+                            <p class="page-subtitle-ultra">Historique et situation financière</p>
+                        </div>
+                    </div>
+
+                    <!-- Situation financière -->
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                        <div class="stat-card-ultra success-ultra">
+                            <div class="stat-icon-ultra">💵</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statFraisInscription">0 FCFA</div>
+                                <div class="stat-label-ultra">Frais d'inscription</div>
+                            </div>
+                        </div>
+                        <div class="stat-card-ultra primary-ultra">
+                            <div class="stat-icon-ultra">✅</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statMontantPaye">0 FCFA</div>
+                                <div class="stat-label-ultra">Montant payé</div>
+                            </div>
+                        </div>
+                        <div class="stat-card-ultra warning-ultra">
+                            <div class="stat-icon-ultra">⚠️</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statSoldeDu">0 FCFA</div>
+                                <div class="stat-label-ultra">Solde dû</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">Historique des paiements</h3>
+                        </div>
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>N° Reçu</th>
+                                        <th>Date</th>
+                                        <th>Montant</th>
+                                        <th>Mode</th>
+                                        <th>Type</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyPaiements">
+                                    <tr><td colspan="6" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: ABSENCES -->
+                <div class="page-ultra" id="page-absences" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">📋 Mes absences</h1>
+                            <p class="page-subtitle-ultra">Suivi de vos absences et présences</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats absences -->
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                        <div class="stat-card-ultra success-ultra">
+                            <div class="stat-icon-ultra">✅</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statPresences">0</div>
+                                <div class="stat-label-ultra">Présences</div>
+                            </div>
+                        </div>
+                        <div class="stat-card-ultra warning-ultra">
+                            <div class="stat-icon-ultra">⚠️</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statAbsences">0</div>
+                                <div class="stat-label-ultra">Absences</div>
+                            </div>
+                        </div>
+                        <div class="stat-card-ultra primary-ultra">
+                            <div class="stat-icon-ultra">📊</div>
+                            <div class="stat-content-ultra">
+                                <div class="stat-value-ultra" id="statTauxPresence">0%</div>
+                                <div class="stat-label-ultra">Taux de présence</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">Historique des absences</h3>
+                        </div>
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Matière</th>
+                                        <th>Type</th>
+                                        <th>Statut</th>
+                                        <th>Justification</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyAbsences">
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune absence enregistrée</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: COURS -->
+                <div class="page-ultra" id="page-cours" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">🎓 Mes cours</h1>
+                            <p class="page-subtitle-ultra">Liste de vos cours et matières</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px" id="listeCours">
+                        <p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5);grid-column:1/-1">Chargement...</p>
+                    </div>
+                </div>
+
+                <!-- PAGE: EVALUATIONS ETUDIANT -->
+                <div class="page-ultra" id="page-evaluations-etudiant" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">✍️ Évaluations</h1>
+                            <p class="page-subtitle-ultra">Calendrier des évaluations et examens</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">Prochaines évaluations</h3>
+                        </div>
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Matière</th>
+                                        <th>Type</th>
+                                        <th>Durée</th>
+                                        <th>Salle</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyEvaluations">
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune évaluation programmée</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: DEMANDES -->
+                <div class="page-ultra" id="page-demandes" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">📨 Mes demandes</h1>
+                            <p class="page-subtitle-ultra">Soumettre et suivre vos demandes administratives</p>
+                        </div>
+                        <button class="btn-ultra btn-primary-ultra" onclick="alert('Fonctionnalité à venir')">+ Nouvelle demande</button>
+                    </div>
+                    
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Objet</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyDemandes">
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune demande</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: OBJETS PERDUS -->
+                <div class="page-ultra" id="page-objets-perdus" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">🔍 Objets perdus</h1>
+                            <p class="page-subtitle-ultra">Déclarer ou rechercher des objets perdus</p>
+                        </div>
+                        <button class="btn-ultra btn-primary-ultra" onclick="alert('Fonctionnalité à venir')">+ Déclarer un objet</button>
+                    </div>
+                    
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Objet</th>
+                                        <th>Lieu</th>
+                                        <th>Type</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyObjetsPerdu">
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucun objet déclaré</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
     <!-- Scripts -->
-    <script src="js/mock-data.js?v=6"></script>
-    <script src="js/api.js?v=6"></script>
-    <script src="js/fix-navigation.js?v=6"></script>
-    <script src="js/theme-toggle.js?v=6"></script>
+    <script src="js/mock-data.js?v=7"></script>
+    <script src="js/api.js?v=7"></script>
+    <script src="js/fix-navigation.js?v=7"></script>
+    <script src="js/theme-toggle.js?v=7"></script>
 
     <script>
         function navToUltra(page, el) {
@@ -298,6 +658,21 @@
             
             document.querySelectorAll('.nav-item-ultra').forEach(i => i.classList.remove('active'));
             if (el) el.classList.add('active');
+            
+            // Charger les données selon la page
+            if (page === 'notes') chargerNotes();
+            else if (page === 'emploi') chargerEmploi();
+            else if (page === 'supports') chargerSupports();
+            else if (page === 'paiements') chargerPaiements();
+            else if (page === 'absences') chargerAbsences();
+            else if (page === 'cours') chargerCours();
+            else if (page === 'evaluations-etudiant') chargerEvaluations();
+            else if (page === 'demandes') chargerDemandes();
+            else if (page === 'objets-perdus') chargerObjetsPerdus();
+            else if (page === 'publications') chargerPublications();
+            else if (page === 'sondages') chargerSondages();
+            else if (page === 'evenements') chargerEvenements();
+            else if (page === 'membres') chargerMembres();
         }
 
         function toggleSidebarUltra() {
@@ -337,11 +712,275 @@
             setTimeout(() => { if (toast.parentElement) toast.remove(); }, 3500);
         }
 
+        // ===== FONCTIONS DE CHARGEMENT DES DONNÉES =====
+
+        async function chargerNotes() {
+            try {
+                const notes = await API.get('/notes/');
+                const tbody = document.getElementById('tbodyNotesComplete');
+                if (!notes || notes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px">Aucune note disponible</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = notes.map(note => `
+                    <tr>
+                        <td>${note.matiere_nom || 'N/A'}</td>
+                        <td>${note.coefficient || 'N/A'}</td>
+                        <td>${note.note_cc !== null ? note.note_cc : '-'}</td>
+                        <td>${note.note_examen !== null ? note.note_examen : '-'}</td>
+                        <td><strong>${note.moyenne !== null ? note.moyenne.toFixed(2) : '-'}</strong></td>
+                        <td><span class="badge-ultra ${note.valide ? 'success' : 'warning'}">${note.valide ? 'Validé' : 'En attente'}</span></td>
+                        <td><button class="btn-ultra btn-sm-ultra" onclick="showToast('Fonctionnalité à venir', 'info')">Détails</button></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur chargement notes:', error);
+                showToast('Erreur lors du chargement des notes', 'danger');
+            }
+        }
+
+        async function chargerEmploi() {
+            try {
+                const emplois = await API.get('/emplois-du-temps/');
+                const tbody = document.getElementById('tbodyEmploi');
+                if (!emplois || emplois.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px">Aucun cours programmé</td></tr>';
+                    return;
+                }
+                const jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+                const emploisTries = emplois.sort((a, b) => {
+                    const jourA = jours.indexOf(a.jour);
+                    const jourB = jours.indexOf(b.jour);
+                    if (jourA !== jourB) return jourA - jourB;
+                    return a.heure_debut.localeCompare(b.heure_debut);
+                });
+                tbody.innerHTML = emploisTries.map(e => `
+                    <tr>
+                        <td>${e.jour}</td>
+                        <td>${e.heure_debut} - ${e.heure_fin}</td>
+                        <td>${e.matiere_nom || 'N/A'}</td>
+                        <td>${e.enseignant_nom || 'N/A'}</td>
+                        <td>${e.salle || 'N/A'}</td>
+                        <td><span class="badge-ultra primary">${e.type_cours || 'Cours'}</span></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur chargement emploi:', error);
+                showToast('Erreur lors du chargement de l\'emploi du temps', 'danger');
+            }
+        }
+
+        async function chargerSupports() {
+            try {
+                const supports = await API.get('/supports/');
+                const tbody = document.getElementById('tbodySupports');
+                if (!supports || supports.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px">Aucun support disponible</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = supports.map(s => `
+                    <tr>
+                        <td>${s.titre}</td>
+                        <td>${s.matiere_nom || 'N/A'}</td>
+                        <td>${s.enseignant_nom || 'N/A'}</td>
+                        <td><span class="badge-ultra info">${s.type_support || 'Document'}</span></td>
+                        <td>${new Date(s.date_depot).toLocaleDateString('fr-FR')}</td>
+                        <td><button class="btn-ultra btn-sm-ultra" onclick="showToast('Téléchargement à venir', 'info')">📥 Télécharger</button></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur chargement supports:', error);
+                showToast('Erreur lors du chargement des supports', 'danger');
+            }
+        }
+
+        async function chargerPaiements() {
+            try {
+                const dashboard = await API.get('/dashboard/bureau/');
+                if (dashboard.etudiant) {
+                    document.getElementById('statFraisInscription').textContent = (dashboard.etudiant.filiere?.frais_inscription || 0) + ' FCFA';
+                    document.getElementById('statMontantPaye').textContent = (dashboard.etudiant.montant_paye || 0) + ' FCFA';
+                    document.getElementById('statSoldeDu').textContent = (dashboard.solde_du || 0) + ' FCFA';
+                }
+                
+                const paiements = dashboard.paiements || [];
+                const tbody = document.getElementById('tbodyPaiements');
+                if (paiements.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px">Aucun paiement enregistré</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = paiements.map(p => `
+                    <tr>
+                        <td>${p.numero_recu}</td>
+                        <td>${new Date(p.date_paiement).toLocaleDateString('fr-FR')}</td>
+                        <td><strong>${p.montant} FCFA</strong></td>
+                        <td>${p.mode}</td>
+                        <td>${p.type_paiement}</td>
+                        <td><span class="badge-ultra ${p.statut === 'valide' ? 'success' : 'warning'}">${p.statut}</span></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur chargement paiements:', error);
+                showToast('Erreur lors du chargement des paiements', 'danger');
+            }
+        }
+
+        async function chargerAbsences() {
+            try {
+                const presences = await API.get('/presences/');
+                const tbody = document.getElementById('tbodyAbsences');
+                
+                // Calculer les stats
+                const totalPresences = presences.filter(p => p.present).length;
+                const totalAbsences = presences.filter(p => !p.present).length;
+                const total = presences.length;
+                const tauxPresence = total > 0 ? ((totalPresences / total) * 100).toFixed(1) : 0;
+                
+                document.getElementById('statPresences').textContent = totalPresences;
+                document.getElementById('statAbsences').textContent = totalAbsences;
+                document.getElementById('statTauxPresence').textContent = tauxPresence + '%';
+                
+                if (presences.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px">Aucune absence enregistrée</td></tr>';
+                    return;
+                }
+                
+                const absences = presences.filter(p => !p.present);
+                tbody.innerHTML = absences.map(a => `
+                    <tr>
+                        <td>${new Date(a.date_cours).toLocaleDateString('fr-FR')}</td>
+                        <td>${a.emploi?.matiere_nom || 'N/A'}</td>
+                        <td>${a.emploi?.type_cours || 'Cours'}</td>
+                        <td><span class="badge-ultra ${a.justifie ? 'success' : 'danger'}">${a.justifie ? 'Justifiée' : 'Non justifiée'}</span></td>
+                        <td>${a.observation || '-'}</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur chargement absences:', error);
+                showToast('Erreur lors du chargement des absences', 'danger');
+            }
+        }
+
+        async function chargerCours() {
+            try {
+                const matieres = await API.get('/matieres/');
+                const container = document.getElementById('listeCours');
+                if (!matieres || matieres.length === 0) {
+                    container.innerHTML = '<p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5);grid-column:1/-1">Aucun cours disponible</p>';
+                    return;
+                }
+                container.innerHTML = matieres.map(m => `
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">${m.nom}</h3>
+                        </div>
+                        <div class="card-body-ultra">
+                            <p><strong>Code:</strong> ${m.code}</p>
+                            <p><strong>Enseignant:</strong> ${m.enseignant_nom || 'N/A'}</p>
+                            <p><strong>Coefficient:</strong> ${m.coefficient || 'N/A'}</p>
+                            <p><strong>Semestre:</strong> ${m.semestre || 'N/A'}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur chargement cours:', error);
+                showToast('Erreur lors du chargement des cours', 'danger');
+            }
+        }
+
+        async function chargerEvaluations() {
+            try {
+                const evaluations = await API.get('/evaluations/');
+                const tbody = document.getElementById('tbodyEvaluations');
+                if (!evaluations || evaluations.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px">Aucune évaluation programmée</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = evaluations.map(e => `
+                    <tr>
+                        <td>${new Date(e.date_evaluation).toLocaleDateString('fr-FR')}</td>
+                        <td>${e.matiere_nom || 'N/A'}</td>
+                        <td><span class="badge-ultra primary">${e.categorie || 'Examen'}</span></td>
+                        <td>${e.duree || 'N/A'} min</td>
+                        <td>${e.salle || 'N/A'}</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur chargement évaluations:', error);
+                showToast('Erreur lors du chargement des évaluations', 'danger');
+            }
+        }
+
+        async function chargerDemandes() {
+            try {
+                const demandes = await API.get('/demandes-administratives/');
+                const tbody = document.getElementById('tbodyDemandes');
+                if (!demandes || demandes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px">Aucune demande</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = demandes.map(d => `
+                    <tr>
+                        <td>${new Date(d.date_demande).toLocaleDateString('fr-FR')}</td>
+                        <td>${d.type_demande}</td>
+                        <td>${d.objet}</td>
+                        <td><span class="badge-ultra ${d.statut === 'approuve' ? 'success' : d.statut === 'rejete' ? 'danger' : 'warning'}">${d.statut}</span></td>
+                        <td><button class="btn-ultra btn-sm-ultra" onclick="showToast('Détails à venir', 'info')">Voir</button></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur chargement demandes:', error);
+                showToast('Erreur lors du chargement des demandes', 'danger');
+            }
+        }
+
+        async function chargerObjetsPerdus() {
+            try {
+                const objets = await API.get('/objets-perdus/');
+                const tbody = document.getElementById('tbodyObjetsPerdu');
+                if (!objets || objets.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px">Aucun objet déclaré</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = objets.map(o => `
+                    <tr>
+                        <td>${new Date(o.date_declaration).toLocaleDateString('fr-FR')}</td>
+                        <td>${o.nom_objet}</td>
+                        <td>${o.lieu}</td>
+                        <td><span class="badge-ultra ${o.type_declaration === 'trouve' ? 'success' : 'warning'}">${o.type_declaration}</span></td>
+                        <td><span class="badge-ultra ${o.statut === 'recupere' ? 'success' : 'info'}">${o.statut}</span></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur chargement objets perdus:', error);
+                showToast('Erreur lors du chargement des objets perdus', 'danger');
+            }
+        }
+
+        async function chargerPublications() {
+            showToast('Chargement des publications...', 'info');
+        }
+
+        async function chargerSondages() {
+            showToast('Chargement des sondages...', 'info');
+        }
+
+        async function chargerEvenements() {
+            showToast('Chargement des événements...', 'info');
+        }
+
+        async function chargerMembres() {
+            showToast('Chargement des membres...', 'info');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const user = requireAuth(['bureau_executif']);
             if (user) {
-                // Charger les données
                 showToast('Bienvenue dans l\'espace Bureau Exécutif', 'success');
+                // Charger le dashboard par défaut
+                setTimeout(() => {
+                    chargerNotes();
+                }, 500);
             }
         });
     </script>

@@ -55,6 +55,11 @@
                         <span class="nav-icon-ultra">🎓</span>
                         <span class="nav-text-ultra">Mes étudiants</span>
                     </a>
+                    <a href="javascript:void(0)" class="nav-item-ultra" data-page="reclamations" onclick="navToUltra('reclamations',this)">
+                        <span class="nav-icon-ultra">⚠️</span>
+                        <span class="nav-text-ultra">Réclamations</span>
+                        <span class="nav-badge-ultra" id="badgeReclamations">0</span>
+                    </a>
                 </div>
             </nav>
         </aside>
@@ -355,6 +360,129 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- PAGE: RÉCLAMATIONS -->
+                <div class="page-ultra" id="page-reclamations" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">Réclamations sur les notes</h1>
+                            <p class="page-subtitle-ultra">Réclamations de vos étudiants</p>
+                        </div>
+                    </div>
+
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
+                            <!-- Filtres -->
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                                <div>
+                                    <select id="filtreStatutReclamationProf" class="form-input-ultra" onchange="filtrerReclamationsProf()" style="width:100%;padding:12px 16px">
+                                        <option value="">Tous les statuts</option>
+                                        <option value="en_attente">En attente</option>
+                                        <option value="resolue">Résolue</option>
+                                        <option value="rejetee">Rejetée</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Tableau -->
+                            <div style="overflow-x:auto">
+                                <table class="table-ultra">
+                                    <thead>
+                                        <tr>
+                                            <th>Étudiant</th>
+                                            <th>Matière</th>
+                                            <th>Note CC</th>
+                                            <th>Note Examen</th>
+                                            <th>Moyenne</th>
+                                            <th>Date</th>
+                                            <th>Statut</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyReclamationsProf">
+                                        <tr><td colspan="8" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL VOIR RÉCLAMATION -->
+                <div class="modal-ultra" id="modalVoirReclamationProf">
+                    <div class="modal-content-ultra">
+                        <div class="modal-header-ultra">
+                            <h3>⚠️ Détails de la réclamation</h3>
+                            <span class="modal-close-ultra" onclick="closeModal('modalVoirReclamationProf')">&times;</span>
+                        </div>
+                        <div class="modal-body-ultra">
+                            <div id="detailsReclamationProf" style="line-height:1.8">
+                                <!-- Rempli dynamiquement -->
+                            </div>
+                        </div>
+                        <div class="modal-footer-ultra">
+                            <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalVoirReclamationProf')">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL TRAITER RÉCLAMATION -->
+                <div class="modal-ultra" id="modalTraiterReclamation">
+                    <div class="modal-content-ultra" style="max-width:700px">
+                        <div class="modal-header-ultra">
+                            <h3>⚠️ Traiter la réclamation</h3>
+                            <span class="modal-close-ultra" onclick="closeModal('modalTraiterReclamation')">&times;</span>
+                        </div>
+                        <div class="modal-body-ultra">
+                            <div id="reclamationInfo" style="padding:15px;background:rgba(255,255,255,0.05);border-radius:8px;margin-bottom:20px">
+                                <!-- Info réclamation -->
+                            </div>
+                            
+                            <div style="padding:15px;background:rgba(255,255,255,0.05);border-radius:8px;margin-bottom:20px">
+                                <strong style="font-size:13px;color:rgba(255,255,255,0.7)">DESCRIPTION:</strong>
+                                <p id="reclamationDescription" style="margin-top:10px;color:#fff"></p>
+                            </div>
+                            
+                            <form id="formTraiterReclamation" onsubmit="envoyerTraitementReclamation(event)">
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Décision *</label>
+                                    <select id="decisionReclamation" required class="form-input-ultra">
+                                        <option value="">Choisir...</option>
+                                        <option value="resolue">Accepter (Résoudre)</option>
+                                        <option value="rejetee">Rejeter</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Réponse à l'étudiant *</label>
+                                    <textarea id="reponseReclamation" rows="4" required class="form-input-ultra" placeholder="Expliquez votre décision..."></textarea>
+                                </div>
+                                
+                                <div id="correctionNote" style="display:none;padding:20px;background:rgba(16,185,129,0.1);border-radius:12px;border:1px solid rgba(16,185,129,0.2);margin-top:20px">
+                                    <h4 style="margin-bottom:16px;color:#10b981">✏️ Correction de la note</h4>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                                        <div class="form-group-ultra">
+                                            <label class="form-label-ultra">Nouvelle note CC</label>
+                                            <input type="number" id="nouvelleNoteCC" min="0" max="20" step="0.5" class="form-input-ultra" placeholder="Ex: 15">
+                                        </div>
+                                        <div class="form-group-ultra">
+                                            <label class="form-label-ultra">Nouvelle note Examen</label>
+                                            <input type="number" id="nouvelleNoteExamen" min="0" max="20" step="0.5" class="form-input-ultra" placeholder="Ex: 16">
+                                        </div>
+                                    </div>
+                                    <p style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:12px">
+                                        💡 La moyenne sera recalculée automatiquement
+                                    </p>
+                                </div>
+                                
+                                <div class="modal-footer-ultra">
+                                    <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalTraiterReclamation')">Annuler</button>
+                                    <button type="submit" class="btn-ultra btn-primary-ultra">Envoyer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -524,10 +652,10 @@
     </div>
 
     <!-- Charger les scripts externes d'abord -->
-    <script src="js/mock-data.js?v=6"></script>
-    <script src="js/api.js?v=6"></script>
-    <script src="js/fix-navigation.js?v=6"></script>
-    <script src="js/theme-toggle.js?v=6"></script>
+    <script src="js/mock-data.js?v=7"></script>
+    <script src="js/api.js?v=7"></script>
+    <script src="js/fix-navigation.js?v=7"></script>
+    <script src="js/theme-toggle.js?v=7"></script>
 
     <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
@@ -1594,5 +1722,318 @@
             }
         });
     </script>
+</body>
+</html>
+
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${e.matricule}</td>
+                            <td>${e.prenom} ${e.nom}</td>
+                            <td>
+                                <input type="number" 
+                                    class="form-input-ultra" 
+                                    style="width:80px;padding:8px;text-align:center" 
+                                    min="0" 
+                                    max="${evaluation.note_sur}" 
+                                    step="0.5"
+                                    value="${noteValue}"
+                                    ${absent ? 'disabled' : ''}
+                                    onchange="sauvegarderNote(${e.id}, this.value, ${noteId}, ${absent})"
+                                    placeholder="Note">
+                            </td>
+                            <td>
+                                <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                                    <input type="checkbox" 
+                                        ${absent ? 'checked' : ''}
+                                        onchange="toggleAbsent(${e.id}, this.checked, ${noteId})">
+                                    <span style="font-size:13px">${absent ? 'Absent' : 'Présent'}</span>
+                                </label>
+                            </td>
+                            <td>
+                                <input type="text" 
+                                    class="form-input-ultra" 
+                                    style="width:200px;padding:8px;font-size:13px" 
+                                    value="${commentaire}"
+                                    onchange="sauvegarderCommentaire(${e.id}, this.value, ${noteId})"
+                                    placeholder="Commentaire...">
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                openModal('modalSaisieNotes');
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur: ' + err.message, 'danger');
+            }
+        }
+
+        async function sauvegarderNote(etudiantId, note, noteId, absent) {
+            if (absent) return;
+            
+            try {
+                const data = {
+                    evaluation: evaluationEnCours.id,
+                    etudiant: etudiantId,
+                    note: parseFloat(note) || null,
+                    absent: false
+                };
+
+                if (noteId) {
+                    await API.updateNoteEvaluation(noteId, data);
+                } else {
+                    await API.createNoteEvaluation(data);
+                }
+                
+                showToast('Note enregistrée', 'success');
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur: ' + err.message, 'danger');
+            }
+        }
+
+        async function toggleAbsent(etudiantId, absent, noteId) {
+            try {
+                const data = {
+                    evaluation: evaluationEnCours.id,
+                    etudiant: etudiantId,
+                    absent: absent,
+                    note: absent ? null : 0
+                };
+
+                if (noteId) {
+                    await API.updateNoteEvaluation(noteId, data);
+                } else {
+                    await API.createNoteEvaluation(data);
+                }
+                
+                ouvrirSaisieNotes(evaluationEnCours.id);
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur: ' + err.message, 'danger');
+            }
+        }
+
+        async function sauvegarderCommentaire(etudiantId, commentaire, noteId) {
+            try {
+                const data = {
+                    evaluation: evaluationEnCours.id,
+                    etudiant: etudiantId,
+                    commentaire: commentaire
+                };
+
+                if (noteId) {
+                    await API.updateNoteEvaluation(noteId, data);
+                } else {
+                    await API.createNoteEvaluation(data);
+                }
+            } catch (err) {
+                console.error('Erreur:', err);
+            }
+        }
+
+        // ===== RÉCLAMATIONS =====
+        let toutesReclamations = [];
+        let reclamationSelectionnee = null;
+
+        async function chargerReclamations() {
+            try {
+                const reclamations = await API.get('/reclamations/');
+                toutesReclamations = reclamations;
+                
+                // Mettre à jour le badge
+                const enAttente = reclamations.filter(r => r.statut === 'en_attente').length;
+                document.getElementById('badgeReclamations').textContent = enAttente;
+                
+                afficherReclamations(reclamations);
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur lors du chargement des réclamations', 'danger');
+            }
+        }
+
+        function afficherReclamations(reclamations) {
+            const tbody = document.getElementById('tbodyReclamationsProf');
+            
+            if (!reclamations || reclamations.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucune réclamation</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = reclamations.map(r => {
+                const badgeClass = {
+                    'en_attente': 'warning',
+                    'resolue': 'success',
+                    'rejetee': 'danger'
+                }[r.statut] || 'secondary';
+                
+                return `
+                    <tr>
+                        <td>${r.note?.etudiant?.nom || 'N/A'} ${r.note?.etudiant?.prenom || ''}</td>
+                        <td>${r.note?.matiere?.nom || 'N/A'}</td>
+                        <td>${r.note?.note_cc !== null ? r.note.note_cc.toFixed(2) : '-'}</td>
+                        <td>${r.note?.note_examen !== null ? r.note.note_examen.toFixed(2) : '-'}</td>
+                        <td><strong>${r.note?.moyenne !== null ? r.note.moyenne.toFixed(2) : '-'}</strong></td>
+                        <td>${new Date(r.date_creation).toLocaleDateString('fr-FR')}</td>
+                        <td><span class="badge-ultra ${badgeClass}">${r.statut}</span></td>
+                        <td>
+                            ${r.statut === 'en_attente' ? 
+                                `<button onclick="traiterReclamation(${r.id})" class="btn-ultra btn-sm-ultra btn-primary-ultra">
+                                    Traiter
+                                </button>` : 
+                                `<button onclick="voirReclamationProf(${r.id})" class="btn-ultra btn-sm-ultra btn-ghost-ultra">
+                                    Voir
+                                </button>`
+                            }
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filtrerReclamationsProf() {
+            const statut = document.getElementById('filtreStatutReclamationProf').value;
+            
+            let filtrees = toutesReclamations;
+            
+            if (statut) {
+                filtrees = filtrees.filter(r => r.statut === statut);
+            }
+            
+            afficherReclamations(filtrees);
+        }
+
+        function voirReclamationProf(id) {
+            const reclamation = toutesReclamations.find(r => r.id === id);
+            if (!reclamation) return;
+            
+            const details = document.getElementById('detailsReclamationProf');
+            details.innerHTML = `
+                <div class="detail-row">
+                    <strong>Étudiant:</strong> ${reclamation.note?.etudiant?.nom || 'N/A'} ${reclamation.note?.etudiant?.prenom || ''}
+                </div>
+                <div class="detail-row">
+                    <strong>Matière:</strong> ${reclamation.note?.matiere?.nom || 'N/A'}
+                </div>
+                <div class="detail-row">
+                    <strong>Notes actuelles:</strong><br>
+                    <div style="margin-top:10px;padding:15px;background:rgba(255,255,255,0.05);border-radius:8px;">
+                        CC: ${reclamation.note?.note_cc !== null ? reclamation.note.note_cc.toFixed(2) : '-'}/20<br>
+                        Examen: ${reclamation.note?.note_examen !== null ? reclamation.note.note_examen.toFixed(2) : '-'}/20<br>
+                        <strong>Moyenne: ${reclamation.note?.moyenne !== null ? reclamation.note.moyenne.toFixed(2) : '-'}/20</strong>
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <strong>Description:</strong><br>
+                    <p style="margin-top:10px;padding:15px;background:rgba(255,255,255,0.05);border-radius:8px;">
+                        ${reclamation.description || 'Aucune description'}
+                    </p>
+                </div>
+                ${reclamation.reponse_enseignant ? `
+                    <div class="detail-row">
+                        <strong>Votre réponse:</strong><br>
+                        <p style="margin-top:10px;padding:15px;background:rgba(76,175,80,0.1);border-radius:8px;border-left:3px solid #4CAF50;">
+                            ${reclamation.reponse_enseignant}
+                        </p>
+                    </div>
+                ` : ''}
+            `;
+            
+            openModal('modalVoirReclamationProf');
+        }
+
+        function traiterReclamation(id) {
+            const reclamation = toutesReclamations.find(r => r.id === id);
+            if (!reclamation) return;
+            
+            reclamationSelectionnee = reclamation;
+            
+            document.getElementById('reclamationInfo').innerHTML = `
+                <strong>${reclamation.note?.etudiant?.nom || 'N/A'} ${reclamation.note?.etudiant?.prenom || ''}</strong> - ${reclamation.note?.matiere?.nom || 'N/A'}<br>
+                <span style="font-size:13px;color:rgba(255,255,255,0.7)">
+                    Note actuelle: ${reclamation.note?.moyenne !== null ? reclamation.note.moyenne.toFixed(2) : '-'}/20
+                </span>
+            `;
+            
+            document.getElementById('reclamationDescription').textContent = reclamation.description || 'Aucune description';
+            
+            // Pré-remplir les notes actuelles
+            document.getElementById('nouvelleNoteCC').value = reclamation.note?.note_cc || '';
+            document.getElementById('nouvelleNoteExamen').value = reclamation.note?.note_examen || '';
+            
+            document.getElementById('formTraiterReclamation').reset();
+            document.getElementById('decisionReclamation').value = '';
+            document.getElementById('reponseReclamation').value = '';
+            document.getElementById('correctionNote').style.display = 'none';
+            
+            openModal('modalTraiterReclamation');
+        }
+
+        // Afficher/masquer la section correction
+        document.addEventListener('DOMContentLoaded', () => {
+            const decisionSelect = document.getElementById('decisionReclamation');
+            if (decisionSelect) {
+                decisionSelect.addEventListener('change', (e) => {
+                    const correctionDiv = document.getElementById('correctionNote');
+                    correctionDiv.style.display = e.target.value === 'resolue' ? 'block' : 'none';
+                });
+            }
+        });
+
+        async function envoyerTraitementReclamation(event) {
+            event.preventDefault();
+            
+            if (!reclamationSelectionnee) return;
+            
+            const decision = document.getElementById('decisionReclamation').value;
+            const reponse = document.getElementById('reponseReclamation').value;
+            const corriger = decision === 'resolue';
+            
+            const data = {
+                statut: decision,
+                reponse_enseignant: reponse,
+                corriger_note: corriger
+            };
+            
+            if (corriger) {
+                const noteCC = document.getElementById('nouvelleNoteCC').value;
+                const noteExamen = document.getElementById('nouvelleNoteExamen').value;
+                
+                if (noteCC) data.nouvelle_note_cc = parseFloat(noteCC);
+                if (noteExamen) data.nouvelle_note_examen = parseFloat(noteExamen);
+            }
+            
+            try {
+                await API.post(`/reclamations/${reclamationSelectionnee.id}/traiter/`, data);
+                showToast('Réclamation traitée avec succès', 'success');
+                closeModal('modalTraiterReclamation');
+                chargerReclamations();
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur lors du traitement: ' + err.message, 'danger');
+            }
+        }
+
+        // Initialisation
+        window.addEventListener('DOMContentLoaded', () => {
+            chargerDonnees();
+            chargerReclamations();
+        });
+    </script>
+    <style>
+        .detail-row {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-row strong {
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
 </body>
 </html>

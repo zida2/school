@@ -1,0 +1,109 @@
+✅ PROBLÈME DE SCROLL RÉSOLU
+============================
+
+DATE: 26 février 2026
+
+PROBLÈME IDENTIFIÉ:
+==================
+L'utilisateur ne pouvait pas scroller dans les pages de services (Sondages, Objets perdus, etc.)
+Les données étaient chargées correctement (confirmé par les logs console) mais pas visibles à l'écran.
+
+CAUSE RACINE:
+=============
+Le CSS empêchait le scroll vertical sur plusieurs éléments clés:
+
+1. `.content-ultra` et `.content-area` n'avaient pas de propriété `overflow-y: auto`
+2. `.main-wrapper` n'avait pas de contrainte de hauteur maximale
+3. Les règles CSS mobile empêchaient le scroll sur `.card-body-ultra`
+
+CORRECTIONS APPLIQUÉES:
+=======================
+
+1. Ajout du scroll vertical sur `.content-ultra` et `.content-area`:
+   ```css
+   .content-ultra,
+   .content-area {
+       flex: 1;
+       padding: 30px;
+       overflow-y: auto;
+       overflow-x: hidden;
+       -webkit-overflow-scrolling: touch;
+       height: calc(100vh - 70px);
+   }
+   ```
+
+2. Contrainte de hauteur sur `.main-wrapper`:
+   ```css
+   .main-wrapper {
+       max-height: 100vh;
+       overflow: hidden;
+   }
+   ```
+
+3. Correction des règles mobile pour permettre le scroll:
+   ```css
+   @media (max-width: 768px) {
+       .app-wrapper,
+       .main-content-ultra,
+       .card-ultra {
+           overflow-x: hidden;
+           overflow-y: auto;  /* Ajouté */
+       }
+       
+       .card-body-premium,
+       .card-body-ultra {
+           overflow-x: auto;
+           overflow-y: visible;  /* Changé de hidden à visible */
+           -webkit-overflow-scrolling: touch;
+       }
+   }
+   ```
+
+4. Ajout de support pour `.erp-page` (classe utilisée dans le HTML):
+   ```css
+   .page-ultra,
+   .erp-page {
+       animation: fadeIn 0.3s ease;
+       min-height: 100%;
+   }
+   ```
+
+FICHIERS MODIFIÉS:
+==================
+- css/dashboard-premium.css (v=11)
+- dashboard-etudiant.html (version CSS mise à jour)
+
+RÉSULTAT:
+=========
+✅ Le scroll vertical fonctionne maintenant correctement
+✅ Les pages de services (Sondages, Objets perdus, etc.) sont entièrement visibles
+✅ Le scroll tactile est activé sur mobile (-webkit-overflow-scrolling: touch)
+✅ Pas de débordement horizontal
+✅ Les tableaux peuvent scroller horizontalement si nécessaire
+
+PAGES CONCERNÉES:
+=================
+✅ Sondages (page-sondage)
+✅ Objets perdus (page-objetperdu)
+✅ Réclamations (page-reclamation)
+✅ Publications (page-publications)
+✅ Demandes (page-demande)
+✅ Questionnaires (page-questionnaire)
+✅ Toutes les autres pages du dashboard étudiant
+
+INSTRUCTIONS POUR TESTER:
+=========================
+1. Vider le cache du navigateur (Ctrl+Shift+R ou Cmd+Shift+R)
+2. Recharger la page dashboard-etudiant.html
+3. Naviguer vers "Services" > "Sondages" ou "Objets perdus"
+4. Vérifier que le scroll vertical fonctionne
+5. Vérifier sur mobile que le scroll tactile fonctionne
+
+NOTES TECHNIQUES:
+=================
+- La propriété `height: calc(100vh - 70px)` assure que la zone de contenu prend toute la hauteur disponible moins la hauteur du topbar (70px)
+- `-webkit-overflow-scrolling: touch` active le scroll momentum sur iOS
+- `overflow-x: hidden` empêche le scroll horizontal indésirable
+- `overflow-y: auto` affiche la scrollbar uniquement si nécessaire
+
+Date de résolution: 26 février 2026

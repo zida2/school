@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.contrib.auth import update_session_auth_hash
+from django.db import models
 from django.db.models import Sum, Count, Q
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
@@ -16,7 +17,10 @@ from .models import (
     Utilisateur, Universite, AnneeAcademique, Filiere, Matiere,
     Enseignant, Etudiant, Note, Paiement, EmploiDuTemps,
     Presence, SupportCours, Notification, ReclamationNote,
-    Evaluation, NoteEvaluation
+    Evaluation, NoteEvaluation, MembreBureau, Publication,
+    Sondage, QuestionSondage, OptionQuestion, ReponseSondage,
+    Evenement, InscriptionEvenement, MessageBureau,
+    DemandeAdministrative, ObjetPerdu
 )
 from .serializers import (
     LoginSerializer, UtilisateurSerializer, ChangePasswordSerializer,
@@ -25,7 +29,11 @@ from .serializers import (
     EtudiantSerializer, EtudiantCreateSerializer, NoteSerializer,
     PaiementSerializer, EmploiDuTempsSerializer, PresenceSerializer,
     SupportCoursSerializer, NotificationSerializer, ReclamationNoteSerializer,
-    EvaluationSerializer, NoteEvaluationSerializer
+    EvaluationSerializer, NoteEvaluationSerializer, MembreBureauSerializer,
+    PublicationSerializer, SondageSerializer, QuestionSondageSerializer,
+    OptionQuestionSerializer, ReponseSondageSerializer, EvenementSerializer,
+    InscriptionEvenementSerializer, MessageBureauSerializer,
+    DemandeAdministrativeSerializer, ObjetPerduSerializer
 )
 from .permissions import IsSuperAdmin, IsAdminOrSuperAdmin, IsEnseignant, IsEtudiant
 
@@ -148,31 +156,58 @@ class DashboardEtudiantView(APIView):
     def get(self, request):
         try:
             etudiant = request.user.etudiant
-            notes = Note.objects.filter(etudiant=etudiant, publie=True)
-            notes_s1 = notes.filter(matiere__semestre=1)
-            notes_s2 = notes.filter(matiere__semestre=2)
+            notes = Note.objects.filter(etudiant=etudiant, publie=True).select_related('matiere')
+            
+            # Calculer la moyenne générale
+            total_coef = 0
+            total_points = 0
+            for n in notes:
+                if n.moyenne is not None:
+                    total_coef += n.matiere.coefficient
+                    total_points += n.moyenne * n.matiere.coefficient
+            moyenne_generale = round(total_points / total_coef, 2) if total_coef > 0 else 0
 
-            def calc_moy(qs):
-                total_coef = 0
-                total_points = 0
-                for n in qs:
-                    if n.moyenne is not None:
-                        total_coef += n.matiere.coefficient
-                        total_points += n.moyenne * n.matiere.coefficient
-                return round(total_points / total_coef, 2) if total_coef > 0 else None
+            # Calculer le taux de présence (si vous avez un modèle Presence)
+            # Pour l'instant, on met une valeur par défaut
+            taux_presence = 85
+
+            # Calculer le solde dû
+            frais_inscription = etudiant.filiere.frais_inscription if etudiant.filiere else 0
+            montant_paye = etudiant.paiements.filter(statut='valide').aggregate(
+                total=models.Sum('montant')
+            )['total'] or 0
+            solde_du = frais_inscription - montant_paye
+
+            # Sérialiser les notes avec le nom de la matière
+            notes_data = []
+            for note in notes:
+                notes_data.append({
+                    'id': note.id,
+                    'matiere_nom': note.matiere.nom,
+                    'coefficient': note.matiere.coefficient,
+                    'note_cc': note.note_cc,
+                    'note_examen': note.note_examen,
+                    'moyenne': note.moyenne,
+                    'statut': note.statut,
+                    'publie': note.publie
+                })
 
             return Response({
                 'etudiant': EtudiantSerializer(etudiant).data,
-                'notes_s1': NoteSerializer(notes_s1, many=True).data,
-                'notes_s2': NoteSerializer(notes_s2, many=True).data,
-                'moyenne_s1': calc_moy(notes_s1),
-                'moyenne_s2': calc_moy(notes_s2),
+                'notes': notes_data,
+                'total_matieres': notes.count(),
+                'moyenne_generale': moyenne_generale,
+                'taux_presence': taux_presence,
+                'solde_du': solde_du,
                 'paiements': PaiementSerializer(
-                    etudiant.paiements.filter(statut='valide').order_by('-date_paiement'), many=True
+                    etudiant.paiements.filter(statut='valide').order_by('-date_paiement')[:5], 
+                    many=True
                 ).data,
             })
         except Etudiant.DoesNotExist:
             return Response({'error': 'Profil étudiant non trouvé'}, status=404)
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
 
 
 # ===== UNIVERSITÉ =====
@@ -623,86 +658,143 @@ class NotificationViewSet(viewsets.ModelViewSet):
         return Response({'detail': 'Notification lue.'})
 
 
-# ===== RÉCLAMATIONS NOTES =====
-@api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
-def reclamations_list(request):
-    """Liste et création de réclamations de notes"""
-    if request.method == 'GET':
-        # Filtrer selon le rôle
-        if request.user.role == 'etudiant':
-            reclamations = ReclamationNote.objects.filter(etudiant=request.user.etudiant)
-        elif request.user.role == 'professeur':
-            # Réclamations pour les matières de l'enseignant
-            reclamations = ReclamationNote.objects.filter(
-                note__matiere__enseignant=request.user.enseignant
-            )
-        else:
-            # Admin voit tout
-            reclamations = ReclamationNote.objects.all()
-        
-        serializer = ReclamationNoteSerializer(reclamations, many=True)
-        return Response(serializer.data)
+# ===== RÉCLAMATION NOTE =====
+class ReclamationNoteViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet pour gérer les réclamations sur les notes
+    """
+    queryset = ReclamationNote.objects.select_related(
+        'note', 'note__etudiant', 'note__matiere', 'note__matiere__enseignant'
+    ).all()
+    serializer_class = ReclamationNoteSerializer
+    permission_classes = [permissions.IsAuthenticated]
     
-    elif request.method == 'POST':
-        # Seuls les étudiants peuvent créer des réclamations
-        if request.user.role != 'etudiant':
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = self.request.user
+        
+        # Étudiant: voir uniquement ses réclamations
+        if user.role == 'etudiant':
+            try:
+                qs = qs.filter(note__etudiant=user.etudiant)
+            except:
+                qs = qs.none()
+        
+        # Enseignant: voir les réclamations sur ses matières
+        elif user.role == 'professeur':
+            try:
+                qs = qs.filter(note__matiere__enseignant=user.enseignant)
+            except:
+                qs = qs.none()
+        
+        # Admin: voir toutes les réclamations
+        elif user.role in ['admin', 'superadmin']:
+            pass
+        
+        else:
+            qs = qs.none()
+        
+        # Filtres
+        statut = self.request.query_params.get('statut')
+        if statut:
+            qs = qs.filter(statut=statut)
+        
+        return qs.order_by('-date_creation')
+    
+    def perform_create(self, serializer):
+        """Créer une réclamation (étudiant uniquement)"""
+        if self.request.user.role != 'etudiant':
+            raise permissions.PermissionDenied("Seuls les étudiants peuvent créer des réclamations")
+        
+        serializer.save()
+    
+    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
+    def traiter(self, request, pk=None):
+        """
+        Traiter une réclamation (enseignant ou admin)
+        """
+        reclamation = self.get_object()
+        user = request.user
+        
+        # Vérifier les permissions
+        if user.role == 'professeur':
+            try:
+                if reclamation.note.matiere.enseignant != user.enseignant:
+                    return Response(
+                        {'error': 'Vous ne pouvez traiter que les réclamations de vos matières'},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
+            except:
+                return Response(
+                    {'error': 'Enseignant non trouvé'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        elif user.role not in ['admin', 'superadmin']:
             return Response(
-                {'error': 'Seuls les étudiants peuvent créer des réclamations'},
+                {'error': 'Non autorisé'},
                 status=status.HTTP_403_FORBIDDEN
             )
         
-        serializer = ReclamationNoteSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
-def reclamation_detail(request, pk):
-    """Détail, modification et suppression d'une réclamation"""
-    try:
-        reclamation = ReclamationNote.objects.get(pk=pk)
-    except ReclamationNote.DoesNotExist:
-        return Response({'error': 'Réclamation non trouvée'}, status=status.HTTP_404_NOT_FOUND)
-    
-    # Vérifier les permissions
-    if request.user.role == 'etudiant' and reclamation.etudiant.utilisateur != request.user:
-        return Response({'error': 'Non autorisé'}, status=status.HTTP_403_FORBIDDEN)
-    
-    if request.method == 'GET':
-        serializer = ReclamationNoteSerializer(reclamation)
-        return Response(serializer.data)
-    
-    elif request.method == 'PUT':
-        # Seuls les enseignants et admins peuvent modifier
-        if request.user.role not in ['professeur', 'admin', 'superadmin']:
-            return Response({'error': 'Non autorisé'}, status=status.HTTP_403_FORBIDDEN)
+        # Récupérer les données
+        statut = request.data.get('statut')  # 'resolue' ou 'rejetee'
+        reponse = request.data.get('reponse_enseignant', '')
+        corriger_note = request.data.get('corriger_note', False)
+        nouvelle_note_cc = request.data.get('nouvelle_note_cc')
+        nouvelle_note_examen = request.data.get('nouvelle_note_examen')
         
-        serializer = ReclamationNoteSerializer(reclamation, data=request.data, partial=True)
-        if serializer.is_valid():
-            if 'statut' in request.data and request.data['statut'] != 'en_attente':
-                reclamation.traite_par = request.user
-                reclamation.date_traitement = timezone.now()
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    elif request.method == 'DELETE':
-        # Seuls les étudiants peuvent supprimer leurs réclamations en attente
-        if request.user.role == 'etudiant' and reclamation.statut == 'en_attente':
-            reclamation.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response({'error': 'Non autorisé'}, status=status.HTTP_403_FORBIDDEN)
+        if statut not in ['resolue', 'rejetee']:
+            return Response(
+                {'error': 'Statut invalide. Utilisez "resolue" ou "rejetee"'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Mettre à jour la réclamation
+        reclamation.statut = statut
+        reclamation.reponse_enseignant = reponse
+        reclamation.date_traitement = timezone.now()
+        reclamation.save()
+        
+        # Si correction de note demandée et acceptée
+        if corriger_note and statut == 'resolue':
+            note = reclamation.note
+            
+            if nouvelle_note_cc is not None:
+                note.note_cc = float(nouvelle_note_cc)
+            
+            if nouvelle_note_examen is not None:
+                note.note_examen = float(nouvelle_note_examen)
+            
+            # Recalculer la moyenne
+            if note.note_cc is not None and note.note_examen is not None:
+                note.moyenne = (note.note_cc + note.note_examen) / 2
+            elif note.note_cc is not None:
+                note.moyenne = note.note_cc
+            elif note.note_examen is not None:
+                note.moyenne = note.note_examen
+            
+            note.save()
+            
+            return Response({
+                'detail': 'Réclamation traitée et note corrigée',
+                'reclamation': ReclamationNoteSerializer(reclamation).data,
+                'note_corrigee': {
+                    'note_cc': note.note_cc,
+                    'note_examen': note.note_examen,
+                    'moyenne': note.moyenne
+                }
+            })
+        
+        return Response({
+            'detail': f'Réclamation {statut}',
+            'reclamation': ReclamationNoteSerializer(reclamation).data
+        })
 
 
 # ===== ÉVALUATION =====
 class EvaluationViewSet(viewsets.ModelViewSet):
     queryset = Evaluation.objects.select_related('matiere', 'annee_academique').all()
     serializer_class = EvaluationSerializer
-    permission_classes = [IsEnseignant]
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         qs = super().get_queryset()
@@ -720,7 +812,23 @@ class EvaluationViewSet(viewsets.ModelViewSet):
                 qs = qs.filter(matiere__enseignant=self.request.user.enseignant)
             except: qs = qs.none()
         
+        # Étudiant voit les évaluations actives de ses matières
+        elif self.request.user.role == 'etudiant':
+            try:
+                etudiant = self.request.user.etudiant
+                qs = qs.filter(
+                    matiere__filiere=etudiant.filiere,
+                    actif=True
+                )
+            except: qs = qs.none()
+        
         return qs
+    
+    def get_permissions(self):
+        # Seuls les enseignants peuvent créer/modifier/supprimer
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [IsEnseignant()]
+        return [IsAuthenticated()]
     
     @action(detail=True, methods=['post'])
     def generer_notes(self, request, pk=None):
@@ -745,6 +853,136 @@ class EvaluationViewSet(viewsets.ModelViewSet):
             'message': f'{notes_creees} note(s) générée(s)',
             'total_etudiants': etudiants.count()
         })
+    
+    @action(detail=True, methods=['post'])
+    def repondre(self, request, pk=None):
+        """
+        Répondre à un questionnaire d'évaluation
+        """
+        evaluation = self.get_object()
+        user = request.user
+        
+        # Vérifier que l'utilisateur est étudiant
+        if user.role != 'etudiant':
+            return Response(
+                {'error': 'Seuls les étudiants peuvent répondre aux évaluations'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Vérifier que l'évaluation est active
+        if not evaluation.actif:
+            return Response(
+                {'error': 'Cette évaluation n\'est plus active'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Vérifier que l'étudiant n'a pas déjà répondu
+        try:
+            etudiant = user.etudiant
+            if NoteEvaluation.objects.filter(evaluation=evaluation, etudiant=etudiant).exists():
+                return Response(
+                    {'error': 'Vous avez déjà répondu à cette évaluation'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except:
+            return Response(
+                {'error': 'Étudiant non trouvé'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Récupérer les réponses
+        reponses = request.data.get('reponses', {})
+        commentaire = request.data.get('commentaire', '')
+        
+        if not reponses:
+            return Response(
+                {'error': 'Aucune réponse fournie'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Créer la note d'évaluation
+        note_eval = NoteEvaluation.objects.create(
+            evaluation=evaluation,
+            etudiant=etudiant,
+            reponses=reponses,
+            commentaire=commentaire
+        )
+        
+        return Response({
+            'detail': 'Évaluation soumise avec succès',
+            'evaluation': NoteEvaluationSerializer(note_eval).data
+        })
+    
+    @action(detail=True, methods=['get'])
+    def resultats(self, request, pk=None):
+        """
+        Obtenir les résultats d'une évaluation (anonymes)
+        """
+        evaluation = self.get_object()
+        user = request.user
+        
+        # Seuls admin et l'enseignant concerné peuvent voir les résultats
+        if user.role == 'professeur':
+            try:
+                if evaluation.matiere and evaluation.matiere.enseignant != user.enseignant:
+                    return Response(
+                        {'error': 'Non autorisé'},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
+            except:
+                return Response(
+                    {'error': 'Enseignant non trouvé'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        elif user.role not in ['admin', 'superadmin']:
+            return Response(
+                {'error': 'Non autorisé'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Calculer les statistiques (anonymes)
+        notes = NoteEvaluation.objects.filter(evaluation=evaluation)
+        total_reponses = notes.count()
+        
+        # Agréger les réponses
+        resultats = {
+            'total_participants': total_reponses,
+            'questions': []
+        }
+        
+        # Extraire les questions du premier questionnaire
+        if total_reponses > 0:
+            premiere_note = notes.first()
+            if premiere_note and premiere_note.reponses:
+                for question_key, _ in premiere_note.reponses.items():
+                    # Collecter toutes les réponses pour cette question
+                    reponses_question = []
+                    for note in notes:
+                        if note.reponses and question_key in note.reponses:
+                            reponses_question.append(note.reponses[question_key])
+                    
+                    # Calculer la moyenne si numérique
+                    if reponses_question and isinstance(reponses_question[0], (int, float)):
+                        moyenne = sum(reponses_question) / len(reponses_question)
+                        resultats['questions'].append({
+                            'question': question_key,
+                            'type': 'numerique',
+                            'moyenne': round(moyenne, 2),
+                            'min': min(reponses_question),
+                            'max': max(reponses_question)
+                        })
+                    else:
+                        resultats['questions'].append({
+                            'question': question_key,
+                            'type': 'texte',
+                            'reponses': reponses_question
+                        })
+        
+        # Commentaires (anonymes)
+        commentaires = notes.exclude(commentaire='').values_list('commentaire', flat=True)
+        resultats['commentaires'] = list(commentaires)
+        
+        return Response(resultats)
 
 
 # ===== NOTE D'ÉVALUATION =====
@@ -776,3 +1014,634 @@ class NoteEvaluationViewSet(viewsets.ModelViewSet):
             except: qs = qs.none()
         
         return qs
+
+
+
+# ===== BUREAU EXÉCUTIF =====
+class MembreBureauViewSet(viewsets.ModelViewSet):
+    queryset = MembreBureau.objects.select_related('utilisateur', 'etudiant').all()
+    serializer_class = MembreBureauSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        actif = self.request.query_params.get('actif')
+        if actif is not None:
+            qs = qs.filter(actif=actif.lower() == 'true')
+        return qs
+
+
+class PublicationViewSet(viewsets.ModelViewSet):
+    queryset = Publication.objects.select_related('auteur').all()
+    serializer_class = PublicationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['titre', 'contenu']
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        categorie = self.request.query_params.get('categorie')
+        statut = self.request.query_params.get('statut')
+        
+        if categorie:
+            qs = qs.filter(categorie=categorie)
+        if statut:
+            qs = qs.filter(statut=statut)
+        
+        # Les non-membres du bureau ne voient que les publications publiées
+        if self.request.user.role != 'bureau_executif':
+            qs = qs.filter(statut='publie')
+        
+        return qs
+    
+    @action(detail=True, methods=['post'])
+    def publier(self, request, pk=None):
+        publication = self.get_object()
+        publication.statut = 'publie'
+        publication.date_publication = timezone.now()
+        publication.save()
+        return Response({'detail': 'Publication publiée avec succès'})
+    
+    @action(detail=True, methods=['post'])
+    def incrementer_vues(self, request, pk=None):
+        publication = self.get_object()
+        publication.vues += 1
+        publication.save()
+        return Response({'vues': publication.vues})
+
+
+class SondageViewSet(viewsets.ModelViewSet):
+    queryset = Sondage.objects.select_related('createur').all()
+    serializer_class = SondageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        statut = self.request.query_params.get('statut')
+        
+        if statut:
+            qs = qs.filter(statut=statut)
+        
+        # Les non-membres du bureau ne voient que les sondages actifs
+        if self.request.user.role != 'bureau_executif':
+            qs = qs.filter(statut='actif')
+        
+        return qs
+    
+    @action(detail=True, methods=['get'])
+    def resultats(self, request, pk=None):
+        sondage = self.get_object()
+        questions = sondage.questions.all()
+        
+        resultats = []
+        for question in questions:
+            if question.type_question in ['choix_unique', 'choix_multiple']:
+                options_stats = []
+                for option in question.options.all():
+                    nb_reponses = option.reponses.count()
+                    options_stats.append({
+                        'option': option.texte,
+                        'nb_reponses': nb_reponses
+                    })
+                resultats.append({
+                    'question': question.texte,
+                    'type': question.type_question,
+                    'options': options_stats
+                })
+            elif question.type_question == 'note':
+                reponses = question.reponses.filter(note__isnull=False)
+                moyenne = reponses.aggregate(avg=__import__('django.db.models', fromlist=['Avg']).Avg('note'))['avg']
+                resultats.append({
+                    'question': question.texte,
+                    'type': question.type_question,
+                    'moyenne': round(moyenne, 2) if moyenne else 0,
+                    'nb_reponses': reponses.count()
+                })
+        
+        return Response({
+            'sondage': SondageSerializer(sondage).data,
+            'resultats': resultats
+        })
+    
+    @action(detail=True, methods=['post'])
+    def repondre(self, request, pk=None):
+        """
+        Répondre à un sondage
+        """
+        sondage = self.get_object()
+        user = request.user
+        
+        # Vérifier que l'utilisateur est étudiant
+        if user.role != 'etudiant':
+            return Response(
+                {'error': 'Seuls les étudiants peuvent répondre aux sondages'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Vérifier que le sondage est actif
+        if sondage.statut != 'actif':
+            return Response(
+                {'error': 'Ce sondage n\'est plus actif'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Vérifier que l'étudiant n'a pas déjà répondu
+        try:
+            etudiant = user.etudiant
+            if ReponseSondage.objects.filter(sondage=sondage, etudiant=etudiant).exists():
+                return Response(
+                    {'error': 'Vous avez déjà répondu à ce sondage'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except:
+            return Response(
+                {'error': 'Étudiant non trouvé'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Récupérer les réponses
+        reponses = request.data.get('reponses', [])
+        
+        if not reponses:
+            return Response(
+                {'error': 'Aucune réponse fournie'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Créer les réponses
+        reponses_creees = []
+        for reponse_data in reponses:
+            question_id = reponse_data.get('question_id')
+            option_id = reponse_data.get('option_id')
+            reponse_texte = reponse_data.get('reponse_texte', '')
+            
+            try:
+                question = sondage.questions.get(id=question_id)
+                
+                reponse = ReponseSondage.objects.create(
+                    sondage=sondage,
+                    question=question,
+                    etudiant=etudiant,
+                    option_id=option_id if option_id else None,
+                    reponse_texte=reponse_texte
+                )
+                reponses_creees.append(reponse)
+            except Exception as e:
+                return Response(
+                    {'error': f'Erreur lors de la création de la réponse: {str(e)}'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        
+        return Response({
+            'detail': 'Réponses enregistrées avec succès',
+            'nombre_reponses': len(reponses_creees)
+        })
+
+
+class QuestionSondageViewSet(viewsets.ModelViewSet):
+    queryset = QuestionSondage.objects.select_related('sondage').all()
+    serializer_class = QuestionSondageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        sondage = self.request.query_params.get('sondage')
+        if sondage:
+            qs = qs.filter(sondage_id=sondage)
+        return qs
+
+
+class OptionQuestionViewSet(viewsets.ModelViewSet):
+    queryset = OptionQuestion.objects.select_related('question').all()
+    serializer_class = OptionQuestionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        question = self.request.query_params.get('question')
+        if question:
+            qs = qs.filter(question_id=question)
+        return qs
+
+
+class ReponseSondageViewSet(viewsets.ModelViewSet):
+    queryset = ReponseSondage.objects.select_related('sondage', 'question', 'etudiant').all()
+    serializer_class = ReponseSondageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        sondage = self.request.query_params.get('sondage')
+        
+        if sondage:
+            qs = qs.filter(sondage_id=sondage)
+        
+        # Les étudiants ne voient que leurs propres réponses
+        if self.request.user.role == 'etudiant':
+            try:
+                qs = qs.filter(etudiant=self.request.user.etudiant)
+            except:
+                qs = qs.none()
+        
+        return qs
+    
+    def perform_create(self, serializer):
+        user = self.request.user
+        if hasattr(user, 'etudiant'):
+            serializer.save(etudiant=user.etudiant)
+        else:
+            serializer.save()
+
+
+class EvenementViewSet(viewsets.ModelViewSet):
+    queryset = Evenement.objects.select_related('organisateur').all()
+    serializer_class = EvenementSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['titre', 'description', 'lieu']
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        statut = self.request.query_params.get('statut')
+        type_evenement = self.request.query_params.get('type')
+        
+        if statut:
+            qs = qs.filter(statut=statut)
+        if type_evenement:
+            qs = qs.filter(type_evenement=type_evenement)
+        
+        return qs
+    
+    @action(detail=True, methods=['post'])
+    def inscrire(self, request, pk=None):
+        evenement = self.get_object()
+        
+        if not hasattr(request.user, 'etudiant'):
+            return Response(
+                {'error': 'Seuls les étudiants peuvent s\'inscrire'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Vérifier la capacité
+        if evenement.capacite_max:
+            nb_inscrits = evenement.inscriptions.filter(statut='confirme').count()
+            if nb_inscrits >= evenement.capacite_max:
+                return Response(
+                    {'error': 'Événement complet'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        
+        inscription, created = InscriptionEvenement.objects.get_or_create(
+            evenement=evenement,
+            etudiant=request.user.etudiant,
+            defaults={'statut': 'confirme'}
+        )
+        
+        if not created:
+            return Response(
+                {'error': 'Vous êtes déjà inscrit à cet événement'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        return Response({
+            'detail': 'Inscription réussie',
+            'inscription': InscriptionEvenementSerializer(inscription).data
+        })
+    
+    @action(detail=True, methods=['post'])
+    def desinscrire(self, request, pk=None):
+        evenement = self.get_object()
+        
+        if not hasattr(request.user, 'etudiant'):
+            return Response(
+                {'error': 'Seuls les étudiants peuvent se désinscrire'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        try:
+            inscription = InscriptionEvenement.objects.get(
+                evenement=evenement,
+                etudiant=request.user.etudiant
+            )
+            inscription.statut = 'annule'
+            inscription.save()
+            return Response({'detail': 'Désinscription réussie'})
+        except InscriptionEvenement.DoesNotExist:
+            return Response(
+                {'error': 'Vous n\'êtes pas inscrit à cet événement'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+
+class InscriptionEvenementViewSet(viewsets.ModelViewSet):
+    queryset = InscriptionEvenement.objects.select_related('evenement', 'etudiant').all()
+    serializer_class = InscriptionEvenementSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        evenement = self.request.query_params.get('evenement')
+        
+        if evenement:
+            qs = qs.filter(evenement_id=evenement)
+        
+        # Les étudiants ne voient que leurs propres inscriptions
+        if self.request.user.role == 'etudiant':
+            try:
+                qs = qs.filter(etudiant=self.request.user.etudiant)
+            except:
+                qs = qs.none()
+        
+        return qs
+
+
+class MessageBureauViewSet(viewsets.ModelViewSet):
+    queryset = MessageBureau.objects.select_related('expediteur', 'destinataire').all()
+    serializer_class = MessageBureauSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = self.request.user
+        
+        # Seuls les membres du bureau peuvent voir les messages
+        if user.role != 'bureau_executif':
+            return qs.none()
+        
+        # Filtrer les messages envoyés ou reçus par l'utilisateur
+        qs = qs.filter(
+            Q(expediteur=user) | Q(destinataire=user) | Q(groupe=True)
+        )
+        
+        return qs
+    
+    @action(detail=True, methods=['post'])
+    def marquer_lu(self, request, pk=None):
+        message = self.get_object()
+        if message.destinataire == request.user or message.groupe:
+            message.lu = True
+            message.save()
+            return Response({'detail': 'Message marqué comme lu'})
+        return Response(
+            {'error': 'Non autorisé'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+
+class DemandeAdministrativeViewSet(viewsets.ModelViewSet):
+    queryset = DemandeAdministrative.objects.select_related('etudiant', 'traite_par').all()
+    serializer_class = DemandeAdministrativeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = self.request.user
+        
+        # Étudiant: voir uniquement ses demandes
+        if user.role == 'etudiant':
+            try:
+                qs = qs.filter(etudiant=user.etudiant)
+            except:
+                qs = qs.none()
+        
+        # Enseignant: voir les demandes qui lui sont adressées
+        elif user.role == 'professeur':
+            try:
+                qs = qs.filter(
+                    destinataire='professeur',
+                    professeur=user.enseignant
+                )
+            except:
+                qs = qs.none()
+        
+        # Admin: voir les demandes administratives
+        elif user.role in ['admin', 'superadmin']:
+            qs = qs.filter(destinataire='administration')
+        
+        # Bureau: voir toutes les demandes
+        elif user.role == 'bureau_executif':
+            pass
+        
+        else:
+            qs = qs.none()
+        
+        # Filtres
+        statut = self.request.query_params.get('statut')
+        if statut:
+            qs = qs.filter(statut=statut)
+        
+        type_demande = self.request.query_params.get('type')
+        if type_demande:
+            qs = qs.filter(type_demande=type_demande)
+        
+        return qs.order_by('-date_creation')
+    
+    @action(detail=True, methods=['post'])
+    def traiter(self, request, pk=None):
+        demande = self.get_object()
+        
+        # Seuls les admins et le bureau peuvent traiter
+        if request.user.role not in ['admin', 'superadmin', 'bureau_executif']:
+            return Response(
+                {'error': 'Non autorisé'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        statut = request.data.get('statut')
+        commentaire = request.data.get('commentaire_admin', '')
+        
+        if statut not in ['approuve', 'rejete', 'termine']:
+            return Response(
+                {'error': 'Statut invalide'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        demande.statut = statut
+        demande.commentaire_admin = commentaire
+        demande.traite_par = request.user
+        demande.date_traitement = timezone.now()
+        demande.save()
+        
+        return Response({
+            'detail': f'Demande {statut}',
+            'demande': DemandeAdministrativeSerializer(demande).data
+        })
+    
+    @action(detail=True, methods=['post'])
+    def repondre(self, request, pk=None):
+        """
+        Répondre à une demande
+        """
+        demande = self.get_object()
+        user = request.user
+        
+        # Vérifier les permissions
+        if user.role == 'professeur':
+            try:
+                if demande.professeur != user.enseignant:
+                    return Response(
+                        {'error': 'Vous ne pouvez répondre qu\'aux demandes qui vous sont adressées'},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
+            except:
+                return Response(
+                    {'error': 'Enseignant non trouvé'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        elif user.role not in ['admin', 'superadmin', 'bureau_executif']:
+            return Response(
+                {'error': 'Non autorisé'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Récupérer les données
+        statut = request.data.get('statut')  # 'en_cours', 'traitee', 'rejetee'
+        reponse = request.data.get('reponse', '')
+        
+        if statut not in ['en_cours', 'traitee', 'rejetee']:
+            return Response(
+                {'error': 'Statut invalide'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Mettre à jour la demande
+        demande.statut = statut
+        demande.reponse = reponse
+        demande.traite_par = user
+        demande.date_traitement = timezone.now()
+        demande.save()
+        
+        return Response({
+            'detail': f'Demande {statut}',
+            'demande': DemandeAdministrativeSerializer(demande).data
+        })
+
+
+class ObjetPerduViewSet(viewsets.ModelViewSet):
+    queryset = ObjetPerdu.objects.select_related('declarant').all()
+    serializer_class = ObjetPerduSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['nom_objet', 'description', 'lieu']
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        type_declaration = self.request.query_params.get('type')
+        statut = self.request.query_params.get('statut')
+        
+        if type_declaration:
+            qs = qs.filter(type_declaration=type_declaration)
+        if statut:
+            qs = qs.filter(statut=statut)
+        
+        return qs
+    
+    @action(detail=True, methods=['post'])
+    def marquer_recupere(self, request, pk=None):
+        objet = self.get_object()
+        objet.statut = 'recupere'
+        objet.save()
+        return Response({'detail': 'Objet marqué comme récupéré'})
+    
+    @action(detail=True, methods=['patch'])
+    def changer_statut(self, request, pk=None):
+        """
+        Changer le statut d'un objet perdu
+        """
+        objet = self.get_object()
+        user = request.user
+        
+        # Seuls admin et bureau peuvent changer le statut
+        if user.role not in ['admin', 'superadmin', 'bureau_executif']:
+            return Response(
+                {'error': 'Non autorisé'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        nouveau_statut = request.data.get('statut')
+        
+        if nouveau_statut not in ['actif', 'recupere', 'archive']:
+            return Response(
+                {'error': 'Statut invalide'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        objet.statut = nouveau_statut
+        objet.save()
+        
+        return Response({
+            'detail': f'Statut changé en {nouveau_statut}',
+            'objet': ObjetPerduSerializer(objet).data
+        })
+
+
+# ===== DASHBOARD BUREAU EXÉCUTIF =====
+class DashboardBureauView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        if request.user.role != 'bureau_executif':
+            return Response(
+                {'error': 'Accès réservé au Bureau Exécutif'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Statistiques Bureau
+        nb_publications = Publication.objects.filter(statut='publie').count()
+        nb_sondages_actifs = Sondage.objects.filter(statut='actif').count()
+        nb_evenements_planifies = Evenement.objects.filter(statut='planifie').count()
+        nb_demandes_en_attente = DemandeAdministrative.objects.filter(statut='en_attente').count()
+        nb_messages_non_lus = MessageBureau.objects.filter(
+            Q(destinataire=request.user, lu=False) | Q(groupe=True, lu=False)
+        ).count()
+        
+        # Données récentes Bureau
+        publications_recentes = Publication.objects.filter(statut='publie').order_by('-date_publication')[:5]
+        evenements_prochains = Evenement.objects.filter(
+            statut='planifie',
+            date_debut__gte=timezone.now()
+        ).order_by('date_debut')[:5]
+        
+        # Données Étudiant (car les membres du bureau sont des étudiants)
+        etudiant_data = {}
+        try:
+            etudiant = request.user.etudiant
+            notes = Note.objects.filter(etudiant=etudiant, publie=True)
+            notes_s1 = notes.filter(matiere__semestre=1)
+            notes_s2 = notes.filter(matiere__semestre=2)
+
+            def calc_moy(qs):
+                total_coef = 0
+                total_points = 0
+                for n in qs:
+                    if n.moyenne is not None:
+                        total_coef += n.matiere.coefficient
+                        total_points += n.moyenne * n.matiere.coefficient
+                return round(total_points / total_coef, 2) if total_coef > 0 else None
+
+            etudiant_data = {
+                'etudiant': EtudiantSerializer(etudiant).data,
+                'notes_s1': NoteSerializer(notes_s1, many=True).data,
+                'notes_s2': NoteSerializer(notes_s2, many=True).data,
+                'moyenne_s1': calc_moy(notes_s1),
+                'moyenne_s2': calc_moy(notes_s2),
+                'paiements': PaiementSerializer(
+                    etudiant.paiements.filter(statut='valide').order_by('-date_paiement')[:5], many=True
+                ).data,
+                'solde_du': etudiant.solde_du,
+            }
+        except Etudiant.DoesNotExist:
+            pass
+        
+        return Response({
+            # Données Bureau
+            'nb_publications': nb_publications,
+            'nb_sondages_actifs': nb_sondages_actifs,
+            'nb_evenements_planifies': nb_evenements_planifies,
+            'nb_demandes_en_attente': nb_demandes_en_attente,
+            'nb_messages_non_lus': nb_messages_non_lus,
+            'publications_recentes': PublicationSerializer(publications_recentes, many=True).data,
+            'evenements_prochains': EvenementSerializer(evenements_prochains, many=True).data,
+            # Données Étudiant
+            **etudiant_data
+        })

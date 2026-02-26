@@ -20,6 +20,16 @@
             position: relative;
         }
 
+        /* Permettre le scroll sur mobile */
+        @media (max-width: 640px) {
+            body {
+                overflow-y: auto;
+                overflow-x: hidden;
+                height: auto;
+                min-height: 100vh;
+            }
+        }
+
         /* Fond animé avec particules */
         .background-animation {
             position: fixed;
@@ -92,6 +102,17 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .login-container {
+                height: auto;
+                min-height: 100vh;
+                padding: 20px 16px;
+                align-items: flex-start;
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
         }
 
         .login-card {
@@ -372,6 +393,34 @@
             transform: translateY(-1px);
         }
 
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-login:disabled:hover {
+            transform: none;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Spinner de chargement */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .divider {
             display: flex;
             align-items: center;
@@ -481,32 +530,19 @@
             display: flex;
         }
 
-        /* Responsive */
+        /* Responsive Design Complet */
         @media (max-width: 1024px) {
             .login-card {
                 grid-template-columns: 1fr;
-                max-width: 600px;
+                max-width: 500px;
+                max-height: none;
             }
 
             .login-left {
-                padding: 60px 40px;
+                padding: 40px 30px;
+                min-height: auto;
             }
 
-            .login-right {
-                padding: 60px 40px;
-            }
-
-            .brand-title {
-                font-size: 36px;
-            }
-
-            .features-list {
-                display: none;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .login-left,
             .login-right {
                 padding: 40px 30px;
             }
@@ -515,12 +551,227 @@
                 font-size: 28px;
             }
 
+            .logo-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 30px;
+            }
+
+            .features-list {
+                display: none;
+            }
+
+            .brand-subtitle {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .login-container {
+                height: auto;
+                min-height: 100vh;
+                padding: 20px 16px;
+            }
+
+            .login-card {
+                max-width: 100%;
+                border-radius: 16px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            }
+
+            .login-left {
+                padding: 30px 20px;
+            }
+
+            .login-right {
+                padding: 30px 20px;
+            }
+
+            .logo-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+                border-radius: 14px;
+                margin-bottom: 12px;
+            }
+
+            .brand-title {
+                font-size: 24px;
+                margin-bottom: 6px;
+            }
+
+            .brand-subtitle {
+                font-size: 12px;
+            }
+
             .login-title {
-                font-size: 28px;
+                font-size: 22px;
+            }
+
+            .login-subtitle {
+                font-size: 12px;
+            }
+
+            .form-group {
+                margin-bottom: 14px;
+            }
+
+            .form-label {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+
+            .form-input {
+                padding: 11px 12px;
+                font-size: 14px;
+                border-radius: 8px;
+            }
+
+            .btn-login {
+                padding: 12px;
+                font-size: 13px;
+                border-radius: 8px;
+            }
+
+            .divider {
+                margin: 18px 0;
+            }
+
+            .divider span {
+                font-size: 11px;
+                padding: 0 12px;
+            }
+
+            .quick-access-title {
+                font-size: 9px;
+                margin-bottom: 10px;
             }
 
             .quick-access-grid {
                 grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .quick-btn {
+                padding: 10px;
+            }
+
+            .quick-role {
+                font-size: 11px;
+            }
+
+            .quick-email {
+                font-size: 9px;
+            }
+
+            .quick-dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            .feature-item {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+
+            .feature-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+
+            .feature-text {
+                font-size: 11px;
+            }
+
+            .alert {
+                padding: 8px 12px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .login-container {
+                padding: 16px 12px;
+            }
+
+            .login-left,
+            .login-right {
+                padding: 24px 16px;
+            }
+
+            .logo-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 24px;
+            }
+
+            .brand-title {
+                font-size: 20px;
+            }
+
+            .brand-subtitle {
+                font-size: 11px;
+            }
+
+            .login-title {
+                font-size: 20px;
+            }
+
+            .form-input {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            .btn-login {
+                padding: 11px;
+                font-size: 12px;
+            }
+
+            .quick-btn {
+                padding: 8px;
+                gap: 6px;
+            }
+
+            .quick-role {
+                font-size: 10px;
+            }
+
+            .quick-email {
+                font-size: 8px;
+            }
+        }
+
+        /* Amélioration du scroll sur mobile */
+        @media (max-width: 640px) {
+            * {
+                -webkit-tap-highlight-color: rgba(99, 102, 241, 0.2);
+            }
+
+            .login-card {
+                overflow-y: visible;
+            }
+
+            /* Assurer que les particules ne causent pas de problèmes */
+            .particles {
+                display: none;
+            }
+
+            /* Optimiser les animations sur mobile */
+            .particle,
+            .grid-overlay,
+            .logo-icon::after {
+                animation: none;
+            }
+
+            .login-left::before {
+                animation: none;
             }
         }
     </style>
@@ -597,29 +848,52 @@
                 <div class="quick-access">
                     <div class="quick-access-title">Comptes de démonstration</div>
                     <div class="quick-access-grid">
-                        <button class="quick-btn" onclick="quickLogin('admin@uan.bf', 'admin123')">
-                            <span class="quick-dot" style="background:#6366f1;color:#6366f1"></span>
+                        <!-- ÉTUDIANT - Accès: Bureau -->
+                        <button class="quick-btn" onclick="quickLogin('m.diallo@etu.bf', 'etudiant123')">
+                            <span class="quick-dot" style="background:#f59e0b;color:#f59e0b"></span>
                             <div class="quick-info">
-                                <span class="quick-role">Administrateur</span>
-                                <span class="quick-email">admin@uan.bf</span>
+                                <span class="quick-role">👨‍🎓 Étudiant</span>
+                                <span class="quick-email">m.diallo@etu.bf</span>
                             </div>
                         </button>
 
+                        <!-- BUREAU - Accès: Enseignant -->
+                        <button class="quick-btn" onclick="quickLogin('bureau@uan.bf', 'bureau123')">
+                            <span class="quick-dot" style="background:#8b5cf6;color:#8b5cf6"></span>
+                            <div class="quick-info">
+                                <span class="quick-role">🏛️ Bureau Exécutif</span>
+                                <span class="quick-email">bureau@uan.bf</span>
+                            </div>
+                        </button>
+
+                        <!-- ENSEIGNANT - Accès: Admin -->
                         <button class="quick-btn" onclick="quickLogin('j.ouedraogo@uan.bf', 'enseignant123')">
                             <span class="quick-dot" style="background:#10b981;color:#10b981"></span>
                             <div class="quick-info">
-                                <span class="quick-role">Enseignant</span>
+                                <span class="quick-role">👨‍🏫 Enseignant</span>
                                 <span class="quick-email">j.ouedraogo@uan.bf</span>
                             </div>
                         </button>
 
-                        <button class="quick-btn" onclick="quickLogin('m.diallo@etu.bf', 'etudiant123')">
-                            <span class="quick-dot" style="background:#f59e0b;color:#f59e0b"></span>
+                        <!-- ADMIN - Accès: Tous -->
+                        <button class="quick-btn" onclick="quickLogin('admin@uan.bf', 'admin123')">
+                            <span class="quick-dot" style="background:#6366f1;color:#6366f1"></span>
                             <div class="quick-info">
-                                <span class="quick-role">Étudiant L1</span>
-                                <span class="quick-email">m.diallo@etu.bf</span>
+                                <span class="quick-role">👔 Administrateur</span>
+                                <span class="quick-email">admin@uan.bf</span>
                             </div>
                         </button>
+                    </div>
+                    
+                    <!-- Légende de la hiérarchie -->
+                    <div style="margin-top:16px;padding:12px;background:rgba(99,102,241,0.1);border-radius:10px;border:1px solid rgba(99,102,241,0.2)">
+                        <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">HIÉRARCHIE DES COMPTES</div>
+                        <div style="font-size:9px;color:rgba(255,255,255,0.5);line-height:1.6">
+                            👨‍🎓 Étudiant → attribué au 🏛️ Bureau<br>
+                            🏛️ Bureau → attribué au 👨‍🏫 Enseignant<br>
+                            👨‍🏫 Enseignant → attribué au 👔 Admin<br>
+                            👔 Admin → accès à tous les comptes
+                        </div>
                     </div>
                 </div>
             </div>
@@ -657,13 +931,23 @@
         async function handleLogin(e) {
             e.preventDefault();
             console.log('🔐 Tentative de connexion...');
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+
+            // Désactiver le bouton et afficher le spinner
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span>Connexion en cours...';
 
             try {
                 console.log('Appel API.login...');
                 const data = await API.login(email, password);
                 console.log('✅ Connexion réussie:', data);
+                
+                // Changer le texte du bouton
+                submitBtn.innerHTML = '<span class="spinner"></span>Connexion réussie !';
                 showAlert('Connexion réussie ! Redirection...', 'success');
                 
                 setTimeout(() => {
@@ -681,6 +965,10 @@
             } catch (err) {
                 console.error('❌ Erreur de connexion:', err);
                 showAlert(err.message || 'Email ou mot de passe incorrect');
+                
+                // Réactiver le bouton en cas d'erreur
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
             }
         }
 

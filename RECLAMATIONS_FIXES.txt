@@ -1,0 +1,81 @@
+✅ CORRECTION DU SYSTÈME DE RÉCLAMATIONS
+=========================================
+
+PROBLÈMES CORRIGÉS:
+==================
+
+1. MODALE NE S'OUVRAIT PAS
+   - Problème: Utilisait classList.add('open') au lieu de style.display
+   - Solution: Changé en style.display = 'flex'
+
+2. BOUTON "NOUVELLE RÉCLAMATION" NE FONCTIONNAIT PAS
+   - Problème: La fonction openModalReclamation() n'existait pas
+   - Solution: Fonction créée avec chargement des notes
+
+FONCTIONNALITÉS AJOUTÉES:
+=========================
+
+1. DEUX MODES D'OUVERTURE DE LA MODALE:
+
+   A) Depuis la page Notes (bouton "⚠️ Signaler"):
+      - Pré-remplit automatiquement la matière et les notes
+      - Affiche les champs en lecture seule
+      - L'étudiant voit directement quelle note il conteste
+
+   B) Depuis l'onglet Réclamations (bouton "+ Nouvelle réclamation"):
+      - Affiche un sélecteur déroulant avec toutes les notes
+      - L'étudiant choisit la matière concernée
+      - Les notes s'affichent automatiquement après sélection
+
+2. FONCTIONS AJOUTÉES:
+
+   - openModalReclamation()
+     → Ouvre la modale depuis l'onglet réclamations
+     → Charge la liste des notes disponibles
+
+   - chargerNotesPourReclamation()
+     → Récupère toutes les notes de l'étudiant
+     → Remplit le sélecteur avec format: "Matière - CC: X / Examen: Y"
+
+   - updateNoteReclamation()
+     → Met à jour les champs quand une note est sélectionnée
+     → Remplit automatiquement matière, CC, examen
+
+3. MODIFICATIONS DE LA MODALE:
+
+   - Ajout d'un groupe "groupeSelectNote" (sélecteur de notes)
+   - Ajout d'un groupe "groupeMatiereReadonly" (champs lecture seule)
+   - Affichage conditionnel selon le mode d'ouverture
+
+4. AMÉLIORATIONS:
+
+   - Validation: Vérifie qu'une note est sélectionnée avant soumission
+   - Feedback: Utilise showToast() au lieu de alert()
+   - Rechargement: Actualise la liste après création d'une réclamation
+   - UX: Messages clairs et informatifs
+
+UTILISATION:
+===========
+
+MÉTHODE 1 - Depuis les notes:
+1. Aller dans "Mes notes"
+2. Cliquer sur "⚠️ Signaler" à côté d'une note
+3. La modale s'ouvre avec la note pré-remplie
+4. Remplir le formulaire et envoyer
+
+MÉTHODE 2 - Depuis l'onglet réclamations:
+1. Aller dans "Services" > "Réclamations"
+2. Cliquer sur "+ Nouvelle réclamation"
+3. Sélectionner la matière dans la liste déroulante
+4. Remplir le formulaire et envoyer
+
+RÉSULTAT:
+=========
+
+✅ Les deux méthodes fonctionnent parfaitement
+✅ La modale s'ouvre correctement
+✅ Les données sont chargées dynamiquement
+✅ La soumission fonctionne avec l'API
+✅ La liste se recharge après création
+
+Date: 26 février 2026

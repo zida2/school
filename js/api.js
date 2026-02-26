@@ -163,6 +163,30 @@ function extractError(data) {
 
 // ===== API CALLS =====
 const API = {
+    // Méthodes génériques
+    async get(endpoint, params = {}) {
+        const q = new URLSearchParams(params).toString();
+        return apiRequest(`${endpoint}${q ? '?' + q : ''}`);
+    },
+
+    async post(endpoint, data) {
+        return apiRequest(endpoint, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    },
+
+    async patch(endpoint, data) {
+        return apiRequest(endpoint, {
+            method: 'PATCH',
+            body: JSON.stringify(data)
+        });
+    },
+
+    async delete(endpoint) {
+        return apiRequest(endpoint, { method: 'DELETE' });
+    },
+
     // Auth
     async login(email, password) {
         // Utiliser MockAPI si activé

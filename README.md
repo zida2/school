@@ -1,134 +1,148 @@
-# 🎓 ERP Universitaire - Université Aube Nouvelle (UAN)
+# 🎓 ERP Universitaire - Burkina Faso
 
-Système de gestion universitaire complet pour l'Université Aube Nouvelle du Burkina Faso.
+Système de gestion universitaire complet pour l'Université Aube Nouvelle.
 
-## 🚀 Fonctionnalités
+## 🚀 Démarrage Rapide
 
-### 👨‍💼 Espace Administrateur
-- Gestion des universités et filières
-- Gestion des matières et enseignants
-- Gestion des étudiants et inscriptions
-- Suivi des paiements
-- Statistiques et tableaux de bord
-- Gestion des années académiques
+### Backend (Django)
 
-### 👨‍🏫 Espace Enseignant
-- Consultation des matières enseignées
-- Gestion des évaluations (devoirs, interrogations, TP, projets, examens)
-- Saisie des notes par évaluation
-- Gestion des absences
-- Publication des notes
-- Consultation des étudiants
-- Gestion des supports de cours
-
-### 🎓 Espace Étudiant
-- Consultation des notes et moyennes
-- Téléchargement du bulletin
-- Consultation des paiements
-- Accès aux supports de cours
-- Emploi du temps
-- Notifications
-
-## 🛠️ Technologies
-
-### Backend
-- **Django 5.0** - Framework Python
-- **Django REST Framework** - API REST
-- **SQLite** - Base de données (développement)
-- **PostgreSQL** - Base de données (production)
+```bash
+cd backend
+python manage.py runserver 8000
+```
 
 ### Frontend
-- **HTML5/CSS3etudiant.html    # Dashboard étudiant
-├── dashboard-superadmin.html  # Dashboard super admin
-└── README.md
+
+```bash
+python -m http.server 8080
+```
+
+### Accès
+
+- **Frontend:** http://127.0.0.1:8080/
+- **Backend API:** http://127.0.0.1:8000/api/
+- **Admin Django:** http://127.0.0.1:8000/admin/
+
+## 👥 Comptes de Test
+
+| Rôle | Email | Mot de passe |
+|------|-------|--------------|
+| Super Admin | superadmin@uan.bf | super123 |
+| Admin | admin@uan.bf | admin123 |
+| Enseignant | j.ouedraogo@uan.bf | enseignant123 |
+| Étudiant | m.diallo@etu.bf | etudiant123 |
+| Bureau Exécutif | bureau@uan.bf | bureau123 |
+
+## 📁 Structure
+
+```
+├── backend/              # Backend Django
+│   ├── api/             # Application principale
+│   ├── erp_backend/     # Configuration Django
+│   └── manage.py        # Script de gestion Django
+├── css/                 # Styles CSS
+├── js/                  # Scripts JavaScript
+├── dashboard-*.html     # Interfaces utilisateur
+└── index.html          # Page de connexion
 ```
 
 ## ✨ Fonctionnalités
 
-### 👨‍💼 Administrateur
-- ✅ Gestion complète des étudiants
-- ✅ Gestion des enseignants
-- ✅ Gestion des filières et matières
-- ✅ Suivi des paiements
-- ✅ Statistiques et graphiques en temps réel
+### Espace Administrateur
+- Gestion des étudiants et enseignants
+- Gestion des filières et matières
+- Gestion des paiements
+- Statistiques et rapports
+- Emploi du temps
 
-### 👨‍🏫 Enseignant
-- ✅ Gestion des supports de cours
-- ✅ Publication de ressources pédagogiques
-- ✅ Consultation des matières enseignées
+### Espace Enseignant
+- Saisie des notes
+- Gestion des évaluations
+- Emploi du temps
+- Supports de cours
+- Statistiques de classe
 
-### 🎓 Étudiant
-- ✅ Consultation des notes
-- ✅ Accès aux supports de cours
-- ✅ Suivi des paiements
-- ✅ Emploi du temps
+### Espace Étudiant
+- Consultation des notes
+- Emploi du temps
+- Supports de cours
+- Paiements
+- Absences
+- Demandes administratives
 
-### ⚙️ Super Admin
-- ✅ Gestion des universités clientes
-- ✅ Gestion des licences SaaS
-- ✅ Monitoring système
-- ✅ Vue globale des utilisateurs
+### Bureau Exécutif
+- Messagerie interne
+- Publications
+- Sondages
+- Événements
+- Gestion des membres
+- + Toutes les fonctionnalités étudiant
 
-## 🎨 Design Ultra Premium
+## 🔧 Configuration
 
-- **Thème sombre** avec fond #0a0e27
-- **Effets glassmorphism** avec backdrop-filter
-- **Animations sophistiquées** et transitions fluides
-- **Graphiques Chart.js** avec thème sombre
-- **Particules animées** en arrière-plan
-- **Responsive design** pour tous les écrans
+### Prérequis
 
-## 🛠️ Technologies
+- Python 3.8+
+- Django 6.0+
+- SQLite (inclus)
 
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **Backend**: Django REST Framework
-- **Base de données**: SQLite
-- **Graphiques**: Chart.js 4.4.0
-- **Fonts**: Poppins, Inter, Outfit
+### Installation Backend
 
-## 📡 API Backend
-
-Le backend expose une API REST sur `http://127.0.0.1:8000/api/`
-
-### Endpoints principaux
-- `POST /api/login/` - Authentification
-- `GET /api/me/` - Utilisateur connecté
-- `GET/POST /api/etudiants/` - Gestion étudiants
-- `GET/POST /api/enseignants/` - Gestion enseignants
-- `GET/POST /api/filieres/` - Gestion filières
-- `GET/POST /api/supports/` - Supports de cours
-- `GET /api/dashboard/admin/` - Dashboard admin
-- `GET /api/dashboard/prof/` - Dashboard enseignant
-- `GET /api/dashboard/etudiant/` - Dashboard étudiant
-
-## 📝 Notes importantes
-
-- **Vider le cache** (Ctrl + F5) après modifications CSS/JS
-- Le **backend doit être actif** sur http://127.0.0.1:8000/
-- Tous les **boutons d'action** sont fonctionnels
-- Les **modals** s'ouvrent et se ferment correctement
-- La **navigation** entre pages fonctionne
-
-## 🔧 Installation complète
-
-### Backend
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install django djangorestframework django-cors-headers
+pip install -r requirements.txt
 python manage.py migrate
-python setup.py  # Créer les données de test
-python manage.py runserver
+python manage.py runserver 8000
 ```
 
-### Frontend
-Aucune installation nécessaire. Ouvrir `index.html` directement.
+### Créer un Super Admin
 
-## 📄 Licence
+```bash
+cd backend
+python manage.py createsuperuser
+```
 
-Propriétaire - Tous droits réservés
+## 📊 Technologies
+
+- **Backend:** Django 6.0.2, Django REST Framework
+- **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+- **Base de données:** SQLite
+- **API:** REST API avec JWT Authentication
+
+## 🎨 Thèmes
+
+L'application supporte les thèmes clair et sombre. Utilisez le bouton de changement de thème (🌙/☀️) en bas à droite.
+
+## 📱 Responsive
+
+L'interface est entièrement responsive et fonctionne sur:
+- Desktop (1920x1080+)
+- Laptop (1366x768+)
+- Tablet (768x1024+)
+- Mobile (375x667+)
+
+## 🔐 Sécurité
+
+- Authentification JWT
+- Permissions par rôle
+- Protection CSRF
+- Validation des données
+- Filtrage des requêtes
+
+## 📞 Support
+
+Pour toute question ou problème:
+1. Vérifier que le backend est lancé
+2. Vérifier que le frontend est lancé
+3. Consulter les logs du serveur Django
+4. Ouvrir la console du navigateur (F12)
+
+## 📝 Licence
+
+MIT License - Libre d'utilisation
 
 ---
 
-**Version 3.0 Ultra Premium** - Février 2025
+**Version:** 1.0.0  
+**Université:** Aube Nouvelle  
+**Pays:** Burkina Faso 🇧🇫

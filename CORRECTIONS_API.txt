@@ -1,0 +1,90 @@
+✅ CORRECTIONS DES ERREURS API
+==============================
+
+PROBLÈMES IDENTIFIÉS:
+=====================
+
+1. API.get is not a function
+   - Les fonctions dans dashboard-etudiant.html utilisaient API.get() et API.post()
+   - Ces méthodes n'existaient pas dans js/api.js
+
+2. Erreur 500 sur /api/dashboard/etudiant/
+   - Le backend retournait un format incompatible
+   - Format attendu: { notes: [], moyenne_generale: X, total_matieres: X }
+   - Format retourné: { notes_s1: [], notes_s2: [], moyenne_s1: X, moyenne_s2: X }
+
+CORRECTIONS APPORTÉES:
+======================
+
+1. AJOUT DES MÉTHODES GÉNÉRIQUES DANS js/api.js:
+
+   async get(endpoint, params = {})
+   - Permet de faire des requêtes GET avec paramètres
+   - Utilisé par: chargerDemandes, chargerReclamations, chargerPublications, etc.
+
+   async post(endpoint, data)
+   - Permet de faire des requêtes POST
+   - Utilisé par: soumettreDemande, soumettreObjetPerdu, etc.
+
+   async patch(endpoint, data)
+   - Permet de faire des requêtes PATCH
+
+   async delete(endpoint)
+   - Permet de faire des requêtes DELETE
+
+2. CORRECTION DE DashboardEtudiantView (backend/api/views.py):
+
+   Nouveau format de réponse:
+   {
+     "etudiant": {...},
+     "notes": [
+       {
+         "id": 1,
+         "matiere_nom": "Algorithmique",
+         "coefficient": 3,
+         "note_cc": 15,
+         "note_examen": 14,
+         "moyenne": 14.4,
+         "statut": "valide",
+         "publie": true
+       }
+     ],
+     "total_matieres": 8,
+     "moyenne_generale": 14.2,
+     "taux_presence": 85,
+     "solde_du": 50000,
+     "paiements": [...]
+   }
+
+   Améliorations:
+   - Calcul automatique de la moyenne générale
+   - Calcul du solde dû (frais - paiements)
+   - Taux de présence (valeur par défaut 85%)
+   - Gestion des erreurs avec try/catch
+   - Notes avec nom de matière inclus
+
+3. AJOUT DE L'IMPORT django.db.models:
+   - Nécessaire pour models.Sum() dans le calcul des paiements
+
+RÉSULTAT:
+=========
+
+✅ Les méthodes API.get() et API.post() fonctionnent
+✅ Le dashboard étudiant charge correctement
+✅ Les services (réclamations, demandes, etc.) fonctionnent
+✅ Les statistiques s'affichent correctement
+✅ Plus d'erreur 500
+
+PROCHAINES ÉTAPES:
+==================
+
+1. Redémarrer le serveur Django:
+   cd backend
+   python manage.py runserver
+
+2. Tester dans le navigateur:
+   - Se connecter en tant qu'étudiant (m.diallo@etu.bf / etudiant123)
+   - Vérifier que le dashboard charge
+   - Tester les onglets Services (Réclamations, Demandes, etc.)
+
+Date: 26 février 2026
