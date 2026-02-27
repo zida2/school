@@ -659,59 +659,9 @@
 
     <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
-        // TEMPORAIRE: Vérification désactivée pour debug
-        window.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                console.log('🔍 Vérification authentification dashboard-prof...');
-                console.log('Auth défini?', typeof Auth !== 'undefined');
-                
-                if (typeof Auth !== 'undefined') {
-                    console.log('isLoggedIn?', Auth.isLoggedIn());
-                    console.log('Access Token:', Auth.getAccessToken());
-                    console.log('User:', Auth.getUser());
-                }
-                
-                // DÉSACTIVÉ TEMPORAIREMENT POUR DEBUG
-                /*
-                if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
-                    console.log('❌ Non connecté, redirection vers index.html');
-                    window.location.replace('index.html');
-                    return;
-                }
-
-                const user = Auth.getUser();
-                console.log('👤 Utilisateur:', user);
-                
-                if (!user) {
-                    console.log('❌ Pas de données utilisateur, redirection vers index.html');
-                    Auth.clear();
-                    window.location.replace('index.html');
-                    return;
-                }
-
-                const role = user.role;
-                console.log('🎭 Rôle:', role);
-                
-                if (role !== 'enseignant' && role !== 'professeur') {
-                    console.log('❌ Rôle incorrect:', role, '- Redirection vers le bon dashboard');
-                    if (role === 'admin' || role === 'superadmin' || role === 'administrateur') {
-                        window.location.replace('dashboard-admin.html');
-                    } else if (role === 'etudiant') {
-                        window.location.replace('dashboard-etudiant.html');
-                    } else if (role === 'bureau_executif') {
-                        window.location.replace('dashboard-bureau.html');
-                    } else {
-                        Auth.clear();
-                        window.location.replace('index.html');
-                    }
-                    return;
-                }
-                */
-
-                console.log('✅ Vérification désactivée - Dashboard chargé');
-            }, 500);
-        });
-
+        // PAS de vérification au chargement - on fait confiance à la redirection depuis index.html
+        // La vérification se fera lors des appels API qui nécessitent l'authentification
+        
         window.navToUltra = function(page, el) {
             console.log('🔄 Navigation vers:', page);
             document.querySelectorAll('.page-ultra').forEach(p => p.style.display = 'none');

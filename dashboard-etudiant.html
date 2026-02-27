@@ -843,43 +843,8 @@
 
     <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
-        // Vérification d'authentification - Attendre le chargement complet
-        window.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
-                    console.log('❌ Non connecté, redirection vers index.html');
-                    window.location.replace('index.html');
-                    return;
-                }
-
-                const user = Auth.getUser();
-                if (!user) {
-                    console.log('❌ Pas de données utilisateur, redirection vers index.html');
-                    Auth.clear();
-                    window.location.replace('index.html');
-                    return;
-                }
-
-                const role = user.role;
-                if (role !== 'etudiant') {
-                    console.log('❌ Rôle incorrect:', role, '- Redirection vers le bon dashboard');
-                    if (role === 'admin' || role === 'superadmin' || role === 'administrateur') {
-                        window.location.replace('dashboard-admin.html');
-                    } else if (role === 'enseignant' || role === 'professeur') {
-                        window.location.replace('dashboard-prof.html');
-                    } else if (role === 'bureau_executif') {
-                        window.location.replace('dashboard-bureau.html');
-                    } else {
-                        Auth.clear();
-                        window.location.replace('index.html');
-                    }
-                    return;
-                }
-
-                console.log('✅ Authentification OK - Rôle:', role);
-            }, 100);
-        });
-
+        // PAS de vérification au chargement - on fait confiance à la redirection depuis index.html
+        
         function navToPremium(page, el) {
             document.querySelectorAll('.erp-page').forEach(p => p.style.display = 'none');
             const target = document.getElementById('page-' + page);
