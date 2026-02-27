@@ -984,6 +984,7 @@
                 
                 setTimeout(() => {
                     const role = data.user.role;
+                    console.log('🚀 Redirection vers dashboard pour rôle:', role);
                     if (role === 'admin' || role === 'superadmin' || role === 'administrateur') {
                         window.location.href = 'dashboard-admin.html';
                     } else if (role === 'professeur' || role === 'enseignant') {
@@ -993,7 +994,7 @@
                     } else if (role === 'bureau_executif') {
                         window.location.href = 'dashboard-bureau.html';
                     }
-                }, 1000);
+                }, 1500); // Augmenté à 1500ms pour être sûr que les tokens sont sauvegardés
             } catch (err) {
                 console.error('❌ Erreur de connexion:', err);
                 showAlert(err.message || 'Email ou mot de passe incorrect');
