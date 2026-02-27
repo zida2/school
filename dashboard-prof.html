@@ -663,6 +663,10 @@
         window.addEventListener('DOMContentLoaded', function() {
             // Attendre un peu que les scripts externes soient chargés
             setTimeout(function() {
+                console.log('🔍 Vérification authentification dashboard-prof...');
+                console.log('Auth défini?', typeof Auth !== 'undefined');
+                console.log('isLoggedIn?', typeof Auth !== 'undefined' ? Auth.isLoggedIn() : 'Auth non défini');
+                
                 if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
                     console.log('❌ Non connecté, redirection vers index.html');
                     window.location.replace('index.html');
@@ -670,6 +674,8 @@
                 }
 
                 const user = Auth.getUser();
+                console.log('👤 Utilisateur:', user);
+                
                 if (!user) {
                     console.log('❌ Pas de données utilisateur, redirection vers index.html');
                     Auth.clear();
@@ -679,6 +685,8 @@
 
                 // Vérifier que l'utilisateur a le rôle enseignant ou professeur
                 const role = user.role;
+                console.log('🎭 Rôle:', role);
+                
                 if (role !== 'enseignant' && role !== 'professeur') {
                     console.log('❌ Rôle incorrect:', role, '- Redirection vers le bon dashboard');
                     if (role === 'admin' || role === 'superadmin' || role === 'administrateur') {
@@ -695,7 +703,7 @@
                 }
 
                 console.log('✅ Authentification OK - Rôle:', role);
-            }, 100);
+            }, 500); // Augmenté à 500ms pour laisser le temps aux tokens d'être sauvegardés
         });
 
         window.navToUltra = function(page, el) {
