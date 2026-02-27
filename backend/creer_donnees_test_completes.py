@@ -15,7 +15,7 @@ from api.models import (
     Utilisateur, Etudiant, Enseignant, Matiere, 
     Classe, Inscription, EnseignementMatiere,
     EmploiDuTemps, Note, SupportCours, Evaluation, NoteEvaluation,
-    AnneeAcademique
+    AnneeAcademique, Universite
 )
 
 def creer_donnees_test():
@@ -40,18 +40,28 @@ def creer_donnees_test():
     
     # 1. CRÉER L'ANNÉE ACADÉMIQUE
     print("\n📅 1. Création de l'année académique...")
+    
+    # Récupérer l'université
+    try:
+        universite = Universite.objects.get(code='UAN')
+    except Universite.DoesNotExist:
+        print("❌ Erreur: Université UAN n'existe pas")
+        print("Exécutez d'abord: python reorganiser_structure_complete.py")
+        return False
+    
     annee, created = AnneeAcademique.objects.get_or_create(
-        annee='2025-2026',
+        universite=universite,
+        libelle='2025-2026',
         defaults={
-            'date_debut': datetime.now().date(),
-            'date_fin': datetime.now().date() + timedelta(days=365),
+            'debut': datetime.now().date(),
+            'fin': datetime.now().date() + timedelta(days=365),
             'active': True
         }
     )
     if created:
-        print(f"   ✅ Année académique créée: {annee.annee}")
+        print(f"   ✅ Année académique créée: {annee.libelle}")
     else:
-        print(f"   ℹ️  Année académique existante: {annee.annee}")
+        print(f"   ℹ️  Année académique existante: {annee.libelle}")
     
     # 2. CRÉER L'EMPLOI DU TEMPS
     print("\n📅 2. Création de l'emploi du temps...")
