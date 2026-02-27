@@ -4,10 +4,16 @@
  */
 
 // Configuration de l'API
-const API_BASE = 'http://localhost:8000/api';
+// Utilise CONFIG.API_URL si disponible, sinon localhost
+const API_BASE = (typeof CONFIG !== 'undefined' && CONFIG.API_URL) 
+    ? CONFIG.API_URL 
+    : 'http://localhost:8000/api';
 
 // MODE MOCK pour démo sans backend
 const USE_MOCK = false; // Mettre à false quand le backend est prêt
+
+// Log de l'URL utilisée
+console.log('🌐 API Base URL:', API_BASE);
 
 // ===== GESTION DES TOKENS =====
 const Auth = {
