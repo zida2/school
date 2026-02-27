@@ -2601,6 +2601,10 @@
                     'rejetee': 'danger'
                 }[d.statut] || 'secondary';
                 
+                const btnRepondre = (d.statut === 'en_attente' || d.statut === 'en_cours') 
+                    ? '<button onclick="repondreDemande(' + d.id + ')" class="btn-icon-ultra" title="Répondre">💬</button>'
+                    : '';
+                
                 return `
                     <tr>
                         <td>${d.etudiant?.nom || 'N/A'} ${d.etudiant?.prenom || ''}</td>
@@ -2612,11 +2616,7 @@
                             <button onclick="voirDemande(${d.id})" class="btn-icon-ultra" title="Voir">
                                 👁️
                             </button>
-                            ${d.statut === 'en_attente' || d.statut === 'en_cours' ? 
-                                `<button onclick="repondreDemande(${d.id})" class="btn-icon-ultra" title="Répondre">
-                                    💬
-                                </button>` : ''
-                            }
+                            ${btnRepondre}
                         </td>
                     </tr>
                 `;
