@@ -771,3 +771,73 @@ class ObjetPerdu(models.Model):
     
     def __str__(self):
         return f"{self.nom_objet} - {self.get_type_declaration_display()}"
+
+
+# ===== MODÈLES POUR LA GESTION DES CLASSES ET INSCRIPTIONS =====
+
+class Classe(models.Model):
+    """Modèle pour les classes/groupes d'étudiants"""
+    code = models.CharField(max_length=20, unique=True)
+    nom = models.CharField(max_length=200)
+    filiere = models.ForeignKey(Filiere, on_delete=models.CASCADE, related_name='classes')
+    niveau = models.CharField(max_length=10)  # L1, L2, L3, M1, M2
+    annee_academique = models.CharField(max_length=20)
+    effectif_max = models.IntegerField(default=50)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Classe'
+        verbose_name_plural = 'Classes'
+        ordering = ['niveau', 'code']
+        unique_together = ['code', 'annee_academique']
+    
+    def __str__(self):
+        return f"{self.code} - {self.nom}"
+    
+    @property
+    def effectif_actuel(self):
+        return self.inscriptions.filter(statut='actif').count()
+
+
+class Inscription(models.Model):
+    """Modèle pour l'inscription des étudiants dans les classes"""
+    STATUTS = [
+        ('actif', 'Actif'),
+        ('suspendu', 'Suspendu'),
+        ('abandonne', 'Abandonné'),
+        ('diplome', 'Diplômé'),
+    ]
+    
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='inscriptions')
+    classe = models.ForeignKey(Classe, on_delete=models.CASCADE, related_name='inscriptions')
+    annee_academique = models.CharField(max_length=20)
+    date_inscription = models.DateTimeField(auto_now_add=True)
+    statut = models.CharField(max_length=20, choices=STATUTS, default='actif')
+    
+    class Meta:
+        verbose_name = 'Inscription'
+        verbose_name_plural = 'Inscriptions'
+        ordering = ['-date_inscription']
+        unique_together = ['etudiant', 'classe', 'annee_academique']
+    
+    def __str__(self):
+        return f"{self.etudiant.get_full_name()} - {self.classe.code}"
+
+
+class EnseignementMatiere(models.Model):
+    """Modèle pour l'assignation des enseignants aux matières et classes"""
+    enseignant = models.ForeignKey(Enseignant, on_delete=models.CASCADE, related_name='enseignements')
+    matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE, related_name='enseignements')
+    classe = models.ForeignKey(Classe, on_delete=models.CASCADE, related_name='enseignements')
+    annee_academique = models.CharField(max_length=20)
+    semestre = models.IntegerField(choices=[(1, 'Semestre 1'), (2, 'Semestre 2')])
+    date_assignation = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Enseignement de Matière'
+        verbose_name_plural = 'Enseignements de Matières'
+        ordering = ['classe', 'matiere']
+        unique_together = ['enseignant', 'matiere', 'classe', 'annee_academique', 'semestre']
+    
+    def __str__(self):
+        return f"{self.enseignant.get_full_name()} - {self.matiere.nom} ({self.classe.code})"

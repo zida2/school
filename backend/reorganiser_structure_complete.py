@@ -11,8 +11,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'erp_backend.settings')
 django.setup()
 
 from api.models import (
-    Utilisateur, Etudiant, Enseignant, Classe, Filiere, 
-    Matiere, Inscription, EnseignementMatiere
+    Utilisateur, Etudiant, Enseignant, Filiere, Matiere
 )
 from django.contrib.auth.hashers import make_password
 
