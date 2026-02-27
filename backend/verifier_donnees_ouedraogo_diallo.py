@@ -60,11 +60,8 @@ def verifier_donnees():
         
         etudiant = Etudiant.objects.get(utilisateur=user_diallo)
         print(f"✅ Étudiant trouvé: ID={etudiant.id}, Matricule={etudiant.matricule}")
-        
-        if etudiant.classe:
-            print(f"   Classe: {etudiant.classe.nom}")
-        else:
-            print("   ⚠️ Pas de classe assignée!")
+        print(f"   Filière: {etudiant.filiere.nom}")
+        print(f"   Niveau: {etudiant.niveau}")
             
         # Notes
         notes = Note.objects.filter(etudiant=etudiant)
