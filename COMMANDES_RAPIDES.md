@@ -14,6 +14,8 @@ cd ~/school && git pull && cd backend
 python creer_donnees_test_completes.py
 ```
 
+**Si erreur**: Exécutez d'abord `python reorganiser_structure_complete.py` puis recommencez l'étape 2.
+
 ### 3️⃣ Recharger l'app
 Allez dans l'onglet **Web** → Cliquez sur **"Reload"** (bouton vert)
 
