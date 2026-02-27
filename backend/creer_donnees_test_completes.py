@@ -14,7 +14,8 @@ django.setup()
 from api.models import (
     Utilisateur, Etudiant, Enseignant, Matiere, 
     Classe, Inscription, EnseignementMatiere,
-    EmploiDuTemps, Note, SupportCours, Evaluation, NoteEvaluation
+    EmploiDuTemps, Note, SupportCours, Evaluation, NoteEvaluation,
+    AnneeAcademique
 )
 
 def creer_donnees_test():
@@ -37,61 +38,73 @@ def creer_donnees_test():
         print("Assurez-vous d'avoir exécuté reorganiser_structure_complete.py d'abord!")
         return False
     
-    # 1. CRÉER L'EMPLOI DU TEMPS
-    print("\n📅 1. Création de l'emploi du temps...")
+    # 1. CRÉER L'ANNÉE ACADÉMIQUE
+    print("\n📅 1. Création de l'année académique...")
+    annee, created = AnneeAcademique.objects.get_or_create(
+        annee='2025-2026',
+        defaults={
+            'date_debut': datetime.now().date(),
+            'date_fin': datetime.now().date() + timedelta(days=365),
+            'active': True
+        }
+    )
+    if created:
+        print(f"   ✅ Année académique créée: {annee.annee}")
+    else:
+        print(f"   ℹ️  Année académique existante: {annee.annee}")
+    
+    # 2. CRÉER L'EMPLOI DU TEMPS
+    print("\n📅 2. Création de l'emploi du temps...")
     
     # Cours du lundi
     emploi1, created = EmploiDuTemps.objects.get_or_create(
-        classe=classe,
         matiere=matiere,
-        enseignant=prof,
-        jour_semaine='Lundi',
+        jour='Lundi',
+        heure_debut='08:00',
+        annee_academique=annee,
         defaults={
-            'heure_debut': '08:00',
             'heure_fin': '10:00',
             'salle': 'Amphi A',
-            'type_cours': 'CM'
+            'semaine': 'toutes'
         }
     )
     if created:
-        print(f"   ✅ Cours créé: Lundi 08:00-10:00 (CM)")
+        print(f"   ✅ Cours créé: Lundi 08:00-10:00")
     
     # Cours du mercredi
     emploi2, created = EmploiDuTemps.objects.get_or_create(
-        classe=classe,
         matiere=matiere,
-        enseignant=prof,
-        jour_semaine='Mercredi',
+        jour='Mercredi',
+        heure_debut='14:00',
+        annee_academique=annee,
         defaults={
-            'heure_debut': '14:00',
             'heure_fin': '16:00',
             'salle': 'Salle 12',
-            'type_cours': 'TD'
+            'semaine': 'toutes'
         }
     )
     if created:
-        print(f"   ✅ Cours créé: Mercredi 14:00-16:00 (TD)")
+        print(f"   ✅ Cours créé: Mercredi 14:00-16:00")
     
     # Cours du vendredi
     emploi3, created = EmploiDuTemps.objects.get_or_create(
-        classe=classe,
         matiere=matiere,
-        enseignant=prof,
-        jour_semaine='Vendredi',
+        jour='Vendredi',
+        heure_debut='10:00',
+        annee_academique=annee,
         defaults={
-            'heure_debut': '10:00',
             'heure_fin': '12:00',
             'salle': 'Lab Info 1',
-            'type_cours': 'TP'
+            'semaine': 'toutes'
         }
     )
     if created:
-        print(f"   ✅ Cours créé: Vendredi 10:00-12:00 (TP)")
+        print(f"   ✅ Cours créé: Vendredi 10:00-12:00")
     
-    print(f"   📊 Total: {EmploiDuTemps.objects.filter(classe=classe).count()} cours/semaine")
+    print(f"   📊 Total: {EmploiDuTemps.objects.filter(matiere=matiere).count()} cours/semaine")
     
-    # 2. CRÉER DES ÉVALUATIONS
-    print("\n📝 2. Création des évaluations...")
+    # 3. CRÉER DES ÉVALUATIONS
+    print("\n📝 3. Création des évaluations...")
     
     eval1, created = Evaluation.objects.get_or_create(
         matiere=matiere,
@@ -141,8 +154,8 @@ def creer_donnees_test():
     if created:
         print(f"   ✅ Évaluation créée: {eval3.titre}")
     
-    # 3. CRÉER DES NOTES POUR L'ÉTUDIANT
-    print("\n📊 3. Création des notes...")
+    # 4. CRÉER DES NOTES POUR L'ÉTUDIANT
+    print("\n📊 4. Création des notes...")
     
     # Note CC1
     note_eval1, created = NoteEvaluation.objects.get_or_create(
@@ -184,8 +197,8 @@ def creer_donnees_test():
     if created:
         print(f"   ✅ Note finale créée: Moyenne CC = 16.25/20")
     
-    # 4. CRÉER DES SUPPORTS DE COURS
-    print("\n📚 4. Création des supports de cours...")
+    # 5. CRÉER DES SUPPORTS DE COURS
+    print("\n📚 5. Création des supports de cours...")
     
     support1, created = SupportCours.objects.get_or_create(
         matiere=matiere,
@@ -226,13 +239,13 @@ def creer_donnees_test():
     if created:
         print(f"   ✅ Support créé: {support3.titre}")
     
-    # 5. RÉSUMÉ
+    # 6. RÉSUMÉ
     print("\n" + "=" * 60)
     print("✅ DONNÉES DE TEST CRÉÉES AVEC SUCCÈS!")
     print("=" * 60)
     print(f"""
 📊 RÉSUMÉ:
-   • Emplois du temps: {EmploiDuTemps.objects.filter(classe=classe).count()} cours/semaine
+   • Emplois du temps: {EmploiDuTemps.objects.filter(matiere=matiere).count()} cours/semaine
    • Évaluations: {Evaluation.objects.filter(matiere=matiere, classe=classe).count()}
    • Notes: {NoteEvaluation.objects.filter(etudiant=etudiant).count()} notes saisies
    • Supports de cours: {SupportCours.objects.filter(matiere=matiere).count()}
