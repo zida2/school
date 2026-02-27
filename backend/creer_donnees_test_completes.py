@@ -261,7 +261,7 @@ def creer_donnees_test():
     print(f"""
 📊 RÉSUMÉ:
    • Emplois du temps: {EmploiDuTemps.objects.filter(matiere=matiere).count()} cours/semaine
-   • Évaluations: {Evaluation.objects.filter(matiere=matiere, classe=classe).count()}
+   • Évaluations: {Evaluation.objects.filter(matiere=matiere, annee_academique=annee).count()}
    • Notes: {NoteEvaluation.objects.filter(etudiant=etudiant).count()} notes saisies
    • Supports de cours: {SupportCours.objects.filter(matiere=matiere).count()}
    
