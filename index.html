@@ -1010,23 +1010,6 @@
             document.getElementById('password').value = password;
             document.getElementById('loginForm').dispatchEvent(new Event('submit'));
         }
-
-        // Vérifier si déjà connecté
-        if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
-            const user = Auth.getUser();
-            if (user) {
-                const role = user.role;
-                if (role === 'admin' || role === 'superadmin' || role === 'administrateur') {
-                    window.location.href = 'dashboard-admin.html';
-                } else if (role === 'professeur' || role === 'enseignant') {
-                    window.location.href = 'dashboard-prof.html';
-                } else if (role === 'etudiant') {
-                    window.location.href = 'dashboard-etudiant.html';
-                } else if (role === 'bureau_executif') {
-                    window.location.href = 'dashboard-bureau.html';
-                }
-            }
-        }
     </script>
 </body>
 </html>
