@@ -659,14 +659,20 @@
 
     <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
-        // Vérification d'authentification - Attendre le chargement complet
+        // TEMPORAIRE: Vérification désactivée pour debug
         window.addEventListener('DOMContentLoaded', function() {
-            // Attendre un peu que les scripts externes soient chargés
             setTimeout(function() {
                 console.log('🔍 Vérification authentification dashboard-prof...');
                 console.log('Auth défini?', typeof Auth !== 'undefined');
-                console.log('isLoggedIn?', typeof Auth !== 'undefined' ? Auth.isLoggedIn() : 'Auth non défini');
                 
+                if (typeof Auth !== 'undefined') {
+                    console.log('isLoggedIn?', Auth.isLoggedIn());
+                    console.log('Access Token:', Auth.getAccessToken());
+                    console.log('User:', Auth.getUser());
+                }
+                
+                // DÉSACTIVÉ TEMPORAIREMENT POUR DEBUG
+                /*
                 if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
                     console.log('❌ Non connecté, redirection vers index.html');
                     window.location.replace('index.html');
@@ -683,7 +689,6 @@
                     return;
                 }
 
-                // Vérifier que l'utilisateur a le rôle enseignant ou professeur
                 const role = user.role;
                 console.log('🎭 Rôle:', role);
                 
@@ -701,9 +706,10 @@
                     }
                     return;
                 }
+                */
 
-                console.log('✅ Authentification OK - Rôle:', role);
-            }, 500); // Augmenté à 500ms pour laisser le temps aux tokens d'être sauvegardés
+                console.log('✅ Vérification désactivée - Dashboard chargé');
+            }, 500);
         });
 
         window.navToUltra = function(page, el) {
