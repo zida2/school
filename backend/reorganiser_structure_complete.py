@@ -11,7 +11,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'erp_backend.settings')
 django.setup()
 
 from api.models import (
-    Utilisateur, Etudiant, Enseignant, Filiere, Matiere
+    Utilisateur, Etudiant, Enseignant, Filiere, Matiere, 
+    Classe, Inscription, EnseignementMatiere, Universite
 )
 from django.contrib.auth.hashers import make_password
 
@@ -19,13 +20,34 @@ def reorganiser_structure():
     print("🔄 RÉORGANISATION DE LA STRUCTURE HIÉRARCHIQUE")
     print("=" * 60)
     
+    # 0. CRÉER/METTRE À JOUR L'UNIVERSITÉ
+    print("\n🏛️ 0. Configuration de l'Université...")
+    universite, created = Universite.objects.get_or_create(
+        code='UAN',
+        defaults={
+            'nom': 'Université Aube Nouvelle',
+            'sigle': 'UAN',
+            'pays': 'Burkina Faso',
+            'ville': 'Ouagadougou',
+            'adresse': 'Ouagadougou, Burkina Faso',
+            'telephone': '+226 25 XX XX XX',
+            'email': 'contact@uan.bf',
+            'site_web': 'https://uan.bf'
+        }
+    )
+    if created:
+        print(f"   ✅ Université créée: {universite.nom}")
+    else:
+        print(f"   ℹ️  Université existante: {universite.nom}")
+    
     # 1. CRÉER/METTRE À JOUR LA FILIÈRE INFORMATIQUE
     print("\n📚 1. Configuration de la filière Informatique...")
     filiere_info, created = Filiere.objects.get_or_create(
         code='L1-INFO',
+        universite=universite,
         defaults={
             'nom': 'Licence 1 Informatique',
-            'niveau': 'L1',
+            'niveau': 'Licence',
             'description': 'Formation en informatique fondamentale'
         }
     )
