@@ -34,17 +34,17 @@ def verifier_donnees():
         for matiere in matieres:
             print(f"      - {matiere.nom} ({matiere.code})")
             
-        # Emplois du temps
-        emplois = EmploiDuTemps.objects.filter(enseignant=enseignant)
+        # Emplois du temps (via les matières enseignées)
+        emplois = EmploiDuTemps.objects.filter(matiere__in=matieres)
         print(f"\n   📅 Emplois du temps: {emplois.count()}")
         for emploi in emplois:
-            print(f"      - {emploi.jour}: {emploi.heure_debut}-{emploi.heure_fin}")
+            print(f"      - {emploi.jour}: {emploi.heure_debut}-{emploi.heure_fin} - {emploi.matiere.nom}")
             
-        # Supports de cours
-        supports = SupportCours.objects.filter(enseignant=enseignant)
+        # Supports de cours (via les matières enseignées)
+        supports = SupportCours.objects.filter(matiere__in=matieres)
         print(f"\n   📄 Supports de cours: {supports.count()}")
         for support in supports:
-            print(f"      - {support.titre}")
+            print(f"      - {support.titre} ({support.matiere.nom})")
             
     except Utilisateur.DoesNotExist:
         print("❌ Utilisateur j.ouedraogo@uan.bf non trouvé!")
