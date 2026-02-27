@@ -15,7 +15,7 @@ const CONFIG = {
     IS_PRODUCTION: window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1',
     
     // Version de l'application
-    VERSION: '1.0.0',
+    VERSION: '1.0.1',
     
     // Nom de l'application
     APP_NAME: 'UniERP BF'
