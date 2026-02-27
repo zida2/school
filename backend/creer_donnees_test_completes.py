@@ -118,15 +118,16 @@ def creer_donnees_test():
     
     eval1, created = Evaluation.objects.get_or_create(
         matiere=matiere,
-        classe=classe,
-        enseignant=prof,
+        annee_academique=annee,
         titre='Contrôle Continu 1',
         defaults={
-            'type_evaluation': 'CC',
-            'date': datetime.now().date() - timedelta(days=15),
-            'duree': 60,
-            'note_totale': 20,
-            'coefficient': 1
+            'type_evaluation': 'devoir',
+            'categorie': 'cc',
+            'date_evaluation': datetime.now().date() - timedelta(days=15),
+            'note_sur': 20.00,
+            'coefficient': 1,
+            'description': 'Premier contrôle continu',
+            'cree_par': prof.utilisateur
         }
     )
     if created:
@@ -134,15 +135,16 @@ def creer_donnees_test():
     
     eval2, created = Evaluation.objects.get_or_create(
         matiere=matiere,
-        classe=classe,
-        enseignant=prof,
+        annee_academique=annee,
         titre='Contrôle Continu 2',
         defaults={
-            'type_evaluation': 'CC',
-            'date': datetime.now().date() - timedelta(days=7),
-            'duree': 60,
-            'note_totale': 20,
-            'coefficient': 1
+            'type_evaluation': 'devoir',
+            'categorie': 'cc',
+            'date_evaluation': datetime.now().date() - timedelta(days=7),
+            'note_sur': 20.00,
+            'coefficient': 1,
+            'description': 'Deuxième contrôle continu',
+            'cree_par': prof.utilisateur
         }
     )
     if created:
@@ -150,14 +152,21 @@ def creer_donnees_test():
     
     eval3, created = Evaluation.objects.get_or_create(
         matiere=matiere,
-        classe=classe,
-        enseignant=prof,
+        annee_academique=annee,
         titre='Examen Final',
         defaults={
-            'type_evaluation': 'Examen',
-            'date': datetime.now().date() + timedelta(days=30),
-            'duree': 120,
-            'note_totale': 20,
+            'type_evaluation': 'examen',
+            'categorie': 'examen',
+            'date_evaluation': datetime.now().date() + timedelta(days=30),
+            'note_sur': 20.00,
+            'coefficient': 2,
+            'description': 'Examen final de fin de semestre',
+            'cree_par': prof.utilisateur
+        }
+    )
+    if created:
+        print(f"   ✅ Évaluation créée: {eval3.titre}")
+    )
             'coefficient': 2
         }
     )
