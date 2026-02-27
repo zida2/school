@@ -23,7 +23,7 @@ class IsEnseignant(BasePermission):
         return (
             request.user
             and request.user.is_authenticated
-            and request.user.role in ('professeur', 'admin', 'superadmin')
+            and request.user.role in ('enseignant', 'professeur', 'admin', 'superadmin')
         )
 
 
