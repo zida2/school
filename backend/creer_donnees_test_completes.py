@@ -222,7 +222,7 @@ def creer_donnees_test():
         defaults={
             'type_support': 'cours',
             'description': 'Introduction aux concepts de base',
-            'date_publication': datetime.now()
+            'visible': True
         }
     )
     if created:
@@ -235,7 +235,7 @@ def creer_donnees_test():
         defaults={
             'type_support': 'td',
             'description': 'Exercices sur les algorithmes de base',
-            'date_publication': datetime.now() - timedelta(days=5)
+            'visible': True
         }
     )
     if created:
@@ -248,7 +248,7 @@ def creer_donnees_test():
         defaults={
             'type_support': 'tp',
             'description': 'Introduction à Python',
-            'date_publication': datetime.now() - timedelta(days=3)
+            'visible': True
         }
     )
     if created:
