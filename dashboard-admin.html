@@ -1273,6 +1273,47 @@
     <script src="js/fix-navigation.js?v=7"></script>
     <script src="js/theme-toggle.js?v=7"></script>
 
+    <!-- Vérification d'authentification -->
+    <script>
+        // Vérifier si l'utilisateur est connecté et a le bon rôle
+        (function() {
+            if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
+                console.log('❌ Non connecté, redirection vers index.html');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const user = Auth.getUser();
+            if (!user) {
+                console.log('❌ Pas de données utilisateur, redirection vers index.html');
+                Auth.clear();
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Vérifier que l'utilisateur a le rôle admin
+            const role = user.role;
+            if (role !== 'admin' && role !== 'superadmin' && role !== 'administrateur') {
+                console.log('❌ Rôle incorrect:', role, '- Redirection vers le bon dashboard');
+                // Rediriger vers le bon dashboard selon le rôle
+                if (role === 'enseignant' || role === 'professeur') {
+                    window.location.href = 'dashboard-prof.html';
+                } else if (role === 'etudiant') {
+                    window.location.href = 'dashboard-etudiant.html';
+                } else if (role === 'bureau_executif') {
+                    window.location.href = 'dashboard-bureau.html';
+                } else {
+                    // Rôle inconnu, déconnecter
+                    Auth.clear();
+                    window.location.href = 'index.html';
+                }
+                return;
+            }
+
+            console.log('✅ Authentification OK - Rôle:', role);
+        })();
+    </script>
+
     <!-- Script inline après -->
     <script>
         function navToUltra(page, el) {
