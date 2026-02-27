@@ -200,11 +200,13 @@ def creer_donnees_test():
     note_finale, created = Note.objects.get_or_create(
         etudiant=etudiant,
         matiere=matiere,
+        annee_academique=annee,
         defaults={
             'note_cc': 16.25,  # Moyenne des CC
-            'note_examen': 0,  # Pas encore passé
-            'note_tp': 16.0,
-            'statut': 'en_attente'
+            'note_examen': None,  # Pas encore passé
+            'statut': 'publie',
+            'publie': True,
+            'saisie_par': prof.utilisateur
         }
     )
     if created:
