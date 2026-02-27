@@ -657,49 +657,57 @@
     <script src="js/fix-navigation.js?v=7"></script>
     <script src="js/theme-toggle.js?v=7"></script>
 
-    <!-- Vérification d'authentification -->
-    <script>
-        // Vérifier si l'utilisateur est connecté et a le bon rôle
-        (function() {
-            if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
-                console.log('❌ Non connecté, redirection vers index.html');
-                window.location.href = 'index.html';
-                return;
-            }
-
-            const user = Auth.getUser();
-            if (!user) {
-                console.log('❌ Pas de données utilisateur, redirection vers index.html');
-                Auth.clear();
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // Vérifier que l'utilisateur a le rôle enseignant ou professeur
-            const role = user.role;
-            if (role !== 'enseignant' && role !== 'professeur') {
-                console.log('❌ Rôle incorrect:', role, '- Redirection vers le bon dashboard');
-                // Rediriger vers le bon dashboard selon le rôle
-                if (role === 'admin' || role === 'superadmin' || role === 'administrateur') {
-                    window.location.href = 'dashboard-admin.html';
-                } else if (role === 'etudiant') {
-                    window.location.href = 'dashboard-etudiant.html';
-                } else if (role === 'bureau_executif') {
-                    window.location.href = 'dashboard-bureau.html';
-                } else {
-                    // Rôle inconnu, déconnecter
-                    Auth.clear();
-                    window.location.href = 'index.html';
-                }
-                return;
-            }
-
-            console.log('✅ Authentification OK - Rôle:', role);
-        })();
-    </script>
-
     <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
+        // Vérification d'authentification - DOIT s'exécuter en premier
+        (function() {
+            // Attendre que Auth soit défini
+            function checkAuth() {
+                if (typeof Auth === 'undefined') {
+                    console.log('⏳ En attente du chargement de Auth...');
+                    setTimeout(checkAuth, 50);
+                    return;
+                }
+
+                if (!Auth.isLoggedIn()) {
+                    console.log('❌ Non connecté, redirection vers index.html');
+                    window.location.replace('index.html');
+                    return;
+                }
+
+                const user = Auth.getUser();
+                if (!user) {
+                    console.log('❌ Pas de données utilisateur, redirection vers index.html');
+                    Auth.clear();
+                    window.location.replace('index.html');
+                    return;
+                }
+
+                // Vérifier que l'utilisateur a le rôle enseignant ou professeur
+                const role = user.role;
+                if (role !== 'enseignant' && role !== 'professeur') {
+                    console.log('❌ Rôle incorrect:', role, '- Redirection vers le bon dashboard');
+                    // Rediriger vers le bon dashboard selon le rôle
+                    if (role === 'admin' || role === 'superadmin' || role === 'administrateur') {
+                        window.location.replace('dashboard-admin.html');
+                    } else if (role === 'etudiant') {
+                        window.location.replace('dashboard-etudiant.html');
+                    } else if (role === 'bureau_executif') {
+                        window.location.replace('dashboard-bureau.html');
+                    } else {
+                        // Rôle inconnu, déconnecter
+                        Auth.clear();
+                        window.location.replace('index.html');
+                    }
+                    return;
+                }
+
+                console.log('✅ Authentification OK - Rôle:', role);
+            }
+            
+            checkAuth();
+        })();
+
         window.navToUltra = function(page, el) {
             console.log('🔄 Navigation vers:', page);
             document.querySelectorAll('.page-ultra').forEach(p => p.style.display = 'none');
