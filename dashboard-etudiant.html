@@ -843,17 +843,10 @@
 
     <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
-        // Vérification d'authentification - DOIT s'exécuter en premier
-        (function() {
-            // Attendre que Auth soit défini
-            function checkAuth() {
-                if (typeof Auth === 'undefined') {
-                    console.log('⏳ En attente du chargement de Auth...');
-                    setTimeout(checkAuth, 50);
-                    return;
-                }
-
-                if (!Auth.isLoggedIn()) {
+        // Vérification d'authentification - Attendre le chargement complet
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
                     console.log('❌ Non connecté, redirection vers index.html');
                     window.location.replace('index.html');
                     return;
@@ -867,11 +860,9 @@
                     return;
                 }
 
-                // Vérifier que l'utilisateur a le rôle étudiant
                 const role = user.role;
                 if (role !== 'etudiant') {
                     console.log('❌ Rôle incorrect:', role, '- Redirection vers le bon dashboard');
-                    // Rediriger vers le bon dashboard selon le rôle
                     if (role === 'admin' || role === 'superadmin' || role === 'administrateur') {
                         window.location.replace('dashboard-admin.html');
                     } else if (role === 'enseignant' || role === 'professeur') {
@@ -879,7 +870,6 @@
                     } else if (role === 'bureau_executif') {
                         window.location.replace('dashboard-bureau.html');
                     } else {
-                        // Rôle inconnu, déconnecter
                         Auth.clear();
                         window.location.replace('index.html');
                     }
@@ -887,10 +877,8 @@
                 }
 
                 console.log('✅ Authentification OK - Rôle:', role);
-            }
-            
-            checkAuth();
-        })();
+            }, 100);
+        });
 
         function navToPremium(page, el) {
             document.querySelectorAll('.erp-page').forEach(p => p.style.display = 'none');
