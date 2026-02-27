@@ -166,12 +166,6 @@ def creer_donnees_test():
     )
     if created:
         print(f"   ✅ Évaluation créée: {eval3.titre}")
-    )
-            'coefficient': 2
-        }
-    )
-    if created:
-        print(f"   ✅ Évaluation créée: {eval3.titre}")
     
     # 4. CRÉER DES NOTES POUR L'ÉTUDIANT
     print("\n📊 4. Création des notes...")
