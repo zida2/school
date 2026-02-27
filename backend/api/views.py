@@ -134,16 +134,29 @@ class DashboardProfView(APIView):
         try:
             enseignant = request.user.enseignant
             matieres = enseignant.matieres.all()
-            etudiants_ids = Etudiant.objects.filter(
-                filiere__in=matieres.values('filiere')
-            ).values_list('id', flat=True).distinct()
+            
+            # Compter les étudiants qui ont des notes dans les matières de l'enseignant
+            etudiants_ids = Note.objects.filter(
+                matiere__in=matieres
+            ).values_list('etudiant_id', flat=True).distinct()
+            
+            # Compter les cours de la semaine
+            from datetime import datetime, timedelta
+            today = datetime.now().date()
+            start_week = today - timedelta(days=today.weekday())
+            end_week = start_week + timedelta(days=6)
+            
+            cours_semaine = EmploiDuTemps.objects.filter(
+                matiere__in=matieres
+            ).count()
 
             return Response({
                 'nb_matieres': matieres.count(),
                 'nb_etudiants': len(etudiants_ids),
                 'nb_notes_saisies': Note.objects.filter(
-                    matiere__in=matieres, note_cc__isnull=False
-                ).count(),
+                    matiere__in=matieres
+                ).exclude(note_cc__isnull=True, note_examen__isnull=True).count(),
+                'nb_cours_semaine': cours_semaine,
                 'matieres': MatiereSerializer(matieres, many=True).data,
             })
         except Enseignant.DoesNotExist:
