@@ -619,7 +619,7 @@
                             <h1 class="page-title-ultra">🔍 Objets perdus</h1>
                             <p class="page-subtitle-ultra">Déclarer ou rechercher des objets perdus</p>
                         </div>
-                        <button class="btn-ultra btn-primary-ultra-ultra" onclick="alert('Fonctionnalité à venir')">+ Déclarer un objet</button>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalObjetPerdu')">+ Déclarer un objet</button>
                     </div>
                     
                     <div class="card-ultra">
@@ -638,6 +638,56 @@
                                     <tr><td colspan="5" style="text-align:center;padding:40px">Aucun objet déclaré</td></tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <!-- MODAL DÉCLARER OBJET PERDU -->
+                    <div class="modal-ultra" id="modalObjetPerdu">
+                        <div class="modal-content-ultra">
+                            <div class="modal-header-ultra">
+                                <h3>🔍 Déclarer un objet</h3>
+                                <span class="modal-close-ultra" onclick="closeModal('modalObjetPerdu')">&times;</span>
+                            </div>
+                            <div class="modal-body-ultra">
+                                <form id="formObjetPerdu" onsubmit="soumettreObjetPerdu(event)">
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                                        <div class="form-group-ultra">
+                                            <label>Type de déclaration *</label>
+                                            <select name="type_declaration" required class="form-input-ultra">
+                                                <option value="">Sélectionner...</option>
+                                                <option value="perdu">Objet perdu</option>
+                                                <option value="trouve">Objet trouvé</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-ultra">
+                                            <label>Nom de l'objet *</label>
+                                            <input type="text" name="nom_objet" required class="form-input-ultra" placeholder="Ex: Téléphone Samsung">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-ultra">
+                                        <label>Description *</label>
+                                        <textarea name="description" rows="3" required class="form-input-ultra" placeholder="Décrivez l'objet en détail..."></textarea>
+                                    </div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                                        <div class="form-group-ultra">
+                                            <label>Lieu *</label>
+                                            <input type="text" name="lieu" required class="form-input-ultra" placeholder="Ex: Amphithéâtre A">
+                                        </div>
+                                        <div class="form-group-ultra">
+                                            <label>Date *</label>
+                                            <input type="date" name="date_perte" required class="form-input-ultra">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-ultra">
+                                        <label>Contact *</label>
+                                        <input type="text" name="contact" required class="form-input-ultra" placeholder="Téléphone ou email">
+                                    </div>
+                                    <div class="modal-footer-ultra">
+                                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalObjetPerdu')">Annuler</button>
+                                        <button type="submit" class="btn-ultra btn-primary-ultra">Déclarer</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -957,6 +1007,32 @@
             } catch (error) {
                 console.error('Erreur chargement objets perdus:', error);
                 showToast('Erreur lors du chargement des objets perdus', 'danger');
+            }
+        }
+
+        async function soumettreObjetPerdu(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const data = {
+                type_declaration: formData.get('type_declaration'),
+                nom_objet: formData.get('nom_objet'),
+                description: formData.get('description'),
+                lieu: formData.get('lieu'),
+                date_perte: formData.get('date_perte'),
+                contact: formData.get('contact')
+            };
+
+            try {
+                await API.post('/objets-perdus/', data);
+                showToast('Objet déclaré avec succès', 'success');
+                closeModal('modalObjetPerdu');
+                form.reset();
+                chargerObjetsPerdus();
+            } catch (error) {
+                console.error('Erreur déclaration objet:', error);
+                showToast('Erreur lors de la déclaration', 'danger');
             }
         }
 
