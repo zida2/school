@@ -140,7 +140,7 @@ function updateThemeButton() {
         if (isDark) {
             button.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
         } else {
-            button.style.background = 'linear-gradient(135deg, #F59E0B 0%, #F97316 100%)';
+            button.style.background = 'linear-gradient(135deg, #0891B2 0%, #14B8A6 100%)';
         }
     }
 }

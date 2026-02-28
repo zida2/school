@@ -4,34 +4,34 @@
    ======================================== */
 
 :root {
-    /* Couleurs principales */
-    --primary: #4F46E5;
-    --primary-light: #6366F1;
-    --primary-dark: #4338CA;
-    --secondary: #10B981;
+    /* Couleurs principales - Inspirées de l'eau claire de mer */
+    --primary: #0891B2;
+    --primary-light: #06B6D4;
+    --primary-dark: #0E7490;
+    --secondary: #14B8A6;
     --accent: #F59E0B;
     
-    /* Couleurs de fond */
-    --bg-main: #F9FAFB;
+    /* Couleurs de fond - Tons eau de mer */
+    --bg-main: #F0F9FF;
     --bg-card: #FFFFFF;
-    --bg-sidebar: #FFFFFF;
-    --bg-hover: #F3F4F6;
-    --bg-active: #EEF2FF;
+    --bg-sidebar: #FEFEFE;
+    --bg-hover: #E0F2FE;
+    --bg-active: #BAE6FD;
     
-    /* Couleurs de texte */
-    --text-primary: #111827;
-    --text-secondary: #6B7280;
-    --text-muted: #9CA3AF;
+    /* Couleurs de texte - Contraste amélioré */
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --text-muted: #64748B;
     
-    /* Bordures */
-    --border-color: #E5E7EB;
-    --border-light: #F3F4F6;
+    /* Bordures - Tons aqua */
+    --border-color: #BAE6FD;
+    --border-light: #E0F2FE;
     
-    /* Ombres */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    /* Ombres - Plus douces */
+    --shadow-sm: 0 1px 2px 0 rgba(8, 145, 178, 0.08);
+    --shadow-md: 0 4px 6px -1px rgba(8, 145, 178, 0.12), 0 2px 4px -1px rgba(8, 145, 178, 0.08);
+    --shadow-lg: 0 10px 15px -3px rgba(8, 145, 178, 0.15), 0 4px 6px -2px rgba(8, 145, 178, 0.08);
+    --shadow-xl: 0 20px 25px -5px rgba(8, 145, 178, 0.18), 0 10px 10px -5px rgba(8, 145, 178, 0.08);
     
     /* Couleurs de statut */
     --success: #10B981;
@@ -40,8 +40,8 @@
     --warning-bg: #FEF3C7;
     --danger: #EF4444;
     --danger-bg: #FEE2E2;
-    --info: #3B82F6;
-    --info-bg: #DBEAFE;
+    --info: #0891B2;
+    --info-bg: #CFFAFE;
 }
 
 /* ========================================
@@ -49,10 +49,31 @@
    ======================================== */
 
 body.light-theme {
-    background: var(--bg-main);
+    background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 50%, #BAE6FD 100%);
+    background-attachment: fixed;
     color: var(--text-primary);
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
+}
+
+body.light-theme::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(8, 145, 178, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.light-theme > * {
+    position: relative;
+    z-index: 1;
 }
 
 /* ========================================
@@ -71,7 +92,7 @@ body.light-theme {
 
 .light-theme .logo-icon-ultra {
     background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 4px 12px rgba(8, 145, 178, 0.4);
     animation: float 3s ease-in-out infinite;
 }
 
@@ -86,14 +107,16 @@ body.light-theme {
 }
 
 .light-theme .logo-tag-ultra {
-    color: var(--text-secondary);
+    color: var(--primary);
+    font-weight: 500;
 }
 
 .light-theme .nav-label-ultra {
-    color: var(--text-muted);
+    color: var(--primary-dark);
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
 }
 
 .light-theme .nav-item-ultra {
@@ -104,13 +127,13 @@ body.light-theme {
 
 .light-theme .nav-item-ultra:hover {
     background: var(--bg-hover);
-    color: var(--primary);
+    color: var(--primary-dark);
     transform: translateX(4px);
 }
 
 .light-theme .nav-item-ultra.active {
     background: var(--bg-active);
-    color: var(--primary);
+    color: var(--primary-dark);
     font-weight: 600;
     box-shadow: var(--shadow-sm);
 }
@@ -158,13 +181,13 @@ body.light-theme {
 
 .light-theme .search-ultra input:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
 }
 
 .light-theme .topbar-icon-ultra {
     background: var(--bg-main);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
 }
 
@@ -178,10 +201,12 @@ body.light-theme {
 
 .light-theme .user-info-ultra .user-name-ultra {
     color: var(--text-primary);
+    font-weight: 600;
 }
 
 .light-theme .user-info-ultra .user-role-ultra {
-    color: var(--text-secondary);
+    color: var(--primary);
+    font-weight: 500;
 }
 
 /* ========================================
@@ -206,10 +231,12 @@ body.light-theme {
 
 .light-theme .card-title-ultra {
     color: var(--text-primary);
+    font-weight: 700;
 }
 
 .light-theme .card-subtitle-ultra {
-    color: var(--text-secondary);
+    color: var(--primary-dark);
+    font-weight: 500;
 }
 
 /* ========================================
@@ -229,8 +256,8 @@ body.light-theme {
 }
 
 .light-theme .stat-icon-ultra {
-    background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    box-shadow: 0 4px 12px rgba(8, 145, 178, 0.4);
     animation: rotate 10s linear infinite;
 }
 
@@ -241,11 +268,12 @@ body.light-theme {
 
 .light-theme .stat-value-ultra {
     color: var(--text-primary);
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .light-theme .stat-label-ultra {
     color: var(--text-secondary);
+    font-weight: 600;
 }
 
 .light-theme .stat-trend-ultra {
@@ -277,7 +305,7 @@ body.light-theme {
 
 .light-theme .table-ultra th {
     color: var(--text-primary);
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .light-theme .table-ultra tbody tr {
@@ -292,6 +320,7 @@ body.light-theme {
 
 .light-theme .table-ultra td {
     color: var(--text-secondary);
+    font-weight: 500;
 }
 
 /* ========================================
@@ -385,13 +414,13 @@ body.light-theme {
 
 .light-theme .form-control-ultra:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
     transform: translateY(-1px);
 }
 
 .light-theme .form-label-ultra {
     color: var(--text-primary);
-    font-weight: 500;
+    font-weight: 600;
 }
 
 /* ========================================
