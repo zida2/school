@@ -586,10 +586,9 @@
                 <div class="page-ultra" id="page-demandes" style="display:none">
                     <div class="page-header-ultra">
                         <div>
-                            <h1 class="page-title-ultra">📨 Mes demandes</h1>
-                            <p class="page-subtitle-ultra">Soumettre et suivre vos demandes administratives</p>
+                            <h1 class="page-title-ultra">📨 Demandes administratives</h1>
+                            <p class="page-subtitle-ultra">Consulter et traiter les demandes des étudiants</p>
                         </div>
-                        <button class="btn-ultra btn-primary-ultra-ultra" onclick="alert('Fonctionnalité à venir')">+ Nouvelle demande</button>
                     </div>
                     
                     <div class="card-ultra">
@@ -598,6 +597,7 @@
                                 <thead>
                                     <tr>
                                         <th>Date</th>
+                                        <th>Étudiant</th>
                                         <th>Type</th>
                                         <th>Objet</th>
                                         <th>Statut</th>
@@ -605,9 +605,63 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyDemandes">
-                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune demande</td></tr>
+                                    <tr><td colspan="6" style="text-align:center;padding:40px">Aucune demande</td></tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <!-- MODAL VOIR DEMANDE -->
+                    <div class="modal-ultra" id="modalVoirDemande">
+                        <div class="modal-content-ultra">
+                            <div class="modal-header-ultra">
+                                <h3>📝 Détails de la demande</h3>
+                                <span class="modal-close-ultra" onclick="closeModal('modalVoirDemande')">&times;</span>
+                            </div>
+                            <div class="modal-body-ultra">
+                                <div id="detailsDemande" style="line-height:1.8">
+                                    <!-- Rempli dynamiquement -->
+                                </div>
+                            </div>
+                            <div class="modal-footer-ultra">
+                                <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalVoirDemande')">Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODAL TRAITER DEMANDE -->
+                    <div class="modal-ultra" id="modalTraiterDemande">
+                        <div class="modal-content-ultra">
+                            <div class="modal-header-ultra">
+                                <h3>✅ Traiter la demande</h3>
+                                <span class="modal-close-ultra" onclick="closeModal('modalTraiterDemande')">&times;</span>
+                            </div>
+                            <div class="modal-body-ultra">
+                                <form id="formTraiterDemande" onsubmit="traiterDemande(event)">
+                                    <input type="hidden" id="demandeIdTraiter">
+                                    <div id="demandeInfoTraiter" style="padding:15px;background:rgba(8, 145, 178, 0.1);border-radius:8px;margin-bottom:20px">
+                                        <!-- Info demande -->
+                                    </div>
+                                    <div class="form-group-ultra">
+                                        <label>Statut *</label>
+                                        <select name="statut" required class="form-input-ultra">
+                                            <option value="">Sélectionner...</option>
+                                            <option value="en_traitement">En traitement</option>
+                                            <option value="approuve">Approuvé</option>
+                                            <option value="rejete">Rejeté</option>
+                                            <option value="termine">Terminé</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-ultra">
+                                        <label>Commentaire</label>
+                                        <textarea name="commentaire_admin" rows="4" class="form-input-ultra" placeholder="Commentaire pour l'étudiant..."></textarea>
+                                    </div>
+                                    <div class="modal-footer-ultra">
+                                        <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalTraiterDemande')">Annuler</button>
+                                        <button type="submit" class="btn-ultra btn-primary-ultra">Enregistrer</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -969,21 +1023,104 @@
                 const demandes = await API.get('/demandes-administratives/');
                 const tbody = document.getElementById('tbodyDemandes');
                 if (!demandes || demandes.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px">Aucune demande</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px">Aucune demande</td></tr>';
                     return;
                 }
-                tbody.innerHTML = demandes.map(d => `
-                    <tr>
-                        <td>${new Date(d.date_demande).toLocaleDateString('fr-FR')}</td>
-                        <td>${d.type_demande}</td>
-                        <td>${d.objet}</td>
-                        <td><span class="badge-ultra ${d.statut === 'approuve' ? 'success' : d.statut === 'rejete' ? 'danger' : 'warning'}">${d.statut}</span></td>
-                        <td><button class="btn-ultra btn-sm-ultra" onclick="showToast('Détails à venir', 'info')">Voir</button></td>
-                    </tr>
-                `).join('');
+                tbody.innerHTML = demandes.map(d => {
+                    const statutClass = d.statut === 'approuve' ? 'success' : 
+                                       d.statut === 'rejete' ? 'danger' : 
+                                       d.statut === 'termine' ? 'info' : 'warning';
+                    const etudiantNom = d.etudiant_nom || 'N/A';
+                    
+                    return `
+                        <tr>
+                            <td>${new Date(d.date_demande).toLocaleDateString('fr-FR')}</td>
+                            <td>${etudiantNom}</td>
+                            <td><span class="badge-ultra primary">${d.type_demande}</span></td>
+                            <td>${d.objet}</td>
+                            <td><span class="badge-ultra ${statutClass}">${d.statut}</span></td>
+                            <td>
+                                <button class="btn-ultra btn-sm-ultra" onclick="voirDemande(${d.id})" title="Voir détails">👁️</button>
+                                ${d.statut === 'en_attente' ? `<button class="btn-ultra btn-sm-ultra btn-primary-ultra" onclick="ouvrirModalTraiter(${d.id})" title="Traiter">✅</button>` : ''}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
             } catch (error) {
                 console.error('Erreur chargement demandes:', error);
                 showToast('Erreur lors du chargement des demandes', 'danger');
+            }
+        }
+
+        async function voirDemande(id) {
+            try {
+                const demande = await API.get(`/demandes-administratives/${id}/`);
+                const details = document.getElementById('detailsDemande');
+                
+                const statutClass = demande.statut === 'approuve' ? 'success' : 
+                                   demande.statut === 'rejete' ? 'danger' : 
+                                   demande.statut === 'termine' ? 'info' : 'warning';
+                
+                details.innerHTML = `
+                    <p><strong>Étudiant:</strong> ${demande.etudiant_nom || 'N/A'}</p>
+                    <p><strong>Type:</strong> <span class="badge-ultra primary">${demande.type_demande}</span></p>
+                    <p><strong>Objet:</strong> ${demande.objet}</p>
+                    <p><strong>Description:</strong></p>
+                    <p style="padding:10px;background:rgba(8, 145, 178, 0.1);border-radius:8px">${demande.description}</p>
+                    <p><strong>Date de demande:</strong> ${new Date(demande.date_demande).toLocaleString('fr-FR')}</p>
+                    <p><strong>Statut:</strong> <span class="badge-ultra ${statutClass}">${demande.statut}</span></p>
+                    ${demande.commentaire_admin ? `<p><strong>Commentaire:</strong></p><p style="padding:10px;background:rgba(8, 145, 178, 0.1);border-radius:8px">${demande.commentaire_admin}</p>` : ''}
+                    ${demande.date_traitement ? `<p><strong>Traité le:</strong> ${new Date(demande.date_traitement).toLocaleString('fr-FR')}</p>` : ''}
+                    ${demande.traite_par_nom ? `<p><strong>Traité par:</strong> ${demande.traite_par_nom}</p>` : ''}
+                `;
+                
+                openModal('modalVoirDemande');
+            } catch (error) {
+                console.error('Erreur chargement détails demande:', error);
+                showToast('Erreur lors du chargement des détails', 'danger');
+            }
+        }
+
+        async function ouvrirModalTraiter(id) {
+            try {
+                const demande = await API.get(`/demandes-administratives/${id}/`);
+                document.getElementById('demandeIdTraiter').value = id;
+                
+                const info = document.getElementById('demandeInfoTraiter');
+                info.innerHTML = `
+                    <p><strong>Étudiant:</strong> ${demande.etudiant_nom || 'N/A'}</p>
+                    <p><strong>Type:</strong> ${demande.type_demande}</p>
+                    <p><strong>Objet:</strong> ${demande.objet}</p>
+                    <p><strong>Description:</strong> ${demande.description}</p>
+                `;
+                
+                openModal('modalTraiterDemande');
+            } catch (error) {
+                console.error('Erreur chargement demande:', error);
+                showToast('Erreur lors du chargement de la demande', 'danger');
+            }
+        }
+
+        async function traiterDemande(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const id = document.getElementById('demandeIdTraiter').value;
+            
+            const data = {
+                statut: formData.get('statut'),
+                commentaire_admin: formData.get('commentaire_admin')
+            };
+
+            try {
+                await API.post(`/demandes-administratives/${id}/traiter/`, data);
+                showToast('Demande traitée avec succès', 'success');
+                closeModal('modalTraiterDemande');
+                form.reset();
+                chargerDemandes();
+            } catch (error) {
+                console.error('Erreur traitement demande:', error);
+                showToast('Erreur lors du traitement', 'danger');
             }
         }
 
