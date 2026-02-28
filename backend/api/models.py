@@ -239,6 +239,17 @@ class Note(models.Model):
     @property
     def mention(self):
         m = self.moyenne
+        if m is None:
+            return '—'
+        if m >= 16:
+            return 'Très Bien'
+        if m >= 14:
+            return 'Bien'
+        if m >= 12:
+            return 'Assez Bien'
+        if m >= 10:
+            return 'Passable'
+        return 'Ajourné'
 
 
 # ===== ÉVALUATION (DEVOIR) =====
@@ -298,12 +309,6 @@ class NoteEvaluation(models.Model):
         if self.note is not None and self.evaluation.note_sur > 0:
             return round(float(self.note) * 20 / float(self.evaluation.note_sur), 2)
         return None
-        if m is None: return '—'
-        if m >= 16: return 'Très Bien'
-        if m >= 14: return 'Bien'
-        if m >= 12: return 'Assez Bien'
-        if m >= 10: return 'Passable'
-        return 'Ajourné'
 
     @property
     def valide(self):
