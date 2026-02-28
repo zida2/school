@@ -218,59 +218,93 @@
                     </div>
                 </div>
 
-                <!-- PAGE: GESTION DES ÉVALUATIONS ET NOTES -->
+                <!-- PAGE: SAISIE DES NOTES -->
                 <div class="page-ultra" id="page-notes" style="display:none">
                     <div class="page-header-ultra">
                         <div>
-                            <h1 class="page-title-ultra">Gestion des Évaluations et Notes</h1>
-                            <p class="page-subtitle-ultra">Créez des évaluations et saisissez les notes</p>
+                            <h1 class="page-title-ultra">Saisie des Notes</h1>
+                            <p class="page-subtitle-ultra">Saisissez les notes CC et Examen pour vos étudiants</p>
                         </div>
                     </div>
 
-                    <!-- Sélection de la matière -->
+                    <!-- Filtres -->
                     <div class="card-ultra" style="margin-bottom:24px">
                         <div class="card-body-ultra">
-                            <div class="form-group-ultra">
-                                <label class="form-label-ultra">Sélectionner une matière *</label>
-                                <select id="selectMatiereNotes" class="form-input-ultra" onchange="chargerEvaluationsMatiere()" style="padding:12px 16px">
-                                    <option value="">Choisir une matière...</option>
-                                </select>
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px">
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Filière *</label>
+                                    <select id="selectFiliereSaisie" class="form-input-ultra" onchange="chargerMatieresFiliereEtAnnees()" style="padding:12px 16px">
+                                        <option value="">Sélectionner une filière...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Matière *</label>
+                                    <select id="selectMatiereSaisie" class="form-input-ultra" onchange="chargerEtudiantsMatiere()" style="padding:12px 16px">
+                                        <option value="">Sélectionner une matière...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Année académique *</label>
+                                    <select id="selectAnneeSaisie" class="form-input-ultra" onchange="chargerEtudiantsMatiere()" style="padding:12px 16px">
+                                        <option value="">Sélectionner une année...</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Contenu principal (visible après sélection matière) -->
-                    <div id="contenuEvaluations" style="display:none">
+                    <!-- Contenu principal (visible après sélection) -->
+                    <div id="contenuSaisieNotes" style="display:none">
                         
                         <!-- Statistiques -->
                         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
-                            <div style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:12px;padding:20px">
-                                <div style="font-size:28px;font-weight:700;color:#6366f1" id="statNbEvaluations">0</div>
-                                <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Évaluations créées</div>
-                            </div>
                             <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px">
-                                <div style="font-size:28px;font-weight:700;color:#10b981" id="statNbEtudiants">0</div>
+                                <div style="font-size:28px;font-weight:700;color:#10b981" id="statNbEtudiantsSaisie">0</div>
                                 <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Étudiants</div>
                             </div>
-                            <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:20px">
-                                <div style="font-size:28px;font-weight:700;color:#f59e0b" id="statNotesSaisies">0</div>
+                            <div style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:12px;padding:20px">
+                                <div style="font-size:28px;font-weight:700;color:#6366f1" id="statNotesSaisiesSaisie">0</div>
                                 <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Notes saisies</div>
+                            </div>
+                            <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:20px">
+                                <div style="font-size:28px;font-weight:700;color:#f59e0b" id="statNotesPublieesSaisie">0</div>
+                                <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Notes publiées</div>
                             </div>
                         </div>
 
-                        <!-- Liste des évaluations -->
-                        <div class="card-ultra" style="margin-bottom:24px">
+                        <!-- Tableau de saisie -->
+                        <div class="card-ultra">
                             <div class="card-header-ultra">
-                                <h3 class="card-title-ultra">📋 Évaluations</h3>
-                                <button class="btn-ultra btn-primary-ultra" onclick="ouvrirModalEvaluation()" style="background: linear-gradient(135deg, #10b981, #059669)">
-                                    + Nouvelle évaluation
-                                </button>
+                                <h3 class="card-title-ultra">📝 Saisie des notes</h3>
+                                <div style="display:flex;gap:12px">
+                                    <button class="btn-ultra btn-success-ultra" onclick="sauvegarderToutesLesNotes()" style="background: linear-gradient(135deg, #10b981, #059669)">
+                                        💾 Sauvegarder tout
+                                    </button>
+                                    <button class="btn-ultra btn-primary-ultra" onclick="publierNotesMatiere()" style="background: linear-gradient(135deg, #6366f1, #4f46e5)">
+                                        📤 Publier les notes
+                                    </button>
+                                </div>
                             </div>
                             <div class="card-body-ultra">
-                                <div id="listeEvaluations" style="display:grid;gap:16px">
-                                    <div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">
-                                        Aucune évaluation. Créez-en une pour commencer.
-                                    </div>
+                                <div style="overflow-x:auto">
+                                    <table class="table-ultra">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:50px">#</th>
+                                                <th>Matricule</th>
+                                                <th>Nom complet</th>
+                                                <th style="width:120px">Note CC /20</th>
+                                                <th style="width:120px">Note Examen /20</th>
+                                                <th style="width:120px">Moyenne /20</th>
+                                                <th style="width:100px">Statut</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbodySaisieNotes">
+                                            <tr><td colspan="7" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">
+                                                Sélectionnez une filière, une matière et une année pour commencer
+                                            </td></tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -1720,6 +1754,258 @@
             }
         }
 
+        // ===== NOUVELLE SECTION: SAISIE DES NOTES SIMPLIFIÉE =====
+        let notesEnCoursModification = {}; // Stocke les notes en cours de modification
+        let matiereSelectionnee = null;
+        let anneeSelectionnee = null;
+        let filiereSelectionnee = null;
+
+        async function chargerMatieresFiliereEtAnnees() {
+            const filiereId = document.getElementById('selectFiliereSaisie').value;
+            
+            if (!filiereId) {
+                document.getElementById('selectMatiereSaisie').innerHTML = '<option value="">Sélectionner une matière...</option>';
+                document.getElementById('contenuSaisieNotes').style.display = 'none';
+                return;
+            }
+
+            filiereSelectionnee = parseInt(filiereId);
+
+            try {
+                // Charger les matières de cette filière enseignées par le prof
+                const dashboard = await API.getDashboardProf();
+                const matieres = dashboard.matieres.filter(m => m.filiere === filiereSelectionnee);
+                
+                const selectMatiere = document.getElementById('selectMatiereSaisie');
+                selectMatiere.innerHTML = '<option value="">Sélectionner une matière...</option>';
+                matieres.forEach(m => {
+                    selectMatiere.innerHTML += `<option value="${m.id}">${m.nom} - ${m.code}</option>`;
+                });
+
+                // Charger les années académiques
+                const annees = await API.getAnnees();
+                const selectAnnee = document.getElementById('selectAnneeSaisie');
+                selectAnnee.innerHTML = '<option value="">Sélectionner une année...</option>';
+                annees.forEach(a => {
+                    const selected = a.active ? 'selected' : '';
+                    selectAnnee.innerHTML += `<option value="${a.id}" ${selected}>${a.libelle}</option>`;
+                });
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur lors du chargement', 'danger');
+            }
+        }
+
+        async function chargerEtudiantsMatiere() {
+            const matiereId = document.getElementById('selectMatiereSaisie').value;
+            const anneeId = document.getElementById('selectAnneeSaisie').value;
+
+            if (!matiereId || !anneeId) {
+                document.getElementById('contenuSaisieNotes').style.display = 'none';
+                return;
+            }
+
+            matiereSelectionnee = parseInt(matiereId);
+            anneeSelectionnee = parseInt(anneeId);
+
+            try {
+                // Charger les étudiants de la filière
+                const etudiants = await API.getEtudiants({ filiere: filiereSelectionnee });
+                
+                // Charger les notes existantes
+                const notes = await API.getNotes({ 
+                    matiere: matiereSelectionnee,
+                    annee_academique: anneeSelectionnee
+                });
+
+                // Créer un map des notes par étudiant
+                const notesMap = {};
+                notes.forEach(n => {
+                    notesMap[n.etudiant] = n;
+                });
+
+                // Afficher le tableau
+                const tbody = document.getElementById('tbodySaisieNotes');
+                tbody.innerHTML = etudiants.map((e, index) => {
+                    const note = notesMap[e.id];
+                    const noteCC = note && note.note_cc !== null && note.note_cc !== undefined ? note.note_cc : '';
+                    const noteExamen = note && note.note_examen !== null && note.note_examen !== undefined ? note.note_examen : '';
+                    const moyenne = note && note.moyenne !== null && note.moyenne !== undefined ? note.moyenne.toFixed(2) : '-';
+                    const statut = note && note.publie ? 'Publiée' : 'Brouillon';
+                    const statutClass = note && note.publie ? 'success' : 'warning';
+                    const noteId = note && note.id ? note.id : null;
+
+                    return `
+                        <tr data-etudiant-id="${e.id}" data-note-id="${noteId || ''}">
+                            <td style="text-align:center;color:rgba(255,255,255,0.5)">${index + 1}</td>
+                            <td style="font-weight:600">${e.matricule}</td>
+                            <td>${e.nom} ${e.prenom}</td>
+                            <td>
+                                <input type="number" 
+                                    class="form-input-ultra" 
+                                    style="width:100%;padding:8px;text-align:center" 
+                                    min="0" 
+                                    max="20" 
+                                    step="0.5"
+                                    value="${noteCC}"
+                                    onchange="marquerNoteModifiee(${e.id}, 'cc', this.value)"
+                                    placeholder="0.00">
+                            </td>
+                            <td>
+                                <input type="number" 
+                                    class="form-input-ultra" 
+                                    style="width:100%;padding:8px;text-align:center" 
+                                    min="0" 
+                                    max="20" 
+                                    step="0.5"
+                                    value="${noteExamen}"
+                                    onchange="marquerNoteModifiee(${e.id}, 'examen', this.value)"
+                                    placeholder="0.00">
+                            </td>
+                            <td style="text-align:center;font-weight:700;font-size:16px;color:#10b981">${moyenne}</td>
+                            <td style="text-align:center">
+                                <span class="badge-ultra ${statutClass}">${statut}</span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                // Mettre à jour les statistiques
+                const notesSaisies = notes.filter(n => n.note_cc !== null || n.note_examen !== null).length;
+                const notesPubliees = notes.filter(n => n.publie).length;
+                
+                document.getElementById('statNbEtudiantsSaisie').textContent = etudiants.length;
+                document.getElementById('statNotesSaisiesSaisie').textContent = notesSaisies;
+                document.getElementById('statNotesPublieesSaisie').textContent = notesPubliees;
+
+                // Afficher le contenu
+                document.getElementById('contenuSaisieNotes').style.display = 'block';
+
+                // Réinitialiser les notes en cours de modification
+                notesEnCoursModification = {};
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur lors du chargement des étudiants: ' + err.message, 'danger');
+            }
+        }
+
+        function marquerNoteModifiee(etudiantId, type, valeur) {
+            if (!notesEnCoursModification[etudiantId]) {
+                notesEnCoursModification[etudiantId] = {};
+            }
+            notesEnCoursModification[etudiantId][type] = valeur === '' ? null : parseFloat(valeur);
+            
+            // Calculer et afficher la moyenne en temps réel
+            const row = document.querySelector(`tr[data-etudiant-id="${etudiantId}"]`);
+            const inputCC = row.querySelector('input[type="number"]:nth-of-type(1)');
+            const inputExamen = row.querySelector('input[type="number"]:nth-of-type(2)');
+            const cellMoyenne = row.querySelector('td:nth-child(6)');
+            
+            const cc = inputCC.value === '' ? null : parseFloat(inputCC.value);
+            const examen = inputExamen.value === '' ? null : parseFloat(inputExamen.value);
+            
+            if (cc !== null && examen !== null) {
+                const moyenne = ((cc + examen) / 2).toFixed(2);
+                cellMoyenne.textContent = moyenne;
+                cellMoyenne.style.color = moyenne >= 10 ? '#10b981' : '#ef4444';
+            } else if (cc !== null) {
+                cellMoyenne.textContent = cc.toFixed(2);
+            } else if (examen !== null) {
+                cellMoyenne.textContent = examen.toFixed(2);
+            } else {
+                cellMoyenne.textContent = '-';
+            }
+        }
+
+        async function sauvegarderToutesLesNotes() {
+            if (Object.keys(notesEnCoursModification).length === 0) {
+                showToast('Aucune modification à sauvegarder', 'info');
+                return;
+            }
+
+            try {
+                let saved = 0;
+                
+                for (const etudiantId in notesEnCoursModification) {
+                    const row = document.querySelector(`tr[data-etudiant-id="${etudiantId}"]`);
+                    const noteId = row.getAttribute('data-note-id');
+                    
+                    const noteCC = notesEnCoursModification[etudiantId].cc;
+                    const noteExamen = notesEnCoursModification[etudiantId].examen;
+                    
+                    // Calculer la moyenne
+                    let moyenne = null;
+                    if (noteCC !== null && noteCC !== undefined && noteExamen !== null && noteExamen !== undefined) {
+                        moyenne = (noteCC + noteExamen) / 2;
+                    } else if (noteCC !== null && noteCC !== undefined) {
+                        moyenne = noteCC;
+                    } else if (noteExamen !== null && noteExamen !== undefined) {
+                        moyenne = noteExamen;
+                    }
+                    
+                    const data = {
+                        etudiant: parseInt(etudiantId),
+                        matiere: matiereSelectionnee,
+                        annee_academique: anneeSelectionnee,
+                        note_cc: noteCC,
+                        note_examen: noteExamen,
+                        moyenne: moyenne,
+                        publie: false
+                    };
+
+                    if (noteId) {
+                        await API.updateNote(noteId, data);
+                    } else {
+                        const newNote = await API.createNote(data);
+                        row.setAttribute('data-note-id', newNote.id);
+                    }
+                    
+                    saved++;
+                }
+
+                showToast(`${saved} note(s) sauvegardée(s) avec succès`, 'success');
+                notesEnCoursModification = {};
+                
+                // Recharger pour mettre à jour les statistiques
+                await chargerEtudiantsMatiere();
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur lors de la sauvegarde: ' + err.message, 'danger');
+            }
+        }
+
+        async function publierNotesMatiere() {
+            if (!matiereSelectionnee || !anneeSelectionnee) {
+                showToast('Veuillez sélectionner une matière et une année', 'warning');
+                return;
+            }
+
+            if (!confirm('Êtes-vous sûr de vouloir publier les notes ? Les étudiants recevront une notification et pourront les consulter.')) {
+                return;
+            }
+
+            try {
+                const response = await API.post('/notes/publier/', {
+                    matiere_id: matiereSelectionnee,
+                    annee_academique_id: anneeSelectionnee
+                });
+
+                showToast(response.detail || 'Notes publiées avec succès', 'success');
+                
+                // Recharger pour mettre à jour les statuts
+                await chargerEtudiantsMatiere();
+
+            } catch (err) {
+                console.error('Erreur:', err);
+                showToast('Erreur lors de la publication: ' + err.message, 'danger');
+            }
+        }
+
+        // ===== FIN NOUVELLE SECTION =====
+
         document.addEventListener('DOMContentLoaded', function() {
             const user = requireAuth(['professeur', 'enseignant']);
             if (user) {
@@ -1727,8 +2013,23 @@
                 chargerSupports();
                 chargerDashboard();
                 chargerMatieresNotes();
+                chargerFilieresSaisie();
             }
         });
+
+        // Charger les filières pour la saisie des notes
+        async function chargerFilieresSaisie() {
+            try {
+                const filieres = await API.getFilieres();
+                const select = document.getElementById('selectFiliereSaisie');
+                select.innerHTML = '<option value="">Sélectionner une filière...</option>';
+                filieres.forEach(f => {
+                    select.innerHTML += `<option value="${f.id}">${f.nom} - ${f.code}</option>`;
+                });
+            } catch (err) {
+                console.error('Erreur chargement filières:', err);
+            }
+        }
     </script>
 </body>
 </html>
