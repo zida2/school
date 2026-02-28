@@ -1077,17 +1077,8 @@
         let notesEvalEnCours = {};
 
         async function chargerMatieresNotes() {
-            try {
-                const dashboard = await API.getDashboardProf();
-                const matieres = dashboard.matieres || [];
-                
-                const select = document.getElementById('selectMatiereNotes');
-                select.innerHTML = '<option value="">Choisir une matière...</option>' +
-                    matieres.map(m => `<option value="${m.id}" data-coef="${m.coefficient}" data-nom="${m.nom}" data-filiere="${m.filiere}">${m.nom} (${m.filiere_nom || 'N/A'})</option>`).join('');
-            } catch (err) {
-                console.error('Erreur:', err);
-                showToast('Erreur de chargement des matières', 'danger');
-            }
+            // Cette fonction n'est plus utilisée - remplacée par la nouvelle interface de saisie
+            console.log('chargerMatieresNotes: fonction obsolète, ignorée');
         }
 
         async function chargerEtudiantsMatiere() {
