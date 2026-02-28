@@ -1,6 +1,24 @@
 /**
- * THEME TOGGLE - Changement de thème Dark/Light
+ * THEME TOGGLE - Changement de thème Dark/Light avec chargement dynamique des CSS
  */
+
+// Fonction pour charger le CSS du thème
+function loadThemeCSS(theme) {
+    // Supprimer l'ancien lien CSS du thème s'il existe
+    const oldLink = document.getElementById('theme-css');
+    if (oldLink) {
+        oldLink.remove();
+    }
+    
+    // Créer un nouveau lien CSS
+    const link = document.createElement('link');
+    link.id = 'theme-css';
+    link.rel = 'stylesheet';
+    link.href = theme === 'light' ? 'css/dashboard-light.css?v=1.0' : 'css/dashboard-premium.css?v=7.0';
+    
+    // Ajouter le lien dans le head
+    document.head.appendChild(link);
+}
 
 // Fonction pour basculer le thème
 function toggleTheme() {
@@ -11,15 +29,20 @@ function toggleTheme() {
         body.classList.remove('dark-theme');
         body.classList.add('light-theme');
         localStorage.setItem('erp_theme', 'light');
+        loadThemeCSS('light');
     } else {
         body.classList.remove('light-theme');
         body.classList.add('dark-theme');
         localStorage.setItem('erp_theme', 'dark');
+        loadThemeCSS('dark');
     }
     
     // Animation de transition
     body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
     updateThemeButton();
+    
+    // Afficher un toast
+    showToast(`Thème ${isDark ? 'clair' : 'sombre'} activé`, 'success');
 }
 
 // Charger le thème sauvegardé
@@ -28,6 +51,7 @@ function loadTheme() {
     if (!document.body.classList.contains('dark-theme') && !document.body.classList.contains('light-theme')) {
         document.body.classList.add(savedTheme + '-theme');
     }
+    loadThemeCSS(savedTheme);
 }
 
 // Créer le bouton de thème
@@ -58,11 +82,37 @@ function createThemeButton() {
         cursor: pointer;
         box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         z-index: 99999;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         align-items: center;
         justify-content: center;
+        animation: fadeInUp 0.5s ease-out;
     `;
+    
+    // Ajouter l'animation CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        #theme-toggle-btn:active {
+            animation: spin 0.5s ease-in-out;
+        }
+    `;
+    document.head.appendChild(style);
     
     // Hover effect
     button.addEventListener('mouseenter', function() {
@@ -85,6 +135,13 @@ function updateThemeButton() {
     if (button) {
         const isDark = document.body.classList.contains('dark-theme');
         button.innerHTML = isDark ? '🌙' : '☀️';
+        
+        // Changer le gradient selon le thème
+        if (isDark) {
+            button.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+        } else {
+            button.style.background = 'linear-gradient(135deg, #F59E0B 0%, #F97316 100%)';
+        }
     }
 }
 
@@ -108,3 +165,4 @@ setTimeout(function() {
 }, 500);
 
 console.log('✅ Theme toggle chargé');
+

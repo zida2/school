@@ -412,7 +412,61 @@ const API = {
     async getNoteEvaluation(id) { return apiRequest(`/notes-evaluations/${id}/`); },
     async createNoteEvaluation(data) { return apiRequest('/notes-evaluations/', { method: 'POST', body: JSON.stringify(data) }); },
     async updateNoteEvaluation(id, data) { return apiRequest(`/notes-evaluations/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }); },
-    async deleteNoteEvaluation(id) { return apiRequest(`/notes-evaluations/${id}/`, { method: 'DELETE' }); }
+    async deleteNoteEvaluation(id) { return apiRequest(`/notes-evaluations/${id}/`, { method: 'DELETE' }); },
+
+    // ===== CLASSES =====
+    async getClasses(params = {}) {
+        const q = new URLSearchParams(params).toString();
+        return apiRequest(`/classes/${q ? '?' + q : ''}`);
+    },
+    async getClasse(id) { return apiRequest(`/classes/${id}/`); },
+    async createClasse(data) { return apiRequest('/classes/', { method: 'POST', body: JSON.stringify(data) }); },
+    async updateClasse(id, data) { return apiRequest(`/classes/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }); },
+    async deleteClasse(id) { return apiRequest(`/classes/${id}/`, { method: 'DELETE' }); },
+
+    // ===== INSCRIPTIONS =====
+    async getInscriptions(params = {}) {
+        const q = new URLSearchParams(params).toString();
+        return apiRequest(`/inscriptions/${q ? '?' + q : ''}`);
+    },
+    async getInscription(id) { return apiRequest(`/inscriptions/${id}/`); },
+    async createInscription(data) { return apiRequest('/inscriptions/', { method: 'POST', body: JSON.stringify(data) }); },
+    async updateInscription(id, data) { return apiRequest(`/inscriptions/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }); },
+    async deleteInscription(id) { return apiRequest(`/inscriptions/${id}/`, { method: 'DELETE' }); },
+
+    // ===== ENSEIGNEMENTS (Assignation Enseignant-Matière-Classe) =====
+    async getEnseignements(params = {}) {
+        const q = new URLSearchParams(params).toString();
+        return apiRequest(`/enseignements/${q ? '?' + q : ''}`);
+    },
+    async getEnseignement(id) { return apiRequest(`/enseignements/${id}/`); },
+    async createEnseignement(data) { return apiRequest('/enseignements/', { method: 'POST', body: JSON.stringify(data) }); },
+    async updateEnseignement(id, data) { return apiRequest(`/enseignements/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }); },
+    async deleteEnseignement(id) { return apiRequest(`/enseignements/${id}/`, { method: 'DELETE' }); },
+    async getEnseignementsParEnseignant() { return apiRequest('/enseignements/par_enseignant/'); },
+
+    // ===== GESTION FINANCIÈRE =====
+    async getStatistiquesFinancieres() { return apiRequest('/finances/statistiques/'); },
+    async getListeImpayes(params = {}) {
+        const q = new URLSearchParams(params).toString();
+        return apiRequest(`/finances/liste_impayes/${q ? '?' + q : ''}`);
+    },
+    async envoyerRappel(etudiantId) { return apiRequest(`/finances/${etudiantId}/envoyer_rappel/`, { method: 'POST' }); },
+    async genererLettre(etudiantId, typeLettre) {
+        return apiRequest(`/finances/${etudiantId}/generer_lettre/`, {
+            method: 'POST',
+            body: JSON.stringify({ type_lettre: typeLettre })
+        });
+    },
+    async getRappelsPaiement(params = {}) {
+        const q = new URLSearchParams(params).toString();
+        return apiRequest(`/rappels-paiement/${q ? '?' + q : ''}`);
+    },
+    async marquerRappelLu(rappelId) { return apiRequest(`/rappels-paiement/${rappelId}/marquer_lu/`, { method: 'POST' }); },
+    async getLettresRappel(params = {}) {
+        const q = new URLSearchParams(params).toString();
+        return apiRequest(`/lettres-rappel/${q ? '?' + q : ''}`);
+    }
 };
 
 // Exposer API globalement

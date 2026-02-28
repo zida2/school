@@ -1696,3 +1696,117 @@ class DashboardBureauView(APIView):
             # Données Étudiant
             **etudiant_data
         })
+
+
+# ===== CLASSE =====
+class ClasseViewSet(viewsets.ModelViewSet):
+    queryset = Classe.objects.select_related('filiere').all()
+    serializer_class = ClasseSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [IsAdminOrSuperAdmin()]
+        return [permissions.IsAuthenticated()]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        filiere = self.request.query_params.get('filiere')
+        niveau = self.request.query_params.get('niveau')
+        annee = self.request.query_params.get('annee_academique')
+        
+        if filiere:
+            qs = qs.filter(filiere_id=filiere)
+        if niveau:
+            qs = qs.filter(niveau=niveau)
+        if annee:
+            qs = qs.filter(annee_academique=annee)
+        
+        return qs
+
+
+# ===== INSCRIPTION =====
+class InscriptionViewSet(viewsets.ModelViewSet):
+    queryset = Inscription.objects.select_related('etudiant', 'classe').all()
+    serializer_class = InscriptionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [IsAdminOrSuperAdmin()]
+        return [permissions.IsAuthenticated()]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        classe = self.request.query_params.get('classe')
+        etudiant = self.request.query_params.get('etudiant')
+        statut = self.request.query_params.get('statut')
+        
+        if classe:
+            qs = qs.filter(classe_id=classe)
+        if etudiant:
+            qs = qs.filter(etudiant_id=etudiant)
+        if statut:
+            qs = qs.filter(statut=statut)
+        
+        return qs
+
+
+# ===== ENSEIGNEMENT MATIÈRE =====
+class EnseignementMatiereViewSet(viewsets.ModelViewSet):
+    queryset = EnseignementMatiere.objects.select_related(
+        'enseignant', 'matiere', 'classe', 'classe__filiere'
+    ).all()
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [IsAdminOrSuperAdmin()]
+        return [permissions.IsAuthenticated()]
+    
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return EnseignementMatiereCreateSerializer
+        return EnseignementMatiereSerializer
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        enseignant = self.request.query_params.get('enseignant')
+        matiere = self.request.query_params.get('matiere')
+        classe = self.request.query_params.get('classe')
+        annee = self.request.query_params.get('annee_academique')
+        
+        if enseignant:
+            qs = qs.filter(enseignant_id=enseignant)
+        if matiere:
+            qs = qs.filter(matiere_id=matiere)
+        if classe:
+            qs = qs.filter(classe_id=classe)
+        if annee:
+            qs = qs.filter(annee_academique=annee)
+        
+        # Enseignant voit seulement ses assignations
+        if self.request.user.role in ['professeur', 'enseignant']:
+            try:
+                qs = qs.filter(enseignant=self.request.user.enseignant)
+            except:
+                qs = qs.none()
+        
+        return qs
+    
+    @action(detail=False, methods=['get'])
+    def par_enseignant(self, request):
+        """Liste tous les enseignants avec leurs assignations"""
+        enseignants = Enseignant.objects.all()
+        result = []
+        
+        for ens in enseignants:
+            enseignements = self.get_queryset().filter(enseignant=ens)
+            result.append({
+                'enseignant': EnseignantSerializer(ens).data,
+                'enseignements': EnseignementMatiereSerializer(enseignements, many=True).data,
+                'nb_classes': enseignements.values('classe').distinct().count(),
+                'nb_matieres': enseignements.values('matiere').distinct().count(),
+            })
+        
+        return Response(result)

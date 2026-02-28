@@ -1,0 +1,528 @@
+/* ========================================
+   UNIERP BF - THÈME LIGHT PREMIUM
+   Design doux et moderne avec animations
+   ======================================== */
+
+:root {
+    /* Couleurs principales */
+    --primary: #4F46E5;
+    --primary-light: #6366F1;
+    --primary-dark: #4338CA;
+    --secondary: #10B981;
+    --accent: #F59E0B;
+    
+    /* Couleurs de fond */
+    --bg-main: #F9FAFB;
+    --bg-card: #FFFFFF;
+    --bg-sidebar: #FFFFFF;
+    --bg-hover: #F3F4F6;
+    --bg-active: #EEF2FF;
+    
+    /* Couleurs de texte */
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+    --text-muted: #9CA3AF;
+    
+    /* Bordures */
+    --border-color: #E5E7EB;
+    --border-light: #F3F4F6;
+    
+    /* Ombres */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    /* Couleurs de statut */
+    --success: #10B981;
+    --success-bg: #D1FAE5;
+    --warning: #F59E0B;
+    --warning-bg: #FEF3C7;
+    --danger: #EF4444;
+    --danger-bg: #FEE2E2;
+    --info: #3B82F6;
+    --info-bg: #DBEAFE;
+}
+
+/* ========================================
+   STYLES GÉNÉRAUX
+   ======================================== */
+
+body.light-theme {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ========================================
+   SIDEBAR
+   ======================================== */
+
+.light-theme .sidebar-ultra {
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.light-theme .sidebar-header {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.light-theme .logo-icon-ultra {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+.light-theme .logo-name-ultra {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.light-theme .logo-tag-ultra {
+    color: var(--text-secondary);
+}
+
+.light-theme .nav-label-ultra {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.light-theme .nav-item-ultra {
+    color: var(--text-secondary);
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light-theme .nav-item-ultra:hover {
+    background: var(--bg-hover);
+    color: var(--primary);
+    transform: translateX(4px);
+}
+
+.light-theme .nav-item-ultra.active {
+    background: var(--bg-active);
+    color: var(--primary);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+}
+
+.light-theme .nav-item-ultra.active .nav-indicator {
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.light-theme .nav-icon-ultra {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.light-theme .nav-item-ultra:hover .nav-icon-ultra {
+    transform: scale(1.1);
+}
+
+.light-theme .nav-badge-ultra {
+    background: var(--danger);
+    color: white;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* ========================================
+   TOPBAR
+   ======================================== */
+
+.light-theme .topbar-ultra {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.light-theme .search-ultra input {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.light-theme .search-ultra input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.light-theme .topbar-icon-ultra {
+    background: var(--bg-main);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
+}
+
+.light-theme .topbar-icon-ultra:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.light-theme .user-info-ultra .user-name-ultra {
+    color: var(--text-primary);
+}
+
+.light-theme .user-info-ultra .user-role-ultra {
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   CARTES
+   ======================================== */
+
+.light-theme .card-ultra {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light-theme .card-ultra:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.light-theme .card-header-ultra {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.light-theme .card-title-ultra {
+    color: var(--text-primary);
+}
+
+.light-theme .card-subtitle-ultra {
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   STATISTIQUES
+   ======================================== */
+
+.light-theme .stat-card-ultra {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+.light-theme .stat-card-ultra:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-xl);
+}
+
+.light-theme .stat-icon-ultra {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.light-theme .stat-value-ultra {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.light-theme .stat-label-ultra {
+    color: var(--text-secondary);
+}
+
+.light-theme .stat-trend-ultra {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.light-theme .stat-trend-ultra.up {
+    color: var(--success);
+}
+
+.light-theme .stat-trend-ultra.down {
+    color: var(--danger);
+}
+
+/* ========================================
+   TABLEAUX
+   ======================================== */
+
+.light-theme .table-ultra {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+}
+
+.light-theme .table-ultra thead {
+    background: var(--bg-main);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.light-theme .table-ultra th {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.light-theme .table-ultra tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: all 0.2s ease;
+}
+
+.light-theme .table-ultra tbody tr:hover {
+    background: var(--bg-hover);
+    transform: scale(1.01);
+}
+
+.light-theme .table-ultra td {
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   BADGES
+   ======================================== */
+
+.light-theme .badge-ultra {
+    font-weight: 500;
+    box-shadow: var(--shadow-sm);
+}
+
+.light-theme .badge-ultra.success {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.light-theme .badge-ultra.warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+}
+
+.light-theme .badge-ultra.danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.light-theme .badge-ultra.info {
+    background: var(--info-bg);
+    color: var(--info);
+}
+
+/* ========================================
+   BOUTONS
+   ======================================== */
+
+.light-theme .btn-ultra {
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
+}
+
+.light-theme .btn-ultra:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.light-theme .btn-ultra:active {
+    transform: translateY(0);
+}
+
+.light-theme .btn-primary-ultra {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+}
+
+.light-theme .btn-primary-ultra:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+}
+
+.light-theme .btn-secondary-ultra {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.light-theme .btn-secondary-ultra:hover {
+    background: var(--bg-hover);
+    border-color: var(--primary);
+}
+
+.light-theme .btn-success-ultra {
+    background: var(--success);
+    color: white;
+}
+
+.light-theme .btn-danger-ultra {
+    background: var(--danger);
+    color: white;
+}
+
+/* ========================================
+   FORMULAIRES
+   ======================================== */
+
+.light-theme .form-control-ultra {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.light-theme .form-control-ultra:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    transform: translateY(-1px);
+}
+
+.light-theme .form-label-ultra {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* ========================================
+   MODALES
+   ======================================== */
+
+.light-theme .modal-ultra {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.light-theme .modal-content-ultra {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-xl);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.light-theme .modal-header-ultra {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.light-theme .modal-title-ultra {
+    color: var(--text-primary);
+}
+
+/* ========================================
+   TOASTS
+   ======================================== */
+
+.light-theme .toast-ultra {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    animation: toastSlideIn 0.3s ease-out;
+}
+
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.light-theme .toast-ultra.success {
+    border-left: 4px solid var(--success);
+}
+
+.light-theme .toast-ultra.danger {
+    border-left: 4px solid var(--danger);
+}
+
+.light-theme .toast-ultra.warning {
+    border-left: 4px solid var(--warning);
+}
+
+.light-theme .toast-ultra.info {
+    border-left: 4px solid var(--info);
+}
+
+/* ========================================
+   SCROLLBAR
+   ======================================== */
+
+.light-theme ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.light-theme ::-webkit-scrollbar-track {
+    background: var(--bg-main);
+}
+
+.light-theme ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* ========================================
+   ANIMATIONS SPÉCIALES
+   ======================================== */
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.light-theme .loading-shimmer {
+    background: linear-gradient(
+        90deg,
+        var(--bg-main) 0%,
+        var(--bg-hover) 50%,
+        var(--bg-main) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .light-theme .stat-card-ultra {
+        margin-bottom: 1rem;
+    }
+    
+    .light-theme .card-ultra {
+        margin-bottom: 1rem;
+    }
+}

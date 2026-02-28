@@ -603,3 +603,69 @@ class StatistiquesFinancieresSerializer(serializers.Serializer):
     nb_etudiants_a_jour = serializers.IntegerField()
     nb_etudiants_impayes = serializers.IntegerField()
     statistiques_par_filiere = serializers.ListField()
+
+
+# ===== CLASSE =====
+class ClasseSerializer(serializers.ModelSerializer):
+    filiere_nom = serializers.CharField(source='filiere.nom', read_only=True)
+    filiere_code = serializers.CharField(source='filiere.code', read_only=True)
+    effectif_actuel = serializers.ReadOnlyField()
+    
+    class Meta:
+        model = Classe
+        fields = '__all__'
+
+
+# ===== INSCRIPTION =====
+class InscriptionSerializer(serializers.ModelSerializer):
+    etudiant_nom = serializers.SerializerMethodField()
+    etudiant_matricule = serializers.CharField(source='etudiant.matricule', read_only=True)
+    classe_nom = serializers.CharField(source='classe.nom', read_only=True)
+    classe_code = serializers.CharField(source='classe.code', read_only=True)
+    
+    class Meta:
+        model = Inscription
+        fields = '__all__'
+    
+    def get_etudiant_nom(self, obj):
+        return obj.etudiant.get_full_name()
+
+
+# ===== ENSEIGNEMENT MATIÈRE =====
+class EnseignementMatiereSerializer(serializers.ModelSerializer):
+    enseignant_nom = serializers.SerializerMethodField()
+    enseignant_email = serializers.EmailField(source='enseignant.email', read_only=True)
+    matiere_nom = serializers.CharField(source='matiere.nom', read_only=True)
+    matiere_code = serializers.CharField(source='matiere.code', read_only=True)
+    classe_nom = serializers.CharField(source='classe.nom', read_only=True)
+    classe_code = serializers.CharField(source='classe.code', read_only=True)
+    filiere_nom = serializers.CharField(source='classe.filiere.nom', read_only=True)
+    
+    class Meta:
+        model = EnseignementMatiere
+        fields = '__all__'
+    
+    def get_enseignant_nom(self, obj):
+        return obj.enseignant.get_full_name()
+
+
+class EnseignementMatiereCreateSerializer(serializers.ModelSerializer):
+    """Serializer pour créer une assignation enseignant-matière-classe"""
+    
+    class Meta:
+        model = EnseignementMatiere
+        fields = '__all__'
+    
+    def validate(self, data):
+        # Vérifier que l'enseignant n'est pas déjà assigné à cette matière/classe
+        if EnseignementMatiere.objects.filter(
+            enseignant=data['enseignant'],
+            matiere=data['matiere'],
+            classe=data['classe'],
+            annee_academique=data['annee_academique'],
+            semestre=data['semestre']
+        ).exists():
+            raise serializers.ValidationError(
+                "Cet enseignant est déjà assigné à cette matière pour cette classe."
+            )
+        return data

@@ -14,7 +14,8 @@ from .views import (
     MembreBureauViewSet, PublicationViewSet, SondageViewSet,
     QuestionSondageViewSet, OptionQuestionViewSet, ReponseSondageViewSet,
     EvenementViewSet, InscriptionEvenementViewSet, MessageBureauViewSet,
-    DemandeAdministrativeViewSet, ObjetPerduViewSet, DashboardBureauView
+    DemandeAdministrativeViewSet, ObjetPerduViewSet, DashboardBureauView,
+    ClasseViewSet, InscriptionViewSet, EnseignementMatiereViewSet
 )
 from .views_finances import (
     GestionFinanciereViewSet, RappelPaiementViewSet, LettreRappelViewSet
@@ -36,6 +37,10 @@ router.register(r'emplois-du-temps', EmploiDuTempsViewSet, basename='emploi')
 router.register(r'presences', PresenceViewSet, basename='presence')
 router.register(r'supports', SupportCoursViewSet, basename='support')
 router.register(r'notifications', NotificationViewSet, basename='notification')
+# Classes et Enseignements
+router.register(r'classes', ClasseViewSet, basename='classe')
+router.register(r'inscriptions', InscriptionViewSet, basename='inscription')
+router.register(r'enseignements', EnseignementMatiereViewSet, basename='enseignement')
 # Bureau Exécutif
 router.register(r'membres-bureau', MembreBureauViewSet, basename='membre-bureau')
 router.register(r'publications', PublicationViewSet, basename='publication')
