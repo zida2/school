@@ -20,7 +20,7 @@ from .models import (
     Evaluation, NoteEvaluation, MembreBureau, Publication,
     Sondage, QuestionSondage, OptionQuestion, ReponseSondage,
     Evenement, InscriptionEvenement, MessageBureau,
-    DemandeAdministrative, ObjetPerdu
+    DemandeAdministrative, ObjetPerdu, Classe, Inscription, EnseignementMatiere
 )
 from .serializers import (
     LoginSerializer, UtilisateurSerializer, ChangePasswordSerializer,
@@ -33,7 +33,9 @@ from .serializers import (
     PublicationSerializer, SondageSerializer, QuestionSondageSerializer,
     OptionQuestionSerializer, ReponseSondageSerializer, EvenementSerializer,
     InscriptionEvenementSerializer, MessageBureauSerializer,
-    DemandeAdministrativeSerializer, ObjetPerduSerializer
+    DemandeAdministrativeSerializer, ObjetPerduSerializer,
+    ClasseSerializer, InscriptionSerializer, EnseignementMatiereSerializer,
+    EnseignementMatiereCreateSerializer
 )
 from .permissions import IsSuperAdmin, IsAdminOrSuperAdmin, IsEnseignant, IsEtudiant
 

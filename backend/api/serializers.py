@@ -8,7 +8,8 @@ from .models import (
     Evaluation, NoteEvaluation, MembreBureau, Publication,
     Sondage, QuestionSondage, OptionQuestion, ReponseSondage,
     Evenement, InscriptionEvenement, MessageBureau,
-    DemandeAdministrative, ObjetPerdu, RappelPaiement, LettreRappel
+    DemandeAdministrative, ObjetPerdu, RappelPaiement, LettreRappel,
+    Classe, Inscription, EnseignementMatiere
 )
 
 
