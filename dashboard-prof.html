@@ -312,13 +312,101 @@
                     </div>
                 </div>
 
+                <!-- PAGE: PRÉSENCES -->
                 <div class="page-ultra" id="page-presences" style="display:none">
                     <div class="page-header-ultra">
-                        <h1 class="page-title-ultra">Gestion des présences</h1>
+                        <div>
+                            <h1 class="page-title-ultra">Gestion des Présences</h1>
+                            <p class="page-subtitle-ultra">Enregistrez les présences de vos étudiants</p>
+                        </div>
                     </div>
-                    <div class="card-ultra">
+
+                    <!-- Filtres -->
+                    <div class="card-ultra" style="margin-bottom:24px">
                         <div class="card-body-ultra">
-                            <p style="color:rgba(255,255,255,0.6)">Suivi des présences étudiants</p>
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px">
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Filière *</label>
+                                    <select id="selectFilierePresence" class="form-input-ultra" onchange="chargerMatieresPresence()" style="padding:12px 16px">
+                                        <option value="">Sélectionner une filière...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Matière *</label>
+                                    <select id="selectMatierePresence" class="form-input-ultra" onchange="chargerEtudiantsPresence()" style="padding:12px 16px">
+                                        <option value="">Sélectionner une matière...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Date du cours *</label>
+                                    <input type="date" id="inputDatePresence" class="form-input-ultra" onchange="chargerEtudiantsPresence()" style="padding:12px 16px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenu principal (visible après sélection) -->
+                    <div id="contenuPresences" style="display:none">
+                        
+                        <!-- Statistiques -->
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                            <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px">
+                                <div style="font-size:28px;font-weight:700;color:#10b981" id="statNbEtudiantsPresence">0</div>
+                                <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Étudiants</div>
+                            </div>
+                            <div style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:12px;padding:20px">
+                                <div style="font-size:28px;font-weight:700;color:#6366f1" id="statPresents">0</div>
+                                <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Présents</div>
+                            </div>
+                            <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:20px">
+                                <div style="font-size:28px;font-weight:700;color:#ef4444" id="statAbsents">0</div>
+                                <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Absents</div>
+                            </div>
+                            <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:20px">
+                                <div style="font-size:28px;font-weight:700;color:#f59e0b" id="statTauxPresence">0%</div>
+                                <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">Taux de présence</div>
+                            </div>
+                        </div>
+
+                        <!-- Tableau de présences -->
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">✅ Feuille de présence</h3>
+                                <div style="display:flex;gap:12px">
+                                    <button class="btn-ultra" onclick="marquerTousPresents()" style="background: linear-gradient(135deg, #10b981, #059669)">
+                                        ✅ Tous présents
+                                    </button>
+                                    <button class="btn-ultra" onclick="marquerTousAbsents()" style="background: linear-gradient(135deg, #ef4444, #dc2626)">
+                                        ❌ Tous absents
+                                    </button>
+                                    <button class="btn-ultra btn-primary-ultra" onclick="sauvegarderPresences()" style="background: linear-gradient(135deg, #6366f1, #4f46e5)">
+                                        💾 Sauvegarder
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body-ultra">
+                                <div style="overflow-x:auto">
+                                    <table class="table-ultra">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:60px;text-align:center">#</th>
+                                                <th style="width:150px">Matricule</th>
+                                                <th>Nom complet</th>
+                                                <th style="width:120px;text-align:center">Présence</th>
+                                                <th style="width:120px;text-align:center">Justifié</th>
+                                                <th style="width:250px">Observation</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbodyPresences">
+                                            <tr>
+                                                <td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">
+                                                    Sélectionnez une filière, une matière et une date pour voir la liste des étudiants
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2021,6 +2109,282 @@
                 console.error('Erreur chargement filières:', err);
             }
         }
+
+        // ===== GESTION DES PRÉSENCES =====
+        
+        let matiereSelectionneePresence = null;
+        let etudiantsPresence = [];
+        let presencesEnCours = {}; // {etudiantId: {present, justifie, observation}}
+
+        // Charger les filières pour les présences
+        async function chargerFilieresPresence() {
+            try {
+                const filieres = await API.getFilieres();
+                const select = document.getElementById('selectFilierePresence');
+                select.innerHTML = '<option value="">Sélectionner une filière...</option>';
+                filieres.forEach(f => {
+                    select.innerHTML += `<option value="${f.id}">${f.nom} - ${f.code}</option>`;
+                });
+                
+                // Définir la date d'aujourd'hui par défaut
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('inputDatePresence').value = today;
+            } catch (err) {
+                console.error('Erreur chargement filières:', err);
+                showToast('Erreur lors du chargement des filières', 'error');
+            }
+        }
+
+        // Charger les matières d'une filière pour les présences
+        async function chargerMatieresPresence() {
+            const filiereId = document.getElementById('selectFilierePresence').value;
+            const selectMatiere = document.getElementById('selectMatierePresence');
+            
+            if (!filiereId) {
+                selectMatiere.innerHTML = '<option value="">Sélectionner une matière...</option>';
+                document.getElementById('contenuPresences').style.display = 'none';
+                return;
+            }
+
+            try {
+                const me = await API.getMe();
+                const dashboard = await API.getDashboardProf();
+                
+                // Filtrer les matières de la filière sélectionnée
+                const matieres = dashboard.matieres.filter(m => m.filiere === parseInt(filiereId));
+                
+                selectMatiere.innerHTML = '<option value="">Sélectionner une matière...</option>';
+                matieres.forEach(m => {
+                    selectMatiere.innerHTML += `<option value="${m.id}">${m.nom} (${m.code})</option>`;
+                });
+            } catch (err) {
+                console.error('Erreur chargement matières:', err);
+                showToast('Erreur lors du chargement des matières', 'error');
+            }
+        }
+
+        // Charger les étudiants pour la feuille de présence
+        async function chargerEtudiantsPresence() {
+            const matiereId = document.getElementById('selectMatierePresence').value;
+            const dateCours = document.getElementById('inputDatePresence').value;
+            
+            if (!matiereId || !dateCours) {
+                document.getElementById('contenuPresences').style.display = 'none';
+                return;
+            }
+
+            try {
+                matiereSelectionneePresence = parseInt(matiereId);
+                
+                // Récupérer les notes pour avoir la liste des étudiants
+                const notes = await API.getNotes({ matiere: matiereId });
+                
+                // Extraire les étudiants uniques
+                const etudiantsMap = new Map();
+                notes.forEach(note => {
+                    if (!etudiantsMap.has(note.etudiant)) {
+                        etudiantsMap.set(note.etudiant, {
+                            id: note.etudiant,
+                            matricule: note.etudiant_matricule || 'N/A',
+                            nom: note.etudiant_nom || 'N/A'
+                        });
+                    }
+                });
+                
+                etudiantsPresence = Array.from(etudiantsMap.values());
+                
+                // Charger les présences existantes pour cette date
+                // TODO: Implémenter l'API pour récupérer les présences existantes
+                // const presencesExistantes = await API.getPresences({ matiere: matiereId, date: dateCours });
+                
+                // Afficher le contenu
+                document.getElementById('contenuPresences').style.display = 'block';
+                afficherFeuillePresence();
+                
+            } catch (err) {
+                console.error('Erreur chargement étudiants:', err);
+                showToast('Erreur lors du chargement des étudiants', 'error');
+            }
+        }
+
+        // Afficher la feuille de présence
+        function afficherFeuillePresence() {
+            const tbody = document.getElementById('tbodyPresences');
+            
+            if (etudiantsPresence.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">
+                            Aucun étudiant trouvé pour cette matière
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = etudiantsPresence.map((e, index) => {
+                const presence = presencesEnCours[e.id] || { present: false, justifie: false, observation: '' };
+                
+                return `
+                    <tr data-etudiant-id="${e.id}">
+                        <td style="text-align:center;color:rgba(255,255,255,0.5)">${index + 1}</td>
+                        <td style="font-weight:600">${e.matricule}</td>
+                        <td>${e.nom}</td>
+                        <td style="text-align:center">
+                            <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer">
+                                <input type="checkbox" 
+                                    ${presence.present ? 'checked' : ''}
+                                    onchange="togglePresence(${e.id}, this.checked)"
+                                    style="width:20px;height:20px;cursor:pointer">
+                                <span style="font-size:13px">${presence.present ? '✅ Présent' : '❌ Absent'}</span>
+                            </label>
+                        </td>
+                        <td style="text-align:center">
+                            <input type="checkbox" 
+                                ${presence.justifie ? 'checked' : ''}
+                                ${presence.present ? 'disabled' : ''}
+                                onchange="toggleJustifie(${e.id}, this.checked)"
+                                style="width:20px;height:20px;cursor:pointer">
+                        </td>
+                        <td>
+                            <input type="text" 
+                                class="form-input-ultra" 
+                                style="padding:8px;font-size:12px;background:rgba(255,255,255,0.05)"
+                                value="${presence.observation}"
+                                placeholder="Observation..."
+                                onchange="updateObservation(${e.id}, this.value)">
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Mettre à jour les statistiques
+            updateStatistiquesPresence();
+        }
+
+        // Basculer la présence d'un étudiant
+        function togglePresence(etudiantId, present) {
+            if (!presencesEnCours[etudiantId]) {
+                presencesEnCours[etudiantId] = { present: false, justifie: false, observation: '' };
+            }
+            presencesEnCours[etudiantId].present = present;
+            
+            // Si présent, décocher "justifié"
+            if (present) {
+                presencesEnCours[etudiantId].justifie = false;
+            }
+            
+            afficherFeuillePresence();
+        }
+
+        // Basculer le justificatif d'absence
+        function toggleJustifie(etudiantId, justifie) {
+            if (!presencesEnCours[etudiantId]) {
+                presencesEnCours[etudiantId] = { present: false, justifie: false, observation: '' };
+            }
+            presencesEnCours[etudiantId].justifie = justifie;
+            updateStatistiquesPresence();
+        }
+
+        // Mettre à jour l'observation
+        function updateObservation(etudiantId, observation) {
+            if (!presencesEnCours[etudiantId]) {
+                presencesEnCours[etudiantId] = { present: false, justifie: false, observation: '' };
+            }
+            presencesEnCours[etudiantId].observation = observation;
+        }
+
+        // Marquer tous les étudiants présents
+        function marquerTousPresents() {
+            etudiantsPresence.forEach(e => {
+                presencesEnCours[e.id] = { present: true, justifie: false, observation: '' };
+            });
+            afficherFeuillePresence();
+            showToast('Tous les étudiants marqués présents', 'success');
+        }
+
+        // Marquer tous les étudiants absents
+        function marquerTousAbsents() {
+            etudiantsPresence.forEach(e => {
+                presencesEnCours[e.id] = { present: false, justifie: false, observation: '' };
+            });
+            afficherFeuillePresence();
+            showToast('Tous les étudiants marqués absents', 'warning');
+        }
+
+        // Mettre à jour les statistiques de présence
+        function updateStatistiquesPresence() {
+            const total = etudiantsPresence.length;
+            let presents = 0;
+            let absents = 0;
+
+            etudiantsPresence.forEach(e => {
+                const presence = presencesEnCours[e.id];
+                if (presence && presence.present) {
+                    presents++;
+                } else {
+                    absents++;
+                }
+            });
+
+            const tauxPresence = total > 0 ? Math.round((presents / total) * 100) : 0;
+
+            document.getElementById('statNbEtudiantsPresence').textContent = total;
+            document.getElementById('statPresents').textContent = presents;
+            document.getElementById('statAbsents').textContent = absents;
+            document.getElementById('statTauxPresence').textContent = tauxPresence + '%';
+        }
+
+        // Sauvegarder les présences
+        async function sauvegarderPresences() {
+            const matiereId = matiereSelectionneePresence;
+            const dateCours = document.getElementById('inputDatePresence').value;
+            
+            if (!matiereId || !dateCours) {
+                showToast('Veuillez sélectionner une matière et une date', 'warning');
+                return;
+            }
+
+            try {
+                // Préparer les données
+                const presencesData = etudiantsPresence.map(e => {
+                    const presence = presencesEnCours[e.id] || { present: false, justifie: false, observation: '' };
+                    return {
+                        etudiant_id: e.id,
+                        present: presence.present,
+                        justifie: presence.justifie,
+                        observation: presence.observation
+                    };
+                });
+
+                // TODO: Implémenter l'endpoint API pour sauvegarder les présences
+                // await API.savePresences({
+                //     matiere_id: matiereId,
+                //     date_cours: dateCours,
+                //     presences: presencesData
+                // });
+
+                console.log('Présences à sauvegarder:', {
+                    matiere_id: matiereId,
+                    date_cours: dateCours,
+                    presences: presencesData
+                });
+
+                showToast('Présences sauvegardées avec succès!', 'success');
+                
+            } catch (err) {
+                console.error('Erreur sauvegarde présences:', err);
+                showToast('Erreur lors de la sauvegarde des présences', 'error');
+            }
+        }
+
+        // Initialiser les présences au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            const pagePresences = document.getElementById('page-presences');
+            if (pagePresences) {
+                chargerFilieresPresence();
+            }
+        });
     </script>
 </body>
 </html>
