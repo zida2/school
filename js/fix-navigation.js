@@ -270,33 +270,6 @@ window.showToast = function(msg, type = 'info', duration = 3500) {
     }, duration);
 };
 
-// Vérifier l'authentification
-window.requireAuth = function(allowedRoles = []) {
-    const token = localStorage.getItem('erp_access_token');
-    const userStr = localStorage.getItem('erp_user');
-    
-    if (!token || !userStr) {
-        window.location.href = 'index.html';
-        return false;
-    }
-    
-    try {
-        const user = JSON.parse(userStr);
-        
-        if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
-            showToast('Accès non autorisé', 'danger');
-            window.location.href = 'index.html';
-            return false;
-        }
-        
-        return user;
-    } catch (e) {
-        console.error('Erreur parsing user:', e);
-        window.location.href = 'index.html';
-        return false;
-    }
-};
-
 // Fonction d'authentification
 window.requireAuth = function(allowedRoles = []) {
     console.log('🔐 requireAuth appelé avec rôles:', allowedRoles);
@@ -318,7 +291,8 @@ window.requireAuth = function(allowedRoles = []) {
         const isAllowed = allowedRoles.some(role => {
             if (role === 'admin') return userRole === 'administrateur' || userRole === 'admin';
             if (role === 'superadmin') return userRole === 'superadmin';
-            if (role === 'professeur') return userRole === 'professeur';
+            if (role === 'professeur') return userRole === 'professeur' || userRole === 'enseignant';
+            if (role === 'enseignant') return userRole === 'enseignant' || userRole === 'professeur';
             if (role === 'etudiant') return userRole === 'etudiant';
             if (role === 'bureau_executif') return userRole === 'bureau_executif';
             return userRole === role;

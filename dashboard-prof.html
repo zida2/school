@@ -1120,10 +1120,10 @@
 
                 tbody.innerHTML = etudiants.map((e, index) => {
                     const note = notesMap[e.id];
-                    const noteCC = note?.note_cc || '';
-                    const noteExamen = note?.note_examen || '';
+                    const noteCC = note && note.note_cc !== undefined ? note.note_cc : '';
+                    const noteExamen = note && note.note_examen !== undefined ? note.note_examen : '';
                     const moyenne = calculerMoyenne(noteCC, noteExamen);
-                    const noteId = note?.id || null;
+                    const noteId = note && note.id ? note.id : null;
 
                     return `
                         <tr data-etudiant-id="${e.id}" data-note-id="${noteId || ''}">
@@ -1579,10 +1579,10 @@
                 const tbody = document.getElementById('tbodyNotesEval');
                 tbody.innerHTML = etudiantsMatiere.map((e, index) => {
                     const note = notesMap[e.id];
-                    const noteValue = note?.note || '';
-                    const absent = note?.absent || false;
-                    const commentaire = note?.commentaire || '';
-                    const noteId = note?.id || null;
+                    const noteValue = note && note.note !== undefined ? note.note : '';
+                    const absent = note && note.absent !== undefined ? note.absent : false;
+                    const commentaire = note && note.commentaire !== undefined ? note.commentaire : '';
+                    const noteId = note && note.id ? note.id : null;
 
                     return `
                         <tr data-etudiant-id="${e.id}" data-note-id="${noteId || ''}">
@@ -1716,7 +1716,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const user = requireAuth(['professeur']);
+            const user = requireAuth(['professeur', 'enseignant']);
             if (user) {
                 chargerMatieres();
                 chargerSupports();
@@ -1741,14 +1741,14 @@
                                     step="0.5"
                                     value="${noteValue}"
                                     ${absent ? 'disabled' : ''}
-                                    onchange="sauvegarderNote(${e.id}, this.value, ${noteId}, ${absent})"
+                                    onchange="sauvegarderNote(${e.id}, this.value, ${noteId || 'null'}, ${absent})"
                                     placeholder="Note">
                             </td>
                             <td>
                                 <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
                                     <input type="checkbox" 
                                         ${absent ? 'checked' : ''}
-                                        onchange="toggleAbsent(${e.id}, this.checked, ${noteId})">
+                                        onchange="toggleAbsent(${e.id}, this.checked, ${noteId || 'null'})">
                                     <span style="font-size:13px">${absent ? 'Absent' : 'Présent'}</span>
                                 </label>
                             </td>
@@ -1757,7 +1757,7 @@
                                     class="form-input-ultra" 
                                     style="width:200px;padding:8px;font-size:13px" 
                                     value="${commentaire}"
-                                    onchange="sauvegarderCommentaire(${e.id}, this.value, ${noteId})"
+                                    onchange="sauvegarderCommentaire(${e.id}, this.value, ${noteId || 'null'})"
                                     placeholder="Commentaire...">
                             </td>
                         </tr>
@@ -1872,11 +1872,11 @@
                 
                 return `
                     <tr>
-                        <td>${r.note?.etudiant?.nom || 'N/A'} ${r.note?.etudiant?.prenom || ''}</td>
-                        <td>${r.note?.matiere?.nom || 'N/A'}</td>
-                        <td>${r.note?.note_cc !== null ? r.note.note_cc.toFixed(2) : '-'}</td>
-                        <td>${r.note?.note_examen !== null ? r.note.note_examen.toFixed(2) : '-'}</td>
-                        <td><strong>${r.note?.moyenne !== null ? r.note.moyenne.toFixed(2) : '-'}</strong></td>
+                        <td>${r.note && r.note.etudiant && r.note.etudiant.nom ? r.note.etudiant.nom : 'N/A'} ${r.note && r.note.etudiant && r.note.etudiant.prenom ? r.note.etudiant.prenom : ''}</td>
+                        <td>${r.note && r.note.matiere && r.note.matiere.nom ? r.note.matiere.nom : 'N/A'}</td>
+                        <td>${r.note && r.note.note_cc !== null && r.note.note_cc !== undefined ? r.note.note_cc.toFixed(2) : '-'}</td>
+                        <td>${r.note && r.note.note_examen !== null && r.note.note_examen !== undefined ? r.note.note_examen.toFixed(2) : '-'}</td>
+                        <td><strong>${r.note && r.note.moyenne !== null && r.note.moyenne !== undefined ? r.note.moyenne.toFixed(2) : '-'}</strong></td>
                         <td>${new Date(r.date_creation).toLocaleDateString('fr-FR')}</td>
                         <td><span class="badge-ultra ${badgeClass}">${r.statut}</span></td>
                         <td>
@@ -1913,17 +1913,17 @@
             const details = document.getElementById('detailsReclamationProf');
             details.innerHTML = `
                 <div class="detail-row">
-                    <strong>Étudiant:</strong> ${reclamation.note?.etudiant?.nom || 'N/A'} ${reclamation.note?.etudiant?.prenom || ''}
+                    <strong>Étudiant:</strong> ${reclamation.note && reclamation.note.etudiant && reclamation.note.etudiant.nom ? reclamation.note.etudiant.nom : 'N/A'} ${reclamation.note && reclamation.note.etudiant && reclamation.note.etudiant.prenom ? reclamation.note.etudiant.prenom : ''}
                 </div>
                 <div class="detail-row">
-                    <strong>Matière:</strong> ${reclamation.note?.matiere?.nom || 'N/A'}
+                    <strong>Matière:</strong> ${reclamation.note && reclamation.note.matiere && reclamation.note.matiere.nom ? reclamation.note.matiere.nom : 'N/A'}
                 </div>
                 <div class="detail-row">
                     <strong>Notes actuelles:</strong><br>
                     <div style="margin-top:10px;padding:15px;background:rgba(255,255,255,0.05);border-radius:8px;">
-                        CC: ${reclamation.note?.note_cc !== null ? reclamation.note.note_cc.toFixed(2) : '-'}/20<br>
-                        Examen: ${reclamation.note?.note_examen !== null ? reclamation.note.note_examen.toFixed(2) : '-'}/20<br>
-                        <strong>Moyenne: ${reclamation.note?.moyenne !== null ? reclamation.note.moyenne.toFixed(2) : '-'}/20</strong>
+                        CC: ${reclamation.note && reclamation.note.note_cc !== null && reclamation.note.note_cc !== undefined ? reclamation.note.note_cc.toFixed(2) : '-'}/20<br>
+                        Examen: ${reclamation.note && reclamation.note.note_examen !== null && reclamation.note.note_examen !== undefined ? reclamation.note.note_examen.toFixed(2) : '-'}/20<br>
+                        <strong>Moyenne: ${reclamation.note && reclamation.note.moyenne !== null && reclamation.note.moyenne !== undefined ? reclamation.note.moyenne.toFixed(2) : '-'}/20</strong>
                     </div>
                 </div>
                 <div class="detail-row">
@@ -1952,17 +1952,17 @@
             reclamationSelectionnee = reclamation;
             
             document.getElementById('reclamationInfo').innerHTML = `
-                <strong>${reclamation.note?.etudiant?.nom || 'N/A'} ${reclamation.note?.etudiant?.prenom || ''}</strong> - ${reclamation.note?.matiere?.nom || 'N/A'}<br>
+                <strong>${reclamation.note && reclamation.note.etudiant && reclamation.note.etudiant.nom ? reclamation.note.etudiant.nom : 'N/A'} ${reclamation.note && reclamation.note.etudiant && reclamation.note.etudiant.prenom ? reclamation.note.etudiant.prenom : ''}</strong> - ${reclamation.note && reclamation.note.matiere && reclamation.note.matiere.nom ? reclamation.note.matiere.nom : 'N/A'}<br>
                 <span style="font-size:13px;color:rgba(255,255,255,0.7)">
-                    Note actuelle: ${reclamation.note?.moyenne !== null ? reclamation.note.moyenne.toFixed(2) : '-'}/20
+                    Note actuelle: ${reclamation.note && reclamation.note.moyenne !== null && reclamation.note.moyenne !== undefined ? reclamation.note.moyenne.toFixed(2) : '-'}/20
                 </span>
             `;
             
             document.getElementById('reclamationDescription').textContent = reclamation.description || 'Aucune description';
             
             // Pré-remplir les notes actuelles
-            document.getElementById('nouvelleNoteCC').value = reclamation.note?.note_cc || '';
-            document.getElementById('nouvelleNoteExamen').value = reclamation.note?.note_examen || '';
+            document.getElementById('nouvelleNoteCC').value = reclamation.note && reclamation.note.note_cc !== undefined ? reclamation.note.note_cc : '';
+            document.getElementById('nouvelleNoteExamen').value = reclamation.note && reclamation.note.note_examen !== undefined ? reclamation.note.note_examen : '';
             
             document.getElementById('formTraiterReclamation').reset();
             document.getElementById('decisionReclamation').value = '';
