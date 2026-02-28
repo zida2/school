@@ -236,7 +236,13 @@ class UniversiteViewSet(viewsets.ModelViewSet):
 class AnneeAcademiqueViewSet(viewsets.ModelViewSet):
     queryset = AnneeAcademique.objects.all()
     serializer_class = AnneeAcademiqueSerializer
-    permission_classes = [IsAdminOrSuperAdmin]
+    
+    def get_permissions(self):
+        # Lecture autorisée pour tous les utilisateurs authentifiés
+        if self.action in ['list', 'retrieve']:
+            return [permissions.IsAuthenticated()]
+        # Modification réservée aux admins
+        return [IsAdminOrSuperAdmin()]
 
     @action(detail=True, methods=['post'])
     def activer(self, request, pk=None):
