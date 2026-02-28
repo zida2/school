@@ -963,3 +963,58 @@ class LettreRappel(models.Model):
     
     def __str__(self):
         return f"{self.get_type_lettre_display()} - {self.etudiant.matricule} - {self.date_generation.strftime('%d/%m/%Y')}"
+
+
+# ===== CANAL DE COMMUNICATION =====
+class Canal(models.Model):
+    TYPES = [
+        ('officiel', 'Canal Officiel'),  # Administration → Étudiants
+        ('etudiant', 'Canal Étudiants'),  # Étudiants uniquement
+    ]
+    
+    nom = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    type_canal = models.CharField(max_length=20, choices=TYPES)
+    actif = models.BooleanField(default=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Canal'
+        verbose_name_plural = 'Canaux'
+        ordering = ['type_canal', 'nom']
+    
+    def __str__(self):
+        return f"{self.nom} ({self.get_type_canal_display()})"
+
+
+# ===== MESSAGE =====
+class Message(models.Model):
+    canal = models.ForeignKey(Canal, on_delete=models.CASCADE, related_name='messages')
+    expediteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='messages_envoyes_canal')
+    contenu = models.TextField()
+    date_envoi = models.DateTimeField(auto_now_add=True)
+    modifie = models.BooleanField(default=False)
+    date_modification = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = 'Message'
+        verbose_name_plural = 'Messages'
+        ordering = ['date_envoi']
+    
+    def __str__(self):
+        return f"{self.expediteur.get_full_name()} - {self.canal.nom} - {self.date_envoi.strftime('%d/%m/%Y %H:%M')}"
+
+
+# ===== LECTURE MESSAGE =====
+class LectureMessage(models.Model):
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name='lectures')
+    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='messages_lus')
+    date_lecture = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Lecture Message'
+        verbose_name_plural = 'Lectures Messages'
+        unique_together = ['message', 'utilisateur']
+    
+    def __str__(self):
+        return f"{self.utilisateur.get_full_name()} - Message #{self.message.id}"

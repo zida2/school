@@ -9,7 +9,7 @@ from .models import (
     Sondage, QuestionSondage, OptionQuestion, ReponseSondage,
     Evenement, InscriptionEvenement, MessageBureau,
     DemandeAdministrative, ObjetPerdu, RappelPaiement, LettreRappel,
-    Classe, Inscription, EnseignementMatiere
+    Classe, Inscription, EnseignementMatiere, Canal, Message, LectureMessage
 )
 
 
@@ -670,3 +670,61 @@ class EnseignementMatiereCreateSerializer(serializers.ModelSerializer):
                 "Cet enseignant est déjà assigné à cette matière pour cette classe."
             )
         return data
+
+
+# ===== CANAL & MESSAGES =====
+class CanalSerializer(serializers.ModelSerializer):
+    nombre_messages = serializers.SerializerMethodField()
+    dernier_message = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Canal
+        fields = '__all__'
+        read_only_fields = ['date_creation']
+    
+    def get_nombre_messages(self, obj):
+        return obj.messages.count()
+    
+    def get_dernier_message(self, obj):
+        dernier = obj.messages.last()
+        if dernier:
+            return {
+                'id': dernier.id,
+                'expediteur': dernier.expediteur.get_full_name(),
+                'contenu': dernier.contenu[:100],
+                'date_envoi': dernier.date_envoi
+            }
+        return None
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    expediteur_nom = serializers.CharField(source='expediteur.get_full_name', read_only=True)
+    expediteur_role = serializers.CharField(source='expediteur.role', read_only=True)
+    canal_nom = serializers.CharField(source='canal.nom', read_only=True)
+    lu_par_moi = serializers.SerializerMethodField()
+    nombre_lectures = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Message
+        fields = '__all__'
+        read_only_fields = ['expediteur', 'date_envoi', 'modifie', 'date_modification']
+    
+    def get_lu_par_moi(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return obj.lectures.filter(utilisateur=request.user).exists()
+        return False
+    
+    def get_nombre_lectures(self, obj):
+        return obj.lectures.count()
+    
+    def create(self, validated_data):
+        validated_data['expediteur'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+class LectureMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LectureMessage
+        fields = '__all__'
+        read_only_fields = ['utilisateur', 'date_lecture']

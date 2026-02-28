@@ -5,7 +5,8 @@ from .models import (
     Presence, SupportCours, Notification, MembreBureau,
     Publication, Sondage, QuestionSondage, OptionQuestion,
     ReponseSondage, Evenement, InscriptionEvenement,
-    MessageBureau, DemandeAdministrative, ObjetPerdu
+    MessageBureau, DemandeAdministrative, ObjetPerdu,
+    Canal, Message, LectureMessage
 )
 
 
@@ -167,3 +168,28 @@ class ObjetPerduAdmin(admin.ModelAdmin):
     list_display = ['nom_objet', 'type_declaration', 'declarant', 'lieu', 'date_perte', 'statut']
     list_filter = ['type_declaration', 'statut']
     search_fields = ['nom_objet', 'description', 'lieu']
+
+
+@admin.register(Canal)
+class CanalAdmin(admin.ModelAdmin):
+    list_display = ['nom', 'type_canal', 'actif', 'date_creation']
+    list_filter = ['type_canal', 'actif']
+    search_fields = ['nom', 'description']
+
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ['expediteur', 'canal', 'contenu_court', 'date_envoi', 'modifie']
+    list_filter = ['canal', 'modifie', 'date_envoi']
+    search_fields = ['contenu', 'expediteur__nom', 'expediteur__prenom']
+    
+    def contenu_court(self, obj):
+        return obj.contenu[:50] + '...' if len(obj.contenu) > 50 else obj.contenu
+    contenu_court.short_description = 'Contenu'
+
+
+@admin.register(LectureMessage)
+class LectureMessageAdmin(admin.ModelAdmin):
+    list_display = ['utilisateur', 'message', 'date_lecture']
+    list_filter = ['date_lecture']
+    search_fields = ['utilisateur__nom', 'utilisateur__prenom']

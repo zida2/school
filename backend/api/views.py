@@ -3,6 +3,7 @@ from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.contrib.auth import update_session_auth_hash
@@ -20,7 +21,8 @@ from .models import (
     Evaluation, NoteEvaluation, MembreBureau, Publication,
     Sondage, QuestionSondage, OptionQuestion, ReponseSondage,
     Evenement, InscriptionEvenement, MessageBureau,
-    DemandeAdministrative, ObjetPerdu, Classe, Inscription, EnseignementMatiere
+    DemandeAdministrative, ObjetPerdu, Classe, Inscription, EnseignementMatiere,
+    Canal, Message, LectureMessage
 )
 from .serializers import (
     LoginSerializer, UtilisateurSerializer, ChangePasswordSerializer,
@@ -35,7 +37,8 @@ from .serializers import (
     InscriptionEvenementSerializer, MessageBureauSerializer,
     DemandeAdministrativeSerializer, ObjetPerduSerializer,
     ClasseSerializer, InscriptionSerializer, EnseignementMatiereSerializer,
-    EnseignementMatiereCreateSerializer
+    EnseignementMatiereCreateSerializer, CanalSerializer, MessageSerializer,
+    LectureMessageSerializer
 )
 from .permissions import IsSuperAdmin, IsAdminOrSuperAdmin, IsEnseignant, IsEtudiant
 
@@ -1822,3 +1825,138 @@ class EnseignementMatiereViewSet(viewsets.ModelViewSet):
             })
         
         return Response(result)
+
+
+# ===== CANAUX & MESSAGES =====
+class CanalViewSet(viewsets.ModelViewSet):
+    queryset = Canal.objects.filter(actif=True)
+    serializer_class = CanalSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = self.request.user
+        
+        # Admins et bureau voient tous les canaux
+        if user.role in ['admin', 'superadmin', 'bureau_executif']:
+            return qs
+        
+        # Étudiants voient les canaux officiels et étudiants
+        if user.role == 'etudiant':
+            return qs.filter(type_canal__in=['officiel', 'etudiant'])
+        
+        # Enseignants voient uniquement les canaux officiels
+        if user.role in ['professeur', 'enseignant']:
+            return qs.filter(type_canal='officiel')
+        
+        return qs.none()
+    
+    def perform_create(self, serializer):
+        # Seuls les admins peuvent créer des canaux
+        if self.request.user.role not in ['admin', 'superadmin']:
+            raise PermissionDenied("Seuls les administrateurs peuvent créer des canaux")
+        serializer.save()
+
+
+class MessageViewSet(viewsets.ModelViewSet):
+    queryset = Message.objects.select_related('canal', 'expediteur').all()
+    serializer_class = MessageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['contenu', 'expediteur__nom', 'expediteur__prenom']
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = self.request.user
+        
+        # Filtrer par canal si spécifié
+        canal_id = self.request.query_params.get('canal')
+        if canal_id:
+            qs = qs.filter(canal_id=canal_id)
+        
+        # Admins et bureau voient tous les messages
+        if user.role in ['admin', 'superadmin', 'bureau_executif']:
+            return qs
+        
+        # Étudiants voient les messages des canaux officiels et étudiants
+        if user.role == 'etudiant':
+            return qs.filter(canal__type_canal__in=['officiel', 'etudiant'])
+        
+        # Enseignants voient uniquement les messages des canaux officiels
+        if user.role in ['professeur', 'enseignant']:
+            return qs.filter(canal__type_canal='officiel')
+        
+        return qs.none()
+    
+    def perform_create(self, serializer):
+        canal = serializer.validated_data['canal']
+        user = self.request.user
+        
+        # Vérifier les permissions d'écriture
+        if canal.type_canal == 'officiel':
+            # Seuls les admins et le bureau peuvent écrire dans les canaux officiels
+            if user.role not in ['admin', 'superadmin', 'bureau_executif']:
+                raise PermissionDenied("Seuls les administrateurs peuvent écrire dans les canaux officiels")
+        elif canal.type_canal == 'etudiant':
+            # Seuls les étudiants peuvent écrire dans les canaux étudiants
+            if user.role != 'etudiant':
+                raise PermissionDenied("Seuls les étudiants peuvent écrire dans les canaux étudiants")
+        
+        serializer.save()
+    
+    def perform_update(self, serializer):
+        message = self.get_object()
+        user = self.request.user
+        
+        # Seul l'expéditeur ou un admin peut modifier
+        if message.expediteur != user and user.role not in ['admin', 'superadmin']:
+            raise PermissionDenied("Vous ne pouvez modifier que vos propres messages")
+        
+        serializer.save(modifie=True, date_modification=timezone.now())
+    
+    def perform_destroy(self, instance):
+        user = self.request.user
+        
+        # Seul l'expéditeur ou un admin peut supprimer
+        if instance.expediteur != user and user.role not in ['admin', 'superadmin']:
+            raise PermissionDenied("Vous ne pouvez supprimer que vos propres messages")
+        
+        instance.delete()
+    
+    @action(detail=True, methods=['post'])
+    def marquer_lu(self, request, pk=None):
+        """
+        Marquer un message comme lu
+        """
+        message = self.get_object()
+        user = request.user
+        
+        # Créer ou récupérer la lecture
+        lecture, created = LectureMessage.objects.get_or_create(
+            message=message,
+            utilisateur=user
+        )
+        
+        return Response({
+            'detail': 'Message marqué comme lu',
+            'created': created
+        })
+    
+    @action(detail=False, methods=['get'])
+    def non_lus(self, request):
+        """
+        Récupérer les messages non lus
+        """
+        user = request.user
+        canal_id = request.query_params.get('canal')
+        
+        # Messages non lus = messages sans lecture par l'utilisateur
+        qs = self.get_queryset().exclude(
+            lectures__utilisateur=user
+        )
+        
+        if canal_id:
+            qs = qs.filter(canal_id=canal_id)
+        
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)

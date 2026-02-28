@@ -15,7 +15,8 @@ from .views import (
     QuestionSondageViewSet, OptionQuestionViewSet, ReponseSondageViewSet,
     EvenementViewSet, InscriptionEvenementViewSet, MessageBureauViewSet,
     DemandeAdministrativeViewSet, ObjetPerduViewSet, DashboardBureauView,
-    ClasseViewSet, InscriptionViewSet, EnseignementMatiereViewSet
+    ClasseViewSet, InscriptionViewSet, EnseignementMatiereViewSet,
+    CanalViewSet, MessageViewSet
 )
 from .views_finances import (
     GestionFinanciereViewSet, RappelPaiementViewSet, LettreRappelViewSet
@@ -53,6 +54,9 @@ router.register(r'inscriptions-evenement', InscriptionEvenementViewSet, basename
 router.register(r'messages-bureau', MessageBureauViewSet, basename='message-bureau')
 router.register(r'demandes-administratives', DemandeAdministrativeViewSet, basename='demande-administrative')
 router.register(r'objets-perdus', ObjetPerduViewSet, basename='objet-perdu')
+# Communication
+router.register(r'canaux', CanalViewSet, basename='canal')
+router.register(r'messages', MessageViewSet, basename='message')
 # Gestion Financière
 router.register(r'finances', GestionFinanciereViewSet, basename='finances')
 router.register(r'rappels-paiement', RappelPaiementViewSet, basename='rappel-paiement')
