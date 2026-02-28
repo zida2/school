@@ -274,7 +274,7 @@ class FiliereViewSet(viewsets.ModelViewSet):
 class MatiereViewSet(viewsets.ModelViewSet):
     queryset = Matiere.objects.select_related('filiere', 'enseignant').all()
     serializer_class = MatiereSerializer
-    permission_classes = [IsAdminOrSuperAdmin]
+    permission_classes = [IsAuthenticated]  # Accessible à tous les utilisateurs authentifiés
     filter_backends = [filters.SearchFilter]
     search_fields = ['nom', 'code']
 
@@ -628,10 +628,20 @@ class EmploiDuTempsViewSet(viewsets.ModelViewSet):
 class PresenceViewSet(viewsets.ModelViewSet):
     queryset = Presence.objects.select_related('etudiant', 'emploi').all()
     serializer_class = PresenceSerializer
-    permission_classes = [IsEnseignant]
+    permission_classes = [IsAuthenticated]  # Accessible à tous (bureau peut consulter)
 
     def get_queryset(self):
         qs = super().get_queryset()
+        # Bureau et admin peuvent tout voir
+        if self.request.user.role in ('bureau', 'bureau_executif', 'admin', 'superadmin'):
+            pass  # Pas de filtre
+        # Enseignant voit ses cours
+        elif self.request.user.role in ('enseignant', 'professeur'):
+            qs = qs.filter(emploi__enseignant__utilisateur=self.request.user)
+        # Étudiant voit ses présences
+        elif self.request.user.role == 'etudiant':
+            qs = qs.filter(etudiant__utilisateur=self.request.user)
+        
         emploi = self.request.query_params.get('emploi')
         date = self.request.query_params.get('date_cours')
         if emploi: qs = qs.filter(emploi_id=emploi)
@@ -1472,8 +1482,8 @@ class DemandeAdministrativeViewSet(viewsets.ModelViewSet):
             qs = qs.filter(destinataire='administration')
         
         # Bureau: voir toutes les demandes
-        elif user.role == 'bureau_executif':
-            pass
+        elif user.role in ['bureau', 'bureau_executif']:
+            pass  # Voir toutes les demandes
         
         else:
             qs = qs.none()

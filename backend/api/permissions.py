@@ -35,3 +35,23 @@ class IsEtudiant(BasePermission):
             and request.user.is_authenticated
             and request.user.role in ('etudiant', 'admin', 'superadmin')
         )
+
+
+class IsBureauExecutif(BasePermission):
+    """Accès pour le Bureau Exécutif."""
+    def has_permission(self, request, view):
+        return (
+            request.user
+            and request.user.is_authenticated
+            and request.user.role in ('bureau', 'bureau_executif', 'admin', 'superadmin')
+        )
+
+
+class IsBureauOrAdmin(BasePermission):
+    """Accès pour Bureau Exécutif, Admin et SuperAdmin."""
+    def has_permission(self, request, view):
+        return (
+            request.user
+            and request.user.is_authenticated
+            and request.user.role in ('bureau', 'bureau_executif', 'admin', 'superadmin')
+        )
