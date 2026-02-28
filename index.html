@@ -997,9 +997,12 @@
                     } else if (role === 'etudiant') {
                         console.log('➡️ Redirection vers dashboard-etudiant.html');
                         window.location.href = 'dashboard-etudiant.html';
-                    } else if (role === 'bureau_executif') {
+                    } else if (role === 'bureau_executif' || role === 'bureau') {
                         console.log('➡️ Redirection vers dashboard-bureau.html');
                         window.location.href = 'dashboard-bureau.html';
+                    } else {
+                        console.warn('⚠️ Rôle non reconnu:', role);
+                        showAlert('Rôle non reconnu. Contactez l\'administrateur.', 'warning');
                     }
                 }, 2000); // Augmenté à 2000ms
             } catch (err) {

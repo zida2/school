@@ -294,7 +294,8 @@ window.requireAuth = function(allowedRoles = []) {
             if (role === 'professeur') return userRole === 'professeur' || userRole === 'enseignant';
             if (role === 'enseignant') return userRole === 'enseignant' || userRole === 'professeur';
             if (role === 'etudiant') return userRole === 'etudiant';
-            if (role === 'bureau_executif') return userRole === 'bureau_executif';
+            if (role === 'bureau_executif') return userRole === 'bureau_executif' || userRole === 'bureau';
+            if (role === 'bureau') return userRole === 'bureau_executif' || userRole === 'bureau';
             return userRole === role;
         });
         
