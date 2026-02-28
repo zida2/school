@@ -990,8 +990,13 @@
                 // Charger toutes les notes de l'enseignant
                 const toutesLesNotes = [];
                 for (const matiere of matieres) {
-                    const notes = await API.getNotes({ matiere: matiere.id });
-                    toutesLesNotes.push(...notes);
+                    try {
+                        const notes = await API.getNotes({ matiere: matiere.id });
+                        toutesLesNotes.push(...notes);
+                    } catch (err) {
+                        console.warn(`⚠️ Erreur chargement notes matière ${matiere.id}:`, err.message);
+                        // Continuer avec les autres matières
+                    }
                 }
                 console.log('✅ Total notes:', toutesLesNotes.length);
                 
