@@ -45,7 +45,7 @@ class ReclamationNoteViewSet(viewsets.ModelViewSet):
                 qs = qs.none()
         
         # Enseignant: voir les réclamations sur ses matières
-        elif user.role == 'professeur':
+        elif user.role in ['professeur', 'enseignant']:
             try:
                 qs = qs.filter(note__matiere__enseignant=user.enseignant)
             except:
@@ -81,7 +81,7 @@ class ReclamationNoteViewSet(viewsets.ModelViewSet):
         user = request.user
         
         # Vérifier les permissions
-        if user.role == 'professeur':
+        if user.role in ['professeur', 'enseignant']:
             try:
                 if reclamation.note.matiere.enseignant != user.enseignant:
                     return Response(
@@ -172,7 +172,7 @@ def demande_get_queryset_extension(self):
             qs = qs.none()
     
     # Enseignant: voir les demandes qui lui sont adressées
-    elif user.role == 'professeur':
+    elif user.role in ['professeur', 'enseignant']:
         try:
             qs = qs.filter(
                 destinataire='professeur',
@@ -209,7 +209,7 @@ def repondre_demande(self, request, pk=None):
     user = request.user
     
     # Vérifier les permissions
-    if user.role == 'professeur':
+    if user.role in ['professeur', 'enseignant']:
         try:
             if demande.professeur != user.enseignant:
                 return Response(
@@ -456,7 +456,7 @@ def resultats_evaluation(self, request, pk=None):
     user = request.user
     
     # Seuls admin et l'enseignant concerné peuvent voir les résultats
-    if user.role == 'professeur':
+    if user.role in ['professeur', 'enseignant']:
         try:
             if evaluation.matiere and evaluation.matiere.enseignant != user.enseignant:
                 return Response(

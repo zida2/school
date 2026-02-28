@@ -71,7 +71,7 @@ class MeView(APIView):
                 data['etudiant'] = EtudiantSerializer(request.user.etudiant).data
             except Etudiant.DoesNotExist:
                 pass
-        elif request.user.role == 'professeur':
+        elif request.user.role in ['professeur', 'enseignant']:
             try:
                 data['enseignant'] = EnseignantSerializer(request.user.enseignant).data
             except Enseignant.DoesNotExist:
@@ -301,7 +301,7 @@ class EtudiantViewSet(viewsets.ModelViewSet):
         queryset = super().get_queryset()
         
         # Si enseignant, ne montrer que les étudiants de ses filières
-        if user.role == 'professeur' and hasattr(user, 'enseignant'):
+        if user.role in ['professeur', 'enseignant'] and hasattr(user, 'enseignant'):
             # Récupérer les filières où l'enseignant enseigne
             matieres = user.enseignant.matieres.all()
             filieres_ids = matieres.values_list('filiere_id', flat=True).distinct()
@@ -415,7 +415,7 @@ class NoteViewSet(viewsets.ModelViewSet):
                 qs = qs.filter(etudiant=self.request.user.etudiant, publie=True)
             except: qs = qs.none()
         # Enseignant voit les notes de ses matières
-        elif self.request.user.role == 'professeur':
+        elif self.request.user.role in ['professeur', 'enseignant']:
             try:
                 qs = qs.filter(matiere__enseignant=self.request.user.enseignant)
             except: qs = qs.none()
@@ -576,7 +576,7 @@ class EmploiDuTempsViewSet(viewsets.ModelViewSet):
                 qs = qs.filter(matiere__filiere=self.request.user.etudiant.filiere)
             except: qs = qs.none()
         # Enseignant voit seulement ses cours
-        elif self.request.user.role == 'professeur':
+        elif self.request.user.role in ['professeur', 'enseignant']:
             try:
                 qs = qs.filter(matiere__enseignant=self.request.user.enseignant)
             except: qs = qs.none()
@@ -642,7 +642,7 @@ class SupportCoursViewSet(viewsets.ModelViewSet):
             try:
                 qs = qs.filter(matiere__filiere=self.request.user.etudiant.filiere, visible=True)
             except: qs = qs.none()
-        elif self.request.user.role == 'professeur':
+        elif self.request.user.role in ['professeur', 'enseignant']:
             try:
                 qs = qs.filter(enseignant=self.request.user.enseignant)
             except: qs = qs.none()
@@ -694,7 +694,7 @@ class ReclamationNoteViewSet(viewsets.ModelViewSet):
                 qs = qs.none()
         
         # Enseignant: voir les réclamations sur ses matières
-        elif user.role == 'professeur':
+        elif user.role in ['professeur', 'enseignant']:
             try:
                 qs = qs.filter(note__matiere__enseignant=user.enseignant)
             except:
@@ -730,7 +730,7 @@ class ReclamationNoteViewSet(viewsets.ModelViewSet):
         user = request.user
         
         # Vérifier les permissions
-        if user.role == 'professeur':
+        if user.role in ['professeur', 'enseignant']:
             try:
                 if reclamation.note.matiere.enseignant != user.enseignant:
                     return Response(
@@ -820,7 +820,7 @@ class EvaluationViewSet(viewsets.ModelViewSet):
         if categorie: qs = qs.filter(categorie=categorie)
         
         # Enseignant ne voit que les évaluations de ses matières
-        if self.request.user.role == 'professeur':
+        if self.request.user.role in ['professeur', 'enseignant']:
             try:
                 qs = qs.filter(matiere__enseignant=self.request.user.enseignant)
             except: qs = qs.none()
@@ -935,7 +935,7 @@ class EvaluationViewSet(viewsets.ModelViewSet):
         user = request.user
         
         # Seuls admin et l'enseignant concerné peuvent voir les résultats
-        if user.role == 'professeur':
+        if user.role in ['professeur', 'enseignant']:
             try:
                 if evaluation.matiere and evaluation.matiere.enseignant != user.enseignant:
                     return Response(
@@ -1015,7 +1015,7 @@ class NoteEvaluationViewSet(viewsets.ModelViewSet):
         if matiere: qs = qs.filter(evaluation__matiere_id=matiere)
         
         # Enseignant ne voit que les notes de ses matières
-        if self.request.user.role == 'professeur':
+        if self.request.user.role in ['professeur', 'enseignant']:
             try:
                 qs = qs.filter(evaluation__matiere__enseignant=self.request.user.enseignant)
             except: qs = qs.none()
@@ -1418,7 +1418,7 @@ class DemandeAdministrativeViewSet(viewsets.ModelViewSet):
                 qs = qs.none()
         
         # Enseignant: voir les demandes qui lui sont adressées
-        elif user.role == 'professeur':
+        elif user.role in ['professeur', 'enseignant']:
             try:
                 qs = qs.filter(
                     destinataire='professeur',
@@ -1489,7 +1489,7 @@ class DemandeAdministrativeViewSet(viewsets.ModelViewSet):
         user = request.user
         
         # Vérifier les permissions
-        if user.role == 'professeur':
+        if user.role in ['professeur', 'enseignant']:
             try:
                 if demande.professeur != user.enseignant:
                     return Response(
