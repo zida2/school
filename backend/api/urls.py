@@ -16,6 +16,9 @@ from .views import (
     EvenementViewSet, InscriptionEvenementViewSet, MessageBureauViewSet,
     DemandeAdministrativeViewSet, ObjetPerduViewSet, DashboardBureauView
 )
+from .views_finances import (
+    GestionFinanciereViewSet, RappelPaiementViewSet, LettreRappelViewSet
+)
 
 router = DefaultRouter()
 router.register(r'universites', UniversiteViewSet, basename='universite')
@@ -45,6 +48,10 @@ router.register(r'inscriptions-evenement', InscriptionEvenementViewSet, basename
 router.register(r'messages-bureau', MessageBureauViewSet, basename='message-bureau')
 router.register(r'demandes-administratives', DemandeAdministrativeViewSet, basename='demande-administrative')
 router.register(r'objets-perdus', ObjetPerduViewSet, basename='objet-perdu')
+# Gestion Financière
+router.register(r'finances', GestionFinanciereViewSet, basename='finances')
+router.register(r'rappels-paiement', RappelPaiementViewSet, basename='rappel-paiement')
+router.register(r'lettres-rappel', LettreRappelViewSet, basename='lettre-rappel')
 
 urlpatterns = [
     # Auth
