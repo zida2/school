@@ -2002,3 +2002,171 @@ body.light-theme ::-webkit-scrollbar-thumb {
 body.light-theme ::-webkit-scrollbar-thumb:hover {
     background: #0891B2 !important;
 }
+
+
+/* ===== AMÉLIORATION CARDS THÈME LIGHT ===== */
+
+/* Cards avec ombre et bordure */
+body.light-theme .stat-card-ultra,
+body.light-theme .stat-card-premium {
+    background: #FFFFFF !important;
+    border: 1px solid #E0F2FE !important;
+    box-shadow: 0 2px 8px rgba(8, 145, 178, 0.08) !important;
+    transition: all 0.3s ease !important;
+}
+
+body.light-theme .stat-card-ultra:hover,
+body.light-theme .stat-card-premium:hover {
+    box-shadow: 0 8px 24px rgba(8, 145, 178, 0.15) !important;
+    transform: translateY(-4px) !important;
+    border-color: #0891B2 !important;
+}
+
+/* Icônes des stats avec fond coloré */
+body.light-theme .stat-icon-ultra,
+body.light-theme .stat-icon-wrapper {
+    background: linear-gradient(135deg, rgba(8, 145, 178, 0.1), rgba(20, 184, 166, 0.1)) !important;
+    color: #0891B2 !important;
+}
+
+body.light-theme .stat-icon-wrapper.primary {
+    background: linear-gradient(135deg, rgba(8, 145, 178, 0.15), rgba(20, 184, 166, 0.15)) !important;
+    color: #0891B2 !important;
+}
+
+body.light-theme .stat-icon-wrapper.success {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.15)) !important;
+    color: #10b981 !important;
+}
+
+body.light-theme .stat-icon-wrapper.warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.15)) !important;
+    color: #f59e0b !important;
+}
+
+body.light-theme .stat-icon-wrapper.danger {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.15)) !important;
+    color: #ef4444 !important;
+}
+
+/* Cards générales */
+body.light-theme .card-ultra,
+body.light-theme .card-premium {
+    background: #FFFFFF !important;
+    border: 1px solid #E0F2FE !important;
+    box-shadow: 0 2px 8px rgba(8, 145, 178, 0.08) !important;
+}
+
+body.light-theme .card-ultra:hover,
+body.light-theme .card-premium:hover {
+    box-shadow: 0 8px 24px rgba(8, 145, 178, 0.12) !important;
+    border-color: #BAE6FD !important;
+}
+
+/* Headers de cards */
+body.light-theme .card-header-ultra,
+body.light-theme .card-header-premium {
+    border-bottom: 1px solid #E0F2FE !important;
+    background: linear-gradient(135deg, #F0F9FF, #FFFFFF) !important;
+}
+
+/* Contenu des stats */
+body.light-theme .stat-content-ultra {
+    color: #0F172A !important;
+}
+
+/* Valeurs et labels avec meilleur contraste */
+body.light-theme .stat-value-ultra,
+body.light-theme .stat-value {
+    color: #0F172A !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .stat-label-ultra,
+body.light-theme .stat-label {
+    color: #64748B !important;
+    font-weight: 500 !important;
+}
+
+/* Trends avec couleurs vives */
+body.light-theme .stat-trend-ultra {
+    font-weight: 700 !important;
+}
+
+body.light-theme .stat-trend-ultra.up,
+body.light-theme .stat-trend.positive {
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #059669 !important;
+}
+
+body.light-theme .stat-trend-ultra.down,
+body.light-theme .stat-trend.negative {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #dc2626 !important;
+}
+
+/* Grille de stats responsive */
+body.light-theme .stats-grid-ultra,
+body.light-theme .stats-grid {
+    gap: 24px !important;
+}
+
+/* Amélioration des bordures */
+body.light-theme .stat-card-ultra::before,
+body.light-theme .stat-card-premium::before {
+    opacity: 0.5 !important;
+}
+
+body.light-theme .stat-card-ultra:hover::before,
+body.light-theme .stat-card-premium:hover::before {
+    opacity: 1 !important;
+}
+
+/* Couleurs spécifiques pour les cards */
+body.light-theme .stat-card-ultra.primary-ultra {
+    border-left: 4px solid #0891B2 !important;
+}
+
+body.light-theme .stat-card-ultra.success-ultra {
+    border-left: 4px solid #10b981 !important;
+}
+
+body.light-theme .stat-card-ultra.warning-ultra {
+    border-left: 4px solid #f59e0b !important;
+}
+
+body.light-theme .stat-card-ultra.danger-ultra {
+    border-left: 4px solid #ef4444 !important;
+}
+
+/* Texte dans les cards toujours visible */
+body.light-theme .card-ultra *,
+body.light-theme .card-premium *,
+body.light-theme .stat-card-ultra *,
+body.light-theme .stat-card-premium * {
+    color: inherit !important;
+}
+
+body.light-theme .card-title-ultra,
+body.light-theme .card-title-premium {
+    color: #0F172A !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .card-body-ultra,
+body.light-theme .card-body-premium {
+    color: #0F172A !important;
+}
+
+/* Liens dans les cards */
+body.light-theme .card-ultra a,
+body.light-theme .card-premium a {
+    color: #0891B2 !important;
+    text-decoration: none !important;
+}
+
+body.light-theme .card-ultra a:hover,
+body.light-theme .card-premium a:hover {
+    color: #0e7490 !important;
+    text-decoration: underline !important;
+}
