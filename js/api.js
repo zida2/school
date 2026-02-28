@@ -5,9 +5,8 @@
 
 // Configuration de l'API
 // Utilise CONFIG.API_URL si disponible, sinon localhost
-const API_BASE = (typeof CONFIG !== 'undefined' && CONFIG.API_URL) 
-    ? CONFIG.API_URL 
-    : 'http://localhost:8000/api';
+// FORCE PYTHONANYWHERE: Toujours utiliser PythonAnywhere pour les tests
+const API_BASE = 'https://wendlasida.pythonanywhere.com/api';
 
 // MODE MOCK pour démo sans backend
 const USE_MOCK = false; // Mettre à false quand le backend est prêt
