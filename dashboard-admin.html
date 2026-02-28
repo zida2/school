@@ -1552,9 +1552,15 @@
 
                 creerGraphiques(etudiants, filieres);
                 
-                // Charger les demandes et réclamations
-                chargerDemandes();
-                chargerReclamations();
+                // Charger les demandes et réclamations (après un court délai pour laisser les fonctions se charger)
+                setTimeout(() => {
+                    if (typeof chargerDemandes === 'function') {
+                        chargerDemandes();
+                    }
+                    if (typeof chargerReclamations === 'function') {
+                        chargerReclamations();
+                    }
+                }, 100);
             } catch (err) {
                 console.error('Erreur:', err);
                 showToast('Erreur de chargement: ' + err.message, 'danger');
