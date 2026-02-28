@@ -846,3 +846,63 @@ class EnseignementMatiere(models.Model):
     
     def __str__(self):
         return f"{self.enseignant.get_full_name()} - {self.matiere.nom} ({self.classe.code})"
+
+
+# ===== HISTORIQUE DES NOTES =====
+class HistoriqueNote(models.Model):
+    """Modèle pour tracer toutes les modifications apportées aux notes"""
+    ACTIONS = [
+        ('creation', 'Création'),
+        ('modification', 'Modification'),
+        ('publication', 'Publication'),
+        ('confirmation', 'Confirmation étudiant'),
+        ('reclamation', 'Réclamation'),
+        ('correction', 'Correction après réclamation'),
+    ]
+    
+    note = models.ForeignKey(Note, on_delete=models.CASCADE, related_name='historique')
+    action = models.CharField(max_length=20, choices=ACTIONS)
+    
+    # Valeurs avant modification
+    note_cc_avant = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    note_examen_avant = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    statut_avant = models.CharField(max_length=20, blank=True)
+    publie_avant = models.BooleanField(default=False)
+    
+    # Valeurs après modification
+    note_cc_apres = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    note_examen_apres = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    statut_apres = models.CharField(max_length=20, blank=True)
+    publie_apres = models.BooleanField(default=False)
+    
+    # Métadonnées
+    modifie_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True)
+    date_modification = models.DateTimeField(auto_now_add=True)
+    commentaire = models.TextField(blank=True)
+    adresse_ip = models.GenericIPAddressField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = 'Historique de Note'
+        verbose_name_plural = 'Historiques de Notes'
+        ordering = ['-date_modification']
+        indexes = [
+            models.Index(fields=['note', '-date_modification']),
+            models.Index(fields=['modifie_par', '-date_modification']),
+        ]
+    
+    def __str__(self):
+        return f"{self.get_action_display()} - {self.note.etudiant.matricule} - {self.date_modification.strftime('%d/%m/%Y %H:%M')}"
+    
+    @property
+    def moyenne_avant(self):
+        """Calculer la moyenne avant modification"""
+        if self.note_cc_avant is not None and self.note_examen_avant is not None:
+            return round(float(self.note_cc_avant) * 0.4 + float(self.note_examen_avant) * 0.6, 2)
+        return None
+    
+    @property
+    def moyenne_apres(self):
+        """Calculer la moyenne après modification"""
+        if self.note_cc_apres is not None and self.note_examen_apres is not None:
+            return round(float(self.note_cc_apres) * 0.4 + float(self.note_examen_apres) * 0.6, 2)
+        return None

@@ -451,6 +451,13 @@ class NoteViewSet(viewsets.ModelViewSet):
         matiere_id = request.data.get('matiere_id')
         annee_id = request.data.get('annee_academique_id')
         
+        # Compter toutes les notes de cette matière
+        total_notes = Note.objects.filter(
+            matiere_id=matiere_id,
+            annee_academique_id=annee_id
+        ).count()
+        
+        # Trouver les notes non publiées
         notes = Note.objects.filter(
             matiere_id=matiere_id,
             annee_academique_id=annee_id,
@@ -474,8 +481,19 @@ class NoteViewSet(viewsets.ModelViewSet):
                     lue=False
                 )
         
+        # Message personnalisé selon le résultat
+        if count == 0:
+            if total_notes > 0:
+                message = f'✅ Toutes les notes ({total_notes}) sont déjà publiées.'
+            else:
+                message = '⚠️ Aucune note trouvée pour cette matière.'
+        else:
+            message = f'✅ {count} note(s) publiée(s) et {count} notification(s) envoyée(s).'
+        
         return Response({
-            'detail': f'{count} note(s) publiée(s) et {count} notification(s) envoyée(s).'
+            'detail': message,
+            'count': count,
+            'total': total_notes
         })
     
     @action(detail=True, methods=['post'])
