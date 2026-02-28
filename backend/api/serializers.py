@@ -8,7 +8,7 @@ from .models import (
     Evaluation, NoteEvaluation, MembreBureau, Publication,
     Sondage, QuestionSondage, OptionQuestion, ReponseSondage,
     Evenement, InscriptionEvenement, MessageBureau,
-    DemandeAdministrative, ObjetPerdu
+    DemandeAdministrative, ObjetPerdu, RappelPaiement, LettreRappel
 )
 
 
@@ -551,3 +551,44 @@ class ObjetPerduSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['declarant'] = self.context['request'].user
         return super().create(validated_data)
+
+
+
+# ===== GESTION FINANCIÈRE =====
+class RappelPaiementSerializer(serializers.ModelSerializer):
+    etudiant_nom = serializers.SerializerMethodField()
+    etudiant_matricule = serializers.CharField(source='etudiant.matricule', read_only=True)
+    type_rappel_display = serializers.CharField(source='get_type_rappel_display', read_only=True)
+    
+    class Meta:
+        model = RappelPaiement
+        fields = '__all__'
+        read_only_fields = ['date_envoi', 'envoye_par']
+    
+    def get_etudiant_nom(self, obj):
+        return obj.etudiant.get_full_name()
+
+
+class LettreRappelSerializer(serializers.ModelSerializer):
+    etudiant_nom = serializers.SerializerMethodField()
+    etudiant_matricule = serializers.CharField(source='etudiant.matricule', read_only=True)
+    type_lettre_display = serializers.CharField(source='get_type_lettre_display', read_only=True)
+    
+    class Meta:
+        model = LettreRappel
+        fields = '__all__'
+        read_only_fields = ['date_generation', 'generee_par']
+    
+    def get_etudiant_nom(self, obj):
+        return obj.etudiant.get_full_name()
+
+
+class StatistiquesFinancieresSerializer(serializers.Serializer):
+    """Serializer pour les statistiques financières globales"""
+    total_encaisse = serializers.DecimalField(max_digits=15, decimal_places=0)
+    total_impaye = serializers.DecimalField(max_digits=15, decimal_places=0)
+    taux_recouvrement = serializers.FloatField()
+    nb_etudiants_total = serializers.IntegerField()
+    nb_etudiants_a_jour = serializers.IntegerField()
+    nb_etudiants_impayes = serializers.IntegerField()
+    statistiques_par_filiere = serializers.ListField()
