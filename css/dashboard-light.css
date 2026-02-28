@@ -1681,12 +1681,41 @@ body.light-theme .modal-ultra {
 
 body.light-theme .modal-content-ultra {
     background: #ffffff !important;
-    color: #1a1d2e !important;
+    color: #0F172A !important;
+    border: 1px solid rgba(8, 145, 178, 0.2) !important;
+    box-shadow: 0 20px 60px rgba(8, 145, 178, 0.15) !important;
 }
 
-body.light-theme .modal-header-ultra h3,
 body.light-theme .modal-header-ultra {
-    color: #1a1d2e !important;
+    border-bottom: 1px solid rgba(8, 145, 178, 0.1) !important;
+}
+
+body.light-theme .modal-header-ultra h3 {
+    color: #0F172A !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .modal-close-ultra {
+    background: rgba(8, 145, 178, 0.1) !important;
+    color: #0891B2 !important;
+}
+
+body.light-theme .modal-close-ultra:hover {
+    background: rgba(8, 145, 178, 0.2) !important;
+    color: #0e7490 !important;
+}
+
+body.light-theme .modal-body-ultra {
+    color: #0F172A !important;
+}
+
+body.light-theme .modal-body-ultra label {
+    color: #334155 !important;
+    font-weight: 600 !important;
+}
+
+body.light-theme .modal-footer-ultra {
+    border-top: 1px solid rgba(8, 145, 178, 0.1) !important;
 }
 
 body.light-theme .badge-ultra {

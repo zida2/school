@@ -14,7 +14,7 @@ function loadThemeCSS(theme) {
     const link = document.createElement('link');
     link.id = 'theme-css';
     link.rel = 'stylesheet';
-    link.href = theme === 'light' ? 'css/dashboard-light.css?v=5.0' : 'css/dashboard-dark-premium.css?v=5.0';
+    link.href = theme === 'light' ? 'css/dashboard-light.css?v=6.0' : 'css/dashboard-dark-premium.css?v=6.0';
     
     // Ajouter le lien dans le head
     document.head.appendChild(link);

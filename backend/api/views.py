@@ -1497,7 +1497,7 @@ class DemandeAdministrativeViewSet(viewsets.ModelViewSet):
         if type_demande:
             qs = qs.filter(type_demande=type_demande)
         
-        return qs.order_by('-date_creation')
+        return qs.order_by('-date_demande')
     
     @action(detail=True, methods=['post'])
     def traiter(self, request, pk=None):
