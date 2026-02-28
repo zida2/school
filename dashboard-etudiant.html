@@ -1,213 +1,215 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Étudiant – ERP Universitaire</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Étudiant – UniERP BF Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Le CSS du thème est chargé dynamiquement par theme-toggle.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="js/theme-toggle.js?v=2.0"></script>
+    <script src="js/theme-toggle.js?v=3.0"></script>
 </head>
 <body class="dark-theme">
 
-    <div class="app-container">
+    <div class="app-wrapper">
         <!-- SIDEBAR -->
-        <aside class="sidebar-premium" id="sidebar">
+        <aside class="sidebar-ultra" id="sidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo" style="background:linear-gradient(135deg,#F59E0B,#D97706);box-shadow:0 0 30px rgba(245,158,11,0.4)">🎓</div>
-                <div class="sidebar-brand">
-                    <div class="sidebar-brand-name">UniERP BF</div>
-                    <div class="sidebar-brand-tagline">Espace Étudiant</div>
+                <div class="logo-ultra">
+                    <div class="logo-icon-ultra">🎓</div>
+                    <div class="logo-text-ultra">
+                        <div class="logo-name-ultra">UniERP BF</div>
+                        <div class="logo-tag-ultra">Espace Étudiant</div>
+                    </div>
                 </div>
             </div>
 
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-section-label">Principal</div>
-                    <a class="nav-item-premium active" data-page="dashboard" onclick="navToPremium('dashboard',this)">
-                        <span class="nav-icon">📊</span>
-                        <span class="nav-text">Tableau de bord</span>
+            <nav class="sidebar-nav-ultra">
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">Principal</div>
+                    <a class="nav-item-ultra active" data-page="dashboard" onclick="navToUltra('dashboard',this)">
+                        <span class="nav-icon-ultra">📊</span>
+                        <span class="nav-text-ultra">Tableau de bord</span>
                     </a>
                 </div>
 
-                <div class="nav-section">
-                    <div class="nav-section-label">Académique</div>
-                    <a class="nav-item-premium" data-page="notes" onclick="navToPremium('notes',this)">
-                        <span class="nav-icon">📝</span>
-                        <span class="nav-text">Mes notes</span>
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">Académique</div>
+                    <a class="nav-item-ultra" data-page="notes" onclick="navToUltra('notes',this)">
+                        <span class="nav-icon-ultra">📝</span>
+                        <span class="nav-text-ultra">Mes notes</span>
                     </a>
-                    <a class="nav-item-premium" data-page="emploi" onclick="navToPremium('emploi',this)">
-                        <span class="nav-icon">📅</span>
-                        <span class="nav-text">Emploi du temps</span>
+                    <a class="nav-item-ultra" data-page="emploi" onclick="navToUltra('emploi',this)">
+                        <span class="nav-icon-ultra">📅</span>
+                        <span class="nav-text-ultra">Emploi du temps</span>
                     </a>
-                    <a class="nav-item-premium" data-page="enseignants" onclick="navToPremium('enseignants',this)">
-                        <span class="nav-icon">👨‍🏫</span>
-                        <span class="nav-text">Mes enseignants</span>
+                    <a class="nav-item-ultra" data-page="enseignants" onclick="navToUltra('enseignants',this)">
+                        <span class="nav-icon-ultra">👨‍🏫</span>
+                        <span class="nav-text-ultra">Mes enseignants</span>
                     </a>
-                    <a class="nav-item-premium" data-page="absence" onclick="navToPremium('absence',this)">
-                        <span class="nav-icon">📋</span>
-                        <span class="nav-text">Absences</span>
+                    <a class="nav-item-ultra" data-page="absence" onclick="navToUltra('absence',this)">
+                        <span class="nav-icon-ultra">📋</span>
+                        <span class="nav-text-ultra">Absences</span>
                     </a>
-                    <a class="nav-item-premium" data-page="cours" onclick="navToPremium('cours',this)">
-                        <span class="nav-icon">📚</span>
-                        <span class="nav-text">Cours</span>
+                    <a class="nav-item-ultra" data-page="cours" onclick="navToUltra('cours',this)">
+                        <span class="nav-icon-ultra">📚</span>
+                        <span class="nav-text-ultra">Cours</span>
                     </a>
-                    <a class="nav-item-premium" data-page="supports" onclick="navToPremium('supports',this)">
-                        <span class="nav-icon">📄</span>
-                        <span class="nav-text">Supports de cours</span>
+                    <a class="nav-item-ultra" data-page="supports" onclick="navToUltra('supports',this)">
+                        <span class="nav-icon-ultra">📄</span>
+                        <span class="nav-text-ultra">Supports de cours</span>
                     </a>
-                    <a class="nav-item-premium" data-page="evaluation" onclick="navToPremium('evaluation',this)">
-                        <span class="nav-icon">✍️</span>
-                        <span class="nav-text">Évaluations</span>
-                    </a>
-                </div>
-
-                <div class="nav-section">
-                    <div class="nav-section-label">Services</div>
-                    <a class="nav-item-premium" data-page="demande" onclick="navToPremium('demande',this)">
-                        <span class="nav-icon">📨</span>
-                        <span class="nav-text">Demandes</span>
-                    </a>
-                    <a class="nav-item-premium" data-page="reclamation" onclick="navToPremium('reclamation',this)">
-                        <span class="nav-icon">📢</span>
-                        <span class="nav-text">Réclamations</span>
-                    </a>
-                    <a class="nav-item-premium" data-page="publications" onclick="navToPremium('publications',this)">
-                        <span class="nav-icon">📰</span>
-                        <span class="nav-text">Publications</span>
-                    </a>
-                    <a class="nav-item-premium" data-page="sondage" onclick="navToPremium('sondage',this)">
-                        <span class="nav-icon">📊</span>
-                        <span class="nav-text">Sondages</span>
-                    </a>
-                    <a class="nav-item-premium" data-page="questionnaire" onclick="navToPremium('questionnaire',this)">
-                        <span class="nav-icon">📝</span>
-                        <span class="nav-text">Questionnaires</span>
-                    </a>
-                    <a class="nav-item-premium" data-page="objetperdu" onclick="navToPremium('objetperdu',this)">
-                        <span class="nav-icon">🔍</span>
-                        <span class="nav-text">Objets perdus</span>
+                    <a class="nav-item-ultra" data-page="evaluation" onclick="navToUltra('evaluation',this)">
+                        <span class="nav-icon-ultra">✍️</span>
+                        <span class="nav-text-ultra">Évaluations</span>
                     </a>
                 </div>
 
-                <div class="nav-section">
-                    <div class="nav-section-label">Finance</div>
-                    <a class="nav-item-premium" data-page="paiements" onclick="navToPremium('paiements',this)">
-                        <span class="nav-icon">💰</span>
-                        <span class="nav-text">Mes paiements</span>
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">Services</div>
+                    <a class="nav-item-ultra" data-page="demande" onclick="navToUltra('demande',this)">
+                        <span class="nav-icon-ultra">📨</span>
+                        <span class="nav-text-ultra">Demandes</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="reclamation" onclick="navToUltra('reclamation',this)">
+                        <span class="nav-icon-ultra">📢</span>
+                        <span class="nav-text-ultra">Réclamations</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="publications" onclick="navToUltra('publications',this)">
+                        <span class="nav-icon-ultra">📰</span>
+                        <span class="nav-text-ultra">Publications</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="sondage" onclick="navToUltra('sondage',this)">
+                        <span class="nav-icon-ultra">📊</span>
+                        <span class="nav-text-ultra">Sondages</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="questionnaire" onclick="navToUltra('questionnaire',this)">
+                        <span class="nav-icon-ultra">📝</span>
+                        <span class="nav-text-ultra">Questionnaires</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="objetperdu" onclick="navToUltra('objetperdu',this)">
+                        <span class="nav-icon-ultra">🔍</span>
+                        <span class="nav-text-ultra">Objets perdus</span>
+                    </a>
+                </div>
+
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">Finance</div>
+                    <a class="nav-item-ultra" data-page="paiements" onclick="navToUltra('paiements',this)">
+                        <span class="nav-icon-ultra">💰</span>
+                        <span class="nav-text-ultra">Mes paiements</span>
                     </a>
                 </div>
             </nav>
         </aside>
 
         <!-- MAIN WRAPPER -->
-        <div class="main-wrapper">
+        <div class="main-ultra">
             <!-- TOPBAR -->
-            <header class="topbar-premium">
-                <div class="topbar-left">
-                    <button class="btn-menu-toggle" onclick="toggleSidebarPremium()">☰</button>
-                    <div class="search-bar">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" class="search-input" placeholder="Rechercher...">
+            <header class="topbar-ultra">
+                <div class="topbar-left-ultra">
+                    <button class="btn-menu-ultra" onclick="toggleSidebarPremium()">☰</button>
+                    <div class="search-ultra">
+                        <span class="search-icon-ultra">🔍</span>
+                        <input type="text" class="search-input-ultra" placeholder="Rechercher...">
                     </div>
                 </div>
-                <div class="topbar-right">
-                    <button class="topbar-action">
+                <div class="topbar-right-ultra">
+                    <button class="topbar-btn-ultra">
                         <span>🔔</span>
                     </button>
-                    <div class="user-menu" onclick="logout()">
-                        <div class="user-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706)">ET</div>
-                        <div class="user-info">
-                            <div class="user-name">Étudiant</div>
-                            <div class="user-role">Étudiant</div>
+                    <div class="user-menu-ultra" onclick="logout()">
+                        <div class="user-avatar-ultra" style="background:linear-gradient(135deg,#F59E0B,#D97706)">ET</div>
+                        <div class="user-info-ultra">
+                            <div class="user-name-ultra">Étudiant</div>
+                            <div class="user-role-ultra">Étudiant</div>
                         </div>
                     </div>
                 </div>
             </header>
 
             <!-- CONTENT AREA -->
-            <main class="content-area">
+            <main class="content-ultra">
                 <!-- PAGE: DASHBOARD -->
                 <div class="erp-page" id="page-dashboard">
-                    <div class="page-header">
+                    <div class="page-header-ultra">
                         <div class="breadcrumb">
                             <span class="breadcrumb-item">🏠 Accueil</span>
                             <span class="breadcrumb-separator">›</span>
                             <span class="breadcrumb-item">Tableau de bord</span>
                         </div>
-                        <div class="page-title-row">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">Tableau de bord</h1>
-                                <p class="page-subtitle">Espace étudiant · Année 2024-2025</p>
+                                <h1 class="page-title-ultra">Tableau de bord</h1>
+                                <p class="page-subtitle-ultra">Espace étudiant · Année 2024-2025</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- STATS CARDS -->
-                    <div class="stats-grid">
-                        <div class="stat-card-premium">
+                    <div class="stats-grid-ultra">
+                        <div class="stat-card-ultra">
                             <div class="stat-card-header">
-                                <div class="stat-icon-wrapper warning">📚</div>
+                                <div class="stat-icon-ultra warning">📚</div>
                             </div>
-                            <div class="stat-value" id="statMatieres">0</div>
-                            <div class="stat-label">Matières inscrites</div>
+                            <div class="stat-value-ultra" id="statMatieres">0</div>
+                            <div class="stat-label-ultra">Matières inscrites</div>
                         </div>
 
-                        <div class="stat-card-premium">
+                        <div class="stat-card-ultra">
                             <div class="stat-card-header">
-                                <div class="stat-icon-wrapper success">📊</div>
+                                <div class="stat-icon-ultra success">📊</div>
                             </div>
-                            <div class="stat-value" id="statMoyenne">0.00</div>
-                            <div class="stat-label">Moyenne générale</div>
+                            <div class="stat-value-ultra" id="statMoyenne">0.00</div>
+                            <div class="stat-label-ultra">Moyenne générale</div>
                         </div>
 
-                        <div class="stat-card-premium">
+                        <div class="stat-card-ultra">
                             <div class="stat-card-header">
-                                <div class="stat-icon-wrapper primary">✅</div>
+                                <div class="stat-icon-ultra primary">✅</div>
                             </div>
-                            <div class="stat-value" id="statPresence">0%</div>
-                            <div class="stat-label">Taux de présence</div>
+                            <div class="stat-value-ultra" id="statPresence">0%</div>
+                            <div class="stat-label-ultra">Taux de présence</div>
                         </div>
 
-                        <div class="stat-card-premium">
+                        <div class="stat-card-ultra">
                             <div class="stat-card-header">
-                                <div class="stat-icon-wrapper danger">💰</div>
+                                <div class="stat-icon-ultra danger">💰</div>
                             </div>
-                            <div class="stat-value" id="statSolde">0 FCFA</div>
-                            <div class="stat-label">Solde dû</div>
+                            <div class="stat-value-ultra" id="statSolde">0 FCFA</div>
+                            <div class="stat-label-ultra">Solde dû</div>
                         </div>
                     </div>
 
                     <!-- CONTENT CARDS -->
                     <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px">
-                        <div class="card-premium">
-                            <div class="card-header-premium">
-                                <h3 class="card-title-premium">📈 Évolution de vos notes</h3>
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">📈 Évolution de vos notes</h3>
                             </div>
-                            <div class="card-body-premium">
+                            <div class="card-body-ultra">
                                 <canvas id="chartNotes" height="80"></canvas>
                             </div>
                         </div>
 
-                        <div class="card-premium">
-                            <div class="card-header-premium">
-                                <h3 class="card-title-premium">🎯 Répartition</h3>
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">🎯 Répartition</h3>
                             </div>
-                            <div class="card-body-premium">
+                            <div class="card-body-ultra">
                                 <canvas id="chartRepartition" height="200"></canvas>
                             </div>
                         </div>
                     </div>
 
                     <!-- RECENT NOTES -->
-                    <div class="card-premium">
-                        <div class="card-header-premium">
-                            <h3 class="card-title-premium">📝 Notes récentes</h3>
-                            <button class="btn-premium btn-outline" onclick="navToPremium('notes')">Voir tout</button>
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">📝 Notes récentes</h3>
+                            <button class="btn-ultra btn-secondary-ultra" onclick="navToUltra('notes')">Voir tout</button>
                         </div>
-                        <div class="card-body-premium" style="padding:0">
-                            <table class="table-premium">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
                                 <thead>
                                     <tr>
                                         <th>Matière</th>
@@ -228,21 +230,21 @@
 
                 <!-- PAGE: NOTES -->
                 <div class="erp-page" id="page-notes" style="display:none">
-                    <div class="page-header">
-                        <div class="page-title-row">
+                    <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">Mes notes</h1>
-                                <p class="page-subtitle">Consultez vos résultats académiques</p>
+                                <h1 class="page-title-ultra">Mes notes</h1>
+                                <p class="page-subtitle-ultra">Consultez vos résultats académiques</p>
                             </div>
-                            <div class="page-actions">
-                                <button class="btn-premium btn-outline">📥 Télécharger bulletin</button>
+                            <div class="page-actions-ultra">
+                                <button class="btn-ultra btn-secondary-ultra">📥 Télécharger bulletin</button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-premium">
-                        <div class="card-body-premium" style="padding:0">
-                            <table class="table-premium">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
                                 <thead>
                                     <tr>
                                         <th>Matière</th>
@@ -264,22 +266,22 @@
 
                 <!-- PAGE: EMPLOI -->
                 <div class="erp-page" id="page-emploi" style="display:none">
-                    <div class="page-header">
-                        <div class="page-title-row">
+                    <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">Emploi du temps</h1>
-                                <p class="page-subtitle">Votre programme de la semaine</p>
+                                <h1 class="page-title-ultra">Emploi du temps</h1>
+                                <p class="page-subtitle-ultra">Votre programme de la semaine</p>
                             </div>
-                            <div class="page-actions">
-                                <button class="btn-premium btn-outline" onclick="imprimerEmploi()">🖨️ Imprimer</button>
+                            <div class="page-actions-ultra">
+                                <button class="btn-ultra btn-secondary-ultra" onclick="imprimerEmploi()">🖨️ Imprimer</button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-premium">
-                        <div class="card-body-premium">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
                             <div style="overflow-x:auto">
-                                <table class="table-premium">
+                                <table class="table-ultra">
                                     <thead>
                                         <tr>
                                             <th>Jour</th>
@@ -301,11 +303,11 @@
 
                 <!-- PAGE: MES ENSEIGNANTS -->
                 <div class="erp-page" id="page-enseignants" style="display:none">
-                    <div class="page-header">
-                        <div class="page-title-row">
+                    <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">👨‍🏫 Mes enseignants</h1>
-                                <p class="page-subtitle">Liste de vos enseignants et leurs matières</p>
+                                <h1 class="page-title-ultra">👨‍🏫 Mes enseignants</h1>
+                                <p class="page-subtitle-ultra">Liste de vos enseignants et leurs matières</p>
                             </div>
                         </div>
                     </div>
@@ -317,21 +319,21 @@
 
                 <!-- PAGE: SUPPORTS -->
                 <div class="erp-page" id="page-supports" style="display:none">
-                    <div class="page-header">
-                        <div class="page-title-row">
+                    <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">Supports de cours</h1>
-                                <p class="page-subtitle">Documents pédagogiques mis à disposition par vos enseignants</p>
+                                <h1 class="page-title-ultra">Supports de cours</h1>
+                                <p class="page-subtitle-ultra">Documents pédagogiques mis à disposition par vos enseignants</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Filtres -->
-                    <div class="card-premium" style="margin-bottom:24px">
-                        <div class="card-body-premium">
+                    <div class="card-ultra" style="margin-bottom:24px">
+                        <div class="card-body-ultra">
                             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
                                 <div>
-                                    <input type="text" id="searchSupports" class="search-input-ultra" placeholder="🔍 Rechercher..." 
+                                    <input type="text" id="searchSupports" class="search-input-ultra-ultra" placeholder="🔍 Rechercher..." 
                                         style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff"
                                         onkeyup="filtrerSupports()">
                                 </div>
@@ -350,10 +352,10 @@
                     </div>
 
                     <!-- Liste des supports -->
-                    <div class="card-premium">
-                        <div class="card-body-premium">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
                             <div style="overflow-x:auto">
-                                <table class="table-premium">
+                                <table class="table-ultra">
                                     <thead>
                                         <tr>
                                             <th>Titre</th>
@@ -375,11 +377,11 @@
 
                 <!-- PAGE: PAIEMENTS -->
                 <div class="erp-page" id="page-paiements" style="display:none">
-                    <div class="page-header">
-                        <div class="page-title-row">
+                    <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">Mes paiements</h1>
-                                <p class="page-subtitle">Historique de vos paiements et situation financière</p>
+                                <h1 class="page-title-ultra">Mes paiements</h1>
+                                <p class="page-subtitle-ultra">Historique de vos paiements et situation financière</p>
                             </div>
                         </div>
                     </div>
@@ -401,13 +403,13 @@
                     </div>
 
                     <!-- Historique des paiements -->
-                    <div class="card-premium">
-                        <div class="card-header-premium">
-                            <h3 class="card-title-premium">💰 Historique des paiements</h3>
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">💰 Historique des paiements</h3>
                         </div>
-                        <div class="card-body-premium">
+                        <div class="card-body-ultra">
                             <div style="overflow-x:auto">
-                                <table class="table-premium">
+                                <table class="table-ultra">
                                     <thead>
                                         <tr>
                                             <th>N° Reçu</th>
@@ -430,9 +432,9 @@
 
                 <!-- PAGE: ABSENCE -->
                 <div class="erp-page" id="page-absence" style="display:none">
-                    <div class="page-header">
-                        <h1 class="page-title">📋 Mes absences</h1>
-                        <p class="page-subtitle">Suivi de vos absences et présences</p>
+                    <div class="page-header-ultra">
+                        <h1 class="page-title-ultra">📋 Mes absences</h1>
+                        <p class="page-subtitle-ultra">Suivi de vos absences et présences</p>
                     </div>
                     
                     <!-- Stats absences -->
@@ -440,31 +442,31 @@
                         <div class="stat-card-ultra success-ultra">
                             <div class="stat-icon-ultra">✅</div>
                             <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statPresences">0</div>
-                                <div class="stat-label-ultra">Présences</div>
+                                <div class="stat-value-ultra-ultra" id="statPresences">0</div>
+                                <div class="stat-label-ultra-ultra">Présences</div>
                             </div>
                         </div>
                         <div class="stat-card-ultra warning-ultra">
                             <div class="stat-icon-ultra">⚠️</div>
                             <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statAbsences">0</div>
-                                <div class="stat-label-ultra">Absences</div>
+                                <div class="stat-value-ultra-ultra" id="statAbsences">0</div>
+                                <div class="stat-label-ultra-ultra">Absences</div>
                             </div>
                         </div>
                         <div class="stat-card-ultra primary-ultra">
                             <div class="stat-icon-ultra">📊</div>
                             <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statTauxPresence">0%</div>
-                                <div class="stat-label-ultra">Taux de présence</div>
+                                <div class="stat-value-ultra-ultra" id="statTauxPresence">0%</div>
+                                <div class="stat-label-ultra-ultra">Taux de présence</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-premium">
-                        <div class="card-header-premium">
-                            <h3 class="card-title-premium">Historique des absences</h3>
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">Historique des absences</h3>
                         </div>
-                        <div class="card-body-premium" style="padding:0">
+                        <div class="card-body-ultra" style="padding:0">
                             <table class="table-ultra">
                                 <thead>
                                     <tr>
@@ -485,9 +487,9 @@
 
                 <!-- PAGE: COURS -->
                 <div class="erp-page" id="page-cours" style="display:none">
-                    <div class="page-header">
-                        <h1 class="page-title">📚 Mes cours</h1>
-                        <p class="page-subtitle">Liste de vos cours et matières</p>
+                    <div class="page-header-ultra">
+                        <h1 class="page-title-ultra">📚 Mes cours</h1>
+                        <p class="page-subtitle-ultra">Liste de vos cours et matières</p>
                     </div>
                     
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
@@ -499,16 +501,16 @@
 
                 <!-- PAGE: EVALUATION -->
                 <div class="erp-page" id="page-evaluation" style="display:none">
-                    <div class="page-header">
-                        <h1 class="page-title">✍️ Évaluations</h1>
-                        <p class="page-subtitle">Calendrier des évaluations et examens</p>
+                    <div class="page-header-ultra">
+                        <h1 class="page-title-ultra">✍️ Évaluations</h1>
+                        <p class="page-subtitle-ultra">Calendrier des évaluations et examens</p>
                     </div>
                     
-                    <div class="card-premium">
-                        <div class="card-header-premium">
-                            <h3 class="card-title-premium">Prochaines évaluations</h3>
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">Prochaines évaluations</h3>
                         </div>
-                        <div class="card-body-premium" style="padding:0">
+                        <div class="card-body-ultra" style="padding:0">
                             <table class="table-ultra">
                                 <thead>
                                     <tr>
@@ -529,17 +531,17 @@
 
                 <!-- PAGE: DEMANDE -->
                 <div class="erp-page" id="page-demande" style="display:none">
-                    <div class="page-header">
+                    <div class="page-header-ultra">
                         <div>
-                            <h1 class="page-title">📨 Mes demandes</h1>
-                            <p class="page-subtitle">Soumettre et suivre vos demandes administratives et pédagogiques</p>
+                            <h1 class="page-title-ultra">📨 Mes demandes</h1>
+                            <p class="page-subtitle-ultra">Soumettre et suivre vos demandes administratives et pédagogiques</p>
                         </div>
-                        <button class="btn-premium btn-primary" onclick="openModalDemande()">+ Nouvelle demande</button>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModalDemande()">+ Nouvelle demande</button>
                     </div>
                     
-                    <div class="card-premium">
-                        <div class="card-body-premium" style="padding:0">
-                            <table class="table-premium">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
@@ -560,9 +562,9 @@
 
                 <!-- PAGE: PUBLICATIONS -->
                 <div class="erp-page" id="page-publications" style="display:none">
-                    <div class="page-header">
-                        <h1 class="page-title">📰 Publications</h1>
-                        <p class="page-subtitle">Actualités et annonces de l'université</p>
+                    <div class="page-header-ultra">
+                        <h1 class="page-title-ultra">📰 Publications</h1>
+                        <p class="page-subtitle-ultra">Actualités et annonces de l'université</p>
                     </div>
                     
                     <div id="listePublications" style="display:grid;gap:20px">
@@ -572,9 +574,9 @@
 
                 <!-- PAGE: SONDAGE -->
                 <div class="erp-page" id="page-sondage" style="display:none">
-                    <div class="page-header">
-                        <h1 class="page-title">📊 Sondages</h1>
-                        <p class="page-subtitle">Participez aux sondages de l'université</p>
+                    <div class="page-header-ultra">
+                        <h1 class="page-title-ultra">📊 Sondages</h1>
+                        <p class="page-subtitle-ultra">Participez aux sondages de l'université</p>
                     </div>
                     
                     <div id="listeSondages" style="display:grid;gap:20px">
@@ -584,9 +586,9 @@
 
                 <!-- PAGE: QUESTIONNAIRE -->
                 <div class="erp-page" id="page-questionnaire" style="display:none">
-                    <div class="page-header">
-                        <h1 class="page-title">📝 Questionnaires</h1>
-                        <p class="page-subtitle">Évaluez vos enseignants et cours</p>
+                    <div class="page-header-ultra">
+                        <h1 class="page-title-ultra">📝 Questionnaires</h1>
+                        <p class="page-subtitle-ultra">Évaluez vos enseignants et cours</p>
                     </div>
                     
                     <div id="listeQuestionnaires" style="display:grid;gap:20px">
@@ -596,17 +598,17 @@
 
                 <!-- PAGE: RECLAMATION -->
                 <div class="erp-page" id="page-reclamation" style="display:none">
-                    <div class="page-header">
+                    <div class="page-header-ultra">
                         <div>
-                            <h1 class="page-title">📢 Mes réclamations</h1>
-                            <p class="page-subtitle">Suivez vos réclamations sur les notes</p>
+                            <h1 class="page-title-ultra">📢 Mes réclamations</h1>
+                            <p class="page-subtitle-ultra">Suivez vos réclamations sur les notes</p>
                         </div>
-                        <button class="btn-premium btn-primary" onclick="openModalReclamation()">+ Nouvelle réclamation</button>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModalReclamation()">+ Nouvelle réclamation</button>
                     </div>
                     
-                    <div class="card-premium">
-                        <div class="card-body-premium" style="padding:0">
-                            <table class="table-premium">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
@@ -627,17 +629,17 @@
 
                 <!-- PAGE: OBJET PERDU -->
                 <div class="erp-page" id="page-objetperdu" style="display:none">
-                    <div class="page-header">
+                    <div class="page-header-ultra">
                         <div>
-                            <h1 class="page-title">🔍 Objets perdus</h1>
-                            <p class="page-subtitle">Déclarer ou rechercher des objets perdus</p>
+                            <h1 class="page-title-ultra">🔍 Objets perdus</h1>
+                            <p class="page-subtitle-ultra">Déclarer ou rechercher des objets perdus</p>
                         </div>
-                        <button class="btn-premium btn-primary" onclick="openModalObjetPerdu()">+ Déclarer un objet</button>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModalObjetPerdu()">+ Déclarer un objet</button>
                     </div>
                     
-                    <div class="card-premium">
-                        <div class="card-body-premium" style="padding:0">
-                            <table class="table-premium">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
@@ -721,8 +723,8 @@
                     </div>
                 </div>
                 <div class="modal-footer-premium">
-                    <button type="button" class="btn-premium btn-outline" onclick="closeModalReclamation()">Annuler</button>
-                    <button type="submit" class="btn-premium btn-primary" style="background:linear-gradient(135deg,#f59e0b,#d97706)">📤 Envoyer la réclamation</button>
+                    <button type="button" class="btn-ultra btn-secondary-ultra" onclick="closeModalReclamation()">Annuler</button>
+                    <button type="submit" class="btn-ultra btn-primary-ultra" style="background:linear-gradient(135deg,#f59e0b,#d97706)">📤 Envoyer la réclamation</button>
                 </div>
             </form>
         </div>
@@ -784,8 +786,8 @@
                     </div>
                 </div>
                 <div class="modal-footer-premium">
-                    <button type="button" class="btn-premium btn-outline" onclick="closeModalDemande()">Annuler</button>
-                    <button type="submit" class="btn-premium btn-primary">📤 Envoyer</button>
+                    <button type="button" class="btn-ultra btn-secondary-ultra" onclick="closeModalDemande()">Annuler</button>
+                    <button type="submit" class="btn-ultra btn-primary-ultra">📤 Envoyer</button>
                 </div>
             </form>
         </div>
@@ -829,8 +831,8 @@
                     </div>
                 </div>
                 <div class="modal-footer-premium">
-                    <button type="button" class="btn-premium btn-outline" onclick="closeModalObjetPerdu()">Annuler</button>
-                    <button type="submit" class="btn-premium btn-primary">📤 Déclarer</button>
+                    <button type="button" class="btn-ultra btn-secondary-ultra" onclick="closeModalObjetPerdu()">Annuler</button>
+                    <button type="submit" class="btn-ultra btn-primary-ultra">📤 Déclarer</button>
                 </div>
             </form>
         </div>
@@ -846,12 +848,12 @@
     <script>
         // PAS de vérification au chargement - on fait confiance à la redirection depuis index.html
         
-        function navToPremium(page, el) {
+        function navToUltra(page, el) {
             document.querySelectorAll('.erp-page').forEach(p => p.style.display = 'none');
             const target = document.getElementById('page-' + page);
             if (target) target.style.display = 'block';
             
-            document.querySelectorAll('.nav-item-premium').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.nav-item-ultra').forEach(i => i.classList.remove('active'));
             if (el) el.classList.add('active');
 
             // Charger les données spécifiques à la page
@@ -1023,7 +1025,7 @@
                             <td style="font-weight:700;color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'}">${n.moyenne ? n.moyenne.toFixed(2) : '-'}</td>
                             <td><span style="background:${n.moyenne >= 10 ? 'var(--success-50)' : 'var(--danger-50)'};color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'};padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">${n.moyenne >= 10 ? 'Validé' : 'Non validé'}</span></td>
                             <td>
-                                <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="ouvrirReclamation(${n.id}, '${n.matiere_nom}', '${n.note_cc || ''}', '${n.note_examen || ''}')">
+                                <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="ouvrirReclamation(${n.id}, '${n.matiere_nom}', '${n.note_cc || ''}', '${n.note_examen || ''}')">
                                     ⚠️ Signaler
                                 </button>
                             </td>
@@ -1040,7 +1042,7 @@
                             <td style="font-weight:700;color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'}">${n.moyenne ? n.moyenne.toFixed(2) : '-'}</td>
                             <td><span style="background:${n.moyenne >= 10 ? 'var(--success-50)' : 'var(--danger-50)'};color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'};padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">${n.moyenne >= 10 ? 'Validé' : 'Non validé'}</span></td>
                             <td>
-                                <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="ouvrirReclamation(${n.id}, '${n.matiere_nom}', '${n.note_cc || ''}', '${n.note_examen || ''}')">
+                                <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="ouvrirReclamation(${n.id}, '${n.matiere_nom}', '${n.note_cc || ''}', '${n.note_examen || ''}')">
                                     ⚠️ Signaler
                                 </button>
                             </td>
@@ -1216,7 +1218,7 @@
                             </span>
                         </td>
                         <td data-label="Action">
-                            <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="telechargerRecu(${p.id})">
+                            <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="telechargerRecu(${p.id})">
                                 📥 Reçu
                             </button>
                         </td>
@@ -1325,7 +1327,7 @@
                     <td data-label="Type"><span class="badge-ultra primary">${typeLabels[s.type_support] || s.type_support}</span></td>
                     <td data-label="Date">${formatDate(s.date_depot)}</td>
                     <td data-label="Action">
-                        <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="telechargerSupport(${s.id})">
+                        <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="telechargerSupport(${s.id})">
                             📥 Télécharger
                         </button>
                     </td>
@@ -1406,8 +1408,8 @@
                 
                 console.log('✅ Affichage de', mesEnseignants.length, 'enseignant(s)');
                 container.innerHTML = mesEnseignants.map(e => `
-                    <div class="card-premium" style="transition:all 0.3s ease">
-                        <div class="card-body-premium">
+                    <div class="card-ultra" style="transition:all 0.3s ease">
+                        <div class="card-body-ultra">
                             <!-- Avatar et nom -->
                             <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.05)">
                                 <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#F59E0B,#D97706);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:0 4px 12px rgba(245,158,11,0.3)">
@@ -1435,7 +1437,7 @@
                             
                             <!-- Actions -->
                             <div style="display:flex;gap:8px">
-                                <button class="btn-premium btn-outline" style="flex:1;padding:10px;font-size:13px" onclick="contacterEnseignant(${e.id}, '${e.nom.replace(/'/g, "\\'")}')">
+                                <button class="btn-ultra btn-secondary-ultra" style="flex:1;padding:10px;font-size:13px" onclick="contacterEnseignant(${e.id}, '${e.nom.replace(/'/g, "\\'")}')">
                                     📨 Contacter
                                 </button>
                             </div>
@@ -1451,7 +1453,7 @@
                         <p style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:20px">
                             Impossible de charger la liste des enseignants.
                         </p>
-                        <button class="btn-premium btn-primary" onclick="chargerMesEnseignants()">
+                        <button class="btn-ultra btn-primary-ultra" onclick="chargerMesEnseignants()">
                             🔄 Réessayer
                         </button>
                     </div>
@@ -1512,7 +1514,7 @@
                         <td style="font-weight:600">${d.objet}</td>
                         <td><span class="badge-ultra ${statutColors[d.statut]}">${d.statut.replace('_', ' ')}</span></td>
                         <td>
-                            <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="voirDetailDemande(${d.id})">
+                            <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="voirDetailDemande(${d.id})">
                                 👁️ Voir
                             </button>
                         </td>
@@ -1559,7 +1561,7 @@
                         <td><span class="badge-ultra ${statutColors[r.statut]}">${r.statut.replace('_', ' ')}</span></td>
                         <td>
                             ${r.reponse_enseignant ? `
-                                <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:12px;" onclick="voirReponseReclamation(${r.id})">
+                                <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="voirReponseReclamation(${r.id})">
                                     👁️ Voir réponse
                                 </button>
                             ` : `
@@ -1586,8 +1588,8 @@
                 }
 
                 container.innerHTML = publications.map(p => `
-                    <div class="card-premium">
-                        <div class="card-body-premium">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
                             <div style="display:flex;align-items:start;gap:16px;margin-bottom:12px">
                                 <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#a855f7);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">
                                     📰
@@ -1601,7 +1603,7 @@
                                 </div>
                             </div>
                             <p style="color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:12px">${p.contenu}</p>
-                            ${p.fichier ? `<a href="${p.fichier}" target="_blank" class="btn-premium btn-outline" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px">📎 Pièce jointe</a>` : ''}
+                            ${p.fichier ? `<a href="${p.fichier}" target="_blank" class="btn-ultra btn-secondary-ultra" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px">📎 Pièce jointe</a>` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -1631,8 +1633,8 @@
                 const html = sondages.map(s => {
                     console.log('Génération HTML pour:', s.titre);
                     return `
-                    <div class="card-premium">
-                        <div class="card-body-premium">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
                             <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:16px">
                                 <div>
                                     <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px">${s.titre}</h3>
@@ -1643,7 +1645,7 @@
                             <div style="display:flex;gap:12px;font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px">
                                 <span>📅 ${formatDate(s.date_debut)} - ${formatDate(s.date_fin)}</span>
                             </div>
-                            ${s.statut === 'actif' ? `<button class="btn-premium btn-primary" onclick="participerSondage(${s.id})">Participer</button>` : ''}
+                            ${s.statut === 'actif' ? `<button class="btn-ultra btn-primary-ultra" onclick="participerSondage(${s.id})">Participer</button>` : ''}
                         </div>
                     </div>
                 `;
@@ -1670,8 +1672,8 @@
                 }
 
                 container.innerHTML = evaluations.map(e => `
-                    <div class="card-premium">
-                        <div class="card-body-premium">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra">
                             <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:16px">
                                 <div>
                                     <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px">${e.titre}</h3>
@@ -1683,7 +1685,7 @@
                             <div style="display:flex;gap:12px;font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px">
                                 <span>📅 ${formatDate(e.date_debut)} - ${formatDate(e.date_fin)}</span>
                             </div>
-                            ${e.actif ? `<button class="btn-premium btn-primary" onclick="remplirQuestionnaire(${e.id})">Remplir le questionnaire</button>` : ''}
+                            ${e.actif ? `<button class="btn-ultra btn-primary-ultra" onclick="remplirQuestionnaire(${e.id})">Remplir le questionnaire</button>` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -1930,7 +1932,7 @@
                             <!-- Contenu dynamique -->
                         </div>
                         <div class="modal-footer-premium">
-                            <button type="button" class="btn-premium btn-outline" onclick="closeModalDetailDemande()">Fermer</button>
+                            <button type="button" class="btn-ultra btn-secondary-ultra" onclick="closeModalDetailDemande()">Fermer</button>
                         </div>
                     </div>
                 </div>
@@ -2094,7 +2096,7 @@
                             <!-- Contenu dynamique -->
                         </div>
                         <div class="modal-footer-premium">
-                            <button type="button" class="btn-premium btn-outline" onclick="closeModalDetailReclamation()">Fermer</button>
+                            <button type="button" class="btn-ultra btn-secondary-ultra" onclick="closeModalDetailReclamation()">Fermer</button>
                         </div>
                     </div>
                 </div>
@@ -2292,7 +2294,7 @@
             const toast = document.createElement('div');
             const colors = { success: '#059669', danger: '#dc2626', warning: '#d97706', info: '#2563eb' };
             toast.style.cssText = `background:rgba(10,14,39,0.95);border-radius:12px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:12px;min-width:280px;max-width:400px;border-left:4px solid ${colors[type]};animation:slideIn .3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)`;
-            toast.innerHTML = `<span style="font-size:18px">${icons[type]}</span><span style="font-size:14px;font-weight:500;flex:1;color:#fff">${message}</span><span onclick="this.parentElement.remove()" style="cursor:pointer;color:#94a3b8;flex-shrink:0;font-size:18px">✕</span>`;
+            toast.innerHTML = `<span style="font-size:18px">${icons[type]}</span><span style="font-size:14px;font-weight:500;flex:1;color:#fff">${message}</span><span onclick="this.parentElement.remove()" style="cursor:poPoppins;color:#94a3b8;flex-shrink:0;font-size:18px">✕</span>`;
             container.appendChild(toast);
             setTimeout(() => { if (toast.parentElement) toast.remove(); }, 3500);
         }

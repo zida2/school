@@ -1,158 +1,160 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Super Administrateur – ERP Universitaire</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Super Administrateur – UniERP BF Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Le CSS du thème est chargé dynamiquement par theme-toggle.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="js/theme-toggle.js?v=2.0"></script>
+    <script src="js/theme-toggle.js?v=3.0"></script>
 </head>
 
 <body class="dark-theme">
 
-    <div class="app-container">
+    <div class="app-wrapper">
         <!-- SIDEBAR -->
-        <aside class="sidebar-premium" id="sidebar">
+        <aside class="sidebar-ultra" id="sidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo" style="background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 0 30px rgba(220,38,38,0.4)">⚙️</div>
-                <div class="sidebar-brand">
-                    <div class="sidebar-brand-name">UniERP BF</div>
-                    <div class="sidebar-brand-tagline">Super Admin</div>
+                <div class="logo-ultra">
+                    <div class="logo-icon-ultra">⚙️</div>
+                    <div class="logo-text-ultra">
+                        <div class="logo-name-ultra">UniERP BF</div>
+                        <div class="logo-tag-ultra">Super Admin</div>
+                    </div>
                 </div>
             </div>
 
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-section-label">Système</div>
-                    <a class="nav-item-premium active" data-page="dashboard" onclick="navToPremium('dashboard',this)">
-                        <span class="nav-icon">📊</span>
-                        <span class="nav-text">Vue d'ensemble</span>
+            <nav class="sidebar-nav-ultra">
+                <div class="nav-section-ultra">
+                    <div class="nav-label-ultra">Système</div>
+                    <a class="nav-item-ultra active" data-page="dashboard" onclick="navToUltra('dashboard',this)">
+                        <span class="nav-icon-ultra">📊</span>
+                        <span class="nav-text-ultra">Vue d'ensemble</span>
                     </a>
-                    <a class="nav-item-premium" data-page="universites" onclick="navToPremium('universites',this)">
-                        <span class="nav-icon">🏛️</span>
-                        <span class="nav-text">Universités clientes</span>
+                    <a class="nav-item-ultra" data-page="universites" onclick="navToUltra('universites',this)">
+                        <span class="nav-icon-ultra">🏛️</span>
+                        <span class="nav-text-ultra">Universités clientes</span>
                     </a>
-                    <a class="nav-item-premium" data-page="licences" onclick="navToPremium('licences',this)">
-                        <span class="nav-icon">🔑</span>
-                        <span class="nav-text">Gestion licences</span>
+                    <a class="nav-item-ultra" data-page="licences" onclick="navToUltra('licences',this)">
+                        <span class="nav-icon-ultra">🔑</span>
+                        <span class="nav-text-ultra">Gestion licences</span>
                     </a>
-                    <a class="nav-item-premium" data-page="monitoring" onclick="navToPremium('monitoring',this)">
-                        <span class="nav-icon">📡</span>
-                        <span class="nav-text">Monitoring système</span>
+                    <a class="nav-item-ultra" data-page="monitoring" onclick="navToUltra('monitoring',this)">
+                        <span class="nav-icon-ultra">📡</span>
+                        <span class="nav-text-ultra">Monitoring système</span>
                     </a>
-                    <a class="nav-item-premium" data-page="utilisateurs" onclick="navToPremium('utilisateurs',this)">
-                        <span class="nav-icon">👥</span>
-                        <span class="nav-text">Utilisateurs globaux</span>
+                    <a class="nav-item-ultra" data-page="utilisateurs" onclick="navToUltra('utilisateurs',this)">
+                        <span class="nav-icon-ultra">👥</span>
+                        <span class="nav-text-ultra">Utilisateurs globaux</span>
                     </a>
                 </div>
             </nav>
         </aside>
 
         <!-- MAIN WRAPPER -->
-        <div class="main-wrapper">
+        <div class="main-ultra">
             <!-- TOPBAR -->
-            <header class="topbar-premium">
-                <div class="topbar-left">
-                    <button class="btn-menu-toggle" onclick="toggleSidebarPremium()">☰</button>
-                    <div class="search-bar">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" class="search-input" placeholder="Rechercher...">
+            <header class="topbar-ultra">
+                <div class="topbar-left-ultra">
+                    <button class="btn-menu-ultra" onclick="toggleSidebarPremium()">☰</button>
+                    <div class="search-ultra">
+                        <span class="search-icon-ultra">🔍</span>
+                        <input type="text" class="search-input-ultra" placeholder="Rechercher...">
                     </div>
                 </div>
-                <div class="topbar-right">
-                    <button class="topbar-action">
+                <div class="topbar-right-ultra">
+                    <button class="topbar-btn-ultra">
                         <span>🔔</span>
                     </button>
-                    <div class="user-menu" onclick="logout()">
-                        <div class="user-avatar" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">SA</div>
-                        <div class="user-info">
-                            <div class="user-name">Super Admin</div>
-                            <div class="user-role">Accès total système</div>
+                    <div class="user-menu-ultra" onclick="logout()">
+                        <div class="user-avatar-ultra" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">SA</div>
+                        <div class="user-info-ultra">
+                            <div class="user-name-ultra">Super Admin</div>
+                            <div class="user-role-ultra">Accès total système</div>
                         </div>
                     </div>
                 </div>
             </header>
 
             <!-- CONTENT AREA -->
-            <main class="content-area">
+            <main class="content-ultra">
 
                 <!-- DASHBOARD SUPER ADMIN -->
                 <div class="erp-page" id="page-dashboard">
-                    <div class="page-header">
+                    <div class="page-header-ultra">
                         <div class="breadcrumb">
                             <span class="breadcrumb-item">🏠 Accueil</span>
                             <span class="breadcrumb-separator">›</span>
                             <span class="breadcrumb-item">Vue d'ensemble</span>
                         </div>
-                        <div class="page-title-row">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">Vue d'ensemble</h1>
-                                <p class="page-subtitle">Monitoring global du système ERP · Burkina Faso</p>
+                                <h1 class="page-title-ultra">Vue d'ensemble</h1>
+                                <p class="page-subtitle-ultra">Monitoring global du système ERP · Burkina Faso</p>
                             </div>
-                            <div class="page-actions">
-                                <button class="btn-premium btn-danger">⚠️ SUPER ADMIN</button>
+                            <div class="page-actions-ultra">
+                                <button class="btn-ultra btn-danger">⚠️ SUPER ADMIN</button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Global stats -->
-                    <div class="stats-grid">
-                        <div class="stat-card-premium">
+                    <div class="stats-grid-ultra">
+                        <div class="stat-card-ultra">
                             <div class="stat-card-header">
-                                <div class="stat-icon-wrapper danger">🏛️</div>
+                                <div class="stat-icon-ultra danger">🏛️</div>
                                 <div class="stat-trend positive">
                                     <span class="trend-icon">↑</span>
                                     <span class="trend-value">+1</span>
                                 </div>
                             </div>
-                            <div class="stat-value" id="stat-univs">4</div>
-                            <div class="stat-label">Universités clientes</div>
+                            <div class="stat-value-ultra" id="stat-univs">4</div>
+                            <div class="stat-label-ultra">Universités clientes</div>
                         </div>
 
-                        <div class="stat-card-premium">
+                        <div class="stat-card-ultra">
                             <div class="stat-card-header">
-                                <div class="stat-icon-wrapper primary">🎓</div>
+                                <div class="stat-icon-ultra primary">🎓</div>
                                 <div class="stat-trend positive">
                                     <span class="trend-icon">↑</span>
                                     <span class="trend-value">+340</span>
                                 </div>
                             </div>
-                            <div class="stat-value" id="stat-etudiants">8,260</div>
-                            <div class="stat-label">Étudiants total</div>
+                            <div class="stat-value-ultra" id="stat-etudiants">8,260</div>
+                            <div class="stat-label-ultra">Étudiants total</div>
                         </div>
 
-                        <div class="stat-card-premium">
+                        <div class="stat-card-ultra">
                             <div class="stat-card-header">
-                                <div class="stat-icon-wrapper success">💰</div>
+                                <div class="stat-icon-ultra success">💰</div>
                             </div>
-                            <div class="stat-value" id="stat-revenus">0 FCFA</div>
-                            <div class="stat-label">Revenus SaaS</div>
+                            <div class="stat-value-ultra" id="stat-revenus">0 FCFA</div>
+                            <div class="stat-label-ultra">Revenus SaaS</div>
                         </div>
 
-                        <div class="stat-card-premium">
+                        <div class="stat-card-ultra">
                             <div class="stat-card-header">
-                                <div class="stat-icon-wrapper warning">🔑</div>
+                                <div class="stat-icon-ultra warning">🔑</div>
                                 <div class="stat-trend negative">
                                     <span class="trend-icon">↓</span>
                                     <span class="trend-value">1 exp.</span>
                                 </div>
                             </div>
-                            <div class="stat-value" id="stat-licences">3</div>
-                            <div class="stat-label">Licences actives</div>
+                            <div class="stat-value-ultra" id="stat-licences">3</div>
+                            <div class="stat-label-ultra">Licences actives</div>
                         </div>
                     </div>
 
                     <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px">
                         <!-- Universités -->
-                        <div class="card-premium">
-                            <div class="card-header-premium">
-                                <h3 class="card-title-premium">🏛️ Statut des universités</h3>
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">🏛️ Statut des universités</h3>
                             </div>
-                            <div class="card-body-premium" style="padding:0">
-                                <table class="table-premium" id="tableUnivStatus">
+                            <div class="card-body-ultra" style="padding:0">
+                                <table class="table-ultra" id="tableUnivStatus">
                                     <thead>
                                         <tr>
                                             <th>Université</th>
@@ -167,41 +169,41 @@
                         </div>
 
                         <!-- Monitoring -->
-                        <div class="card-premium">
-                            <div class="card-header-premium">
-                                <h3 class="card-title-premium">📡 Santé du système</h3>
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">📡 Santé du système</h3>
                             </div>
-                            <div class="card-body-premium" id="systemHealth"></div>
+                            <div class="card-body-ultra" id="systemHealth"></div>
                         </div>
                     </div>
 
                     <!-- Revenus SaaS -->
-                    <div class="card-premium">
-                        <div class="card-header-premium">
-                            <h3 class="card-title-premium">💵 Revenus SaaS – Licences</h3>
-                            <button class="btn-premium btn-outline" onclick="showToast('Rapport mensuel exporté','success')">📥 Exporter</button>
+                    <div class="card-ultra">
+                        <div class="card-header-ultra">
+                            <h3 class="card-title-ultra">💵 Revenus SaaS – Licences</h3>
+                            <button class="btn-ultra btn-secondary-ultra" onclick="showToast('Rapport mensuel exporté','success')">📥 Exporter</button>
                         </div>
-                        <div class="card-body-premium" id="revenuChart"></div>
+                        <div class="card-body-ultra" id="revenuChart"></div>
                     </div>
                 </div>
 
                 <!-- UNIVERSITÉS -->
                 <div class="erp-page" id="page-universites" style="display:none">
-                    <div class="page-header">
-                        <div class="page-title-row">
+                    <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">Universités Clientes</h1>
-                                <p class="page-subtitle">Gestion des établissements partenaires</p>
+                                <h1 class="page-title-ultra">Universités Clientes</h1>
+                                <p class="page-subtitle-ultra">Gestion des établissements partenaires</p>
                             </div>
-                            <div class="page-actions">
-                                <button class="btn-premium btn-primary" onclick="openModalPremium('modalUniv')">+ Nouvelle université</button>
+                            <div class="page-actions-ultra">
+                                <button class="btn-ultra btn-primary-ultra" onclick="openModalPremium('modalUniv')">+ Nouvelle université</button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-premium">
-                        <div class="card-body-premium" style="padding:0">
-                            <table class="table-premium" id="tableUniversites">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra" id="tableUniversites">
                                 <thead>
                                     <tr>
                                         <th>Code</th>
@@ -222,14 +224,14 @@
 
                 <!-- LICENCES -->
                 <div class="erp-page" id="page-licences" style="display:none">
-                    <div class="page-header">
-                        <div class="page-title-row">
+                    <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">Gestion des Licences</h1>
-                                <p class="page-subtitle">Plans et tarification SaaS</p>
+                                <h1 class="page-title-ultra">Gestion des Licences</h1>
+                                <p class="page-subtitle-ultra">Plans et tarification SaaS</p>
                             </div>
-                            <div class="page-actions">
-                                <button class="btn-premium btn-primary" onclick="openModalPremium('modalLicence')">+ Nouvelle licence</button>
+                            <div class="page-actions-ultra">
+                                <button class="btn-ultra btn-primary-ultra" onclick="openModalPremium('modalLicence')">+ Nouvelle licence</button>
                             </div>
                         </div>
                     </div>
@@ -238,51 +240,51 @@
 
                 <!-- MONITORING -->
                 <div class="erp-page" id="page-monitoring" style="display:none">
-                    <div class="page-header">
-                        <div class="page-title-row">
+                    <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">Monitoring Système</h1>
-                                <p class="page-subtitle">Surveillance en temps réel</p>
+                                <h1 class="page-title-ultra">Monitoring Système</h1>
+                                <p class="page-subtitle-ultra">Surveillance en temps réel</p>
                             </div>
-                            <div class="page-actions">
-                                <button class="btn-premium btn-outline" onclick="refreshMonitoring()">🔄 Rafraîchir</button>
+                            <div class="page-actions-ultra">
+                                <button class="btn-ultra btn-secondary-ultra" onclick="refreshMonitoring()">🔄 Rafraîchir</button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="stats-grid" id="monitorStats"></div>
+                    <div class="stats-grid-ultra" id="monitorStats"></div>
 
                     <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-top:24px">
-                        <div class="card-premium">
-                            <div class="card-header-premium">
-                                <h3 class="card-title-premium">📋 Logs système récents</h3>
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">📋 Logs système récents</h3>
                             </div>
-                            <div class="card-body-premium" style="font-family:monospace;font-size:12px;max-height:300px;overflow-y:auto;background:rgba(0,0,0,0.3);color:#10b981;border-radius:8px;padding:14px" id="systemLogs"></div>
+                            <div class="card-body-ultra" style="font-family:monospace;font-size:12px;max-height:300px;overflow-y:auto;background:rgba(0,0,0,0.3);color:#10b981;border-radius:8px;padding:14px" id="systemLogs"></div>
                         </div>
 
-                        <div class="card-premium">
-                            <div class="card-header-premium">
-                                <h3 class="card-title-premium">💾 Sauvegardes automatiques</h3>
+                        <div class="card-ultra">
+                            <div class="card-header-ultra">
+                                <h3 class="card-title-ultra">💾 Sauvegardes automatiques</h3>
                             </div>
-                            <div class="card-body-premium" id="backupList"></div>
+                            <div class="card-body-ultra" id="backupList"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- UTILISATEURS -->
                 <div class="erp-page" id="page-utilisateurs" style="display:none">
-                    <div class="page-header">
-                        <div class="page-title-row">
+                    <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title">Utilisateurs Globaux</h1>
-                                <p class="page-subtitle">Vue d'ensemble des comptes</p>
+                                <h1 class="page-title-ultra">Utilisateurs Globaux</h1>
+                                <p class="page-subtitle-ultra">Vue d'ensemble des comptes</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-premium">
-                        <div class="card-body-premium" style="padding:0">
-                            <table class="table-premium">
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
                                 <thead>
                                     <tr>
                                         <th>Université</th>
@@ -341,8 +343,8 @@
                 </div>
             </div>
             <div class="modal-footer-premium">
-                <button class="btn-premium btn-outline" onclick="closeModalPremium('modalUniv')">Annuler</button>
-                <button class="btn-premium btn-primary" onclick="saveUniv()">💾 Créer</button>
+                <button class="btn-ultra btn-secondary-ultra" onclick="closeModalPremium('modalUniv')">Annuler</button>
+                <button class="btn-ultra btn-primary-ultra" onclick="saveUniv()">💾 Créer</button>
             </div>
         </div>
     </div>
@@ -380,12 +382,12 @@
                 <div class="form-group-premium">
                     <label class="form-label-premium">Clé de licence générée</label>
                     <div style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:12px;font-family:monospace;font-size:14px;color:#818cf8;letter-spacing:1px" id="licenceKey">Cliquez sur "Générer" pour créer une clé</div>
-                    <button class="btn-premium btn-outline" style="margin-top:12px" onclick="generateLicenceKey()">🔄 Générer clé</button>
+                    <button class="btn-ultra btn-secondary-ultra" style="margin-top:12px" onclick="generateLicenceKey()">🔄 Générer clé</button>
                 </div>
             </div>
             <div class="modal-footer-premium">
-                <button class="btn-premium btn-outline" onclick="closeModalPremium('modalLicence')">Annuler</button>
-                <button class="btn-premium btn-primary" onclick="saveLicence()">✅ Activer</button>
+                <button class="btn-ultra btn-secondary-ultra" onclick="closeModalPremium('modalLicence')">Annuler</button>
+                <button class="btn-ultra btn-primary-ultra" onclick="saveLicence()">✅ Activer</button>
             </div>
         </div>
     </div>
@@ -432,15 +434,15 @@
 
         function renderHeader() {
             const u = currentData.user;
-            document.querySelector('.user-name').textContent = `${u.prenom} ${u.nom}`;
+            document.querySelector('.user-name-ultra').textContent = `${u.prenom} ${u.nom}`;
             const initials = (u.prenom?.[0] || '') + (u.nom?.[0] || '');
-            document.querySelector('.user-avatar').textContent = initials || 'SA';
+            document.querySelector('.user-avatar-ultra').textContent = initials || 'SA';
         }
 
-        function navToPremium(page, el) {
+        function navToUltra(page, el) {
             document.querySelectorAll('.erp-page').forEach(p => p.style.display = 'none');
             document.getElementById('page-' + page).style.display = 'block';
-            document.querySelectorAll('.nav-item-premium').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.nav-item-ultra').forEach(i => i.classList.remove('active'));
             if (el) el.classList.add('active');
         }
 
@@ -475,7 +477,7 @@
                 </div>`).join('');
 
             document.getElementById('revenuChart').innerHTML = `
-                <div style="font-size:32px;font-weight:800;color:#10b981;font-family:'Outfit',sans-serif;margin-bottom:20px;text-shadow:0 0 20px rgba(16,185,129,0.3)">
+                <div style="font-size:32px;font-weight:800;color:#10b981;font-family:'Poppins',sans-serif;margin-bottom:20px;text-shadow:0 0 20px rgba(16,185,129,0.3)">
                   ${formatCFA(s.total_encaisse)}<span style="font-size:14px;font-weight:400;color:#94a3b8;margin-left:8px">total</span>
                 </div>
                 ${currentData.univs.slice(0, 5).map(u => `
@@ -496,8 +498,8 @@
                   <td style="font-size:13px">Illimité</td>
                   <td><span style="background:rgba(16,185,129,0.2);color:#10b981;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">✓ Actif</span></td>
                   <td><div style="display:flex;gap:8px">
-                    <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:13px" onclick="showToast('Admin accès simulé','info')">🔑 Accéder</button>
-                    <button class="btn-premium btn-outline" style="padding:6px 12px;font-size:13px" onclick="toggleUniv(${u.id})">⏸️</button>
+                    <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:13px" onclick="showToast('Admin accès simulé','info')">🔑 Accéder</button>
+                    <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:13px" onclick="toggleUniv(${u.id})">⏸️</button>
                   </div></td>
                 </tr>`).join('');
         }
@@ -524,14 +526,14 @@
                 PRO: { prix: '350 000 FCFA/an', couleur: '#f59e0b', cap: 'Illimité', foncs: ['Toutes fonctions STANDARD', 'Mobile Money intégré', 'API REST & Webhooks', 'Support prioritaire 24/7'] },
             };
             document.getElementById('licencesGrid').innerHTML = Object.entries(types).map(([key, t]) => `
-                <div class="card-premium" style="border-top:3px solid ${t.couleur}">
-                  <div class="card-body-premium">
-                    <div style="font-size:24px;font-weight:800;color:${t.couleur};font-family:'Outfit',sans-serif;margin-bottom:6px;text-shadow:0 0 20px ${t.couleur}40">${key}</div>
+                <div class="card-ultra" style="border-top:3px solid ${t.couleur}">
+                  <div class="card-body-ultra">
+                    <div style="font-size:24px;font-weight:800;color:${t.couleur};font-family:'Poppins',sans-serif;margin-bottom:6px;text-shadow:0 0 20px ${t.couleur}40">${key}</div>
                     <div style="font-size:20px;font-weight:700;margin-bottom:6px;color:#e2e8f0">${t.prix}</div>
                     <div style="font-size:12px;color:#94a3b8;margin-bottom:16px">${t.cap}</div>
                     ${t.foncs.map(f => `<div style="font-size:13px;margin-bottom:8px;display:flex;gap:8px;color:#cbd5e1"><span style="color:${t.couleur}">✓</span>${f}</div>`).join('')}
                     <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(148,163,184,0.1)">
-                        <button class="btn-premium btn-outline w-full" onclick="openModalPremium('modalLicence')">Gérer les clés</button>
+                        <button class="btn-ultra btn-secondary-ultra w-full" onclick="openModalPremium('modalLicence')">Gérer les clés</button>
                     </div>
                   </div>
                 </div>`).join('');
@@ -553,12 +555,12 @@
                 { icon: '👥', val: 'Connecté', lbl: 'Statut Session', cls: 'primary' },
                 { icon: '💾', val: 'Active', lbl: 'Base de données', cls: 'warning' },
             ].map(s => `
-                <div class="stat-card-premium">
+                <div class="stat-card-ultra">
                     <div class="stat-card-header">
-                        <div class="stat-icon-wrapper ${s.cls}">${s.icon}</div>
+                        <div class="stat-icon-ultra ${s.cls}">${s.icon}</div>
                     </div>
-                    <div class="stat-value" style="font-size:24px">${s.val}</div>
-                    <div class="stat-label">${s.lbl}</div>
+                    <div class="stat-value-ultra" style="font-size:24px">${s.val}</div>
+                    <div class="stat-label-ultra">${s.lbl}</div>
                 </div>`).join('');
 
             document.getElementById('systemLogs').innerHTML = `<div style="margin-bottom:6px"><span style="color:#64748b">[${new Date().toLocaleTimeString()}]</span> <span style="color:#10b981">[OK]</span> Dashboard chargé avec succès.</div>`;
@@ -596,7 +598,7 @@
     <script src="js/mock-data.js"></script>
     <script src="js/api.js"></script>
     <script src="js/fix-navigation.js"></script>
-    <script src="js/theme-toggle.js?v=2.0"></script>
+    <script src="js/theme-toggle.js?v=3.0"></script>
 </body>
 
 </html>

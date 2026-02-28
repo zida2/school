@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -7,16 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Le CSS du thème est chargé dynamiquement par theme-toggle.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="js/theme-toggle.js?v=2.0"></script>
+    <script src="js/theme-toggle.js?v=3.0"></script>
 </head>
 <body class="dark-theme">
 
     <div class="app-wrapper">
         <!-- SIDEBAR -->
-        <aside class="sidebar-ultra" id="sidebar" style="border-right-color: rgba(16, 185, 129, 0.1)">
+        <aside class="sidebar-ultra" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo-ultra">
-                    <div class="logo-icon-ultra" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%)">👨‍🏫</div>
+                    <div class="logo-icon-ultra">👨‍🏫</div>
                     <div class="logo-text-ultra">
                         <div class="logo-name-ultra">UniERP BF</div>
                         <div class="logo-tag-ultra">Espace Enseignant</div>
@@ -69,22 +69,22 @@
         <main class="main-ultra">
             <!-- TOPBAR -->
             <header class="topbar-ultra">
-                <div class="topbar-left-ultra">
+                <div class="topbar-left-ultra-ultra">
                     <button class="btn-menu-ultra" onclick="toggleSidebarUltra()">☰</button>
                     <div class="search-ultra">
-                        <span class="search-icon-ultra">🔍</span>
-                        <input type="text" class="search-input-ultra" placeholder="Rechercher...">
+                        <span class="search-icon-ultra-ultra">🔍</span>
+                        <input type="text" class="search-input-ultra-ultra" placeholder="Rechercher...">
                     </div>
                 </div>
-                <div class="topbar-right-ultra">
+                <div class="topbar-right-ultra-ultra">
                     <button class="topbar-btn-ultra">
                         <span>🔔</span>
                     </button>
-                    <div class="user-menu-ultra" onclick="logout()">
-                        <div class="user-avatar-ultra" style="background: linear-gradient(135deg, #10b981, #059669)">PR</div>
-                        <div class="user-info-ultra">
-                            <div class="user-name-ultra">Professeur</div>
-                            <div class="user-role-ultra">Enseignant</div>
+                    <div class="user-menu-ultra-ultra" onclick="logout()">
+                        <div class="user-avatar-ultra-ultra" style="background: linear-gradient(135deg, #10b981, #059669)">PR</div>
+                        <div class="user-info-ultra-ultra">
+                            <div class="user-name-ultra-ultra">Professeur</div>
+                            <div class="user-role-ultra-ultra">Enseignant</div>
                         </div>
                     </div>
                 </div>
@@ -94,44 +94,44 @@
             <div class="content-ultra">
                 <!-- PAGE: DASHBOARD -->
                 <div class="page-ultra" id="page-dashboard">
-                    <div class="page-header-ultra">
+                    <div class="page-header-ultra-ultra">
                         <div>
-                            <h1 class="page-title-ultra">Tableau de bord</h1>
-                            <p class="page-subtitle-ultra">Espace enseignant · Année 2024-2025</p>
+                            <h1 class="page-title-ultra-ultra">Tableau de bord</h1>
+                            <p class="page-subtitle-ultra-ultra">Espace enseignant · Année 2024-2025</p>
                         </div>
                     </div>
 
                     <!-- STATS -->
-                    <div class="stats-grid-ultra">
+                    <div class="stats-grid-ultra-ultra">
                         <div class="stat-card-ultra success-ultra">
                             <div class="stat-icon-ultra">📚</div>
                             <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statMatieres">0</div>
-                                <div class="stat-label-ultra">Matières enseignées</div>
+                                <div class="stat-value-ultra-ultra" id="statMatieres">0</div>
+                                <div class="stat-label-ultra-ultra">Matières enseignées</div>
                             </div>
                         </div>
 
                         <div class="stat-card-ultra primary-ultra">
                             <div class="stat-icon-ultra">🎓</div>
                             <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statEtudiants">0</div>
-                                <div class="stat-label-ultra">Étudiants</div>
+                                <div class="stat-value-ultra-ultra" id="statEtudiants">0</div>
+                                <div class="stat-label-ultra-ultra">Étudiants</div>
                             </div>
                         </div>
 
                         <div class="stat-card-ultra warning-ultra">
                             <div class="stat-icon-ultra">📝</div>
                             <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statNotes">0</div>
-                                <div class="stat-label-ultra">Notes saisies</div>
+                                <div class="stat-value-ultra-ultra" id="statNotes">0</div>
+                                <div class="stat-label-ultra-ultra">Notes saisies</div>
                             </div>
                         </div>
 
                         <div class="stat-card-ultra primary-ultra">
                             <div class="stat-icon-ultra">📅</div>
                             <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statCours">0</div>
-                                <div class="stat-label-ultra">Cours cette semaine</div>
+                                <div class="stat-value-ultra-ultra" id="statCours">0</div>
+                                <div class="stat-label-ultra-ultra">Cours cette semaine</div>
                             </div>
                         </div>
                     </div>
@@ -160,13 +160,13 @@
 
                 <!-- PAGE: SUPPORTS -->
                 <div class="page-ultra" id="page-supports" style="display:none">
-                    <div class="page-header-ultra">
+                    <div class="page-header-ultra-ultra">
                         <div>
-                            <h1 class="page-title-ultra">Supports de cours</h1>
-                            <p class="page-subtitle-ultra">Gérez vos documents pédagogiques</p>
+                            <h1 class="page-title-ultra-ultra">Supports de cours</h1>
+                            <p class="page-subtitle-ultra-ultra">Gérez vos documents pédagogiques</p>
                         </div>
-                        <div class="page-actions-ultra">
-                            <button class="btn-ultra btn-primary-ultra" onclick="openModal('modalSupport')" style="background: linear-gradient(135deg, #10b981, #059669)">+ Ajouter un support</button>
+                        <div class="page-actions-ultra-ultra">
+                            <button class="btn-ultra btn-primary-ultra-ultra" onclick="openModal('modalSupport')" style="background: linear-gradient(135deg, #10b981, #059669)">+ Ajouter un support</button>
                         </div>
                     </div>
 
@@ -192,9 +192,9 @@
 
                 <!-- OTHER PAGES -->
                 <div class="page-ultra" id="page-emploi" style="display:none">
-                    <div class="page-header-ultra">
-                        <h1 class="page-title-ultra">📅 Emploi du temps</h1>
-                        <p class="page-subtitle-ultra">Votre planning de la semaine</p>
+                    <div class="page-header-ultra-ultra">
+                        <h1 class="page-title-ultra-ultra">📅 Emploi du temps</h1>
+                        <p class="page-subtitle-ultra-ultra">Votre planning de la semaine</p>
                     </div>
                     <div class="card-ultra">
                         <div class="card-body-ultra">
@@ -221,10 +221,10 @@
 
                 <!-- PAGE: SAISIE DES NOTES -->
                 <div class="page-ultra" id="page-notes" style="display:none">
-                    <div class="page-header-ultra">
+                    <div class="page-header-ultra-ultra">
                         <div>
-                            <h1 class="page-title-ultra">Saisie des Notes</h1>
-                            <p class="page-subtitle-ultra">Saisissez les notes CC et Examen pour vos étudiants</p>
+                            <h1 class="page-title-ultra-ultra">Saisie des Notes</h1>
+                            <p class="page-subtitle-ultra-ultra">Saisissez les notes CC et Examen pour vos étudiants</p>
                         </div>
                     </div>
 
@@ -281,7 +281,7 @@
                                     <button class="btn-ultra btn-success-ultra" onclick="sauvegarderToutesLesNotes()" style="background: linear-gradient(135deg, #10b981, #059669)">
                                         💾 Sauvegarder tout
                                     </button>
-                                    <button class="btn-ultra btn-primary-ultra" onclick="publierNotesMatiere()" style="background: linear-gradient(135deg, #6366f1, #4f46e5)">
+                                    <button class="btn-ultra btn-primary-ultra-ultra" onclick="publierNotesMatiere()" style="background: linear-gradient(135deg, #6366f1, #4f46e5)">
                                         📤 Publier les notes
                                     </button>
                                 </div>
@@ -315,10 +315,10 @@
 
                 <!-- PAGE: PRÉSENCES -->
                 <div class="page-ultra" id="page-presences" style="display:none">
-                    <div class="page-header-ultra">
+                    <div class="page-header-ultra-ultra">
                         <div>
-                            <h1 class="page-title-ultra">Gestion des Présences</h1>
-                            <p class="page-subtitle-ultra">Enregistrez les présences de vos étudiants</p>
+                            <h1 class="page-title-ultra-ultra">Gestion des Présences</h1>
+                            <p class="page-subtitle-ultra-ultra">Enregistrez les présences de vos étudiants</p>
                         </div>
                     </div>
 
@@ -380,7 +380,7 @@
                                     <button class="btn-ultra" onclick="marquerTousAbsents()" style="background: linear-gradient(135deg, #ef4444, #dc2626)">
                                         ❌ Tous absents
                                     </button>
-                                    <button class="btn-ultra btn-primary-ultra" onclick="sauvegarderPresences()" style="background: linear-gradient(135deg, #6366f1, #4f46e5)">
+                                    <button class="btn-ultra btn-primary-ultra-ultra" onclick="sauvegarderPresences()" style="background: linear-gradient(135deg, #6366f1, #4f46e5)">
                                         💾 Sauvegarder
                                     </button>
                                 </div>
@@ -413,10 +413,10 @@
                 </div>
 
                 <div class="page-ultra" id="page-etudiants" style="display:none">
-                    <div class="page-header-ultra">
+                    <div class="page-header-ultra-ultra">
                         <div>
-                            <h1 class="page-title-ultra">Mes étudiants</h1>
-                            <p class="page-subtitle-ultra">Étudiants inscrits dans vos matières</p>
+                            <h1 class="page-title-ultra-ultra">Mes étudiants</h1>
+                            <p class="page-subtitle-ultra-ultra">Étudiants inscrits dans vos matières</p>
                         </div>
                     </div>
 
@@ -425,7 +425,7 @@
                         <div class="card-body-ultra">
                             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
                                 <div>
-                                    <input type="text" id="searchEtudiantsProf" class="search-input-ultra" placeholder="🔍 Rechercher..." 
+                                    <input type="text" id="searchEtudiantsProf" class="search-input-ultra-ultra" placeholder="🔍 Rechercher..." 
                                         style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff"
                                         onkeyup="filtrerEtudiantsProf()">
                                 </div>
@@ -486,10 +486,10 @@
 
                 <!-- PAGE: RÉCLAMATIONS -->
                 <div class="page-ultra" id="page-reclamations" style="display:none">
-                    <div class="page-header-ultra">
+                    <div class="page-header-ultra-ultra">
                         <div>
-                            <h1 class="page-title-ultra">Réclamations sur les notes</h1>
-                            <p class="page-subtitle-ultra">Réclamations de vos étudiants</p>
+                            <h1 class="page-title-ultra-ultra">Réclamations sur les notes</h1>
+                            <p class="page-subtitle-ultra-ultra">Réclamations de vos étudiants</p>
                         </div>
                     </div>
 
@@ -600,7 +600,7 @@
                                 
                                 <div class="modal-footer-ultra">
                                     <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalTraiterReclamation')">Annuler</button>
-                                    <button type="submit" class="btn-ultra btn-primary-ultra">Envoyer</button>
+                                    <button type="submit" class="btn-ultra btn-primary-ultra-ultra">Envoyer</button>
                                 </div>
                             </form>
                         </div>
@@ -655,7 +655,7 @@
                     </div>
                     <div class="modal-footer-ultra">
                         <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalSupport')">Annuler</button>
-                        <button type="submit" class="btn-ultra btn-primary-ultra" style="background: linear-gradient(135deg, #10b981, #059669)">Publier</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra-ultra" style="background: linear-gradient(135deg, #10b981, #059669)">Publier</button>
                     </div>
                 </form>
             </div>
@@ -684,7 +684,7 @@
                             <label class="form-label-ultra">Type *</label>
                             <select name="type_evaluation" id="editEvalType" required class="form-input-ultra">
                                 <option value="devoir">📝 Devoir</option>
-                                <option value="interrogation">📄 Interrogation</option>
+                                <option value="Poppinsrogation">📄 Poppinsrogation</option>
                                 <option value="tp">🔬 TP</option>
                                 <option value="projet">💼 Projet</option>
                                 <option value="examen">📋 Examen</option>
@@ -725,7 +725,7 @@
 
                     <div class="modal-footer-ultra">
                         <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalEvaluation')">Annuler</button>
-                        <button type="submit" class="btn-ultra btn-primary-ultra" style="background: linear-gradient(135deg, #10b981, #059669)">Enregistrer</button>
+                        <button type="submit" class="btn-ultra btn-primary-ultra-ultra" style="background: linear-gradient(135deg, #10b981, #059669)">Enregistrer</button>
                     </div>
                 </form>
             </div>
@@ -748,7 +748,7 @@
                     <div>
                         <span id="progressNotes" style="color:rgba(255,255,255,0.7)">0/0 notes saisies</span>
                     </div>
-                    <button class="btn-ultra btn-primary-ultra" onclick="sauvegarderToutesNotesEval()" style="background: linear-gradient(135deg, #10b981, #059669)">
+                    <button class="btn-ultra btn-primary-ultra-ultra" onclick="sauvegarderToutesNotesEval()" style="background: linear-gradient(135deg, #10b981, #059669)">
                         💾 Sauvegarder tout
                     </button>
                 </div>
@@ -839,7 +839,7 @@
             const toast = document.createElement('div');
             const colors = { success: '#059669', danger: '#dc2626', warning: '#d97706', info: '#2563eb' };
             toast.style.cssText = `background:rgba(10,14,39,0.95);border-radius:12px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:12px;min-width:280px;max-width:400px;border-left:4px solid ${colors[type]};animation:slideIn .3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)`;
-            toast.innerHTML = `<span style="font-size:18px">${icons[type]}</span><span style="font-size:14px;font-weight:500;flex:1;color:#fff">${message}</span><span onclick="this.parentElement.remove()" style="cursor:pointer;color:#94a3b8;flex-shrink:0;font-size:18px">✕</span>`;
+            toast.innerHTML = `<span style="font-size:18px">${icons[type]}</span><span style="font-size:14px;font-weight:500;flex:1;color:#fff">${message}</span><span onclick="this.parentElement.remove()" style="cursor:poPoppins;color:#94a3b8;flex-shrink:0;font-size:18px">✕</span>`;
             container.appendChild(toast);
             setTimeout(() => { if (toast.parentElement) toast.remove(); }, 3500);
         }
@@ -1166,7 +1166,7 @@
         let notesEvalEnCours = {};
 
         async function chargerMatieresNotes() {
-            // Cette fonction n'est plus utilisée - remplacée par la nouvelle interface de saisie
+            // Cette fonction n'est plus utilisée - remplacée par la nouvelle Poppinsface de saisie
             console.log('chargerMatieresNotes: fonction obsolète, ignorée');
         }
 
@@ -1507,7 +1507,7 @@
 
             const typeIcons = {
                 devoir: '📝',
-                interrogation: '📄',
+                Poppinsrogation: '📄',
                 tp: '🔬',
                 projet: '💼',
                 examen: '📋',
@@ -1540,7 +1540,7 @@
                             ${eval.description ? `<div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:8px">${eval.description}</div>` : ''}
                         </div>
                         <div style="display:flex;gap:8px">
-                            <button class="btn-ultra btn-primary-ultra btn-sm-ultra" onclick="ouvrirSaisieNotes(${eval.id})" style="background: linear-gradient(135deg, #10b981, #059669)">
+                            <button class="btn-ultra btn-primary-ultra-ultra btn-sm-ultra" onclick="ouvrirSaisieNotes(${eval.id})" style="background: linear-gradient(135deg, #10b981, #059669)">
                                 📝 Saisir notes
                             </button>
                             <button class="btn-ultra btn-ghost-ultra btn-sm-ultra" onclick="modifierEvaluation(${eval.id})" title="Modifier">
@@ -1671,7 +1671,7 @@
                 // Afficher les infos de l'évaluation
                 const typeIcons = {
                     devoir: '📝',
-                    interrogation: '📄',
+                    Poppinsrogation: '📄',
                     tp: '🔬',
                     projet: '💼',
                     examen: '📋',
@@ -1724,7 +1724,7 @@
                                 <input type="checkbox" 
                                     ${absent ? 'checked' : ''}
                                     onchange="toggleAbsent(${e.id}, this.checked)"
-                                    style="width:20px;height:20px;cursor:pointer">
+                                    style="width:20px;height:20px;cursor:poPoppins">
                             </td>
                             <td>
                                 <input type="text" 
@@ -2232,11 +2232,11 @@
                         <td style="font-weight:600">${e.matricule}</td>
                         <td>${e.nom}</td>
                         <td style="text-align:center">
-                            <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer">
+                            <label style="display:inline-flex;align-items:center;gap:8px;cursor:poPoppins">
                                 <input type="checkbox" 
                                     ${presence.present ? 'checked' : ''}
                                     onchange="togglePresence(${e.id}, this.checked)"
-                                    style="width:20px;height:20px;cursor:pointer">
+                                    style="width:20px;height:20px;cursor:poPoppins">
                                 <span style="font-size:13px">${presence.present ? '✅ Présent' : '❌ Absent'}</span>
                             </label>
                         </td>
@@ -2245,7 +2245,7 @@
                                 ${presence.justifie ? 'checked' : ''}
                                 ${presence.present ? 'disabled' : ''}
                                 onchange="toggleJustifie(${e.id}, this.checked)"
-                                style="width:20px;height:20px;cursor:pointer">
+                                style="width:20px;height:20px;cursor:poPoppins">
                         </td>
                         <td>
                             <input type="text" 
