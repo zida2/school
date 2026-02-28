@@ -257,9 +257,15 @@ class AnneeAcademiqueViewSet(viewsets.ModelViewSet):
 class FiliereViewSet(viewsets.ModelViewSet):
     queryset = Filiere.objects.all()
     serializer_class = FiliereSerializer
-    permission_classes = [IsAdminOrSuperAdmin]
     filter_backends = [filters.SearchFilter]
     search_fields = ['nom', 'code']
+    
+    def get_permissions(self):
+        # Lecture autorisée pour tous les utilisateurs authentifiés
+        if self.action in ['list', 'retrieve']:
+            return [permissions.IsAuthenticated()]
+        # Modification réservée aux admins
+        return [IsAdminOrSuperAdmin()]
 
 
 # ===== MATIÈRE =====
@@ -419,12 +425,20 @@ class NoteViewSet(viewsets.ModelViewSet):
         if self.request.user.role == 'etudiant':
             try:
                 qs = qs.filter(etudiant=self.request.user.etudiant, publie=True)
-            except: qs = qs.none()
+            except Exception as e:
+                print(f"Erreur filtre étudiant: {e}")
+                qs = qs.none()
         # Enseignant voit les notes de ses matières
         elif self.request.user.role in ['professeur', 'enseignant']:
             try:
-                qs = qs.filter(matiere__enseignant=self.request.user.enseignant)
-            except: qs = qs.none()
+                if not hasattr(self.request.user, 'enseignant'):
+                    print(f"Utilisateur {self.request.user.email} n'a pas d'enseignant associé")
+                    qs = qs.none()
+                else:
+                    qs = qs.filter(matiere__enseignant=self.request.user.enseignant)
+            except Exception as e:
+                print(f"Erreur filtre enseignant: {e}")
+                qs = qs.none()
 
         return qs
 
