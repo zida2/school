@@ -214,8 +214,6 @@ class NoteSerializer(serializers.ModelSerializer):
     matiere_code = serializers.CharField(source='matiere.code', read_only=True)
     coefficient = serializers.IntegerField(source='matiere.coefficient', read_only=True)
     moyenne = serializers.SerializerMethodField()
-    mention = serializers.SerializerMethodField()
-    valide = serializers.SerializerMethodField()
 
     class Meta:
         model = Note
@@ -226,12 +224,6 @@ class NoteSerializer(serializers.ModelSerializer):
 
     def get_moyenne(self, obj):
         return obj.moyenne
-
-    def get_mention(self, obj):
-        return obj.mention
-
-    def get_valide(self, obj):
-        return obj.valide
 
 
 # ===== ÉVALUATION =====
