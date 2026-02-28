@@ -1792,3 +1792,213 @@ body.light-theme .badge-ultra.danger {
     background-size: 1000px 100%;
     animation: shimmer 2s infinite;
 }
+
+
+/* ===== CORRECTIONS VISIBILITÉ THÈME LIGHT ===== */
+
+/* Textes des stats */
+body.light-theme .stat-value-ultra,
+body.light-theme .stat-value {
+    color: #0F172A !important;
+}
+
+body.light-theme .stat-label-ultra,
+body.light-theme .stat-label {
+    color: #64748B !important;
+}
+
+/* Textes des cards */
+body.light-theme .card-title-ultra,
+body.light-theme .card-title-premium {
+    color: #0F172A !important;
+}
+
+body.light-theme .card-body-ultra,
+body.light-theme .card-body-premium {
+    color: #0F172A !important;
+}
+
+/* Textes de la page */
+body.light-theme .page-title-ultra,
+body.light-theme .page-title {
+    color: #0F172A !important;
+}
+
+body.light-theme .page-subtitle-ultra,
+body.light-theme .page-subtitle {
+    color: #64748B !important;
+}
+
+/* Breadcrumb */
+body.light-theme .breadcrumb,
+body.light-theme .breadcrumb-item {
+    color: #64748B !important;
+}
+
+/* Tables */
+body.light-theme .table-ultra th,
+body.light-theme .table-premium th {
+    color: #64748B !important;
+}
+
+body.light-theme .table-ultra td,
+body.light-theme .table-premium td {
+    color: #0F172A !important;
+}
+
+/* Boutons */
+body.light-theme .btn-ultra,
+body.light-theme .btn-premium {
+    color: #0F172A !important;
+}
+
+body.light-theme .btn-primary-ultra,
+body.light-theme .btn-primary {
+    color: #FFFFFF !important;
+}
+
+/* Topbar */
+body.light-theme .btn-menu-ultra,
+body.light-theme .topbar-btn-ultra,
+body.light-theme .topbar-action {
+    color: #0F172A !important;
+}
+
+/* Tous les textes génériques */
+body.light-theme p,
+body.light-theme span,
+body.light-theme div {
+    color: inherit;
+}
+
+/* Forcer la couleur sur les éléments de contenu */
+body.light-theme .content-ultra,
+body.light-theme .content-area {
+    color: #0F172A !important;
+}
+
+/* Stats premium */
+body.light-theme .stat-card-premium {
+    background: #FFFFFF !important;
+    border: 1px solid #E0F2FE !important;
+}
+
+body.light-theme .stat-icon-wrapper {
+    opacity: 1 !important;
+}
+
+/* Graphiques et charts */
+body.light-theme .chart-container,
+body.light-theme canvas {
+    background: transparent !important;
+}
+
+/* Modals */
+body.light-theme .modal-premium,
+body.light-theme .modal-content-ultra {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+}
+
+body.light-theme .modal-title-premium,
+body.light-theme .modal-header-premium h3 {
+    color: #0F172A !important;
+}
+
+/* Formulaires */
+body.light-theme .form-input-premium,
+body.light-theme .form-input-ultra {
+    color: #0F172A !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E0F2FE !important;
+}
+
+body.light-theme .form-label-premium,
+body.light-theme .form-label-ultra {
+    color: #0F172A !important;
+}
+
+/* Badges et tags */
+body.light-theme .nav-badge-ultra {
+    background: linear-gradient(135deg, #0891B2, #14B8A6) !important;
+    color: #FFFFFF !important;
+}
+
+/* Trend indicators */
+body.light-theme .stat-trend {
+    opacity: 1 !important;
+}
+
+body.light-theme .stat-trend.up,
+body.light-theme .stat-trend.positive {
+    color: #10b981 !important;
+}
+
+body.light-theme .stat-trend.down,
+body.light-theme .stat-trend.negative {
+    color: #ef4444 !important;
+}
+
+/* Icônes */
+body.light-theme .stat-icon-ultra {
+    opacity: 1 !important;
+}
+
+/* Liens */
+body.light-theme a {
+    color: #0891B2 !important;
+}
+
+body.light-theme a:hover {
+    color: #0e7490 !important;
+}
+
+/* Texte secondaire */
+body.light-theme .text-secondary,
+body.light-theme .text-muted {
+    color: #64748B !important;
+}
+
+/* Headers de section */
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4,
+body.light-theme h5,
+body.light-theme h6 {
+    color: #0F172A !important;
+}
+
+/* Liste et détails */
+body.light-theme .detail-row strong {
+    color: #64748B !important;
+}
+
+body.light-theme .detail-row {
+    color: #0F172A !important;
+    border-bottom: 1px solid #E0F2FE !important;
+}
+
+/* Notifications */
+body.light-theme .notification-dot {
+    background: #ef4444 !important;
+    border-color: #FFFFFF !important;
+}
+
+/* Séparateurs */
+body.light-theme hr {
+    border-color: #E0F2FE !important;
+}
+
+/* Scrollbar pour thème light */
+body.light-theme ::-webkit-scrollbar-track {
+    background: #F0F9FF !important;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+    background: #BAE6FD !important;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: #0891B2 !important;
+}
