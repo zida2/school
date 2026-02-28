@@ -186,6 +186,7 @@ class EtudiantSerializer(serializers.ModelSerializer):
 
 class EtudiantCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False, default='etudiant123')
+    matricule = serializers.CharField(required=False)
 
     class Meta:
         model = Etudiant
@@ -194,6 +195,16 @@ class EtudiantCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop('password', 'etudiant123')
+        
+        # Générer le matricule automatiquement s'il n'est pas fourni
+        if 'matricule' not in validated_data or not validated_data['matricule']:
+            import datetime
+            annee = datetime.datetime.now().year
+            filiere_code = validated_data.get('filiere').code[:3].upper() if validated_data.get('filiere') else 'ETU'
+            # Compter les étudiants existants pour générer un numéro unique
+            count = Etudiant.objects.filter(matricule__startswith=f"{annee}{filiere_code}").count() + 1
+            validated_data['matricule'] = f"{annee}{filiere_code}{count:04d}"
+        
         user = Utilisateur.objects.create_user(
             email=validated_data['email'],
             password=password,
