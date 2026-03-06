@@ -352,44 +352,6 @@ class ReclamationNote(models.Model):
         return f"Réclamation #{self.id} - {self.etudiant.matricule} - {self.note.matiere.nom}"
 
 
-# ===== PAIEMENT =====
-class Paiement(models.Model):
-    MODES = [
-        ('especes','Espèces'),
-        ('orange_money','Mobile Money (Orange)'),
-        ('moov_money','Mobile Money (Moov)'),
-        ('virement','Virement Bancaire'),
-        ('cheque','Chèque'),
-    ]
-    TYPES = [
-        ('inscription','Inscription'),
-        ('reinscription','Réinscription'),
-        ('acompte','Acompte'),
-        ('solde','Solde'),
-        ('autre','Autre'),
-    ]
-    STATUTS = [('valide','Validé'),('en_attente','En attente'),('rejete','Rejeté')]
-
-    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='paiements')
-    annee_academique = models.ForeignKey(AnneeAcademique, on_delete=models.CASCADE, related_name='paiements')
-    numero_recu = models.CharField(max_length=30, unique=True)
-    montant = models.DecimalField(max_digits=12, decimal_places=0)
-    mode = models.CharField(max_length=30, choices=MODES)
-    type_paiement = models.CharField(max_length=20, choices=TYPES, default='inscription')
-    statut = models.CharField(max_length=20, choices=STATUTS, default='valide')
-    reference_mobile = models.CharField(max_length=50, blank=True)
-    date_paiement = models.DateField()
-    enregistre_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True)
-    observations = models.TextField(blank=True)
-    date_creation = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-date_creation']
-
-    def __str__(self):
-        return f"{self.numero_recu} – {self.etudiant.matricule} – {self.montant} FCFA"
-
-
 # ===== EMPLOI DU TEMPS =====
 class EmploiDuTemps(models.Model):
     JOURS = [
@@ -906,63 +868,6 @@ class HistoriqueNote(models.Model):
         if self.note_cc_apres is not None and self.note_examen_apres is not None:
             return round(float(self.note_cc_apres) * 0.4 + float(self.note_examen_apres) * 0.6, 2)
         return None
-
-
-# ===== GESTION FINANCIÈRE =====
-class RappelPaiement(models.Model):
-    """Historique des rappels de paiement envoyés aux étudiants"""
-    TYPES_RAPPEL = [
-        ('rappel_1', 'Premier rappel (J+7)'),
-        ('rappel_2', 'Deuxième rappel (J+15)'),
-        ('rappel_3', 'Dernier rappel (J+30)'),
-        ('mesure', 'Mesure administrative (J+45)'),
-    ]
-    
-    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='rappels_paiement')
-    type_rappel = models.CharField(max_length=20, choices=TYPES_RAPPEL)
-    montant_du = models.DecimalField(max_digits=12, decimal_places=0)
-    date_envoi = models.DateTimeField(auto_now_add=True)
-    envoye_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True)
-    lu = models.BooleanField(default=False)
-    date_lecture = models.DateTimeField(null=True, blank=True)
-    message = models.TextField()
-    
-    class Meta:
-        verbose_name = 'Rappel de Paiement'
-        verbose_name_plural = 'Rappels de Paiement'
-        ordering = ['-date_envoi']
-        indexes = [
-            models.Index(fields=['etudiant', '-date_envoi']),
-        ]
-    
-    def __str__(self):
-        return f"{self.get_type_rappel_display()} - {self.etudiant.matricule} - {self.montant_du} FCFA"
-
-
-class LettreRappel(models.Model):
-    """Lettres officielles de rappel générées pour les étudiants"""
-    TYPES_LETTRE = [
-        ('rappel_amiable', 'Rappel amiable'),
-        ('mise_en_demeure', 'Mise en demeure'),
-        ('convocation', 'Convocation administrative'),
-    ]
-    
-    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='lettres_rappel')
-    type_lettre = models.CharField(max_length=20, choices=TYPES_LETTRE)
-    contenu = models.TextField()
-    fichier_pdf = models.FileField(upload_to='lettres_rappel/', null=True, blank=True)
-    date_generation = models.DateTimeField(auto_now_add=True)
-    generee_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True)
-    envoyee = models.BooleanField(default=False)
-    date_envoi = models.DateTimeField(null=True, blank=True)
-    
-    class Meta:
-        verbose_name = 'Lettre de Rappel'
-        verbose_name_plural = 'Lettres de Rappel'
-        ordering = ['-date_generation']
-    
-    def __str__(self):
-        return f"{self.get_type_lettre_display()} - {self.etudiant.matricule} - {self.date_generation.strftime('%d/%m/%Y')}"
 
 
 # ===== CANAL DE COMMUNICATION =====
