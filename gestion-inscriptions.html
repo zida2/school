@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Inscriptions - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 2rem;
+        }
+        .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+        }
+        .container-fluid {
+            padding: 2rem;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .table-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .badge-pending {
+            background: #ffc107;
+            color: #000;
+        }
+        .badge-approved {
+            background: #28a745;
+        }
+        .badge-rejected {
+            background: #dc3545;
+        }
+        .btn-validate {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .password-display {
+            background: #f8f9fa;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <span class="navbar-brand">
+                <i class="fas fa-user-shield me-2"></i>
+                Gestion des Inscriptions
+            </span>
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+            </button>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <!-- Stats -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stat-number" id="totalPending">0</div>
+                    <div class="stat-label">En attente</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stat-number" id="totalApproved">0</div>
+                    <div class="stat-label">Validées</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stat-number" id="totalRejected">0</div>
+                    <div class="stat-label">Rejetées</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stat-number" id="totalAll">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('communication')">
+                <i class="fas fa-bullhorn me-2"></i>Communication
+            </div>
+            <div class="tab" onclick="switchTab('academique')">
+                <i class="fas fa-graduation-cap me-2"></i>Académique
+            </div>
+            <div class="tab" onclick="switchTab('comptabilite')">
+                <i class="fas fa-calculator me-2"></i>Comptabilité
+            </div>
+            <div class="tab" onclick="switchTab('professeur')">
+                <i class="fas fa-chalkboard-teacher me-2"></i>Professeurs
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Demandes d'inscription</h5>
+                <button class="btn btn-primary btn-sm" onclick="loadDemandes()">
+                    <i class="fas fa-sync me-2"></i>Actualiser
+                </button>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Poste</th>
+                            <th>Statut</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="demandesTable">
+                        <tr>
+                            <td colspan="8" class="text-center">
+                                <i class="fas fa-spinner fa-spin me-2"></i>Chargement...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Validation -->
+    <div class="modal fade" id="validationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Validation réussie</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Compte créé avec succès!</strong></p>
+                    <p>Email: <span id="modalEmail"></span></p>
+                    <p>Mot de passe: <span class="password-display" id="modalPassword"></span></p>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Envoyez ces identifiants à l'utilisateur par email.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://wendlasida.pythonanywhere.com/api';
+        let currentTab = 'communication';
+        let token = localStorage.getItem('token');
+
+        // Vérifier authentification
+        if (!token) {
+            window.location.href = '/connexion-admin.html';
+        }
+
+        // Charger les demandes au démarrage
+        loadDemandes();
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.closest('.tab').classList.add('active');
+            loadDemandes();
+        }
+
+        async function loadDemandes() {
+            const endpoints = {
+                'communication': '/demandes-inscription-communication/',
+                'academique': '/demandes-inscription-academique/',
+                'comptabilite': '/demandes-inscription-comptabilite/',
+                'professeur': '/demandes-inscription-professeur/'
+            };
+
+            try {
+                const response = await fetch(`${API_URL}${endpoints[currentTab]}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const demandes = await response.json();
+                    displayDemandes(demandes);
+                    updateStats(demandes);
+                } else {
+                    document.getElementById('demandesTable').innerHTML = `
+                        <tr><td colspan="8" class="text-center text-danger">
+                            Erreur de chargement
+                        </td></tr>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('demandesTable').innerHTML = `
+                    <tr><td colspan="8" class="text-center text-danger">
+                        Erreur de connexion
+                    </td></tr>
+                `;
+            }
+        }
+
+        function displayDemandes(demandes) {
+            const tbody = document.getElementById('demandesTable');
+            
+            if (demandes.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="8" class="text-center text-muted">
+                        Aucune demande
+                    </td></tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = demandes.map(d => `
+                <tr>
+                    <td>${d.nom}</td>
+                    <td>${d.prenom}</td>
+                    <td>${d.email}</td>
+                    <td>${d.telephone || '-'}</td>
+                    <td>${d.poste_souhaite || d.filiere_enseignee || '-'}</td>
+                    <td>
+                        <span class="badge badge-${getStatusClass(d.statut)}">
+                            ${getStatusLabel(d.statut)}
+                        </span>
+                    </td>
+                    <td>${new Date(d.date_demande).toLocaleDateString('fr-FR')}</td>
+                    <td>
+                        ${d.statut === 'en_attente' ? `
+                            <button class="btn-validate" onclick="valider(${d.id})">
+                                <i class="fas fa-check me-1"></i>Valider
+                            </button>
+                            <button class="btn-reject" onclick="rejeter(${d.id})">
+                                <i class="fas fa-times me-1"></i>Rejeter
+                            </button>
+                        ` : '-'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateStats(demandes) {
+            const pending = demandes.filter(d => d.statut === 'en_attente').length;
+            const approved = demandes.filter(d => d.statut === 'validee').length;
+            const rejected = demandes.filter(d => d.statut === 'rejetee').length;
+            
+            document.getElementById('totalPending').textContent = pending;
+            document.getElementById('totalApproved').textContent = approved;
+            document.getElementById('totalRejected').textContent = rejected;
+            document.getElementById('totalAll').textContent = demandes.length;
+        }
+
+        function getStatusClass(statut) {
+            const classes = {
+                'en_attente': 'pending',
+                'validee': 'approved',
+                'rejetee': 'rejected'
+            };
+            return classes[statut] || 'pending';
+        }
+
+        function getStatusLabel(statut) {
+            const labels = {
+                'en_attente': 'En attente',
+                'validee': 'Validée',
+                'rejetee': 'Rejetée'
+            };
+            return labels[statut] || statut;
+        }
+
+        async function valider(id) {
+            if (!confirm('Valider cette demande?')) return;
+
+            const endpoints = {
+                'communication': `/demandes-inscription-communication/${id}/valider/`,
+                'academique': `/demandes-inscription-academique/${id}/valider/`,
+                'comptabilite': `/demandes-inscription-comptabilite/${id}/valider/`,
+                'professeur': `/demandes-inscription-professeur/${id}/valider/`
+            };
+
+            try {
+                const response = await fetch(`${API_URL}${endpoints[currentTab]}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('modalEmail').textContent = data.email;
+                    document.getElementById('modalPassword').textContent = data.password_temporaire || data.password;
+                    new bootstrap.Modal(document.getElementById('validationModal')).show();
+                    loadDemandes();
+                } else {
+                    alert('Erreur lors de la validation');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        }
+
+        async function rejeter(id) {
+            const commentaire = prompt('Raison du rejet (optionnel):');
+            if (commentaire === null) return;
+
+            const endpoints = {
+                'communication': `/demandes-inscription-communication/${id}/rejeter/`,
+                'academique': `/demandes-inscription-academique/${id}/rejeter/`,
+                'comptabilite': `/demandes-inscription-comptabilite/${id}/rejeter/`,
+                'professeur': `/demandes-inscription-professeur/${id}/rejeter/`
+            };
+
+            try {
+                const response = await fetch(`${API_URL}${endpoints[currentTab]}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ commentaire })
+                });
+
+                if (response.ok) {
+                    alert('Demande rejetée');
+                    loadDemandes();
+                } else {
+                    alert('Erreur lors du rejet');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/connexion-admin.html';
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
