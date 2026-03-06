@@ -1,0 +1,30 @@
+# COMMANDES À COPIER-COLLER SUR PYTHONANYWHERE
+# Date: 6 Mars 2026
+# Objectif: Déployer le système services administratifs
+
+# 1. Naviguer vers le projet
+cd ~/school/backend
+
+# 2. Pull les modifications
+git pull origin main
+
+# 3. Appliquer la migration
+python manage.py migrate
+
+# 4. Vérifier qu'il n'y a pas d'erreurs
+python manage.py check
+
+# 5. Redémarrer l'application
+touch /var/www/wendlasida_pythonanywhere_com_wsgi.py
+
+# 6. Vérifier les migrations appliquées
+python manage.py showmigrations api
+
+# RÉSULTAT ATTENDU:
+# - Migration 0016_ajout_services_administratifs appliquée
+# - System check: 0 issues
+# - Application redémarrée
+
+# TESTS:
+# Tester une inscription:
+# curl -X POST https://wendlasida.pythonanywhere.com/api/demandes-inscription-communication/ -H "Content-Type: application/json" -d '{"nom":"Test","prenom":"User","email":"test@example.com","telephone":"70000000","poste_souhaite":"Chargé de communication"}'
