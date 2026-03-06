@@ -1,0 +1,72 @@
+═══════════════════════════════════════════════════════════════
+COMMANDES À COPIER-COLLER DANS PYTHONANYWHERE BASH CONSOLE
+═══════════════════════════════════════════════════════════════
+
+ÉTAPE 1: Aller dans le dossier
+───────────────────────────────
+cd ~/school
+
+
+ÉTAPE 2: Activer l'environnement virtuel
+─────────────────────────────────────────
+source ~/.virtualenvs/myenv/bin/activate
+
+
+ÉTAPE 3: Récupérer les modifications
+─────────────────────────────────────
+git pull origin main
+
+
+ÉTAPE 4: Appliquer les migrations
+──────────────────────────────────
+cd backend
+python manage.py migrate
+
+
+ÉTAPE 5: Vérifier le système
+─────────────────────────────
+python manage.py check
+
+
+ÉTAPE 6: Redémarrer l'application
+──────────────────────────────────
+touch /var/www/wendlasida_pythonanywhere_com_wsgi.py
+
+
+═══════════════════════════════════════════════════════════════
+OU TOUT EN UNE SEULE COMMANDE:
+═══════════════════════════════════════════════════════════════
+
+cd ~/school && source ~/.virtualenvs/myenv/bin/activate && git pull origin main && cd backend && python manage.py migrate && python manage.py check && touch /var/www/wendlasida_pythonanywhere_com_wsgi.py
+
+
+═══════════════════════════════════════════════════════════════
+VÉRIFICATION APRÈS DÉPLOIEMENT:
+═══════════════════════════════════════════════════════════════
+
+Ouvrir dans le navigateur:
+✓ https://wendlasida.pythonanywhere.com/api/paiements/
+✓ https://wendlasida.pythonanywhere.com/api/finances/statistiques/
+✓ https://wendlasida.pythonanywhere.com/api/dashboard/admin/
+✓ https://wendlasida.pythonanywhere.com/admin/
+
+
+═══════════════════════════════════════════════════════════════
+EN CAS D'ERREUR:
+═══════════════════════════════════════════════════════════════
+
+Voir les logs d'erreur:
+cd ~/school/backend
+tail -f /var/log/wendlasida.pythonanywhere.com.error.log
+
+
+Vérifier les migrations:
+python manage.py showmigrations
+
+
+Réinitialiser si nécessaire:
+python manage.py migrate --fake api zero
+python manage.py migrate api
+
+
+═══════════════════════════════════════════════════════════════
