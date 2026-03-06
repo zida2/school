@@ -873,16 +873,21 @@
                     <button type="submit" class="btn-login">Se connecter</button>
                 </form>
 
-                <div class="signup-link" style="text-align:center;margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1)">
-                    <p style="color:rgba(255,255,255,0.6);font-size:14px;margin-bottom:12px">
-                        Pas encore de compte ?
+                <div class="info-box" style="text-align:center;margin-top:24px;padding:20px;background:rgba(255,255,255,0.1);border-radius:16px;border:1px solid rgba(255,255,255,0.2)">
+                    <p style="color:rgba(255,255,255,0.9);font-size:14px;font-weight:600;margin-bottom:8px">
+                        👔 Espace Administration
                     </p>
-                    <a href="inscription.html" style="display:inline-block;padding:12px 32px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);color:white;text-decoration:none;border-radius:12px;font-weight:600;font-size:14px;transition:all 0.3s ease;box-shadow:0 4px 15px rgba(99,102,241,0.3)">
-                        📝 S'inscrire comme étudiant
-                    </a>
-                    <p style="color:rgba(255,255,255,0.5);font-size:12px;margin-top:12px;line-height:1.6">
-                        Remplissez le formulaire d'inscription et attendez la validation<br>de l'administration pour accéder à votre compte.
+                    <p style="color:rgba(255,255,255,0.7);font-size:13px;line-height:1.6">
+                        Cet espace est réservé aux administrateurs,<br>enseignants et personnel administratif.
                     </p>
+                    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.2)">
+                        <p style="color:rgba(255,255,255,0.6);font-size:12px;margin-bottom:8px">
+                            Vous êtes étudiant ?
+                        </p>
+                        <a href="/mobile/" style="color:#a5f3fc;font-size:13px;text-decoration:none;font-weight:600">
+                            📱 Accéder à l'application mobile →
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -953,8 +958,12 @@
                         console.log('➡️ Redirection vers dashboard-prof.html');
                         window.location.href = 'dashboard-prof.html';
                     } else if (role === 'etudiant') {
-                        console.log('➡️ Redirection vers dashboard-etudiant.html');
-                        window.location.href = 'dashboard-etudiant.html';
+                        console.log('➡️ Redirection vers application mobile');
+                        showAlert('Veuillez utiliser l\'application mobile pour étudiants', 'error');
+                        setTimeout(() => {
+                            window.location.href = '/mobile/';
+                        }, 2000);
+                        return;
                     } else if (role === 'bureau_executif' || role === 'bureau') {
                         console.log('➡️ Redirection vers dashboard-bureau.html');
                         window.location.href = 'dashboard-bureau.html';
