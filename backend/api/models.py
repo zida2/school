@@ -923,3 +923,62 @@ class LectureMessage(models.Model):
     
     def __str__(self):
         return f"{self.utilisateur.get_full_name()} - Message #{self.message.id}"
+
+
+# ===== NOTIFICATION EMAIL =====
+class NotificationEmail(models.Model):
+    TYPES = [
+        ('nouvelle_note', 'Nouvelle note publiée'),
+        ('modification_note', 'Note modifiée'),
+        ('nouvelle_evaluation', 'Nouvelle évaluation programmée'),
+        ('absence_signale', 'Absence signalée'),
+        ('support_cours', 'Nouveau support de cours'),
+        ('emploi_modifie', 'Emploi du temps modifié'),
+        ('demande_traitee', 'Demande administrative traitée'),
+        ('message_canal', 'Nouveau message dans un canal'),
+        ('annonce_officielle', 'Annonce officielle'),
+    ]
+    
+    destinataire = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='notifications_email')
+    type_notification = models.CharField(max_length=30, choices=TYPES)
+    sujet = models.CharField(max_length=200)
+    contenu = models.TextField()
+    lien = models.CharField(max_length=500, blank=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    envoye = models.BooleanField(default=False)
+    date_envoi = models.DateTimeField(null=True, blank=True)
+    erreur = models.TextField(blank=True)
+    
+    class Meta:
+        verbose_name = 'Notification Email'
+        verbose_name_plural = 'Notifications Email'
+        ordering = ['-date_creation']
+        indexes = [
+            models.Index(fields=['destinataire', '-date_creation']),
+            models.Index(fields=['envoye', 'date_creation']),
+        ]
+    
+    def __str__(self):
+        return f"{self.destinataire.get_full_name()} - {self.get_type_notification_display()}"
+
+
+# ===== PRÉFÉRENCES NOTIFICATION =====
+class PreferenceNotification(models.Model):
+    utilisateur = models.OneToOneField(Utilisateur, on_delete=models.CASCADE, related_name='preferences_notification')
+    activer_emails = models.BooleanField(default=True)
+    nouvelle_note = models.BooleanField(default=True)
+    modification_note = models.BooleanField(default=True)
+    nouvelle_evaluation = models.BooleanField(default=True)
+    absence_signale = models.BooleanField(default=True)
+    support_cours = models.BooleanField(default=True)
+    emploi_modifie = models.BooleanField(default=True)
+    demande_traitee = models.BooleanField(default=True)
+    message_canal = models.BooleanField(default=True)
+    annonce_officielle = models.BooleanField(default=True)
+    
+    class Meta:
+        verbose_name = 'Préférence de Notification'
+        verbose_name_plural = 'Préférences de Notification'
+    
+    def __str__(self):
+        return f"Préférences de {self.utilisateur.get_full_name()}"
