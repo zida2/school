@@ -873,58 +873,16 @@
                     <button type="submit" class="btn-login">Se connecter</button>
                 </form>
 
-                <div class="divider"><span>Accès rapide</span></div>
-
-                <div class="quick-access">
-                    <div class="quick-access-title">Comptes de démonstration</div>
-                    <div class="quick-access-grid">
-                        <!-- ÉTUDIANT - Accès: Bureau -->
-                        <button class="quick-btn" onclick="quickLogin('m.diallo@etu.bf', 'etudiant123')">
-                            <span class="quick-dot" style="background:#f59e0b;color:#f59e0b"></span>
-                            <div class="quick-info">
-                                <span class="quick-role">👨‍🎓 Étudiant</span>
-                                <span class="quick-email">m.diallo@etu.bf</span>
-                            </div>
-                        </button>
-
-                        <!-- BUREAU - Accès: Enseignant -->
-                        <button class="quick-btn" onclick="quickLogin('bureau@uan.bf', 'bureau123')">
-                            <span class="quick-dot" style="background:#8b5cf6;color:#8b5cf6"></span>
-                            <div class="quick-info">
-                                <span class="quick-role">🏛️ Bureau Exécutif</span>
-                                <span class="quick-email">bureau@uan.bf</span>
-                            </div>
-                        </button>
-
-                        <!-- ENSEIGNANT - Accès: Admin -->
-                        <button class="quick-btn" onclick="quickLogin('j.ouedraogo@uan.bf', 'enseignant123')">
-                            <span class="quick-dot" style="background:#10b981;color:#10b981"></span>
-                            <div class="quick-info">
-                                <span class="quick-role">👨‍🏫 Enseignant</span>
-                                <span class="quick-email">j.ouedraogo@uan.bf</span>
-                            </div>
-                        </button>
-
-                        <!-- ADMIN - Accès: Tous -->
-                        <button class="quick-btn" onclick="quickLogin('admin@uan.bf', 'admin123')">
-                            <span class="quick-dot" style="background:#6366f1;color:#6366f1"></span>
-                            <div class="quick-info">
-                                <span class="quick-role">👔 Administrateur</span>
-                                <span class="quick-email">admin@uan.bf</span>
-                            </div>
-                        </button>
-                    </div>
-                    
-                    <!-- Légende de la hiérarchie -->
-                    <div style="margin-top:16px;padding:12px;background:rgba(99,102,241,0.1);border-radius:10px;border:1px solid rgba(99,102,241,0.2)">
-                        <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">HIÉRARCHIE DES COMPTES</div>
-                        <div style="font-size:9px;color:rgba(255,255,255,0.5);line-height:1.6">
-                            👨‍🎓 Étudiant → attribué au 🏛️ Bureau<br>
-                            🏛️ Bureau → attribué au 👨‍🏫 Enseignant<br>
-                            👨‍🏫 Enseignant → attribué au 👔 Admin<br>
-                            👔 Admin → accès à tous les comptes
-                        </div>
-                    </div>
+                <div class="signup-link" style="text-align:center;margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1)">
+                    <p style="color:rgba(255,255,255,0.6);font-size:14px;margin-bottom:12px">
+                        Pas encore de compte ?
+                    </p>
+                    <a href="inscription.html" style="display:inline-block;padding:12px 32px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);color:white;text-decoration:none;border-radius:12px;font-weight:600;font-size:14px;transition:all 0.3s ease;box-shadow:0 4px 15px rgba(99,102,241,0.3)">
+                        📝 S'inscrire comme étudiant
+                    </a>
+                    <p style="color:rgba(255,255,255,0.5);font-size:12px;margin-top:12px;line-height:1.6">
+                        Remplissez le formulaire d'inscription et attendez la validation<br>de l'administration pour accéder à votre compte.
+                    </p>
                 </div>
             </div>
         </div>
@@ -1013,13 +971,6 @@
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
             }
-        }
-
-        function quickLogin(email, password) {
-            console.log('⚡ Connexion rapide:', email);
-            document.getElementById('email').value = email;
-            document.getElementById('password').value = password;
-            document.getElementById('loginForm').dispatchEvent(new Event('submit'));
         }
     </script>
 </body>
