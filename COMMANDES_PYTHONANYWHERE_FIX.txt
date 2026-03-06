@@ -1,0 +1,28 @@
+# COMMANDES PYTHONANYWHERE - FIX CONFLIT
+# Copier-coller ces commandes une par une
+
+# 1. Stasher les changements locaux (db.sqlite3)
+git stash
+
+# 2. Pull les modifications
+git pull origin main
+
+# 3. Appliquer la migration 0016
+python manage.py migrate
+
+# 4. Vérifier
+python manage.py check
+
+# 5. Voir les migrations appliquées
+python manage.py showmigrations api | grep 0016
+
+# 6. Redémarrer l'application
+touch /var/www/wendlasida_pythonanywhere_com_wsgi.py
+
+# 7. Vérifier que l'API fonctionne
+curl https://wendlasida.pythonanywhere.com/api/
+
+# RÉSULTAT ATTENDU:
+# - Migration 0016 appliquée: ✓
+# - System check: 0 issues
+# - API accessible
