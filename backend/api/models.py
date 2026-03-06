@@ -189,6 +189,9 @@ class Etudiant(models.Model):
     statut = models.CharField(max_length=20, choices=STATUTS, default='inscrit')
     solde_du = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     photo = models.ImageField(upload_to='etudiants/', null=True, blank=True)
+    # Données marketing (demandées dans cahier des charges)
+    lycee_provenance = models.CharField(max_length=200, blank=True, verbose_name="Lycée de provenance")
+    ville_origine = models.CharField(max_length=100, blank=True, verbose_name="Ville d'origine")
     date_inscription = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -199,6 +202,39 @@ class Etudiant(models.Model):
 
     def get_full_name(self):
         return f"{self.prenom} {self.nom}"
+
+
+# ===== CARTE ÉTUDIANTE NUMÉRIQUE =====
+class CarteEtudiant(models.Model):
+    """Carte étudiante numérique avec QR Code"""
+    STATUTS = [
+        ('active', 'Active'),
+        ('expiree', 'Expirée'),
+        ('suspendue', 'Suspendue'),
+        ('annulee', 'Annulée'),
+    ]
+    
+    etudiant = models.OneToOneField(Etudiant, on_delete=models.CASCADE, related_name='carte_numerique')
+    numero_carte = models.CharField(max_length=50, unique=True)
+    qr_code = models.ImageField(upload_to='cartes_qr/', null=True, blank=True)
+    date_emission = models.DateField(auto_now_add=True)
+    date_expiration = models.DateField()
+    statut = models.CharField(max_length=20, choices=STATUTS, default='active')
+    code_verification = models.CharField(max_length=100, unique=True)  # Pour validation QR
+    
+    class Meta:
+        verbose_name = 'Carte Étudiant'
+        verbose_name_plural = 'Cartes Étudiants'
+        ordering = ['-date_emission']
+    
+    def __str__(self):
+        return f"Carte {self.numero_carte} - {self.etudiant.get_full_name()}"
+    
+    @property
+    def est_valide(self):
+        """Vérifier si la carte est encore valide"""
+        from django.utils import timezone
+        return self.statut == 'active' and self.date_expiration >= timezone.now().date()
 
 
 # ===== NOTE =====

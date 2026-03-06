@@ -21,6 +21,8 @@ from .views import (
 from .views_finances import (
     GestionFinanciereViewSet, RappelPaiementViewSet, LettreRappelViewSet
 )
+from .views_carte import CarteEtudiantViewSet
+from .views_statistiques import StatistiquesMarketingViewSet
 
 router = DefaultRouter()
 router.register(r'universites', UniversiteViewSet, basename='universite')
@@ -61,6 +63,10 @@ router.register(r'messages', MessageViewSet, basename='message')
 router.register(r'finances', GestionFinanciereViewSet, basename='finances')
 router.register(r'rappels-paiement', RappelPaiementViewSet, basename='rappel-paiement')
 router.register(r'lettres-rappel', LettreRappelViewSet, basename='lettre-rappel')
+# Carte Étudiante
+router.register(r'cartes-etudiants', CarteEtudiantViewSet, basename='carte-etudiant')
+# Statistiques Marketing
+router.register(r'statistiques-marketing', StatistiquesMarketingViewSet, basename='statistiques-marketing')
 
 urlpatterns = [
     # Auth

@@ -7,7 +7,7 @@ from .models import (
     ReponseSondage, Evenement, InscriptionEvenement,
     MessageBureau, DemandeAdministrative, ObjetPerdu,
     Canal, Message, LectureMessage, NotificationEmail, PreferenceNotification,
-    Paiement, RappelPaiement, LettreRappel
+    Paiement, RappelPaiement, LettreRappel, CarteEtudiant
 )
 
 
@@ -226,3 +226,12 @@ class PreferenceNotificationAdmin(admin.ModelAdmin):
     list_display = ['utilisateur', 'activer_emails', 'nouvelle_note', 'nouvelle_evaluation', 'absence_signale']
     list_filter = ['activer_emails']
     search_fields = ['utilisateur__email', 'utilisateur__nom']
+
+
+@admin.register(CarteEtudiant)
+class CarteEtudiantAdmin(admin.ModelAdmin):
+    list_display = ['numero_carte', 'etudiant', 'statut', 'date_emission', 'date_expiration', 'est_valide']
+    list_filter = ['statut', 'date_emission', 'date_expiration']
+    search_fields = ['numero_carte', 'etudiant__matricule', 'etudiant__nom', 'code_verification']
+    readonly_fields = ['numero_carte', 'qr_code', 'code_verification', 'date_emission']
+    date_hierarchy = 'date_emission'

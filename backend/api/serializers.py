@@ -9,7 +9,8 @@ from .models import (
     Sondage, QuestionSondage, OptionQuestion, ReponseSondage,
     Evenement, InscriptionEvenement, MessageBureau,
     DemandeAdministrative, ObjetPerdu, RappelPaiement, LettreRappel,
-    Classe, Inscription, EnseignementMatiere, Canal, Message, LectureMessage
+    Classe, Inscription, EnseignementMatiere, Canal, Message, LectureMessage,
+    CarteEtudiant
 )
 
 
@@ -728,3 +729,19 @@ class LectureMessageSerializer(serializers.ModelSerializer):
         model = LectureMessage
         fields = '__all__'
         read_only_fields = ['utilisateur', 'date_lecture']
+
+
+
+# ===== CARTE ÉTUDIANT =====
+class CarteEtudiantSerializer(serializers.ModelSerializer):
+    etudiant_nom = serializers.CharField(source='etudiant.get_full_name', read_only=True)
+    etudiant_matricule = serializers.CharField(source='etudiant.matricule', read_only=True)
+    etudiant_photo = serializers.ImageField(source='etudiant.photo', read_only=True)
+    filiere_nom = serializers.CharField(source='etudiant.filiere.nom', read_only=True)
+    niveau = serializers.CharField(source='etudiant.niveau', read_only=True)
+    est_valide = serializers.BooleanField(read_only=True)
+    
+    class Meta:
+        model = CarteEtudiant
+        fields = '__all__'
+        read_only_fields = ['numero_carte', 'qr_code', 'date_emission', 'code_verification']
