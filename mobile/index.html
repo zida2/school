@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ERP Étudiant">
+    <title>Connexion - ERP Étudiant</title>
+    <link rel="manifest" href="/mobile/manifest.json">
+    <link rel="stylesheet" href="/mobile/styles.css">
+</head>
+<body class="login-page">
+    <div class="mobile-container">
+        <div class="login-header">
+            <div class="app-icon">🎓</div>
+            <h1>ERP Universitaire</h1>
+            <p>Espace Étudiant</p>
+        </div>
+
+        <div id="alertBox" class="alert"></div>
+
+        <form id="loginForm" class="mobile-form">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="votre.email@etu.bf" required>
+            </div>
+
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-primary" id="loginBtn">
+                Se connecter
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>Nouveau sur la plateforme ?</span>
+        </div>
+
+        <a href="/mobile/inscription.html" class="btn-secondary">
+            📝 Créer mon compte étudiant
+        </a>
+
+        <div class="install-prompt" id="installPrompt" style="display:none">
+            <p>📱 Installer l'application sur votre téléphone</p>
+            <button id="installBtn" class="btn-install">Installer</button>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/api.js"></script>
+    <script>
+        // Enregistrement du Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/mobile/sw.js')
+                .then(reg => console.log('✅ Service Worker enregistré', reg))
+                .catch(err => console.error('❌ Erreur SW:', err));
+        }
+
+        // Gestion de l'installation PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+        });
+
+        document.getElementById('installBtn')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log('Installation:', outcome);
+                deferredPrompt = null;
+                document.getElementById('installPrompt').style.display = 'none';
+            }
+        });
+
+        // Gestion de la connexion
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = 'alert ' + type;
+            alertBox.innerHTML = `<span>${type === 'error' ? '❌' : '✅'}</span><span>${message}</span>`;
+            alertBox.style.display = 'flex';
+            setTimeout(() => alertBox.style.display = 'none', 5000);
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="spinner"></span>Connexion...';
+
+            try {
+                const data = await API.login(email, password);
+                
+                if (data.user.role !== 'etudiant') {
+                    showAlert('Cette application est réservée aux étudiants', 'error');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = 'Se connecter';
+                    return;
+                }
+                
+                loginBtn.style.background = '#10b981';
+                loginBtn.innerHTML = '✓ Connexion réussie !';
+                showAlert('Connexion réussie !', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = '/mobile/dashboard.html';
+                }, 1500);
+            } catch (err) {
+                showAlert(err.message || 'Email ou mot de passe incorrect', 'error');
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = 'Se connecter';
+            }
+        });
+    </script>
+</body>
+</html>

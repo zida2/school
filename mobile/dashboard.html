@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <title>Tableau de Bord - ERP Étudiant</title>
+    <link rel="manifest" href="/mobile/manifest.json">
+    <link rel="stylesheet" href="/mobile/styles.css">
+</head>
+<body class="dashboard-page">
+    <div class="mobile-container" style="padding-bottom:80px">
+        <!-- Header avec infos utilisateur -->
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div class="user-avatar">👨‍🎓</div>
+                <div class="user-details">
+                    <h2 id="userName">Chargement...</h2>
+                    <p id="userMatricule">Matricule: ---</p>
+                </div>
+            </div>
+            
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="statNotes">--</div>
+                    <div class="stat-label">Notes publiées</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statCours">--</div>
+                    <div class="stat-label">Cours cette semaine</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statNotifs">--</div>
+                    <div class="stat-label">Notifications</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statPaiement">--</div>
+                    <div class="stat-label">Paiements</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu principal -->
+        <div class="menu-grid">
+            <a href="#notes" class="menu-card" onclick="showSection('notes')">
+                <div class="menu-icon">📊</div>
+                <div class="menu-title">Mes Notes</div>
+            </a>
+            <a href="#programme" class="menu-card" onclick="showSection('programme')">
+                <div class="menu-icon">📅</div>
+                <div class="menu-title">Mon Programme</div>
+            </a>
+            <a href="#finances" class="menu-card" onclick="showSection('finances')">
+                <div class="menu-icon">💰</div>
+                <div class="menu-title">Finances</div>
+            </a>
+            <a href="#carte" class="menu-card" onclick="showSection('carte')">
+                <div class="menu-icon">🎫</div>
+                <div class="menu-title">Ma Carte</div>
+            </a>
+            <a href="#annonces" class="menu-card" onclick="showSection('annonces')">
+                <div class="menu-icon">📢</div>
+                <div class="menu-title">Annonces</div>
+            </a>
+            <a href="#sondages" class="menu-card" onclick="showSection('sondages')">
+                <div class="menu-icon">📝</div>
+                <div class="menu-title">Sondages</div>
+            </a>
+        </div>
+
+        <!-- Dernières notifications -->
+        <div class="section">
+            <div class="section-header">
+                <h3 class="section-title">🔔 Notifications récentes</h3>
+                <a href="#" class="see-all">Tout voir</a>
+            </div>
+            <div id="notificationsList">
+                <div class="list-item">
+                    <div class="item-meta">Chargement...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Programme du jour -->
+        <div class="section">
+            <div class="section-header">
+                <h3 class="section-title">📅 Programme du jour</h3>
+            </div>
+            <div id="programmeJour">
+                <div class="list-item">
+                    <div class="item-meta">Chargement...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation bottom -->
+    <div class="bottom-nav">
+        <a href="/mobile/dashboard.html" class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span>Accueil</span>
+        </a>
+        <a href="#notes" class="nav-item" onclick="showSection('notes')">
+            <span class="nav-icon">📊</span>
+            <span>Notes</span>
+        </a>
+        <a href="#programme" class="nav-item" onclick="showSection('programme')">
+            <span class="nav-icon">📅</span>
+            <span>Programme</span>
+        </a>
+        <a href="#profil" class="nav-item" onclick="showSection('profil')">
+            <span class="nav-icon">👤</span>
+            <span>Profil</span>
+        </a>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/api.js"></script>
+
+    <script>
+        // Vérifier l'authentification
+        const user = JSON.parse(localStorage.getItem('erp_user') || '{}');
+        const token = localStorage.getItem('erp_access_token');
+
+        if (!token || !user.id || user.role !== 'etudiant') {
+            window.location.href = '/mobile/index.html';
+        }
+
+        // Charger les données utilisateur
+        async function loadUserData() {
+            try {
+                // Infos utilisateur
+                document.getElementById('userName').textContent = `${user.prenom} ${user.nom}`;
+                
+                // Charger le profil étudiant complet
+                const response = await fetch(`${API_BASE_URL}/api/etudiants/me/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const etudiant = await response.json();
+                    document.getElementById('userMatricule').textContent = `Matricule: ${etudiant.matricule || '---'}`;
+                    
+                    // Charger les stats
+                    loadStats(etudiant.id);
+                    loadNotifications();
+                    loadProgrammeJour(etudiant.classe);
+                }
+            } catch (err) {
+                console.error('Erreur chargement données:', err);
+            }
+        }
+
+        // Charger les statistiques
+        async function loadStats(etudiantId) {
+            try {
+                // Notes
+                const notesRes = await fetch(`${API_BASE_URL}/api/notes/?etudiant=${etudiantId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (notesRes.ok) {
+                    const notes = await notesRes.json();
+                    document.getElementById('statNotes').textContent = notes.length || 0;
+                }
+
+                // Notifications
+                const notifsRes = await fetch(`${API_BASE_URL}/api/notifications/`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (notifsRes.ok) {
+                    const notifs = await notifsRes.json();
+                    document.getElementById('statNotifs').textContent = notifs.length || 0;
+                }
+
+                // Paiements
+                const paiementsRes = await fetch(`${API_BASE_URL}/api/paiements/?etudiant=${etudiantId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (paiementsRes.ok) {
+                    const paiements = await paiementsRes.json();
+                    document.getElementById('statPaiement').textContent = paiements.length || 0;
+                }
+            } catch (err) {
+                console.error('Erreur stats:', err);
+            }
+        }
+
+        // Charger les notifications
+        async function loadNotifications() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/notifications/?limit=5`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const notifications = await response.json();
+                    const container = document.getElementById('notificationsList');
+                    
+                    if (notifications.length === 0) {
+                        container.innerHTML = '<div class="list-item"><div class="item-meta">Aucune notification</div></div>';
+                        return;
+                    }
+                    
+                    container.innerHTML = notifications.slice(0, 5).map(notif => `
+                        <div class="list-item">
+                            <div class="item-header">
+                                <div class="item-title">${notif.titre || 'Notification'}</div>
+                                <span class="item-badge badge-new">Nouveau</span>
+                            </div>
+                            <div class="item-meta">${notif.message || ''}</div>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                console.error('Erreur notifications:', err);
+            }
+        }
+
+        // Charger le programme du jour
+        async function loadProgrammeJour(classeId) {
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const response = await fetch(`${API_BASE_URL}/api/emplois-temps/?classe=${classeId}&date=${today}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const programmes = await response.json();
+                    const container = document.getElementById('programmeJour');
+                    
+                    if (programmes.length === 0) {
+                        container.innerHTML = '<div class="list-item"><div class="item-meta">Aucun cours aujourd\'hui</div></div>';
+                        return;
+                    }
+                    
+                    container.innerHTML = programmes.map(prog => `
+                        <div class="list-item">
+                            <div class="item-header">
+                                <div class="item-title">${prog.matiere_nom || 'Cours'}</div>
+                            </div>
+                            <div class="item-meta">
+                                ${prog.heure_debut} - ${prog.heure_fin} | Salle ${prog.salle || '---'}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                console.error('Erreur programme:', err);
+            }
+        }
+
+        // Navigation entre sections
+        function showSection(section) {
+            // À implémenter: navigation vers les pages détaillées
+            console.log('Navigation vers:', section);
+        }
+
+        // Charger les données au démarrage
+        loadUserData();
+
+        // Rafraîchir toutes les 30 secondes
+        setInterval(() => {
+            loadNotifications();
+        }, 30000);
+    </script>
+</body>
+</html>

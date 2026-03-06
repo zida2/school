@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <title>Inscription - ERP Étudiant</title>
+    <link rel="manifest" href="/mobile/manifest.json">
+    <link rel="stylesheet" href="/mobile/styles.css">
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="page-header">
+            <a href="/mobile/index.html" class="back-btn">← Retour</a>
+            <h1>📝 Inscription</h1>
+            <p>Créez votre compte étudiant</p>
+        </div>
+
+        <div id="alertBox" class="alert"></div>
+
+        <form id="inscriptionForm" class="mobile-form">
+            <div class="form-group">
+                <label>Nom *</label>
+                <input type="text" id="nom" required>
+            </div>
+
+            <div class="form-group">
+                <label>Prénom *</label>
+                <input type="text" id="prenom" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" id="email" placeholder="votre.email@example.bf" required>
+            </div>
+
+            <div class="form-group">
+                <label>Téléphone *</label>
+                <input type="tel" id="telephone" placeholder="+226 XX XX XX XX" required>
+            </div>
+
+            <div class="form-group">
+                <label>Date de naissance *</label>
+                <input type="date" id="date_naissance" required>
+            </div>
+
+            <div class="form-group">
+                <label>Lieu de naissance *</label>
+                <input type="text" id="lieu_naissance" required>
+            </div>
+
+            <div class="form-group">
+                <label>Adresse *</label>
+                <textarea id="adresse" rows="2" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Lycée de provenance *</label>
+                <input type="text" id="lycee_provenance" placeholder="Ex: Lycée Municipal" required>
+            </div>
+
+            <div class="form-group">
+                <label>Ville d'origine *</label>
+                <input type="text" id="ville_origine" placeholder="Ex: Ouagadougou" required>
+            </div>
+
+            <div class="form-group">
+                <label>Série du BAC *</label>
+                <select id="serie_bac" required>
+                    <option value="">-- Sélectionnez --</option>
+                    <option value="A">Série A (Littéraire)</option>
+                    <option value="C">Série C (Mathématiques)</option>
+                    <option value="D">Série D (Sciences)</option>
+                    <option value="E">Série E (Technique)</option>
+                    <option value="F">Série F (Industriel)</option>
+                    <option value="G">Série G (Gestion)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Année du BAC *</label>
+                <input type="number" id="annee_bac" min="2000" max="2026" required>
+            </div>
+
+            <div class="form-group">
+                <label>Mention du BAC *</label>
+                <select id="mention_bac" required>
+                    <option value="">-- Sélectionnez --</option>
+                    <option value="Passable">Passable</option>
+                    <option value="Assez Bien">Assez Bien</option>
+                    <option value="Bien">Bien</option>
+                    <option value="Très Bien">Très Bien</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Filière souhaitée *</label>
+                <select id="filiere" required>
+                    <option value="">-- Sélectionnez --</option>
+                    <option value="Informatique">Informatique</option>
+                    <option value="Gestion">Gestion</option>
+                    <option value="Droit">Droit</option>
+                    <option value="Économie">Économie</option>
+                    <option value="Lettres">Lettres</option>
+                    <option value="Sciences">Sciences</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submitBtn">
+                Soumettre ma demande
+            </button>
+        </form>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script>
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = 'alert ' + type;
+            alertBox.innerHTML = `<span>${type === 'error' ? '❌' : '✅'}</span><span>${message}</span>`;
+            alertBox.style.display = 'flex';
+            window.scrollTo(0, 0);
+            setTimeout(() => alertBox.style.display = 'none', 8000);
+        }
+
+        document.getElementById('inscriptionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span>Envoi...';
+
+            const formData = {
+                nom: document.getElementById('nom').value.trim(),
+                prenom: document.getElementById('prenom').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                telephone: document.getElementById('telephone').value.trim(),
+                date_naissance: document.getElementById('date_naissance').value,
+                lieu_naissance: document.getElementById('lieu_naissance').value.trim(),
+                adresse: document.getElementById('adresse').value.trim(),
+                lycee_provenance: document.getElementById('lycee_provenance').value.trim(),
+                ville_origine: document.getElementById('ville_origine').value.trim(),
+                serie_bac: document.getElementById('serie_bac').value,
+                annee_bac: parseInt(document.getElementById('annee_bac').value),
+                mention_bac: document.getElementById('mention_bac').value,
+                filiere_souhaitee: document.getElementById('filiere').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/demandes-inscription/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    submitBtn.style.background = '#10b981';
+                    submitBtn.innerHTML = '✓ Demande envoyée !';
+                    showAlert('Votre demande a été envoyée avec succès ! Vous recevrez un email une fois validée.', 'success');
+                    
+                    setTimeout(() => {
+                        document.getElementById('inscriptionForm').reset();
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Soumettre ma demande';
+                        submitBtn.style.background = '';
+                    }, 3000);
+                } else {
+                    let errorMessage = 'Une erreur est survenue.';
+                    if (data.email && data.email.includes('existe déjà')) {
+                        errorMessage = 'Cet email est déjà utilisé.';
+                    } else if (data.detail) {
+                        errorMessage = data.detail;
+                    }
+                    showAlert(errorMessage, 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Soumettre ma demande';
+                }
+            } catch (err) {
+                showAlert('Erreur de connexion. Vérifiez votre connexion internet.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Soumettre ma demande';
+            }
+        });
+    </script>
+</body>
+</html>
