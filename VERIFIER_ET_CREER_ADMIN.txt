@@ -1,0 +1,51 @@
+# VÉRIFIER ET CRÉER LE COMPTE ADMIN
+
+# Sur PythonAnywhere Bash Console:
+
+cd ~/school/backend
+python manage.py shell
+
+# Copier-coller ce code complet:
+
+from api.models import Utilisateur
+
+# 1. Vérifier si le compte existe déjà
+existing = Utilisateur.objects.filter(email='admin@unierp.bf').first()
+
+if existing:
+    print(f"❌ Le compte existe déjà!")
+    print(f"Email: {existing.email}")
+    print(f"Rôle: {existing.role}")
+    print(f"\nSuppression du compte existant...")
+    existing.delete()
+    print("✅ Compte supprimé")
+
+# 2. Créer le nouveau compte admin
+admin = Utilisateur.objects.create_user(
+    email='admin@unierp.bf',
+    password='Admin2026',
+    prenom='Administrateur',
+    nom='Général',
+    role='admin',
+    is_staff=True,
+    is_superuser=True
+)
+
+print(f"\n✅ COMPTE ADMINISTRATEUR CRÉÉ!")
+print(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+print(f"Email: admin@unierp.bf")
+print(f"Mot de passe: Admin2026")
+print(f"Rôle: admin")
+print(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+print(f"\nConnexion:")
+print(f"https://school-wheat-six.vercel.app/connexion-admin.html")
+
+# 3. Vérifier que le compte fonctionne
+from django.contrib.auth import authenticate
+user = authenticate(email='admin@unierp.bf', password='Admin2026')
+if user:
+    print(f"\n✅ Authentification testée: OK")
+else:
+    print(f"\n❌ Erreur d'authentification")
+
+exit()

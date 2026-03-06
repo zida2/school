@@ -1,0 +1,36 @@
+# CRÉER LE COMPTE ADMINISTRATEUR DU SYSTÈME
+
+# Sur PythonAnywhere Bash Console:
+
+cd ~/school/backend
+python manage.py shell
+
+# Copier-coller ce code:
+
+from api.models import Utilisateur
+
+# Créer le compte administrateur
+admin = Utilisateur.objects.create_user(
+    email='admin@unierp.bf',
+    password='Admin2026!UniERP',
+    prenom='Administrateur',
+    nom='Général',
+    role='admin'
+)
+
+print(f"✅ Compte administrateur créé!")
+print(f"Email: {admin.email}")
+print(f"Mot de passe: Admin2026!UniERP")
+print(f"Rôle: {admin.role}")
+print(f"\nConnexion: https://school-wheat-six.vercel.app/connexion-admin.html")
+
+# Quitter
+exit()
+
+# RÉSULTAT:
+# ✅ Compte administrateur créé!
+# Email: admin@unierp.bf
+# Mot de passe: Admin2026!UniERP
+# Rôle: admin
+# 
+# Connexion: https://school-wheat-six.vercel.app/connexion-admin.html
