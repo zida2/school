@@ -10,7 +10,7 @@ from .models import (
     Evenement, InscriptionEvenement, MessageBureau,
     DemandeAdministrative, ObjetPerdu, RappelPaiement, LettreRappel,
     Classe, Inscription, EnseignementMatiere, Canal, Message, LectureMessage,
-    CarteEtudiant
+    CarteEtudiant, DemandeInscription, Promotion
 )
 
 
@@ -745,3 +745,30 @@ class CarteEtudiantSerializer(serializers.ModelSerializer):
         model = CarteEtudiant
         fields = '__all__'
         read_only_fields = ['numero_carte', 'qr_code', 'date_emission', 'code_verification']
+
+
+
+# ===== DEMANDE D'INSCRIPTION =====
+class DemandeInscriptionSerializer(serializers.ModelSerializer):
+    filiere_nom = serializers.CharField(source='filiere_demandee.nom', read_only=True)
+    annee_academique_libelle = serializers.CharField(source='annee_academique.libelle', read_only=True)
+    traite_par_nom = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = DemandeInscription
+        fields = '__all__'
+        read_only_fields = ['statut', 'date_demande', 'date_traitement', 'traite_par', 'etudiant_cree']
+    
+    def get_traite_par_nom(self, obj):
+        return obj.traite_par.get_full_name() if obj.traite_par else None
+
+
+# ===== PROMOTION =====
+class PromotionSerializer(serializers.ModelSerializer):
+    filiere_nom = serializers.CharField(source='filiere.nom', read_only=True)
+    filiere_code = serializers.CharField(source='filiere.code', read_only=True)
+    
+    class Meta:
+        model = Promotion
+        fields = '__all__'
+        read_only_fields = ['effectif_actuel', 'date_creation']

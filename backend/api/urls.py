@@ -23,6 +23,7 @@ from .views_finances import (
 )
 from .views_carte import CarteEtudiantViewSet
 from .views_statistiques import StatistiquesMarketingViewSet
+from .views_inscription import DemandeInscriptionViewSet, PromotionViewSet
 
 router = DefaultRouter()
 router.register(r'universites', UniversiteViewSet, basename='universite')
@@ -67,6 +68,9 @@ router.register(r'lettres-rappel', LettreRappelViewSet, basename='lettre-rappel'
 router.register(r'cartes-etudiants', CarteEtudiantViewSet, basename='carte-etudiant')
 # Statistiques Marketing
 router.register(r'statistiques-marketing', StatistiquesMarketingViewSet, basename='statistiques-marketing')
+# Inscriptions et Promotions
+router.register(r'demandes-inscription', DemandeInscriptionViewSet, basename='demande-inscription')
+router.register(r'promotions', PromotionViewSet, basename='promotion')
 
 urlpatterns = [
     # Auth

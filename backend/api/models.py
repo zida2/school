@@ -177,6 +177,7 @@ class Etudiant(models.Model):
     universite = models.ForeignKey(Universite, on_delete=models.CASCADE, related_name='etudiants')
     filiere = models.ForeignKey(Filiere, on_delete=models.PROTECT, related_name='etudiants')
     annee_academique = models.ForeignKey(AnneeAcademique, on_delete=models.PROTECT, related_name='etudiants')
+    promotion = models.ForeignKey('Promotion', on_delete=models.SET_NULL, null=True, blank=True, related_name='etudiants')
     matricule = models.CharField(max_length=30, unique=True)
     prenom = models.CharField(max_length=100)
     nom = models.CharField(max_length=100)
@@ -192,6 +193,10 @@ class Etudiant(models.Model):
     # Données marketing (demandées dans cahier des charges)
     lycee_provenance = models.CharField(max_length=200, blank=True, verbose_name="Lycée de provenance")
     ville_origine = models.CharField(max_length=100, blank=True, verbose_name="Ville d'origine")
+    # Informations académiques d'origine
+    serie_bac = models.CharField(max_length=50, blank=True, verbose_name="Série du BAC")
+    annee_bac = models.IntegerField(null=True, blank=True, verbose_name="Année d'obtention du BAC")
+    mention_bac = models.CharField(max_length=50, blank=True, verbose_name="Mention")
     date_inscription = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -1105,3 +1110,86 @@ class PreferenceNotification(models.Model):
     
     def __str__(self):
         return f"Préférences de {self.utilisateur.get_full_name()}"
+
+
+# ===== DEMANDE D'INSCRIPTION ÉTUDIANT =====
+class DemandeInscription(models.Model):
+    """Demande d'inscription d'un étudiant (formulaire public)"""
+    STATUTS = [
+        ('en_attente', 'En attente de traitement'),
+        ('en_cours', 'En cours de traitement'),
+        ('approuvee', 'Approuvée'),
+        ('rejetee', 'Rejetée'),
+    ]
+    
+    # Informations personnelles
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    email = models.EmailField()
+    telephone = models.CharField(max_length=20)
+    date_naissance = models.DateField()
+    lieu_naissance = models.CharField(max_length=100)
+    genre = models.CharField(max_length=1, choices=[('M','Masculin'),('F','Féminin')])
+    
+    # Informations académiques
+    lycee_provenance = models.CharField(max_length=200, verbose_name="Lycée de provenance")
+    ville_origine = models.CharField(max_length=100, verbose_name="Ville d'origine")
+    serie_bac = models.CharField(max_length=50, verbose_name="Série du BAC")
+    annee_bac = models.IntegerField(verbose_name="Année d'obtention du BAC")
+    mention_bac = models.CharField(max_length=50, blank=True, verbose_name="Mention")
+    
+    # Choix de formation
+    filiere_demandee = models.ForeignKey(Filiere, on_delete=models.PROTECT, related_name='demandes_inscription')
+    niveau_demande = models.CharField(max_length=10, default='L1')
+    annee_academique = models.ForeignKey(AnneeAcademique, on_delete=models.PROTECT, related_name='demandes_inscription')
+    
+    # Documents
+    photo = models.ImageField(upload_to='demandes_inscription/photos/', null=True, blank=True)
+    copie_bac = models.FileField(upload_to='demandes_inscription/bac/', null=True, blank=True)
+    copie_identite = models.FileField(upload_to='demandes_inscription/identite/', null=True, blank=True)
+    
+    # Traitement
+    statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente')
+    date_demande = models.DateTimeField(auto_now_add=True)
+    date_traitement = models.DateTimeField(null=True, blank=True)
+    traite_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True, related_name='inscriptions_traitees')
+    commentaire_admin = models.TextField(blank=True)
+    
+    # Étudiant créé après approbation
+    etudiant_cree = models.OneToOneField(Etudiant, on_delete=models.SET_NULL, null=True, blank=True, related_name='demande_origine')
+    
+    class Meta:
+        verbose_name = 'Demande d\'Inscription'
+        verbose_name_plural = 'Demandes d\'Inscription'
+        ordering = ['-date_demande']
+    
+    def __str__(self):
+        return f"{self.prenom} {self.nom} - {self.filiere_demandee.nom} ({self.get_statut_display()})"
+
+
+# ===== PROMOTION =====
+class Promotion(models.Model):
+    """Promotion d'étudiants (cohorte par année d'entrée)"""
+    code = models.CharField(max_length=50, unique=True)  # Ex: PROMO-2024-INFO
+    libelle = models.CharField(max_length=200)  # Ex: Promotion 2024 - Informatique
+    filiere = models.ForeignKey(Filiere, on_delete=models.CASCADE, related_name='promotions')
+    annee_entree = models.IntegerField()  # Année d'entrée dans la filière
+    annee_sortie_prevue = models.IntegerField()  # Année de sortie prévue
+    effectif_initial = models.IntegerField(default=0)
+    effectif_actuel = models.IntegerField(default=0)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Promotion'
+        verbose_name_plural = 'Promotions'
+        ordering = ['-annee_entree', 'filiere']
+        unique_together = ['filiere', 'annee_entree']
+    
+    def __str__(self):
+        return f"{self.libelle} ({self.annee_entree}-{self.annee_sortie_prevue})"
+    
+    def update_effectifs(self):
+        """Mettre à jour les effectifs"""
+        self.effectif_actuel = self.etudiants.filter(statut__in=['inscrit', 'reinscrit']).count()
+        self.save()
+

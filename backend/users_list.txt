@@ -1,1 +1,0 @@
-superadmin@erp.bf:superadmin|prof@uan.bf:professeur|admin@uan.bf:admin

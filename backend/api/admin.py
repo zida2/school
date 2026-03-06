@@ -7,7 +7,8 @@ from .models import (
     ReponseSondage, Evenement, InscriptionEvenement,
     MessageBureau, DemandeAdministrative, ObjetPerdu,
     Canal, Message, LectureMessage, NotificationEmail, PreferenceNotification,
-    Paiement, RappelPaiement, LettreRappel, CarteEtudiant
+    Paiement, RappelPaiement, LettreRappel, CarteEtudiant,
+    DemandeInscription, Promotion
 )
 
 
@@ -235,3 +236,38 @@ class CarteEtudiantAdmin(admin.ModelAdmin):
     search_fields = ['numero_carte', 'etudiant__matricule', 'etudiant__nom', 'code_verification']
     readonly_fields = ['numero_carte', 'qr_code', 'code_verification', 'date_emission']
     date_hierarchy = 'date_emission'
+
+
+@admin.register(DemandeInscription)
+class DemandeInscriptionAdmin(admin.ModelAdmin):
+    list_display = ['prenom', 'nom', 'email', 'filiere_demandee', 'niveau_demande', 'statut', 'date_demande']
+    list_filter = ['statut', 'filiere_demandee', 'niveau_demande', 'date_demande']
+    search_fields = ['prenom', 'nom', 'email', 'telephone', 'matricule']
+    readonly_fields = ['date_demande', 'date_traitement', 'etudiant_cree']
+    date_hierarchy = 'date_demande'
+    
+    fieldsets = (
+        ('Informations personnelles', {
+            'fields': ('nom', 'prenom', 'email', 'telephone', 'date_naissance', 'lieu_naissance', 'genre')
+        }),
+        ('Informations académiques', {
+            'fields': ('lycee_provenance', 'ville_origine', 'serie_bac', 'annee_bac', 'mention_bac')
+        }),
+        ('Choix de formation', {
+            'fields': ('filiere_demandee', 'niveau_demande', 'annee_academique')
+        }),
+        ('Documents', {
+            'fields': ('photo', 'copie_bac', 'copie_identite')
+        }),
+        ('Traitement', {
+            'fields': ('statut', 'date_demande', 'date_traitement', 'traite_par', 'commentaire_admin', 'etudiant_cree')
+        }),
+    )
+
+
+@admin.register(Promotion)
+class PromotionAdmin(admin.ModelAdmin):
+    list_display = ['code', 'libelle', 'filiere', 'annee_entree', 'annee_sortie_prevue', 'effectif_actuel']
+    list_filter = ['filiere', 'annee_entree']
+    search_fields = ['code', 'libelle']
+    readonly_fields = ['effectif_actuel', 'date_creation']

@@ -1,0 +1,304 @@
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.utils import timezone
+from django.db import transaction
+from datetime import datetime
+import uuid
+
+from .models import DemandeInscription, Etudiant, Utilisateur, Promotion, Classe, Inscription
+from .serializers import DemandeInscriptionSerializer, EtudiantSerializer
+from .permissions import IsAdminOrSuperAdmin
+
+
+class DemandeInscriptionViewSet(viewsets.ModelViewSet):
+    """ViewSet pour gérer les demandes d'inscription des étudiants"""
+    queryset = DemandeInscription.objects.all()
+    serializer_class = DemandeInscriptionSerializer
+    
+    def get_permissions(self):
+        # Création de demande accessible à tous (formulaire public)
+        if self.action == 'create':
+            return [AllowAny()]
+        # Consultation et traitement réservés aux admins
+        return [IsAdminOrSuperAdmin()]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        
+        # Filtres
+        statut = self.request.query_params.get('statut')
+        filiere = self.request.query_params.get('filiere')
+        annee = self.request.query_params.get('annee_academique')
+        
+        if statut:
+            qs = qs.filter(statut=statut)
+        if filiere:
+            qs = qs.filter(filiere_demandee_id=filiere)
+        if annee:
+            qs = qs.filter(annee_academique_id=annee)
+        
+        return qs
+    
+    @action(detail=True, methods=['post'])
+    def approuver(self, request, pk=None):
+        """Approuver une demande et créer le compte étudiant"""
+        demande = self.get_object()
+        
+        if demande.statut != 'en_attente':
+            return Response(
+                {'error': 'Cette demande a déjà été traitée'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            with transaction.atomic():
+                # Générer matricule unique
+                annee = datetime.now().year
+                filiere_code = demande.filiere_demandee.code[:3].upper()
+                count = Etudiant.objects.filter(
+                    matricule__startswith=f"{annee}{filiere_code}"
+                ).count() + 1
+                matricule = f"{annee}{filiere_code}{count:04d}"
+                
+                # Créer le compte utilisateur
+                password_temp = f"etudiant{annee}"
+                utilisateur = Utilisateur.objects.create_user(
+                    email=demande.email,
+                    password=password_temp,
+                    prenom=demande.prenom,
+                    nom=demande.nom,
+                    role='etudiant'
+                )
+                
+                # Trouver ou créer la promotion
+                promotion, created = Promotion.objects.get_or_create(
+                    filiere=demande.filiere_demandee,
+                    annee_entree=annee,
+                    defaults={
+                        'code': f"PROMO-{annee}-{filiere_code}",
+                        'libelle': f"Promotion {annee} - {demande.filiere_demandee.nom}",
+                        'annee_sortie_prevue': annee + demande.filiere_demandee.duree,
+                        'effectif_initial': 1
+                    }
+                )
+                
+                if not created:
+                    promotion.effectif_initial += 1
+                    promotion.save()
+                
+                # Créer l'étudiant
+                etudiant = Etudiant.objects.create(
+                    utilisateur=utilisateur,
+                    universite=demande.filiere_demandee.universite,
+                    filiere=demande.filiere_demandee,
+                    annee_academique=demande.annee_academique,
+                    promotion=promotion,
+                    matricule=matricule,
+                    prenom=demande.prenom,
+                    nom=demande.nom,
+                    email=demande.email,
+                    telephone=demande.telephone,
+                    date_naissance=demande.date_naissance,
+                    lieu_naissance=demande.lieu_naissance,
+                    genre=demande.genre,
+                    niveau=demande.niveau_demande,
+                    lycee_provenance=demande.lycee_provenance,
+                    ville_origine=demande.ville_origine,
+                    serie_bac=demande.serie_bac,
+                    annee_bac=demande.annee_bac,
+                    mention_bac=demande.mention_bac,
+                    solde_du=demande.filiere_demandee.frais_inscription,
+                    photo=demande.photo
+                )
+                
+                # Trouver ou créer la classe appropriée
+                classe_code = f"{demande.niveau_demande}-{filiere_code}-{annee}"
+                classe, created = Classe.objects.get_or_create(
+                    code=classe_code,
+                    annee_academique=str(annee),
+                    defaults={
+                        'nom': f"Classe {demande.niveau_demande} {demande.filiere_demandee.nom} {annee}",
+                        'filiere': demande.filiere_demandee,
+                        'niveau': demande.niveau_demande,
+                        'effectif_max': 50
+                    }
+                )
+                
+                # Inscrire l'étudiant dans la classe
+                Inscription.objects.create(
+                    etudiant=etudiant,
+                    classe=classe,
+                    annee_academique=str(annee),
+                    statut='actif'
+                )
+                
+                # Mettre à jour la demande
+                demande.statut = 'approuvee'
+                demande.date_traitement = timezone.now()
+                demande.traite_par = request.user
+                demande.etudiant_cree = etudiant
+                demande.save()
+                
+                # Mettre à jour les effectifs
+                promotion.update_effectifs()
+                
+                return Response({
+                    'detail': 'Demande approuvée avec succès',
+                    'matricule': matricule,
+                    'email': demande.email,
+                    'password_temporaire': password_temp,
+                    'etudiant': EtudiantSerializer(etudiant).data
+                })
+        
+        except Exception as e:
+            return Response(
+                {'error': f'Erreur lors de l\'approbation: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=True, methods=['post'])
+    def rejeter(self, request, pk=None):
+        """Rejeter une demande d'inscription"""
+        demande = self.get_object()
+        
+        if demande.statut != 'en_attente':
+            return Response(
+                {'error': 'Cette demande a déjà été traitée'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        commentaire = request.data.get('commentaire', '')
+        
+        demande.statut = 'rejetee'
+        demande.date_traitement = timezone.now()
+        demande.traite_par = request.user
+        demande.commentaire_admin = commentaire
+        demande.save()
+        
+        return Response({
+            'detail': 'Demande rejetée',
+            'commentaire': commentaire
+        })
+    
+    @action(detail=False, methods=['get'])
+    def statistiques(self, request):
+        """Statistiques des demandes d'inscription"""
+        total = self.get_queryset().count()
+        en_attente = self.get_queryset().filter(statut='en_attente').count()
+        approuvees = self.get_queryset().filter(statut='approuvee').count()
+        rejetees = self.get_queryset().filter(statut='rejetee').count()
+        
+        # Par filière
+        par_filiere = {}
+        for demande in self.get_queryset():
+            filiere = demande.filiere_demandee.nom
+            if filiere not in par_filiere:
+                par_filiere[filiere] = {'total': 0, 'en_attente': 0, 'approuvees': 0, 'rejetees': 0}
+            par_filiere[filiere]['total'] += 1
+            par_filiere[filiere][demande.statut.replace('approuvee', 'approuvees').replace('rejetee', 'rejetees')] += 1
+        
+        return Response({
+            'total': total,
+            'en_attente': en_attente,
+            'approuvees': approuvees,
+            'rejetees': rejetees,
+            'taux_approbation': round((approuvees / total * 100), 2) if total > 0 else 0,
+            'par_filiere': par_filiere
+        })
+    
+    @action(detail=False, methods=['post'])
+    def approuver_masse(self, request):
+        """Approuver plusieurs demandes en masse"""
+        demande_ids = request.data.get('demande_ids', [])
+        
+        if not demande_ids:
+            return Response(
+                {'error': 'Aucune demande sélectionnée'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        demandes = DemandeInscription.objects.filter(
+            id__in=demande_ids,
+            statut='en_attente'
+        )
+        
+        resultats = {
+            'succes': [],
+            'echecs': []
+        }
+        
+        for demande in demandes:
+            try:
+                # Utiliser la même logique que approuver()
+                response = self.approuver(request, pk=demande.id)
+                if response.status_code == 200:
+                    resultats['succes'].append({
+                        'id': demande.id,
+                        'nom': f"{demande.prenom} {demande.nom}"
+                    })
+                else:
+                    resultats['echecs'].append({
+                        'id': demande.id,
+                        'nom': f"{demande.prenom} {demande.nom}",
+                        'erreur': response.data.get('error', 'Erreur inconnue')
+                    })
+            except Exception as e:
+                resultats['echecs'].append({
+                    'id': demande.id,
+                    'nom': f"{demande.prenom} {demande.nom}",
+                    'erreur': str(e)
+                })
+        
+        return Response({
+            'detail': f"{len(resultats['succes'])} demande(s) approuvée(s), {len(resultats['echecs'])} échec(s)",
+            'resultats': resultats
+        })
+
+
+class PromotionViewSet(viewsets.ModelViewSet):
+    """ViewSet pour gérer les promotions"""
+    queryset = Promotion.objects.all()
+    permission_classes = [IsAdminOrSuperAdmin]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        
+        filiere = self.request.query_params.get('filiere')
+        annee = self.request.query_params.get('annee_entree')
+        
+        if filiere:
+            qs = qs.filter(filiere_id=filiere)
+        if annee:
+            qs = qs.filter(annee_entree=annee)
+        
+        return qs
+    
+    @action(detail=True, methods=['get'])
+    def etudiants(self, request, pk=None):
+        """Liste des étudiants d'une promotion"""
+        promotion = self.get_object()
+        etudiants = promotion.etudiants.all()
+        
+        return Response({
+            'promotion': {
+                'code': promotion.code,
+                'libelle': promotion.libelle,
+                'annee_entree': promotion.annee_entree,
+                'annee_sortie_prevue': promotion.annee_sortie_prevue,
+                'effectif_actuel': promotion.effectif_actuel
+            },
+            'etudiants': EtudiantSerializer(etudiants, many=True).data
+        })
+    
+    @action(detail=True, methods=['post'])
+    def update_effectifs(self, request, pk=None):
+        """Mettre à jour les effectifs de la promotion"""
+        promotion = self.get_object()
+        promotion.update_effectifs()
+        
+        return Response({
+            'detail': 'Effectifs mis à jour',
+            'effectif_actuel': promotion.effectif_actuel
+        })
