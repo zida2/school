@@ -1,12 +1,12 @@
 from django.contrib import admin
 from .models import (
     Utilisateur, Universite, AnneeAcademique, Filiere, Matiere,
-    Enseignant, Etudiant, Note, Paiement, EmploiDuTemps,
+    Enseignant, Etudiant, Note, EmploiDuTemps,
     Presence, SupportCours, Notification, MembreBureau,
     Publication, Sondage, QuestionSondage, OptionQuestion,
     ReponseSondage, Evenement, InscriptionEvenement,
     MessageBureau, DemandeAdministrative, ObjetPerdu,
-    Canal, Message, LectureMessage
+    Canal, Message, LectureMessage, NotificationEmail, PreferenceNotification
 )
 
 
@@ -63,13 +63,6 @@ class NoteAdmin(admin.ModelAdmin):
     list_display = ['etudiant', 'matiere', 'note_cc', 'note_examen', 'publie']
     list_filter = ['publie', 'matiere__semestre']
     search_fields = ['etudiant__matricule', 'etudiant__nom']
-
-
-@admin.register(Paiement)
-class PaiementAdmin(admin.ModelAdmin):
-    list_display = ['numero_recu', 'etudiant', 'montant', 'mode', 'type_paiement', 'statut', 'date_paiement']
-    list_filter = ['statut', 'mode', 'type_paiement']
-    search_fields = ['numero_recu', 'etudiant__matricule']
 
 
 @admin.register(EmploiDuTemps)
@@ -193,3 +186,18 @@ class LectureMessageAdmin(admin.ModelAdmin):
     list_display = ['utilisateur', 'message', 'date_lecture']
     list_filter = ['date_lecture']
     search_fields = ['utilisateur__nom', 'utilisateur__prenom']
+
+
+@admin.register(NotificationEmail)
+class NotificationEmailAdmin(admin.ModelAdmin):
+    list_display = ['destinataire', 'sujet', 'type_notification', 'envoye', 'date_creation', 'date_envoi']
+    list_filter = ['type_notification', 'envoye', 'date_creation']
+    search_fields = ['destinataire__email', 'sujet', 'contenu']
+    readonly_fields = ['date_creation', 'date_envoi']
+
+
+@admin.register(PreferenceNotification)
+class PreferenceNotificationAdmin(admin.ModelAdmin):
+    list_display = ['utilisateur', 'email_actif', 'notif_nouvelle_note', 'notif_nouvelle_evaluation', 'notif_absence']
+    list_filter = ['email_actif']
+    search_fields = ['utilisateur__email', 'utilisateur__nom']
