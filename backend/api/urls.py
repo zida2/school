@@ -23,7 +23,11 @@ from .views_finances import (
 )
 from .views_carte import CarteEtudiantViewSet
 from .views_statistiques import StatistiquesMarketingViewSet
-from .views_inscription import DemandeInscriptionViewSet, PromotionViewSet, DemandeInscriptionProfesseurViewSet
+from .views_inscription import (
+    DemandeInscriptionViewSet, PromotionViewSet, DemandeInscriptionProfesseurViewSet,
+    DemandeInscriptionCommunicationViewSet, DemandeInscriptionAcademiqueViewSet,
+    DemandeInscriptionComptabiliteViewSet
+)
 
 router = DefaultRouter()
 router.register(r'universites', UniversiteViewSet, basename='universite')
@@ -71,6 +75,9 @@ router.register(r'statistiques-marketing', StatistiquesMarketingViewSet, basenam
 # Inscriptions et Promotions
 router.register(r'demandes-inscription', DemandeInscriptionViewSet, basename='demande-inscription')
 router.register(r'demandes-inscription-professeur', DemandeInscriptionProfesseurViewSet, basename='demande-inscription-professeur')
+router.register(r'demandes-inscription-communication', DemandeInscriptionCommunicationViewSet, basename='demande-inscription-communication')
+router.register(r'demandes-inscription-academique', DemandeInscriptionAcademiqueViewSet, basename='demande-inscription-academique')
+router.register(r'demandes-inscription-comptabilite', DemandeInscriptionComptabiliteViewSet, basename='demande-inscription-comptabilite')
 router.register(r'promotions', PromotionViewSet, basename='promotion')
 
 urlpatterns = [

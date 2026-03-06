@@ -10,7 +10,8 @@ from .models import (
     Evenement, InscriptionEvenement, MessageBureau,
     DemandeAdministrative, ObjetPerdu, RappelPaiement, LettreRappel,
     Classe, Inscription, EnseignementMatiere, Canal, Message, LectureMessage,
-    CarteEtudiant, DemandeInscription, Promotion, DemandeInscriptionProfesseur
+    CarteEtudiant, DemandeInscription, Promotion, DemandeInscriptionProfesseur,
+    DemandeInscriptionCommunication, DemandeInscriptionAcademique, DemandeInscriptionComptabilite
 )
 
 
@@ -783,6 +784,43 @@ class DemandeInscriptionProfesseurSerializer(serializers.ModelSerializer):
         model = DemandeInscriptionProfesseur
         fields = '__all__'
         read_only_fields = ['statut', 'date_demande', 'date_traitement', 'traite_par', 'professeur_cree']
+    
+    def get_traite_par_nom(self, obj):
+        return obj.traite_par.get_full_name() if obj.traite_par else None
+
+
+# ===== DEMANDES INSCRIPTION SERVICES ADMINISTRATIFS =====
+class DemandeInscriptionCommunicationSerializer(serializers.ModelSerializer):
+    traite_par_nom = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = DemandeInscriptionCommunication
+        fields = '__all__'
+        read_only_fields = ['statut', 'date_demande', 'date_traitement', 'traite_par', 'utilisateur_cree']
+    
+    def get_traite_par_nom(self, obj):
+        return obj.traite_par.get_full_name() if obj.traite_par else None
+
+
+class DemandeInscriptionAcademiqueSerializer(serializers.ModelSerializer):
+    traite_par_nom = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = DemandeInscriptionAcademique
+        fields = '__all__'
+        read_only_fields = ['statut', 'date_demande', 'date_traitement', 'traite_par', 'utilisateur_cree']
+    
+    def get_traite_par_nom(self, obj):
+        return obj.traite_par.get_full_name() if obj.traite_par else None
+
+
+class DemandeInscriptionComptabiliteSerializer(serializers.ModelSerializer):
+    traite_par_nom = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = DemandeInscriptionComptabilite
+        fields = '__all__'
+        read_only_fields = ['statut', 'date_demande', 'date_traitement', 'traite_par', 'utilisateur_cree']
     
     def get_traite_par_nom(self, obj):
         return obj.traite_par.get_full_name() if obj.traite_par else None

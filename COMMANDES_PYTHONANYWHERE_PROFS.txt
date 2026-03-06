@@ -1,0 +1,21 @@
+# COMMANDES POUR PYTHONANYWHERE
+
+# 1. Se connecter à PythonAnywhere
+# 2. Ouvrir Bash console
+# 3. Copier-coller ces commandes:
+
+cd ~/school
+source ~/.virtualenvs/myenv/bin/activate
+git pull origin main
+cd backend
+python manage.py migrate
+python manage.py check
+touch /var/www/wendlasida_pythonanywhere_com_wsgi.py
+
+# Résultat attendu:
+# - Migration 0015_demandeinscriptionprofesseur appliquée
+# - System check: 0 issues
+# - Application redémarrée
+
+# Test API:
+# POST https://wendlasida.pythonanywhere.com/api/demandes-inscription-professeur/

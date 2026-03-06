@@ -8,7 +8,8 @@ from .models import (
     MessageBureau, DemandeAdministrative, ObjetPerdu,
     Canal, Message, LectureMessage, NotificationEmail, PreferenceNotification,
     Paiement, RappelPaiement, LettreRappel, CarteEtudiant,
-    DemandeInscription, Promotion, DemandeInscriptionProfesseur
+    DemandeInscription, Promotion, DemandeInscriptionProfesseur,
+    DemandeInscriptionCommunication, DemandeInscriptionAcademique, DemandeInscriptionComptabilite
 )
 
 
@@ -291,3 +292,27 @@ class DemandeInscriptionProfesseurAdmin(admin.ModelAdmin):
             'fields': ('statut', 'date_demande', 'date_traitement', 'traite_par', 'commentaire_admin', 'professeur_cree')
         }),
     )
+
+
+@admin.register(DemandeInscriptionCommunication)
+class DemandeInscriptionCommunicationAdmin(admin.ModelAdmin):
+    list_display = ['prenom', 'nom', 'email', 'poste_souhaite', 'statut', 'date_demande']
+    list_filter = ['statut', 'date_demande']
+    search_fields = ['nom', 'prenom', 'email']
+    readonly_fields = ['date_demande', 'date_traitement', 'utilisateur_cree']
+
+
+@admin.register(DemandeInscriptionAcademique)
+class DemandeInscriptionAcademiqueAdmin(admin.ModelAdmin):
+    list_display = ['prenom', 'nom', 'email', 'poste_souhaite', 'statut', 'date_demande']
+    list_filter = ['statut', 'date_demande']
+    search_fields = ['nom', 'prenom', 'email']
+    readonly_fields = ['date_demande', 'date_traitement', 'utilisateur_cree']
+
+
+@admin.register(DemandeInscriptionComptabilite)
+class DemandeInscriptionComptabiliteAdmin(admin.ModelAdmin):
+    list_display = ['prenom', 'nom', 'email', 'poste_souhaite', 'statut', 'date_demande']
+    list_filter = ['statut', 'date_demande']
+    search_fields = ['nom', 'prenom', 'email']
+    readonly_fields = ['date_demande', 'date_traitement', 'utilisateur_cree']

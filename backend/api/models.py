@@ -26,6 +26,9 @@ class Utilisateur(AbstractBaseUser, PermissionsMixin):
     ROLES = [
         ('superadmin', 'Super Administrateur'),
         ('admin', 'Administration'),
+        ('communication', 'Service Communication'),
+        ('academique', 'Service Académique'),
+        ('comptabilite', 'Service Comptabilité'),
         ('professeur', 'Enseignant'),
         ('etudiant', 'Étudiant'),
         ('bureau_executif', 'Bureau Exécutif'),
@@ -1230,3 +1233,95 @@ class DemandeInscriptionProfesseur(models.Model):
     
     def __str__(self):
         return f"{self.prenom} {self.nom} - {self.filiere_enseignee.nom} ({self.get_statut_display()})"
+
+
+# ===== DEMANDES INSCRIPTION SERVICES ADMINISTRATIFS =====
+
+class DemandeInscriptionCommunication(models.Model):
+    """Demande d'inscription Service Communication"""
+    STATUTS = [
+        ('en_attente', 'En attente de validation'),
+        ('validee', 'Validée'),
+        ('rejetee', 'Rejetée'),
+    ]
+    
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    telephone = models.CharField(max_length=20, blank=True)
+    poste_souhaite = models.CharField(max_length=200, default="Chargé de communication")
+    
+    statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente')
+    date_demande = models.DateTimeField(auto_now_add=True)
+    date_traitement = models.DateTimeField(null=True, blank=True)
+    traite_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True, related_name='communications_validees')
+    commentaire_admin = models.TextField(blank=True)
+    utilisateur_cree = models.OneToOneField(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True, related_name='demande_communication_origine')
+    
+    class Meta:
+        verbose_name = 'Demande Service Communication'
+        verbose_name_plural = 'Demandes Service Communication'
+        ordering = ['-date_demande']
+    
+    def __str__(self):
+        return f"{self.prenom} {self.nom} - Communication ({self.get_statut_display()})"
+
+
+class DemandeInscriptionAcademique(models.Model):
+    """Demande d'inscription Service Académique"""
+    STATUTS = [
+        ('en_attente', 'En attente de validation'),
+        ('validee', 'Validée'),
+        ('rejetee', 'Rejetée'),
+    ]
+    
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    telephone = models.CharField(max_length=20, blank=True)
+    poste_souhaite = models.CharField(max_length=200, default="Responsable académique")
+    
+    statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente')
+    date_demande = models.DateTimeField(auto_now_add=True)
+    date_traitement = models.DateTimeField(null=True, blank=True)
+    traite_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True, related_name='academiques_valides')
+    commentaire_admin = models.TextField(blank=True)
+    utilisateur_cree = models.OneToOneField(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True, related_name='demande_academique_origine')
+    
+    class Meta:
+        verbose_name = 'Demande Service Académique'
+        verbose_name_plural = 'Demandes Service Académique'
+        ordering = ['-date_demande']
+    
+    def __str__(self):
+        return f"{self.prenom} {self.nom} - Académique ({self.get_statut_display()})"
+
+
+class DemandeInscriptionComptabilite(models.Model):
+    """Demande d'inscription Service Comptabilité"""
+    STATUTS = [
+        ('en_attente', 'En attente de validation'),
+        ('validee', 'Validée'),
+        ('rejetee', 'Rejetée'),
+    ]
+    
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    telephone = models.CharField(max_length=20, blank=True)
+    poste_souhaite = models.CharField(max_length=200, default="Comptable")
+    
+    statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente')
+    date_demande = models.DateTimeField(auto_now_add=True)
+    date_traitement = models.DateTimeField(null=True, blank=True)
+    traite_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True, related_name='comptabilites_validees')
+    commentaire_admin = models.TextField(blank=True)
+    utilisateur_cree = models.OneToOneField(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True, related_name='demande_comptabilite_origine')
+    
+    class Meta:
+        verbose_name = 'Demande Service Comptabilité'
+        verbose_name_plural = 'Demandes Service Comptabilité'
+        ordering = ['-date_demande']
+    
+    def __str__(self):
+        return f"{self.prenom} {self.nom} - Comptabilité ({self.get_statut_display()})"

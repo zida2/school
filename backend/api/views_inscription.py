@@ -438,3 +438,180 @@ class DemandeInscriptionProfesseurViewSet(viewsets.ModelViewSet):
             'validees': validees,
             'rejetees': rejetees
         })
+
+
+
+# ===== SERVICES ADMINISTRATIFS =====
+from .models import DemandeInscriptionCommunication, DemandeInscriptionAcademique, DemandeInscriptionComptabilite
+from .serializers import (
+    DemandeInscriptionCommunicationSerializer,
+    DemandeInscriptionAcademiqueSerializer,
+    DemandeInscriptionComptabiliteSerializer
+)
+
+# Service Communication
+class DemandeInscriptionCommunicationViewSet(viewsets.ModelViewSet):
+    queryset = DemandeInscriptionCommunication.objects.all()
+    serializer_class = DemandeInscriptionCommunicationSerializer
+    
+    def get_permissions(self):
+        if self.action == 'create':
+            return [AllowAny()]
+        return [IsAdminOrSuperAdmin()]
+    
+    @action(detail=True, methods=['post'])
+    def valider(self, request, pk=None):
+        demande = self.get_object()
+        if demande.statut != 'en_attente':
+            return Response({'error': 'Demande déjà traitée'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            with transaction.atomic():
+                password = f"comm{uuid.uuid4().hex[:8]}"
+                utilisateur = Utilisateur.objects.create_user(
+                    email=demande.email,
+                    password=password,
+                    prenom=demande.prenom,
+                    nom=demande.nom,
+                    role='communication'
+                )
+                
+                demande.statut = 'validee'
+                demande.date_traitement = timezone.now()
+                demande.traite_par = request.user
+                demande.utilisateur_cree = utilisateur
+                demande.save()
+                
+                return Response({
+                    'message': 'Demande validée',
+                    'email': utilisateur.email,
+                    'password_temporaire': password
+                }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=True, methods=['post'])
+    def rejeter(self, request, pk=None):
+        demande = self.get_object()
+        if demande.statut != 'en_attente':
+            return Response({'error': 'Demande déjà traitée'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        demande.statut = 'rejetee'
+        demande.date_traitement = timezone.now()
+        demande.traite_par = request.user
+        demande.commentaire_admin = request.data.get('commentaire', '')
+        demande.save()
+        
+        return Response({'message': 'Demande rejetée'}, status=status.HTTP_200_OK)
+
+
+# Service Académique
+class DemandeInscriptionAcademiqueViewSet(viewsets.ModelViewSet):
+    queryset = DemandeInscriptionAcademique.objects.all()
+    serializer_class = DemandeInscriptionAcademiqueSerializer
+    
+    def get_permissions(self):
+        if self.action == 'create':
+            return [AllowAny()]
+        return [IsAdminOrSuperAdmin()]
+    
+    @action(detail=True, methods=['post'])
+    def valider(self, request, pk=None):
+        demande = self.get_object()
+        if demande.statut != 'en_attente':
+            return Response({'error': 'Demande déjà traitée'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            with transaction.atomic():
+                password = f"acad{uuid.uuid4().hex[:8]}"
+                utilisateur = Utilisateur.objects.create_user(
+                    email=demande.email,
+                    password=password,
+                    prenom=demande.prenom,
+                    nom=demande.nom,
+                    role='academique'
+                )
+                
+                demande.statut = 'validee'
+                demande.date_traitement = timezone.now()
+                demande.traite_par = request.user
+                demande.utilisateur_cree = utilisateur
+                demande.save()
+                
+                return Response({
+                    'message': 'Demande validée',
+                    'email': utilisateur.email,
+                    'password_temporaire': password
+                }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=True, methods=['post'])
+    def rejeter(self, request, pk=None):
+        demande = self.get_object()
+        if demande.statut != 'en_attente':
+            return Response({'error': 'Demande déjà traitée'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        demande.statut = 'rejetee'
+        demande.date_traitement = timezone.now()
+        demande.traite_par = request.user
+        demande.commentaire_admin = request.data.get('commentaire', '')
+        demande.save()
+        
+        return Response({'message': 'Demande rejetée'}, status=status.HTTP_200_OK)
+
+
+# Service Comptabilité
+class DemandeInscriptionComptabiliteViewSet(viewsets.ModelViewSet):
+    queryset = DemandeInscriptionComptabilite.objects.all()
+    serializer_class = DemandeInscriptionComptabiliteSerializer
+    
+    def get_permissions(self):
+        if self.action == 'create':
+            return [AllowAny()]
+        return [IsAdminOrSuperAdmin()]
+    
+    @action(detail=True, methods=['post'])
+    def valider(self, request, pk=None):
+        demande = self.get_object()
+        if demande.statut != 'en_attente':
+            return Response({'error': 'Demande déjà traitée'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            with transaction.atomic():
+                password = f"compta{uuid.uuid4().hex[:8]}"
+                utilisateur = Utilisateur.objects.create_user(
+                    email=demande.email,
+                    password=password,
+                    prenom=demande.prenom,
+                    nom=demande.nom,
+                    role='comptabilite'
+                )
+                
+                demande.statut = 'validee'
+                demande.date_traitement = timezone.now()
+                demande.traite_par = request.user
+                demande.utilisateur_cree = utilisateur
+                demande.save()
+                
+                return Response({
+                    'message': 'Demande validée',
+                    'email': utilisateur.email,
+                    'password_temporaire': password
+                }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=True, methods=['post'])
+    def rejeter(self, request, pk=None):
+        demande = self.get_object()
+        if demande.statut != 'en_attente':
+            return Response({'error': 'Demande déjà traitée'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        demande.statut = 'rejetee'
+        demande.date_traitement = timezone.now()
+        demande.traite_par = request.user
+        demande.commentaire_admin = request.data.get('commentaire', '')
+        demande.save()
+        
+        return Response({'message': 'Demande rejetée'}, status=status.HTTP_200_OK)
