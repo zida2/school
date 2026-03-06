@@ -1,5 +1,5 @@
 // Service Worker pour PWA
-const CACHE_NAME = 'erp-etudiant-v1';
+const CACHE_NAME = 'erp-etudiant-v2';
 const urlsToCache = [
   '/mobile/',
   '/mobile/index.html',
@@ -44,6 +44,11 @@ self.addEventListener('activate', event => {
 
 // Interception des requêtes (stratégie Network First)
 self.addEventListener('fetch', event => {
+  // Ignorer les requêtes non-HTTP (chrome-extension, etc.)
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+  
   event.respondWith(
     fetch(event.request)
       .then(response => {
@@ -72,8 +77,8 @@ self.addEventListener('push', event => {
   const title = data.title || 'ERP Universitaire';
   const options = {
     body: data.body || 'Nouvelle notification',
-    icon: '/mobile/icon-192.png',
-    badge: '/mobile/icon-192.png',
+    icon: '/mobile/icon.svg',
+    badge: '/mobile/icon.svg',
     vibrate: [200, 100, 200],
     data: data.url || '/mobile/dashboard.html',
     actions: [
