@@ -12,6 +12,10 @@
     {
       "src": "js/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "mobile/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -22,6 +26,10 @@
     {
       "src": "/js/(.*)",
       "dest": "/js/$1"
+    },
+    {
+      "src": "/mobile/(.*)",
+      "dest": "/mobile/$1"
     },
     {
       "src": "/(.*\\.html)?",
