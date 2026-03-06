@@ -294,6 +294,7 @@ class EmploiDuTempsSerializer(serializers.ModelSerializer):
     matiere_nom = serializers.CharField(source='matiere.nom', read_only=True)
     matiere_code = serializers.CharField(source='matiere.code', read_only=True)
     enseignant_nom = serializers.SerializerMethodField()
+    enseignant_email = serializers.SerializerMethodField()
     filiere_nom = serializers.CharField(source='matiere.filiere.nom', read_only=True)
     filiere_id = serializers.IntegerField(source='matiere.filiere.id', read_only=True)
 
@@ -303,6 +304,9 @@ class EmploiDuTempsSerializer(serializers.ModelSerializer):
 
     def get_enseignant_nom(self, obj):
         return obj.matiere.enseignant.get_full_name() if obj.matiere.enseignant else None
+    
+    def get_enseignant_email(self, obj):
+        return obj.matiere.enseignant.email if obj.matiere.enseignant else None
 
 
 # ===== PRÉSENCE =====

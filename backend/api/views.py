@@ -599,7 +599,7 @@ class EmploiDuTempsViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_permissions(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+        if self.action in ['create', 'update', 'partial_update', 'destroy', 'envoyer_prof', 'envoyer_tous_profs']:
             return [IsAdminOrSuperAdmin()]
         return [permissions.IsAuthenticated()]
 
@@ -608,10 +608,14 @@ class EmploiDuTempsViewSet(viewsets.ModelViewSet):
         filiere = self.request.query_params.get('filiere')
         enseignant = self.request.query_params.get('enseignant')
         annee = self.request.query_params.get('annee_academique')
+        jour = self.request.query_params.get('jour')
+        matiere = self.request.query_params.get('matiere')
 
         if filiere: qs = qs.filter(matiere__filiere_id=filiere)
         if enseignant: qs = qs.filter(matiere__enseignant_id=enseignant)
         if annee: qs = qs.filter(annee_academique_id=annee)
+        if jour: qs = qs.filter(jour=jour)
+        if matiere: qs = qs.filter(matiere_id=matiere)
 
         # Étudiant voit seulement son programme
         if self.request.user.role == 'etudiant':
@@ -625,6 +629,112 @@ class EmploiDuTempsViewSet(viewsets.ModelViewSet):
             except: qs = qs.none()
 
         return qs
+    
+    @action(detail=True, methods=['post'])
+    def envoyer_prof(self, request, pk=None):
+        """Envoyer l'emploi du temps à un professeur par email"""
+        emploi = self.get_object()
+        
+        if not emploi.matiere.enseignant:
+            return Response(
+                {'error': 'Aucun enseignant assigné à cette matière'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        enseignant = emploi.matiere.enseignant
+        
+        # Construire le message
+        sujet = f"Emploi du temps - {emploi.matiere.nom}"
+        message = f"""
+Bonjour {enseignant.prenom} {enseignant.nom},
+
+Voici votre emploi du temps pour le cours de {emploi.matiere.nom} ({emploi.matiere.code}):
+
+Jour: {emploi.jour}
+Horaire: {emploi.heure_debut} - {emploi.heure_fin}
+Salle: {emploi.salle}
+Semaine: {emploi.get_semaine_display()}
+
+Cordialement,
+L'administration
+        """
+        
+        try:
+            from django.core.mail import send_mail
+            from django.conf import settings
+            
+            send_mail(
+                sujet,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [enseignant.email],
+                fail_silently=False,
+            )
+            
+            return Response({
+                'message': f'Email envoyé à {enseignant.email}',
+                'enseignant': f'{enseignant.prenom} {enseignant.nom}'
+            })
+        except Exception as e:
+            return Response(
+                {'error': f'Erreur lors de l\'envoi: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=False, methods=['post'])
+    def envoyer_tous_profs(self, request):
+        """Envoyer l'emploi du temps à tous les professeurs"""
+        from django.core.mail import send_mail
+        from django.conf import settings
+        from collections import defaultdict
+        
+        # Grouper les emplois par enseignant
+        emplois_par_prof = defaultdict(list)
+        
+        for emploi in self.get_queryset():
+            if emploi.matiere.enseignant:
+                emplois_par_prof[emploi.matiere.enseignant].append(emploi)
+        
+        envois_reussis = 0
+        envois_echoues = 0
+        
+        for enseignant, emplois in emplois_par_prof.items():
+            # Construire le message avec tous les cours
+            cours_list = "\n".join([
+                f"- {e.jour} {e.heure_debut}-{e.heure_fin}: {e.matiere.nom} (Salle {e.salle})"
+                for e in sorted(emplois, key=lambda x: (x.jour, x.heure_debut))
+            ])
+            
+            sujet = "Votre emploi du temps complet"
+            message = f"""
+Bonjour {enseignant.prenom} {enseignant.nom},
+
+Voici votre emploi du temps complet:
+
+{cours_list}
+
+Cordialement,
+L'administration
+            """
+            
+            try:
+                send_mail(
+                    sujet,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [enseignant.email],
+                    fail_silently=False,
+                )
+                envois_reussis += 1
+            except Exception as e:
+                envois_echoues += 1
+                print(f"Erreur envoi à {enseignant.email}: {str(e)}")
+        
+        return Response({
+            'message': f'{envois_reussis} email(s) envoyé(s), {envois_echoues} échec(s)',
+            'reussis': envois_reussis,
+            'echoues': envois_echoues
+        })
 
 
 # ===== PRÉSENCE =====

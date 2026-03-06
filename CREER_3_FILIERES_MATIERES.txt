@@ -1,0 +1,152 @@
+# ========================================
+# CRÉER 3 FILIÈRES AVEC LEURS MATIÈRES
+# ========================================
+# Sur PythonAnywhere Bash Console:
+
+cd ~/school/backend
+python manage.py shell
+
+# Copier-coller tout ce bloc:
+
+from api.models import *
+
+print("\n" + "="*60)
+print("📚 CRÉATION DE 3 FILIÈRES AVEC MATIÈRES")
+print("="*60 + "\n")
+
+# 1. Vérifier/Créer l'université
+universite, created = Universite.objects.get_or_create(
+    code='UNIV001',
+    defaults={
+        'nom': 'Université Exemple',
+        'ville': 'Ouagadougou',
+        'licence': 'STANDARD',
+        'statut': 'active'
+    }
+)
+if created:
+    print(f"✅ Université créée: {universite.nom}")
+else:
+    print(f"✅ Université existante: {universite.nom}")
+
+# 2. Supprimer toutes les filières et matières existantes
+print("\n📋 Suppression des anciennes filières...")
+count_matieres = Matiere.objects.count()
+count_filieres = Filiere.objects.count()
+Matiere.objects.all().delete()
+Filiere.objects.all().delete()
+print(f"   ✅ {count_filieres} filières supprimées")
+print(f"   ✅ {count_matieres} matières supprimées")
+
+# 3. Créer 3 filières
+print("\n📚 Création des 3 filières...")
+
+filieres_data = [
+    {
+        'code': 'INFO',
+        'nom': 'Informatique',
+        'niveau': 'Licence',
+        'duree': 3,
+        'frais_inscription': 150000,
+        'description': 'Licence en Informatique et Systèmes d\'Information'
+    },
+    {
+        'code': 'GESTION',
+        'nom': 'Gestion des Entreprises',
+        'niveau': 'Licence',
+        'duree': 3,
+        'frais_inscription': 120000,
+        'description': 'Licence en Gestion et Administration des Entreprises'
+    },
+    {
+        'code': 'COMPTA',
+        'nom': 'Comptabilité et Finance',
+        'niveau': 'Licence',
+        'duree': 3,
+        'frais_inscription': 130000,
+        'description': 'Licence en Comptabilité, Contrôle et Audit'
+    }
+]
+
+filieres = []
+for data in filieres_data:
+    filiere = Filiere.objects.create(
+        universite=universite,
+        **data
+    )
+    filieres.append(filiere)
+    print(f"   ✅ {filiere.code} - {filiere.nom}")
+
+# 4. Créer les matières pour chaque filière
+print("\n📖 Création des matières...")
+
+# INFORMATIQUE
+matieres_info = [
+    {'code': 'INFO101', 'nom': 'Algorithmique et Programmation', 'credits': 6, 'coefficient': 3, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'INFO102', 'nom': 'Architecture des Ordinateurs', 'credits': 4, 'coefficient': 2, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'INFO103', 'nom': 'Mathématiques pour l\'Informatique', 'credits': 5, 'coefficient': 2, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'INFO104', 'nom': 'Systèmes d\'Exploitation', 'credits': 4, 'coefficient': 2, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'INFO201', 'nom': 'Bases de Données', 'credits': 6, 'coefficient': 3, 'semestre': 2, 'niveau': 'L1'},
+    {'code': 'INFO202', 'nom': 'Réseaux Informatiques', 'credits': 5, 'coefficient': 2, 'semestre': 2, 'niveau': 'L1'},
+    {'code': 'INFO203', 'nom': 'Développement Web', 'credits': 5, 'coefficient': 2, 'semestre': 2, 'niveau': 'L1'},
+    {'code': 'INFO204', 'nom': 'Génie Logiciel', 'credits': 4, 'coefficient': 2, 'semestre': 2, 'niveau': 'L1'},
+]
+
+# GESTION
+matieres_gestion = [
+    {'code': 'GEST101', 'nom': 'Introduction à la Gestion', 'credits': 5, 'coefficient': 2, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'GEST102', 'nom': 'Économie Générale', 'credits': 5, 'coefficient': 2, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'GEST103', 'nom': 'Mathématiques de Gestion', 'credits': 4, 'coefficient': 2, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'GEST104', 'nom': 'Droit des Affaires', 'credits': 4, 'coefficient': 2, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'GEST201', 'nom': 'Marketing Fondamental', 'credits': 5, 'coefficient': 3, 'semestre': 2, 'niveau': 'L1'},
+    {'code': 'GEST202', 'nom': 'Gestion des Ressources Humaines', 'credits': 5, 'coefficient': 2, 'semestre': 2, 'niveau': 'L1'},
+    {'code': 'GEST203', 'nom': 'Management des Organisations', 'credits': 4, 'coefficient': 2, 'semestre': 2, 'niveau': 'L1'},
+    {'code': 'GEST204', 'nom': 'Statistiques Appliquées', 'credits': 4, 'coefficient': 2, 'semestre': 2, 'niveau': 'L1'},
+]
+
+# COMPTABILITÉ
+matieres_compta = [
+    {'code': 'COMP101', 'nom': 'Comptabilité Générale I', 'credits': 6, 'coefficient': 3, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'COMP102', 'nom': 'Mathématiques Financières', 'credits': 5, 'coefficient': 2, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'COMP103', 'nom': 'Droit Commercial', 'credits': 4, 'coefficient': 2, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'COMP104', 'nom': 'Économie d\'Entreprise', 'credits': 4, 'coefficient': 2, 'semestre': 1, 'niveau': 'L1'},
+    {'code': 'COMP201', 'nom': 'Comptabilité Générale II', 'credits': 6, 'coefficient': 3, 'semestre': 2, 'niveau': 'L1'},
+    {'code': 'COMP202', 'nom': 'Analyse Financière', 'credits': 5, 'coefficient': 2, 'semestre': 2, 'niveau': 'L1'},
+    {'code': 'COMP203', 'nom': 'Fiscalité des Entreprises', 'credits': 5, 'coefficient': 2, 'semestre': 2, 'niveau': 'L1'},
+    {'code': 'COMP204', 'nom': 'Contrôle de Gestion', 'credits': 4, 'coefficient': 2, 'semestre': 2, 'niveau': 'L1'},
+]
+
+# Créer les matières
+matieres_par_filiere = [
+    (filieres[0], matieres_info, 'Informatique'),
+    (filieres[1], matieres_gestion, 'Gestion'),
+    (filieres[2], matieres_compta, 'Comptabilité')
+]
+
+for filiere, matieres_list, nom_filiere in matieres_par_filiere:
+    print(f"\n   {nom_filiere}:")
+    for matiere_data in matieres_list:
+        matiere = Matiere.objects.create(
+            filiere=filiere,
+            **matiere_data
+        )
+        print(f"      • {matiere.code} - {matiere.nom}")
+
+print("\n" + "="*60)
+print("✅ CRÉATION TERMINÉE!")
+print("="*60)
+
+# 5. Résumé
+print("\n📊 RÉSUMÉ:")
+print(f"   Université: {universite.nom}")
+print(f"   Filières créées: {Filiere.objects.count()}")
+print(f"   Matières créées: {Matiere.objects.count()}")
+
+print("\n📚 Détails par filière:")
+for filiere in Filiere.objects.all():
+    nb_matieres = filiere.matieres.count()
+    print(f"   • {filiere.code} - {filiere.nom}: {nb_matieres} matières")
+
+print("\n" + "="*60 + "\n")
+
+exit()

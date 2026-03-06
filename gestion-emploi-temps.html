@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Emploi du Temps - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 2rem;
+        }
+        .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+        }
+        .container-fluid {
+            padding: 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .table-responsive {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .emploi-card {
+            border-left: 4px solid #667eea;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .jour-badge {
+            background: #667eea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <span class="navbar-brand">
+                <i class="fas fa-calendar-alt me-2"></i>
+                Gestion Emploi du Temps
+            </span>
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+            </button>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Formulaire de création -->
+            <div class="col-md-4">
+                <div class="card">
+                    <h5 class="mb-3">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Créer un cours
+                    </h5>
+                    <form id="emploiForm">
+                        <div class="mb-3">
+                            <label class="form-label">Matière</label>
+                            <select class="form-select" id="matiere" required>
+                                <option value="">Sélectionner...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Jour</label>
+                            <select class="form-select" id="jour" required>
+                                <option value="Lundi">Lundi</option>
+                                <option value="Mardi">Mardi</option>
+                                <option value="Mercredi">Mercredi</option>
+                                <option value="Jeudi">Jeudi</option>
+                                <option value="Vendredi">Vendredi</option>
+                                <option value="Samedi">Samedi</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Heure début</label>
+                            <input type="time" class="form-control" id="heureDebut" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Heure fin</label>
+                            <input type="time" class="form-control" id="heureFin" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Salle</label>
+                            <input type="text" class="form-control" id="salle" placeholder="Ex: A101" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Semaine</label>
+                            <select class="form-select" id="semaine">
+                                <option value="toutes">Toutes</option>
+                                <option value="paire">Paire</option>
+                                <option value="impaire">Impaire</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-save me-2"></i>Créer
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Liste des emplois du temps -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list me-2"></i>
+                            Emplois du temps
+                        </h5>
+                        <div>
+                            <button class="btn btn-success btn-sm" onclick="envoyerTousProfs()">
+                                <i class="fas fa-paper-plane me-2"></i>Envoyer à tous les profs
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="chargerEmplois()">
+                                <i class="fas fa-sync me-2"></i>Actualiser
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filtres -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <select class="form-select form-select-sm" id="filtreJour" onchange="chargerEmplois()">
+                                <option value="">Tous les jours</option>
+                                <option value="Lundi">Lundi</option>
+                                <option value="Mardi">Mardi</option>
+                                <option value="Mercredi">Mercredi</option>
+                                <option value="Jeudi">Jeudi</option>
+                                <option value="Vendredi">Vendredi</option>
+                                <option value="Samedi">Samedi</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-select form-select-sm" id="filtreMatiere" onchange="chargerEmplois()">
+                                <option value="">Toutes les matières</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="emploisList">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-spinner fa-spin me-2"></i>Chargement...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Envoi Email -->
+    <div class="modal fade" id="emailModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Envoyer l'emploi du temps</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Professeur:</strong> <span id="modalProf"></span></p>
+                    <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        L'emploi du temps sera envoyé par email au professeur.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmerEnvoi()">
+                        <i class="fas fa-paper-plane me-2"></i>Envoyer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://wendlasida.pythonanywhere.com/api';
+        let token = localStorage.getItem('token');
+        let emploiSelectionne = null;
+
+        // Vérifier authentification
+        if (!token) {
+            window.location.href = '/connexion-admin.html';
+        }
+
+        // Charger au démarrage
+        chargerMatieres();
+        chargerEmplois();
+
+        // Charger les matières
+        async function chargerMatieres() {
+            try {
+                const response = await fetch(`${API_URL}/matieres/`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const matieres = await response.json();
+                    const selectMatiere = document.getElementById('matiere');
+                    const selectFiltreMatiere = document.getElementById('filtreMatiere');
+                    
+                    matieres.forEach(m => {
+                        const option = `<option value="${m.id}">${m.code} - ${m.nom}</option>`;
+                        selectMatiere.innerHTML += option;
+                        selectFiltreMatiere.innerHTML += option;
+                    });
+                }
+            } catch (error) {
+                console.error('Erreur chargement matières:', error);
+            }
+        }
+
+        // Charger les emplois du temps
+        async function chargerEmplois() {
+            const filtreJour = document.getElementById('filtreJour').value;
+            const filtreMatiere = document.getElementById('filtreMatiere').value;
+            
+            let url = `${API_URL}/emplois-du-temps/`;
+            const params = [];
+            if (filtreJour) params.push(`jour=${filtreJour}`);
+            if (filtreMatiere) params.push(`matiere=${filtreMatiere}`);
+            if (params.length) url += '?' + params.join('&');
+
+            try {
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const emplois = await response.json();
+                    afficherEmplois(emplois);
+                }
+            } catch (error) {
+                document.getElementById('emploisList').innerHTML = `
+                    <div class="alert alert-danger">Erreur de chargement</div>
+                `;
+            }
+        }
+
+        // Afficher les emplois
+        function afficherEmplois(emplois) {
+            const container = document.getElementById('emploisList');
+            
+            if (emplois.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-muted">
+                        <i class="fas fa-calendar-times fa-3x mb-3"></i>
+                        <p>Aucun emploi du temps</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = emplois.map(e => `
+                <div class="emploi-card">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="mb-2">
+                                <span class="jour-badge">${e.jour}</span>
+                                <strong class="ms-2">${e.heure_debut} - ${e.heure_fin}</strong>
+                            </div>
+                            <div>
+                                <i class="fas fa-book me-2"></i>${e.matiere_nom || e.matiere}
+                            </div>
+                            <div class="text-muted small">
+                                <i class="fas fa-door-open me-2"></i>Salle: ${e.salle}
+                                ${e.enseignant_nom ? `<br><i class="fas fa-user me-2"></i>Prof: ${e.enseignant_nom}` : ''}
+                            </div>
+                        </div>
+                        <div>
+                            ${e.enseignant_email ? `
+                                <button class="btn btn-sm btn-success mb-2" onclick="envoyerProf(${e.id}, '${e.enseignant_nom}', '${e.enseignant_email}')">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            ` : ''}
+                            <button class="btn btn-sm btn-danger" onclick="supprimerEmploi(${e.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Créer un emploi du temps
+        document.getElementById('emploiForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                matiere: document.getElementById('matiere').value,
+                jour: document.getElementById('jour').value,
+                heure_debut: document.getElementById('heureDebut').value,
+                heure_fin: document.getElementById('heureFin').value,
+                salle: document.getElementById('salle').value,
+                semaine: document.getElementById('semaine').value,
+                annee_academique: 1 // TODO: Récupérer l'année académique active
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/emplois-du-temps/`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('Emploi du temps créé avec succès!');
+                    document.getElementById('emploiForm').reset();
+                    chargerEmplois();
+                } else {
+                    alert('Erreur lors de la création');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        });
+
+        // Envoyer à un professeur
+        function envoyerProf(emploiId, profNom, profEmail) {
+            emploiSelectionne = { id: emploiId, nom: profNom, email: profEmail };
+            document.getElementById('modalProf').textContent = profNom;
+            document.getElementById('modalEmail').textContent = profEmail;
+            new bootstrap.Modal(document.getElementById('emailModal')).show();
+        }
+
+        // Confirmer l'envoi
+        async function confirmerEnvoi() {
+            if (!emploiSelectionne) return;
+
+            try {
+                const response = await fetch(`${API_URL}/emplois-du-temps/${emploiSelectionne.id}/envoyer_prof/`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Email envoyé avec succès!');
+                    bootstrap.Modal.getInstance(document.getElementById('emailModal')).hide();
+                } else {
+                    alert('Erreur lors de l\'envoi');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        }
+
+        // Envoyer à tous les professeurs
+        async function envoyerTousProfs() {
+            if (!confirm('Envoyer l\'emploi du temps à tous les professeurs?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/emplois-du-temps/envoyer_tous_profs/`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    alert(data.message || 'Emails envoyés avec succès!');
+                } else {
+                    alert('Erreur lors de l\'envoi');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        }
+
+        // Supprimer un emploi
+        async function supprimerEmploi(id) {
+            if (!confirm('Supprimer cet emploi du temps?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/emplois-du-temps/${id}/`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    alert('Emploi du temps supprimé');
+                    chargerEmplois();
+                } else {
+                    alert('Erreur lors de la suppression');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/connexion-admin.html';
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
