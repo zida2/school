@@ -80,6 +80,11 @@
 
                 <div class="nav-section-ultra">
                     <div class="nav-label-ultra">SERVICES</div>
+                    <a class="nav-item-ultra" data-page="inscriptions" onclick="navToUltra('inscriptions',this)">
+                        <span class="nav-icon-ultra">✅</span>
+                        <span class="nav-text-ultra">Inscriptions</span>
+                        <span class="nav-badge-ultra" id="badgeInscriptions">0</span>
+                    </a>
                     <a class="nav-item-ultra" data-page="demandes" onclick="navToUltra('demandes',this)">
                         <span class="nav-icon-ultra">📝</span>
                         <span class="nav-text-ultra">Demandes</span>
@@ -692,6 +697,80 @@
                     </div>
                 </div>
 
+                <!-- PAGE: INSCRIPTIONS -->
+                <div class="page-ultra" id="page-inscriptions" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">✅ Gestion des Inscriptions</h1>
+                            <p class="page-subtitle-ultra">Validation des demandes d'inscription</p>
+                        </div>
+                        <div class="page-actions-ultra">
+                            <button class="btn-ultra btn-secondary-ultra" onclick="chargerInscriptions()">
+                                🔄 Actualiser
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Statistiques -->
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+                        <div style="padding:20px;background:rgba(251,191,36,0.1);border-radius:12px;border:1px solid rgba(251,191,36,0.2)">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">EN ATTENTE</div>
+                            <div style="font-size:28px;font-weight:700;color:#fbbf24" id="statInscPending">0</div>
+                        </div>
+                        <div style="padding:20px;background:rgba(16,185,129,0.1);border-radius:12px;border:1px solid rgba(16,185,129,0.2)">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">VALIDÉES</div>
+                            <div style="font-size:28px;font-weight:700;color:#10b981" id="statInscApproved">0</div>
+                        </div>
+                        <div style="padding:20px;background:rgba(239,68,68,0.1);border-radius:12px;border:1px solid rgba(239,68,68,0.2)">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">REJETÉES</div>
+                            <div style="font-size:28px;font-weight:700;color:#ef4444" id="statInscRejected">0</div>
+                        </div>
+                        <div style="padding:20px;background:rgba(99,102,241,0.1);border-radius:12px;border:1px solid rgba(99,102,241,0.2)">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">TOTAL</div>
+                            <div style="font-size:28px;font-weight:700;color:#6366f1" id="statInscTotal">0</div>
+                        </div>
+                    </div>
+
+                    <!-- Onglets -->
+                    <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+                        <button class="btn-ultra btn-primary-ultra" id="tabComm" onclick="switchTabInsc('communication')">
+                            📢 Communication
+                        </button>
+                        <button class="btn-ultra btn-ghost-ultra" id="tabAcad" onclick="switchTabInsc('academique')">
+                            🎓 Académique
+                        </button>
+                        <button class="btn-ultra btn-ghost-ultra" id="tabCompta" onclick="switchTabInsc('comptabilite')">
+                            💰 Comptabilité
+                        </button>
+                        <button class="btn-ultra btn-ghost-ultra" id="tabProf" onclick="switchTabInsc('professeur')">
+                            👨‍🏫 Professeurs
+                        </button>
+                    </div>
+
+                    <!-- Tableau -->
+                    <div class="card-ultra">
+                        <div class="card-body-ultra" style="padding:0">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Prénom</th>
+                                        <th>Email</th>
+                                        <th>Téléphone</th>
+                                        <th>Poste/Filière</th>
+                                        <th>Statut</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyInscriptions">
+                                    <tr><td colspan="8" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- PAGE: RÉCLAMATIONS -->
                 <div class="page-ultra" id="page-reclamations" style="display:none">
                     <div class="page-header-ultra">
@@ -786,6 +865,43 @@
                                     <button type="submit" class="btn-ultra btn-primary-ultra">Envoyer</button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL VALIDATION INSCRIPTION -->
+                <div class="modal-ultra" id="modalValidationInscription">
+                    <div class="modal-content-ultra">
+                        <div class="modal-header-ultra">
+                            <h3>✅ Validation réussie</h3>
+                            <span class="modal-close-ultra" onclick="closeModal('modalValidationInscription')">&times;</span>
+                        </div>
+                        <div class="modal-body-ultra">
+                            <div style="text-align:center;padding:20px">
+                                <div style="font-size:48px;margin-bottom:16px">🎉</div>
+                                <p style="font-size:18px;font-weight:600;margin-bottom:24px">Compte créé avec succès!</p>
+                                
+                                <div style="background:rgba(16,185,129,0.1);padding:20px;border-radius:12px;margin-bottom:20px">
+                                    <div style="margin-bottom:16px">
+                                        <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">EMAIL</div>
+                                        <div style="font-size:16px;font-weight:600" id="modalInscEmail">-</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">MOT DE PASSE</div>
+                                        <div style="font-size:20px;font-weight:700;color:#10b981;font-family:monospace" id="modalInscPassword">-</div>
+                                    </div>
+                                </div>
+
+                                <div style="background:rgba(99,102,241,0.1);padding:16px;border-radius:8px;text-align:left">
+                                    <div style="font-size:14px;color:rgba(255,255,255,0.8)">
+                                        <strong>📧 Prochaine étape:</strong><br>
+                                        Envoyez ces identifiants à l'utilisateur par email.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer-ultra">
+                            <button type="button" class="btn-ultra btn-primary-ultra" onclick="closeModal('modalValidationInscription')">Fermer</button>
                         </div>
                     </div>
                 </div>
@@ -1293,6 +1409,8 @@
                 chargerPaiements();
             } else if (page === 'emploi') {
                 chargerEmploi();
+            } else if (page === 'inscriptions') {
+                chargerInscriptions();
             }
         }
 
@@ -2501,11 +2619,192 @@
             showToast('Fonctionnalité d\'impression en cours de développement', 'info');
         }
 
+        // ===== GESTION DES INSCRIPTIONS =====
+        let currentTabInsc = 'communication';
+
+        async function chargerInscriptions() {
+            await chargerTabInscriptions(currentTabInsc);
+            await updateBadgeInscriptions();
+        }
+
+        function switchTabInsc(tab) {
+            currentTabInsc = tab;
+            
+            // Mettre à jour les boutons
+            document.querySelectorAll('[id^="tab"]').forEach(btn => {
+                btn.className = 'btn-ultra btn-ghost-ultra';
+            });
+            
+            const btnMap = {
+                'communication': 'tabComm',
+                'academique': 'tabAcad',
+                'comptabilite': 'tabCompta',
+                'professeur': 'tabProf'
+            };
+            
+            const activeBtn = document.getElementById(btnMap[tab]);
+            if (activeBtn) {
+                activeBtn.className = 'btn-ultra btn-primary-ultra';
+            }
+            
+            chargerTabInscriptions(tab);
+        }
+
+        async function chargerTabInscriptions(tab) {
+            const endpoints = {
+                'communication': '/demandes-inscription-communication/',
+                'academique': '/demandes-inscription-academique/',
+                'comptabilite': '/demandes-inscription-comptabilite/',
+                'professeur': '/demandes-inscription-professeur/'
+            };
+
+            try {
+                const demandes = await API.get(endpoints[tab]);
+                afficherInscriptions(demandes, tab);
+                updateStatsInscriptions(demandes);
+            } catch (error) {
+                console.error('Erreur chargement inscriptions:', error);
+                document.getElementById('tbodyInscriptions').innerHTML = `
+                    <tr><td colspan="8" style="text-align:center;padding:40px;color:#ef4444">
+                        Erreur de chargement
+                    </td></tr>
+                `;
+            }
+        }
+
+        function afficherInscriptions(demandes, tab) {
+            const tbody = document.getElementById('tbodyInscriptions');
+            
+            if (!demandes || demandes.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="8" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">
+                        Aucune demande
+                    </td></tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = demandes.map(d => {
+                const poste = d.poste_souhaite || d.filiere_enseignee || d.filiere_demandee || '-';
+                const statutClass = d.statut === 'en_attente' ? 'warning' : 
+                                   d.statut === 'validee' || d.statut === 'approuvee' ? 'success' : 'danger';
+                const statutText = d.statut === 'en_attente' ? 'En attente' :
+                                  d.statut === 'validee' || d.statut === 'approuvee' ? 'Validée' : 'Rejetée';
+                
+                return `
+                    <tr>
+                        <td><strong>${d.nom}</strong></td>
+                        <td>${d.prenom}</td>
+                        <td>${d.email}</td>
+                        <td>${d.telephone || '-'}</td>
+                        <td>${poste}</td>
+                        <td><span class="badge-ultra ${statutClass}">${statutText}</span></td>
+                        <td>${new Date(d.date_demande).toLocaleDateString('fr-FR')}</td>
+                        <td>
+                            ${d.statut === 'en_attente' ? `
+                                <button class="btn-ultra btn-success-ultra" style="padding:6px 12px;font-size:13px" 
+                                        onclick="validerInscription(${d.id}, '${tab}')">
+                                    ✅ Valider
+                                </button>
+                                <button class="btn-ultra btn-danger-ultra" style="padding:6px 12px;font-size:13px" 
+                                        onclick="rejeterInscription(${d.id}, '${tab}')">
+                                    ❌ Rejeter
+                                </button>
+                            ` : '-'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateStatsInscriptions(demandes) {
+            const pending = demandes.filter(d => d.statut === 'en_attente').length;
+            const approved = demandes.filter(d => d.statut === 'validee' || d.statut === 'approuvee').length;
+            const rejected = demandes.filter(d => d.statut === 'rejetee').length;
+            
+            document.getElementById('statInscPending').textContent = pending;
+            document.getElementById('statInscApproved').textContent = approved;
+            document.getElementById('statInscRejected').textContent = rejected;
+            document.getElementById('statInscTotal').textContent = demandes.length;
+        }
+
+        async function updateBadgeInscriptions() {
+            try {
+                const endpoints = [
+                    '/demandes-inscription-communication/',
+                    '/demandes-inscription-academique/',
+                    '/demandes-inscription-comptabilite/',
+                    '/demandes-inscription-professeur/'
+                ];
+                
+                let totalEnAttente = 0;
+                for (const endpoint of endpoints) {
+                    const demandes = await API.get(endpoint);
+                    totalEnAttente += demandes.filter(d => d.statut === 'en_attente').length;
+                }
+                
+                const badge = document.getElementById('badgeInscriptions');
+                if (badge) {
+                    badge.textContent = totalEnAttente;
+                    badge.style.display = totalEnAttente > 0 ? 'flex' : 'none';
+                }
+            } catch (error) {
+                console.error('Erreur update badge:', error);
+            }
+        }
+
+        async function validerInscription(id, tab) {
+            if (!confirm('Valider cette demande d\'inscription?')) return;
+
+            const endpoints = {
+                'communication': `/demandes-inscription-communication/${id}/valider/`,
+                'academique': `/demandes-inscription-academique/${id}/valider/`,
+                'comptabilite': `/demandes-inscription-comptabilite/${id}/valider/`,
+                'professeur': `/demandes-inscription-professeur/${id}/valider/`
+            };
+
+            try {
+                const result = await API.post(endpoints[tab]);
+                
+                // Afficher le modal avec les identifiants
+                document.getElementById('modalInscEmail').textContent = result.email;
+                document.getElementById('modalInscPassword').textContent = result.password_temporaire || result.password;
+                openModal('modalValidationInscription');
+                
+                // Recharger les données
+                await chargerInscriptions();
+                
+            } catch (error) {
+                alert('Erreur lors de la validation: ' + (error.message || 'Erreur inconnue'));
+            }
+        }
+
+        async function rejeterInscription(id, tab) {
+            const commentaire = prompt('Raison du rejet (optionnel):');
+            if (commentaire === null) return;
+
+            const endpoints = {
+                'communication': `/demandes-inscription-communication/${id}/rejeter/`,
+                'academique': `/demandes-inscription-academique/${id}/rejeter/`,
+                'comptabilite': `/demandes-inscription-comptabilite/${id}/rejeter/`,
+                'professeur': `/demandes-inscription-professeur/${id}/rejeter/`
+            };
+
+            try {
+                await API.post(endpoints[tab], { commentaire });
+                alert('Demande rejetée');
+                await chargerInscriptions();
+            } catch (error) {
+                alert('Erreur lors du rejet: ' + (error.message || 'Erreur inconnue'));
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const user = requireAuth(['admin', 'superadmin']);
             if (user) {
                 chargerDonnees();
                 chargerPaiements();
+                updateBadgeInscriptions(); // Mettre à jour le badge au chargement
             }
         });
     </script>
