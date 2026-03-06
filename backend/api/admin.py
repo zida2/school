@@ -6,7 +6,8 @@ from .models import (
     Publication, Sondage, QuestionSondage, OptionQuestion,
     ReponseSondage, Evenement, InscriptionEvenement,
     MessageBureau, DemandeAdministrative, ObjetPerdu,
-    Canal, Message, LectureMessage, NotificationEmail, PreferenceNotification
+    Canal, Message, LectureMessage, NotificationEmail, PreferenceNotification,
+    Paiement, RappelPaiement, LettreRappel
 )
 
 
@@ -188,6 +189,30 @@ class LectureMessageAdmin(admin.ModelAdmin):
     search_fields = ['utilisateur__nom', 'utilisateur__prenom']
 
 
+@admin.register(Paiement)
+class PaiementAdmin(admin.ModelAdmin):
+    list_display = ['numero_recu', 'etudiant', 'montant', 'mode_paiement', 'date_paiement', 'statut']
+    list_filter = ['statut', 'mode_paiement', 'date_paiement']
+    search_fields = ['numero_recu', 'etudiant__matricule', 'etudiant__nom', 'etudiant__prenom']
+    date_hierarchy = 'date_paiement'
+
+
+@admin.register(RappelPaiement)
+class RappelPaiementAdmin(admin.ModelAdmin):
+    list_display = ['etudiant', 'type_rappel', 'montant_du', 'date_envoi', 'envoye_par']
+    list_filter = ['type_rappel', 'date_envoi']
+    search_fields = ['etudiant__matricule', 'etudiant__nom']
+    date_hierarchy = 'date_envoi'
+
+
+@admin.register(LettreRappel)
+class LettreRappelAdmin(admin.ModelAdmin):
+    list_display = ['etudiant', 'type_lettre', 'montant_du', 'date_generation', 'generee_par']
+    list_filter = ['type_lettre', 'date_generation']
+    search_fields = ['etudiant__matricule', 'etudiant__nom']
+    date_hierarchy = 'date_generation'
+
+
 @admin.register(NotificationEmail)
 class NotificationEmailAdmin(admin.ModelAdmin):
     list_display = ['destinataire', 'sujet', 'type_notification', 'envoye', 'date_creation', 'date_envoi']
@@ -198,6 +223,6 @@ class NotificationEmailAdmin(admin.ModelAdmin):
 
 @admin.register(PreferenceNotification)
 class PreferenceNotificationAdmin(admin.ModelAdmin):
-    list_display = ['utilisateur', 'email_actif', 'notif_nouvelle_note', 'notif_nouvelle_evaluation', 'notif_absence']
-    list_filter = ['email_actif']
+    list_display = ['utilisateur', 'activer_emails', 'nouvelle_note', 'nouvelle_evaluation', 'absence_signale']
+    list_filter = ['activer_emails']
     search_fields = ['utilisateur__email', 'utilisateur__nom']

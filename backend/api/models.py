@@ -925,6 +925,93 @@ class LectureMessage(models.Model):
         return f"{self.utilisateur.get_full_name()} - Message #{self.message.id}"
 
 
+# ===== PAIEMENT =====
+class Paiement(models.Model):
+    STATUTS = [
+        ('en_attente', 'En attente'),
+        ('valide', 'Validé'),
+        ('rejete', 'Rejeté'),
+        ('annule', 'Annulé'),
+    ]
+    MODES = [
+        ('especes', 'Espèces'),
+        ('cheque', 'Chèque'),
+        ('virement', 'Virement bancaire'),
+        ('mobile_money', 'Mobile Money'),
+        ('carte', 'Carte bancaire'),
+    ]
+    
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='paiements')
+    annee_academique = models.ForeignKey(AnneeAcademique, on_delete=models.CASCADE, related_name='paiements')
+    montant = models.DecimalField(max_digits=12, decimal_places=0)
+    mode_paiement = models.CharField(max_length=20, choices=MODES)
+    numero_recu = models.CharField(max_length=50, unique=True)
+    date_paiement = models.DateField()
+    statut = models.CharField(max_length=20, choices=STATUTS, default='valide')
+    observation = models.TextField(blank=True)
+    enregistre_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Paiement'
+        verbose_name_plural = 'Paiements'
+        ordering = ['-date_paiement']
+    
+    def __str__(self):
+        return f"{self.etudiant.matricule} - {self.montant} FCFA - {self.numero_recu}"
+
+
+# ===== RAPPEL PAIEMENT =====
+class RappelPaiement(models.Model):
+    TYPES = [
+        ('email', 'Email'),
+        ('sms', 'SMS'),
+        ('notification', 'Notification app'),
+        ('whatsapp', 'WhatsApp'),
+    ]
+    
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='rappels_paiement')
+    type_rappel = models.CharField(max_length=20, choices=TYPES)
+    montant_du = models.DecimalField(max_digits=12, decimal_places=0)
+    message = models.TextField()
+    date_envoi = models.DateTimeField(auto_now_add=True)
+    envoye_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    class Meta:
+        verbose_name = 'Rappel de Paiement'
+        verbose_name_plural = 'Rappels de Paiement'
+        ordering = ['-date_envoi']
+    
+    def __str__(self):
+        return f"Rappel {self.etudiant.matricule} - {self.montant_du} FCFA"
+
+
+# ===== LETTRE RAPPEL =====
+class LettreRappel(models.Model):
+    TYPES = [
+        ('premier', 'Premier rappel'),
+        ('deuxieme', 'Deuxième rappel'),
+        ('final', 'Rappel final'),
+        ('mise_en_demeure', 'Mise en demeure'),
+    ]
+    
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='lettres_rappel')
+    type_lettre = models.CharField(max_length=20, choices=TYPES)
+    montant_du = models.DecimalField(max_digits=12, decimal_places=0)
+    contenu = models.TextField()
+    date_generation = models.DateTimeField(auto_now_add=True)
+    generee_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True)
+    fichier_pdf = models.FileField(upload_to='lettres_rappel/', null=True, blank=True)
+    
+    class Meta:
+        verbose_name = 'Lettre de Rappel'
+        verbose_name_plural = 'Lettres de Rappel'
+        ordering = ['-date_generation']
+    
+    def __str__(self):
+        return f"Lettre {self.get_type_lettre_display()} - {self.etudiant.matricule}"
+
+
 # ===== NOTIFICATION EMAIL =====
 class NotificationEmail(models.Model):
     TYPES = [
