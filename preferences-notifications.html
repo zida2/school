@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Préférences de Notifications – UniERP BF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="js/theme-toggle.js?v=3.0"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .preference-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .preference-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .preference-info {
+            flex: 1;
+        }
+
+        .preference-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .preference-description {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .global-toggle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .global-toggle .preference-label {
+            color: white;
+            font-size: 18px;
+        }
+
+        .global-toggle .preference-description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔔 Préférences de Notifications</h1>
+            <p>Gérez vos notifications par email</p>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Chargement de vos préférences...</p>
+        </div>
+
+        <div id="content" style="display:none;">
+            <!-- Activation globale -->
+            <div class="global-toggle preference-item">
+                <div class="preference-info">
+                    <div class="preference-label">📧 Activer les notifications par email</div>
+                    <div class="preference-description">Recevoir toutes les notifications par email</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="email_actif">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- Types de notifications -->
+            <div class="section">
+                <div class="section-title">Types de notifications</div>
+
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-label">📝 Nouvelles notes</div>
+                        <div class="preference-description">Recevoir un email quand une note est publiée</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notif_nouvelle_note">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-label">✍️ Nouvelles évaluations</div>
+                        <div class="preference-description">Recevoir un email quand une évaluation est programmée</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notif_nouvelle_evaluation">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-label">⚠️ Absences</div>
+                        <div class="preference-description">Recevoir un email en cas d'absence non justifiée</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notif_absence">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-label">📚 Nouveaux supports de cours</div>
+                        <div class="preference-description">Recevoir un email quand un support est ajouté</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notif_nouveau_support">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-label">📅 Emploi du temps modifié</div>
+                        <div class="preference-description">Recevoir un email quand l'emploi du temps change</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notif_emploi_modifie">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-label">📨 Demandes traitées</div>
+                        <div class="preference-description">Recevoir un email quand une demande est traitée</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notif_demande_traitee">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-label">💬 Messages dans les canaux</div>
+                        <div class="preference-description">Recevoir un email pour les messages dans les canaux</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notif_message_canal">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <div class="preference-label">📢 Annonces officielles</div>
+                        <div class="preference-description">Recevoir un email pour les annonces officielles</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notif_annonce_officielle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="retour()">Retour</button>
+                <button class="btn btn-primary" onclick="sauvegarder()">💾 Sauvegarder</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const API_BASE = 'https://wendlasida.pythonanywhere.com/api';
+        let preferences = null;
+
+        // Charger les préférences au démarrage
+        document.addEventListener('DOMContentLoaded', chargerPreferences);
+
+        async function chargerPreferences() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                const response = await fetch(`${API_BASE}/preferences-notification/mes_preferences/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erreur de chargement');
+
+                preferences = await response.json();
+                
+                // Remplir le formulaire
+                document.getElementById('email_actif').checked = preferences.email_actif;
+                document.getElementById('notif_nouvelle_note').checked = preferences.notif_nouvelle_note;
+                document.getElementById('notif_nouvelle_evaluation').checked = preferences.notif_nouvelle_evaluation;
+                document.getElementById('notif_absence').checked = preferences.notif_absence;
+                document.getElementById('notif_nouveau_support').checked = preferences.notif_nouveau_support;
+                document.getElementById('notif_emploi_modifie').checked = preferences.notif_emploi_modifie;
+                document.getElementById('notif_demande_traitee').checked = preferences.notif_demande_traitee;
+                document.getElementById('notif_message_canal').checked = preferences.notif_message_canal;
+                document.getElementById('notif_annonce_officielle').checked = preferences.notif_annonce_officielle;
+
+                // Afficher le contenu
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            } catch (error) {
+                console.error('Erreur:', error);
+                showToast('Erreur lors du chargement des préférences', 'error');
+                setTimeout(() => retour(), 2000);
+            }
+        }
+
+        async function sauvegarder() {
+            try {
+                const token = localStorage.getItem('token');
+                const data = {
+                    email_actif: document.getElementById('email_actif').checked,
+                    notif_nouvelle_note: document.getElementById('notif_nouvelle_note').checked,
+                    notif_nouvelle_evaluation: document.getElementById('notif_nouvelle_evaluation').checked,
+                    notif_absence: document.getElementById('notif_absence').checked,
+                    notif_nouveau_support: document.getElementById('notif_nouveau_support').checked,
+                    notif_emploi_modifie: document.getElementById('notif_emploi_modifie').checked,
+                    notif_demande_traitee: document.getElementById('notif_demande_traitee').checked,
+                    notif_message_canal: document.getElementById('notif_message_canal').checked,
+                    notif_annonce_officielle: document.getElementById('notif_annonce_officielle').checked
+                };
+
+                const response = await fetch(`${API_BASE}/preferences-notification/modifier_preferences/`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('Erreur de sauvegarde');
+
+                showToast('✅ Préférences sauvegardées avec succès', 'success');
+                setTimeout(() => retour(), 1500);
+            } catch (error) {
+                console.error('Erreur:', error);
+                showToast('❌ Erreur lors de la sauvegarde', 'error');
+            }
+        }
+
+        function retour() {
+            const role = localStorage.getItem('role');
+            if (role === 'etudiant') {
+                window.location.href = 'dashboard-etudiant.html';
+            } else if (role === 'enseignant') {
+                window.location.href = 'dashboard-prof.html';
+            } else if (role === 'admin') {
+                window.location.href = 'dashboard-admin.html';
+            } else if (role === 'bureau_executif') {
+                window.location.href = 'dashboard-bureau.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
