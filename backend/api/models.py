@@ -1193,3 +1193,40 @@ class Promotion(models.Model):
         self.effectif_actuel = self.etudiants.filter(statut__in=['inscrit', 'reinscrit']).count()
         self.save()
 
+
+
+# ===== DEMANDE D'INSCRIPTION PROFESSEUR =====
+class DemandeInscriptionProfesseur(models.Model):
+    """Demande d'inscription d'un professeur (formulaire public)"""
+    STATUTS = [
+        ('en_attente', 'En attente de validation'),
+        ('validee', 'Validée'),
+        ('rejetee', 'Rejetée'),
+    ]
+    
+    # Informations personnelles
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    telephone = models.CharField(max_length=20, blank=True)
+    
+    # Informations professionnelles
+    filiere_enseignee = models.ForeignKey(Filiere, on_delete=models.PROTECT, related_name='demandes_profs', verbose_name="Filière enseignée")
+    
+    # Traitement
+    statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente')
+    date_demande = models.DateTimeField(auto_now_add=True)
+    date_traitement = models.DateTimeField(null=True, blank=True)
+    traite_par = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, null=True, blank=True, related_name='profs_valides')
+    commentaire_admin = models.TextField(blank=True)
+    
+    # Professeur créé après validation
+    professeur_cree = models.OneToOneField('Enseignant', on_delete=models.SET_NULL, null=True, blank=True, related_name='demande_origine')
+    
+    class Meta:
+        verbose_name = 'Demande d\'Inscription Professeur'
+        verbose_name_plural = 'Demandes d\'Inscription Professeurs'
+        ordering = ['-date_demande']
+    
+    def __str__(self):
+        return f"{self.prenom} {self.nom} - {self.filiere_enseignee.nom} ({self.get_statut_display()})"

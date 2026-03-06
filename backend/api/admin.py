@@ -8,7 +8,7 @@ from .models import (
     MessageBureau, DemandeAdministrative, ObjetPerdu,
     Canal, Message, LectureMessage, NotificationEmail, PreferenceNotification,
     Paiement, RappelPaiement, LettreRappel, CarteEtudiant,
-    DemandeInscription, Promotion
+    DemandeInscription, Promotion, DemandeInscriptionProfesseur
 )
 
 
@@ -271,3 +271,23 @@ class PromotionAdmin(admin.ModelAdmin):
     list_filter = ['filiere', 'annee_entree']
     search_fields = ['code', 'libelle']
     readonly_fields = ['effectif_actuel', 'date_creation']
+
+
+
+@admin.register(DemandeInscriptionProfesseur)
+class DemandeInscriptionProfesseurAdmin(admin.ModelAdmin):
+    list_display = ['prenom', 'nom', 'email', 'filiere_enseignee', 'statut', 'date_demande']
+    list_filter = ['statut', 'filiere_enseignee', 'date_demande']
+    search_fields = ['nom', 'prenom', 'email']
+    readonly_fields = ['date_demande', 'date_traitement', 'professeur_cree']
+    fieldsets = (
+        ('Informations Personnelles', {
+            'fields': ('nom', 'prenom', 'email', 'telephone')
+        }),
+        ('Informations Professionnelles', {
+            'fields': ('filiere_enseignee',)
+        }),
+        ('Traitement', {
+            'fields': ('statut', 'date_demande', 'date_traitement', 'traite_par', 'commentaire_admin', 'professeur_cree')
+        }),
+    )

@@ -10,7 +10,7 @@ from .models import (
     Evenement, InscriptionEvenement, MessageBureau,
     DemandeAdministrative, ObjetPerdu, RappelPaiement, LettreRappel,
     Classe, Inscription, EnseignementMatiere, Canal, Message, LectureMessage,
-    CarteEtudiant, DemandeInscription, Promotion
+    CarteEtudiant, DemandeInscription, Promotion, DemandeInscriptionProfesseur
 )
 
 
@@ -772,3 +772,17 @@ class PromotionSerializer(serializers.ModelSerializer):
         model = Promotion
         fields = '__all__'
         read_only_fields = ['effectif_actuel', 'date_creation']
+
+
+# ===== DEMANDE D'INSCRIPTION PROFESSEUR =====
+class DemandeInscriptionProfesseurSerializer(serializers.ModelSerializer):
+    filiere_nom = serializers.CharField(source='filiere_enseignee.nom', read_only=True)
+    traite_par_nom = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = DemandeInscriptionProfesseur
+        fields = '__all__'
+        read_only_fields = ['statut', 'date_demande', 'date_traitement', 'traite_par', 'professeur_cree']
+    
+    def get_traite_par_nom(self, obj):
+        return obj.traite_par.get_full_name() if obj.traite_par else None

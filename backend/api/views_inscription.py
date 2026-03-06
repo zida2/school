@@ -302,3 +302,139 @@ class PromotionViewSet(viewsets.ModelViewSet):
             'detail': 'Effectifs mis à jour',
             'effectif_actuel': promotion.effectif_actuel
         })
+
+
+
+# ===== DEMANDES INSCRIPTION PROFESSEURS =====
+from .models import DemandeInscriptionProfesseur, Enseignant
+from .serializers import DemandeInscriptionProfesseurSerializer
+
+class DemandeInscriptionProfesseurViewSet(viewsets.ModelViewSet):
+    """ViewSet pour gérer les demandes d'inscription des professeurs"""
+    queryset = DemandeInscriptionProfesseur.objects.all()
+    serializer_class = DemandeInscriptionProfesseurSerializer
+    
+    def get_permissions(self):
+        # Création de demande accessible à tous (formulaire public)
+        if self.action == 'create':
+            return [AllowAny()]
+        # Consultation et traitement réservés aux admins
+        return [IsAdminOrSuperAdmin()]
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        
+        # Filtres
+        statut = self.request.query_params.get('statut')
+        filiere = self.request.query_params.get('filiere')
+        
+        if statut:
+            qs = qs.filter(statut=statut)
+        if filiere:
+            qs = qs.filter(filiere_enseignee_id=filiere)
+        
+        return qs
+    
+    @action(detail=True, methods=['post'])
+    def valider(self, request, pk=None):
+        """Valider une demande et créer le compte professeur"""
+        demande = self.get_object()
+        
+        if demande.statut != 'en_attente':
+            return Response(
+                {'error': 'Cette demande a déjà été traitée'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            with transaction.atomic():
+                # Créer l'utilisateur
+                password = f"prof{uuid.uuid4().hex[:8]}"
+                utilisateur = Utilisateur.objects.create_user(
+                    email=demande.email,
+                    password=password,
+                    prenom=demande.prenom,
+                    nom=demande.nom,
+                    role='professeur'
+                )
+                
+                # Créer le professeur
+                enseignant = Enseignant.objects.create(
+                    utilisateur=utilisateur,
+                    nom=demande.nom,
+                    prenom=demande.prenom,
+                    email=demande.email,
+                    telephone=demande.telephone or '',
+                    specialite=demande.filiere_enseignee.nom
+                )
+                
+                # Mettre à jour la demande
+                demande.statut = 'validee'
+                demande.date_traitement = timezone.now()
+                demande.traite_par = request.user
+                demande.professeur_cree = enseignant
+                demande.save()
+                
+                # TODO: Envoyer email avec identifiants
+                # send_mail(...)
+                
+                return Response({
+                    'message': 'Demande validée avec succès',
+                    'professeur_id': enseignant.id,
+                    'email': utilisateur.email,
+                    'password_temporaire': password
+                }, status=status.HTTP_200_OK)
+                
+        except Exception as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=True, methods=['post'])
+    def rejeter(self, request, pk=None):
+        """Rejeter une demande"""
+        demande = self.get_object()
+        
+        if demande.statut != 'en_attente':
+            return Response(
+                {'error': 'Cette demande a déjà été traitée'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        commentaire = request.data.get('commentaire', '')
+        
+        demande.statut = 'rejetee'
+        demande.date_traitement = timezone.now()
+        demande.traite_par = request.user
+        demande.commentaire_admin = commentaire
+        demande.save()
+        
+        # TODO: Envoyer email de rejet
+        # send_mail(...)
+        
+        return Response({
+            'message': 'Demande rejetée'
+        }, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['get'])
+    def en_attente(self, request):
+        """Liste des demandes en attente"""
+        demandes = self.get_queryset().filter(statut='en_attente')
+        serializer = self.get_serializer(demandes, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def statistiques(self, request):
+        """Statistiques des demandes"""
+        total = self.get_queryset().count()
+        en_attente = self.get_queryset().filter(statut='en_attente').count()
+        validees = self.get_queryset().filter(statut='validee').count()
+        rejetees = self.get_queryset().filter(statut='rejetee').count()
+        
+        return Response({
+            'total': total,
+            'en_attente': en_attente,
+            'validees': validees,
+            'rejetees': rejetees
+        })

@@ -1,0 +1,47 @@
+# DÉPLOIEMENT SYSTÈME INSCRIPTION PROFESSEURS
+
+## ✅ BACKEND (Déjà fait)
+- Modèle DemandeInscriptionProfesseur
+- Serializer
+- ViewSet avec actions valider/rejeter
+- Routes API
+- Migration 0015 appliquée
+
+## ✅ FRONTEND (Créé)
+- inscription-professeur.html
+- Lien ajouté sur index.html
+
+## 🚀 COMMANDES DÉPLOIEMENT
+
+# Backend (PythonAnywhere)
+cd ~/school
+source ~/.virtualenvs/myenv/bin/activate
+git pull origin main
+cd backend
+python manage.py migrate
+python manage.py check
+touch /var/www/wendlasida_pythonanywhere_com_wsgi.py
+
+# Frontend (Vercel - automatique)
+git add .
+git commit -m "Système inscription professeurs complet"
+git push origin main
+
+## 🔗 URLS
+
+Backend API:
+- POST https://wendlasida.pythonanywhere.com/api/demandes-inscription-professeur/
+
+Frontend:
+- https://school-wheat-six.vercel.app/inscription-professeur.html
+
+## 📋 WORKFLOW
+
+1. Prof visite inscription-professeur.html
+2. Remplit: Nom, Prénom, Email, Téléphone, Filière
+3. Soumet candidature
+4. Admin voit dans dashboard
+5. Admin valide → Compte créé + email envoyé
+6. Prof se connecte sur /
+
+✅ TERMINÉ
