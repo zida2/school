@@ -123,7 +123,7 @@
                         localStorage.setItem('token', data.access);
                         localStorage.setItem('refresh', data.refresh);
                         localStorage.setItem('user', JSON.stringify(data.user));
-                        window.location.href = 'dashboard-prof.html';
+                        window.location.href = '/frontend/dashboard-prof.html';
                     } else {
                         showAlert('danger', 'Accès réservé aux professeurs uniquement');
                     }

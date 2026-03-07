@@ -134,7 +134,7 @@ async function apiRequest(endpoint, options = {}) {
             res = await fetch(url, { ...options, headers });
         } else {
             Auth.clear();
-            window.location.href = 'index.html';
+            window.location.href = '/frontend/index.html';
             return null;
         }
     }
@@ -220,7 +220,7 @@ const API = {
             }
         } catch (e) { }
         Auth.clear();
-        window.location.href = 'index.html';
+        window.location.href = '/frontend/index.html';
     },
 
     async getMe() {

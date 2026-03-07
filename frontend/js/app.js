@@ -147,7 +147,7 @@ function logout() {
       localStorage.removeItem('erp_access_token');
       localStorage.removeItem('erp_refresh_token');
       localStorage.removeItem('erp_user');
-      window.location.href = 'index.html';
+      window.location.href = '/frontend/index.html';
     }
   }
 }

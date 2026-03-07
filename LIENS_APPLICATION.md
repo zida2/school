@@ -1,10 +1,17 @@
 # 🔗 LIENS DE L'APPLICATION UNIERP BF
 
-## ⭐ LIEN PRINCIPAL
+## ⭐ LIEN PRINCIPAL POUR DÉMO
+
+**🎯 LIEN SIMPLIFIÉ**: https://school-wheat-six.vercel.app
+- Ce lien redirige automatiquement vers la page d'accueil
+- Parfait pour partager avec votre coéquipier
 
 **ADMINISTRATION**: https://school-wheat-six.vercel.app/frontend/connexion-admin.html
 - Email: `admin@unierp.bf`
 - Mot de passe: `Admin2026`
+
+**PROFESSEUR (Compaoré)**: https://school-wheat-six.vercel.app/frontend/connexion-professeur.html
+- Utiliser les identifiants reçus par email après validation
 
 ---
 

@@ -109,7 +109,7 @@ window.logout = function() {
             localStorage.removeItem('erp_access_token');
             localStorage.removeItem('erp_refresh_token');
             localStorage.removeItem('erp_user');
-            window.location.href = 'index.html';
+            window.location.href = '/frontend/index.html';
         }
     }
 };
@@ -279,7 +279,7 @@ window.requireAuth = function(allowedRoles = []) {
     
     if (!user) {
         console.warn('⚠️ Utilisateur non connecté, redirection vers login');
-        window.location.href = 'index.html';
+        window.location.href = '/frontend/index.html';
         return null;
     }
     
@@ -303,7 +303,7 @@ window.requireAuth = function(allowedRoles = []) {
         
         if (!isAllowed) {
             console.warn('⚠️ Accès refusé, rôle:', userRole, 'requis:', allowedRoles);
-            window.location.href = 'index.html';
+            window.location.href = '/frontend/index.html';
             return null;
         }
     }
@@ -320,7 +320,7 @@ window.logout = async function() {
         console.error('Erreur logout:', err);
     }
     Auth.clear();
-    window.location.href = 'index.html';
+    window.location.href = '/frontend/index.html';
 };
 
 // Initialisation au chargement

@@ -961,10 +961,10 @@
                     console.log('🚀 Redirection vers dashboard pour rôle:', role);
                     if (role === 'admin' || role === 'superadmin' || role === 'administrateur') {
                         console.log('➡️ Redirection vers dashboard-admin.html');
-                        window.location.href = 'dashboard-admin.html';
+                        window.location.href = '/frontend/dashboard-admin.html';
                     } else if (role === 'professeur' || role === 'enseignant') {
                         console.log('➡️ Redirection vers dashboard-prof.html');
-                        window.location.href = 'dashboard-prof.html';
+                        window.location.href = '/frontend/dashboard-prof.html';
                     } else if (role === 'etudiant') {
                         console.log('➡️ Redirection vers application mobile');
                         showAlert('Veuillez utiliser l\'application mobile pour étudiants', 'error');
@@ -974,7 +974,7 @@
                         return;
                     } else if (role === 'bureau_executif' || role === 'bureau') {
                         console.log('➡️ Redirection vers dashboard-bureau.html');
-                        window.location.href = 'dashboard-bureau.html';
+                        window.location.href = '/frontend/dashboard-bureau.html';
                     } else {
                         console.warn('⚠️ Rôle non reconnu:', role);
                         showAlert('Rôle non reconnu. Contactez l\'administrateur.', 'warning');
