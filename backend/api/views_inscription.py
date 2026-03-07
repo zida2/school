@@ -436,13 +436,19 @@ class DemandeInscriptionProfesseurViewSet(viewsets.ModelViewSet):
                 )
                 
                 # Créer le professeur
+                # Récupérer l'université par défaut (la première)
+                universite = Universite.objects.first()
+                if not universite:
+                    raise Exception("Aucune université n'est configurée dans le système")
+                
                 enseignant = Enseignant.objects.create(
                     utilisateur=utilisateur,
                     nom=demande.nom,
                     prenom=demande.prenom,
                     email=demande.email,
                     telephone=demande.telephone or '',
-                    specialite=demande.filiere_enseignee.nom
+                    specialite=demande.filiere_enseignee.nom,
+                    universite=universite
                 )
                 
                 # Mettre à jour la demande
