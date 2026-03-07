@@ -969,6 +969,28 @@
                     </div>
                 </div>
 
+                <!-- MODAL CONFIRMATION VALIDATION -->
+                <div class="modal-ultra" id="modalConfirmValidation">
+                    <div class="modal-content-ultra" style="max-width:500px">
+                        <div class="modal-header-ultra">
+                            <h3>⚠️ Confirmer la validation</h3>
+                            <span class="modal-close-ultra" onclick="closeModal('modalConfirmValidation')">&times;</span>
+                        </div>
+                        <div class="modal-body-ultra">
+                            <p style="font-size:16px;line-height:1.6;margin-bottom:20px">
+                                Êtes-vous sûr de vouloir valider cette demande d'inscription ?
+                            </p>
+                            <p style="font-size:14px;color:#64748b;margin-bottom:0">
+                                Un email avec les identifiants sera automatiquement envoyé au candidat.
+                            </p>
+                        </div>
+                        <div class="modal-footer-ultra">
+                            <button type="button" class="btn-ultra btn-ghost-ultra" onclick="closeModal('modalConfirmValidation')">Annuler</button>
+                            <button type="button" class="btn-ultra btn-success-ultra" onclick="confirmerValidation()">✓ Confirmer</button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- MODAL VALIDATION INSCRIPTION -->
                 <div class="modal-ultra" id="modalValidationInscription">
                     <div class="modal-content-ultra">
@@ -2854,8 +2876,18 @@
         }
 
         async function validerInscription(id, tab) {
-            if (!confirm('Valider cette demande d\'inscription?')) return;
-
+            // Ouvrir le modal de confirmation
+            window.currentValidationId = id;
+            window.currentValidationTab = tab;
+            openModal('modalConfirmValidation');
+        }
+        
+        async function confirmerValidation() {
+            const id = window.currentValidationId;
+            const tab = window.currentValidationTab;
+            
+            closeModal('modalConfirmValidation');
+            
             const endpoints = {
                 'communication': `/demandes-inscription-communication/${id}/valider/`,
                 'academique': `/demandes-inscription-academique/${id}/valider/`,
@@ -2864,7 +2896,9 @@
             };
 
             try {
+                showLoader('Validation en cours...');
                 const result = await API.post(endpoints[tab]);
+                hideLoader();
                 
                 // Afficher le modal avec les identifiants
                 document.getElementById('modalInscEmail').textContent = result.email;
@@ -2875,7 +2909,9 @@
                 await chargerInscriptions();
                 
             } catch (error) {
-                alert('Erreur lors de la validation: ' + (error.message || 'Erreur inconnue'));
+                hideLoader();
+                showNotification('Erreur lors de la validation: ' + (error.message || 'Erreur inconnue'), 'error');
+                console.error('Erreur validation:', error);
             }
         }
 
