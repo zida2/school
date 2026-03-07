@@ -7,7 +7,7 @@ from django.db import transaction
 from datetime import datetime
 import uuid
 
-from .models import DemandeInscription, Etudiant, Utilisateur, Promotion, Classe, Inscription
+from .models import DemandeInscription, Etudiant, Utilisateur, Promotion, Classe, Inscription, Universite
 from .serializers import DemandeInscriptionSerializer, EtudiantSerializer
 from .permissions import IsAdminOrSuperAdmin
 from .email_service import envoyer_notification_immediate
@@ -383,7 +383,7 @@ class PromotionViewSet(viewsets.ModelViewSet):
 
 
 # ===== DEMANDES INSCRIPTION PROFESSEURS =====
-from .models import DemandeInscriptionProfesseur, Enseignant, Universite
+from .models import DemandeInscriptionProfesseur, Enseignant
 from .serializers import DemandeInscriptionProfesseurSerializer
 
 class DemandeInscriptionProfesseurViewSet(viewsets.ModelViewSet):
