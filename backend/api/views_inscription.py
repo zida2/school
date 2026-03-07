@@ -482,7 +482,7 @@ Voici vos identifiants de connexion :
 ⚠️ IMPORTANT : Veuillez changer votre mot de passe lors de votre première connexion.
 
 Vous pouvez vous connecter à votre espace enseignant :
-👉 https://school-wheat-six.vercel.app/connexion-professeur.html
+👉 https://school-wheat-six.vercel.app/frontend/connexion-professeur.html
 
 Bienvenue dans l'équipe pédagogique !
 
