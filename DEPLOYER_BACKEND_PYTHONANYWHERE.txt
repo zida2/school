@@ -1,0 +1,32 @@
+===========================================
+COMMANDES POUR DÉPLOYER SUR PYTHONANYWHERE
+===========================================
+
+1. Allez sur: https://www.pythonanywhere.com/user/Wendlasida/
+
+2. Ouvrez un "Bash console"
+
+3. Exécutez ces commandes:
+
+# Aller dans le dossier du projet
+cd ~/school
+
+# Récupérer les dernières modifications
+git pull origin main
+
+# Recharger l'application web
+touch /var/www/wendlasida_pythonanywhere_com_wsgi.py
+
+# OU via l'API PythonAnywhere (plus rapide):
+# Allez dans l'onglet "Web" et cliquez sur "Reload"
+
+===========================================
+VÉRIFICATION
+===========================================
+
+Testez l'API après le rechargement:
+https://wendlasida.pythonanywhere.com/api/filieres/
+
+Vous devriez voir la liste des 3 filières en JSON sans erreur 401.
+
+===========================================

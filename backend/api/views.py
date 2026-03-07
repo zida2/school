@@ -266,9 +266,9 @@ class FiliereViewSet(viewsets.ModelViewSet):
     search_fields = ['nom', 'code']
     
     def get_permissions(self):
-        # Lecture autorisée pour tous les utilisateurs authentifiés
+        # Lecture publique pour permettre l'inscription des professeurs
         if self.action in ['list', 'retrieve']:
-            return [permissions.IsAuthenticated()]
+            return [permissions.AllowAny()]
         # Modification réservée aux admins
         return [IsAdminOrSuperAdmin()]
 
