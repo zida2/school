@@ -61,13 +61,15 @@ async function chargerEmploiDuTemps() {
         if (enseignant) params.push(`enseignant=${enseignant}`);
         if (params.length) url += '?' + params.join('&');
 
+        console.log('📡 Chargement emploi du temps:', url);
         emploiDuTempsData = await API.get(url);
+        console.log('✅ Emplois chargés:', emploiDuTempsData);
         afficherEmploiDuTemps();
     } catch (error) {
-        console.error('Erreur chargement emploi du temps:', error);
+        console.error('❌ Erreur chargement emploi du temps:', error);
         const tbody = document.getElementById('tbodyEmploiAdmin');
         if (tbody) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#ef4444">Erreur de chargement</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#ef4444">Erreur de chargement. Vérifiez la console.</td></tr>';
         }
     }
 }
