@@ -225,13 +225,10 @@
         </div>
     </div>
 
-    <!-- Charger la configuration globale -->
-    <script src="js/config.js"></script>
-    
     <script>
-        // Configuration API - Utilise CONFIG.API_URL du fichier config.js
-        const API_BASE_URL = window.CONFIG 
-            ? window.CONFIG.API_URL.replace('/api', '')
+        // Configuration API - Détection automatique environnement
+        const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:8000'
             : 'https://wendlasida.pythonanywhere.com';
         
         console.log('🌐 API configurée:', API_BASE_URL);
