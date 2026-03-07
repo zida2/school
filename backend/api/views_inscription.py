@@ -383,7 +383,7 @@ class PromotionViewSet(viewsets.ModelViewSet):
 
 
 # ===== DEMANDES INSCRIPTION PROFESSEURS =====
-from .models import DemandeInscriptionProfesseur, Enseignant
+from .models import DemandeInscriptionProfesseur, Enseignant, Universite
 from .serializers import DemandeInscriptionProfesseurSerializer
 
 class DemandeInscriptionProfesseurViewSet(viewsets.ModelViewSet):
