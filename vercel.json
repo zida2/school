@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/frontend/accueil.html"
+    },
+    {
+      "src": "/frontend/(.*)",
+      "dest": "/frontend/$1"
+    },
+    {
+      "src": "/mobile/(.*)",
+      "dest": "/mobile/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/$1"
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}
