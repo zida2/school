@@ -255,8 +255,11 @@
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
                 })
-                .then(function(filieres) {
-                    console.log('✅ Filières:', filieres);
+                .then(function(data) {
+                    console.log('✅ Filières:', data);
+                    
+                    // L'API retourne un objet paginé avec "results"
+                    var filieres = data.results || data;
                     
                     var select = document.getElementById('filiere_enseignee');
                     select.innerHTML = '<option value="">-- Sélectionnez une filière --</option>';
