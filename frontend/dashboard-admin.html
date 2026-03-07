@@ -2896,9 +2896,7 @@
             };
 
             try {
-                showLoader('Validation en cours...');
                 const result = await API.post(endpoints[tab]);
-                hideLoader();
                 
                 // Afficher le modal avec les identifiants
                 document.getElementById('modalInscEmail').textContent = result.email;
@@ -2909,8 +2907,7 @@
                 await chargerInscriptions();
                 
             } catch (error) {
-                hideLoader();
-                showNotification('Erreur lors de la validation: ' + (error.message || 'Erreur inconnue'), 'error');
+                alert('Erreur lors de la validation: ' + (error.message || 'Erreur inconnue'));
                 console.error('Erreur validation:', error);
             }
         }
