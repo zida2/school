@@ -1583,26 +1583,59 @@
         // PAS de vérification au chargement - on fait confiance à la redirection depuis index.html
         
         function navToUltra(page, el) {
+            console.log('🔄 Navigation vers:', page);
+            
             document.querySelectorAll('.page-ultra').forEach(p => p.style.display = 'none');
             const target = document.getElementById('page-' + page);
-            if (target) target.style.display = 'block';
+            if (target) {
+                target.style.display = 'block';
+                console.log('✅ Page affichée:', page);
+            } else {
+                console.error('❌ Page non trouvée:', 'page-' + page);
+            }
             
             document.querySelectorAll('.nav-item-ultra').forEach(i => i.classList.remove('active'));
             if (el) el.classList.add('active');
 
             // Charger les données spécifiques à la page
-            if (page === 'filieres') {
-                chargerFilieresEtMatieres();
-            } else if (page === 'paiements') {
-                chargerPaiements();
-            } else if (page === 'emploi') {
-                chargerEmploi();
-                chargerMatieresEtEnseignants();
-                chargerEmploiDuTemps();
-            } else if (page === 'inscriptions') {
-                chargerInscriptions();
-            } else if (page === 'inscriptions-etudiants') {
-                chargerInscriptionsEtudiants();
+            try {
+                if (page === 'filieres') {
+                    if (typeof chargerFilieresEtMatieres === 'function') {
+                        chargerFilieresEtMatieres();
+                    }
+                } else if (page === 'paiements') {
+                    if (typeof chargerPaiements === 'function') {
+                        chargerPaiements();
+                    }
+                } else if (page === 'emploi') {
+                    if (typeof chargerEmploi === 'function') {
+                        chargerEmploi();
+                    }
+                    if (typeof chargerMatieresEtEnseignants === 'function') {
+                        chargerMatieresEtEnseignants();
+                    }
+                    if (typeof chargerEmploiDuTemps === 'function') {
+                        chargerEmploiDuTemps();
+                    }
+                } else if (page === 'inscriptions') {
+                    if (typeof chargerInscriptions === 'function') {
+                        chargerInscriptions();
+                    }
+                } else if (page === 'inscriptions-etudiants') {
+                    if (typeof chargerInscriptionsEtudiants === 'function') {
+                        chargerInscriptionsEtudiants();
+                    }
+                } else if (page === 'etudiants') {
+                    if (typeof chargerEtudiants === 'function') {
+                        chargerEtudiants();
+                    }
+                } else if (page === 'enseignants') {
+                    if (typeof chargerEnseignants === 'function') {
+                        chargerEnseignants();
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Erreur lors du chargement de la page:', error);
             }
         }
 
