@@ -184,7 +184,7 @@
 
         <div id="alertBox" class="alert"></div>
 
-        <form id="inscriptionForm">
+        <form id="inscriptionForm" onsubmit="handleInscription(event)">
             <div class="form-group">
                 <label class="form-label">Nom <span class="required">*</span></label>
                 <input type="text" class="form-input" id="nom" required>
@@ -223,134 +223,122 @@
     </div>
 
     <script>
-        (function() {
-            'use strict';
-            
-            // Configuration API
-            var API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-                ? 'http://localhost:8000'
-                : 'https://wendlasida.pythonanywhere.com';
-            
-            console.log('🌐 API:', API_BASE_URL);
-            
-            function showAlert(message, type) {
-                var alertBox = document.getElementById('alertBox');
-                alertBox.className = 'alert ' + type;
-                alertBox.innerHTML = '<span>' + (type === 'error' ? '❌' : '✅') + '</span><span>' + message + '</span>';
-                alertBox.style.display = 'flex';
-                setTimeout(function() {
-                    alertBox.style.display = 'none';
-                }, 8000);
-            }
-            
-            function loadFilieres() {
-                var url = API_BASE_URL + '/api/filieres/';
-                console.log('📡 Chargement:', url);
+        // Configuration API directe (sans dépendance à config.js)
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:8000'
+            : 'https://wendlasida.pythonanywhere.com';
+        
+        console.log('🌐 API URL:', API_BASE_URL);
+        
+        // Charger les filières
+        async function loadFilieres() {
+            try {
+                const url = `${API_BASE_URL}/api/filieres/`;
+                console.log('📡 Chargement des filières depuis:', url);
                 
-                fetch(url, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                })
-                .then(function(response) {
-                    if (!response.ok) throw new Error('HTTP ' + response.status);
-                    return response.json();
-                })
-                .then(function(filieres) {
-                    console.log('✅ Filières:', filieres);
-                    
-                    var select = document.getElementById('filiere_enseignee');
-                    select.innerHTML = '<option value="">-- Sélectionnez une filière --</option>';
-                    
-                    if (filieres && filieres.length > 0) {
-                        filieres.forEach(function(filiere) {
-                            var option = document.createElement('option');
-                            option.value = filiere.id;
-                            option.textContent = filiere.code + ' - ' + filiere.nom;
-                            select.appendChild(option);
-                        });
-                        console.log('✅ ' + filieres.length + ' filières chargées');
-                    } else {
-                        showAlert('Aucune filière disponible', 'error');
-                    }
-                })
-                .catch(function(error) {
-                    console.error('❌ Erreur:', error);
-                    showAlert('Impossible de charger les filières', 'error');
-                });
-            }
-            
-            function handleInscription(e) {
-                e.preventDefault();
+                const response = await fetch(url);
                 
-                var submitBtn = document.getElementById('submitBtn');
-                var originalText = submitBtn.innerHTML;
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="spinner"></span>Envoi en cours...';
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const filieres = await response.json();
+                console.log('📚 Filières reçues:', filieres);
+                
+                const select = document.getElementById('filiere_enseignee');
+                
+                // Vider le select sauf la première option
+                select.innerHTML = '<option value="">-- Sélectionnez une filière --</option>';
+                
+                if (filieres && filieres.length > 0) {
+                    filieres.forEach(filiere => {
+                        const option = document.createElement('option');
+                        option.value = filiere.id;
+                        option.textContent = `${filiere.code} - ${filiere.nom}`;
+                        select.appendChild(option);
+                    });
+                    console.log(`✅ ${filieres.length} filières chargées avec succès`);
+                } else {
+                    console.warn('⚠️ Aucune filière trouvée');
+                    showAlert('Aucune filière disponible. Contactez l\'administration.', 'error');
+                }
+            } catch (err) {
+                console.error('❌ Erreur chargement filières:', err);
+                showAlert('Impossible de charger les filières. Veuillez réessayer.', 'error');
+            }
+        }
 
-                var formData = {
-                    nom: document.getElementById('nom').value.trim(),
-                    prenom: document.getElementById('prenom').value.trim(),
-                    email: document.getElementById('email').value.trim(),
-                    telephone: document.getElementById('telephone').value.trim(),
-                    filiere_enseignee: parseInt(document.getElementById('filiere_enseignee').value)
-                };
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = 'alert ' + type;
+            alertBox.innerHTML = `<span>${type === 'error' ? '❌' : '✅'}</span><span>${message}</span>`;
+            alertBox.style.display = 'flex';
+            setTimeout(() => alertBox.style.display = 'none', 8000);
+        }
 
-                fetch(API_BASE_URL + '/api/demandes-inscription-professeur/', {
+        async function handleInscription(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span>Envoi en cours...';
+
+            const formData = {
+                nom: document.getElementById('nom').value.trim(),
+                prenom: document.getElementById('prenom').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                telephone: document.getElementById('telephone').value.trim(),
+                filiere_enseignee: parseInt(document.getElementById('filiere_enseignee').value)
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/demandes-inscription-professeur/`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
-                })
-                .then(function(response) {
-                    return response.json().then(function(data) {
-                        return { ok: response.ok, data: data };
-                    });
-                })
-                .then(function(result) {
-                    if (result.ok) {
-                        submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-                        submitBtn.innerHTML = '✓ Candidature envoyée !';
-                        showAlert('Votre candidature a été envoyée avec succès ! Vous recevrez un email une fois validée.', 'success');
-                        
-                        setTimeout(function() {
-                            document.getElementById('inscriptionForm').reset();
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = originalText;
-                            submitBtn.style.background = '';
-                        }, 3000);
-                    } else {
-                        var errorMessage = 'Une erreur est survenue';
-                        var data = result.data;
-                        
-                        if (data.email && Array.isArray(data.email)) {
-                            errorMessage = data.email[0];
-                        } else if (data.email && data.email.indexOf('existe déjà') !== -1) {
-                            errorMessage = 'Cet email est déjà utilisé';
-                        } else if (data.detail) {
-                            errorMessage = data.detail;
-                        }
-                        
-                        showAlert(errorMessage, 'error');
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                    submitBtn.innerHTML = '✓ Candidature envoyée !';
+                    showAlert('Votre candidature a été envoyée avec succès ! Vous recevrez un email une fois validée par l\'administration.', 'success');
+                    
+                    setTimeout(() => {
+                        document.getElementById('inscriptionForm').reset();
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalText;
+                        submitBtn.style.background = '';
+                    }, 3000);
+                } else {
+                    let errorMessage = 'Une erreur est survenue lors de l\'envoi de votre candidature.';
+                    
+                    if (data.email && Array.isArray(data.email)) {
+                        errorMessage = data.email[0];
+                    } else if (data.email && data.email.includes('existe déjà')) {
+                        errorMessage = 'Cet email est déjà utilisé. Veuillez utiliser une autre adresse email.';
+                    } else if (data.detail) {
+                        errorMessage = data.detail;
+                    } else if (typeof data === 'object') {
+                        errorMessage = Object.values(data).flat().join(' ');
                     }
-                })
-                .catch(function(error) {
-                    console.error('❌ Erreur:', error);
-                    showAlert('Erreur de connexion au serveur', 'error');
+                    
+                    showAlert(errorMessage, 'error');
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalText;
-                });
+                }
+            } catch (err) {
+                console.error('Erreur réseau:', err);
+                showAlert('Erreur de connexion au serveur. Veuillez vérifier votre connexion internet et réessayer.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
             }
-            
-            // Initialisation
-            document.getElementById('inscriptionForm').addEventListener('submit', handleInscription);
-            
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', loadFilieres);
-            } else {
-                loadFilieres();
-            }
-        })();
+        }
+
+        // Charger les filières au démarrage
+        loadFilieres();
     </script>
 </body>
 </html>

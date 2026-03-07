@@ -1,0 +1,170 @@
+═══════════════════════════════════════════════════════════════════
+    GUIDE SIMPLE - CONFIGURATION EMAIL EN 5 MINUTES
+═══════════════════════════════════════════════════════════════════
+
+📧 OBJECTIF: Permettre au système d'envoyer des emails automatiquement
+
+═══════════════════════════════════════════════════════════════════
+    ÉTAPE 1: PRÉPARER UN COMPTE GMAIL
+═══════════════════════════════════════════════════════════════════
+
+Option A: Utiliser un Gmail existant (ex: votre email personnel)
+Option B: Créer un nouveau Gmail dédié (recommandé)
+
+Pour créer un nouveau Gmail:
+1. Aller sur: https://accounts.google.com/signup
+2. Créer un compte avec un nom comme:
+   - unierp.notifications@gmail.com
+   - noreply.unierp@gmail.com
+   - universite.bf@gmail.com
+
+═══════════════════════════════════════════════════════════════════
+    ÉTAPE 2: ACTIVER LA VALIDATION EN 2 ÉTAPES
+═══════════════════════════════════════════════════════════════════
+
+1. Aller sur: https://myaccount.google.com/security
+
+2. Chercher "Validation en 2 étapes" (ou "2-Step Verification")
+
+3. Cliquer sur "Commencer" ou "Activer"
+
+4. Suivre les instructions:
+   - Entrer votre numéro de téléphone
+   - Recevoir un code par SMS
+   - Entrer le code
+   - Cliquer sur "Activer"
+
+✅ La validation en 2 étapes est maintenant activée
+
+═══════════════════════════════════════════════════════════════════
+    ÉTAPE 3: GÉNÉRER UN MOT DE PASSE D'APPLICATION
+═══════════════════════════════════════════════════════════════════
+
+1. Aller sur: https://myaccount.google.com/apppasswords
+   (ou chercher "Mots de passe des applications" dans les paramètres)
+
+2. Vous verrez une page "Mots de passe des applications"
+
+3. Dans "Sélectionner l'application":
+   - Choisir "Mail"
+
+4. Dans "Sélectionner l'appareil":
+   - Choisir "Autre (nom personnalisé)"
+   - Taper: "UniERP Backend"
+
+5. Cliquer sur "GÉNÉRER"
+
+6. Google affiche un mot de passe de 16 caractères:
+   
+   ┌─────────────────────────────────┐
+   │  xxxx xxxx xxxx xxxx            │
+   │                                 │
+   │  Exemple: abcd efgh ijkl mnop   │
+   └─────────────────────────────────┘
+
+7. ⚠️ IMPORTANT: COPIER CE MOT DE PASSE MAINTENANT
+   (Vous ne pourrez plus le voir après)
+
+═══════════════════════════════════════════════════════════════════
+    ÉTAPE 4: CONFIGURER LE FICHIER .ENV
+═══════════════════════════════════════════════════════════════════
+
+1. Ouvrir le fichier: backend/.env
+
+2. Trouver ces lignes:
+
+   EMAIL_HOST_USER=votre-email@gmail.com
+   EMAIL_HOST_PASSWORD=votre-mot-de-passe-app-16-caracteres
+
+3. Remplacer par VOS informations:
+
+   EMAIL_HOST_USER=unierp.notifications@gmail.com
+   EMAIL_HOST_PASSWORD=abcd efgh ijkl mnop
+
+   ⚠️ Remplacer:
+   - unierp.notifications@gmail.com → Votre email Gmail
+   - abcd efgh ijkl mnop → Le mot de passe de 16 caractères copié
+
+4. Sauvegarder le fichier
+
+═══════════════════════════════════════════════════════════════════
+    ÉTAPE 5: TESTER L'ENVOI D'EMAIL
+═══════════════════════════════════════════════════════════════════
+
+MÉTHODE SIMPLE: Via une inscription
+
+1. Aller sur: http://localhost:8000 (ou votre URL)
+
+2. Cliquer sur "Inscription Professeur"
+
+3. Remplir le formulaire avec VOTRE EMAIL PERSONNEL
+
+4. Se connecter en tant qu'admin:
+   - Email: admin@unierp.bf
+   - Mot de passe: Admin2026
+
+5. Aller dans "Inscriptions" → Onglet "Professeurs"
+
+6. Cliquer sur "✅ Valider"
+
+7. Vérifier votre boîte email (et spam)
+
+✅ Si vous recevez l'email avec les identifiants = SUCCÈS!
+
+═══════════════════════════════════════════════════════════════════
+    EXEMPLE COMPLET DE CONFIGURATION
+═══════════════════════════════════════════════════════════════════
+
+Fichier: backend/.env
+
+# ===== CONFIGURATION EMAIL =====
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=unierp.notifications@gmail.com
+EMAIL_HOST_PASSWORD=abcd efgh ijkl mnop
+DEFAULT_FROM_EMAIL=noreply@unierp.bf
+FRONTEND_URL=https://school-wheat-six.vercel.app
+
+═══════════════════════════════════════════════════════════════════
+    PROBLÈMES COURANTS
+═══════════════════════════════════════════════════════════════════
+
+❌ ERREUR: "SMTPAuthenticationError"
+   → La validation en 2 étapes n'est pas activée
+   → Le mot de passe d'application est incorrect
+   → Solution: Refaire les étapes 2 et 3
+
+❌ ERREUR: "Connection refused"
+   → Vérifier votre connexion internet
+   → Vérifier que le port 587 n'est pas bloqué
+
+❌ Email non reçu
+   → Vérifier le dossier SPAM
+   → Vérifier l'adresse email dans le formulaire
+   → Attendre 1-2 minutes
+
+═══════════════════════════════════════════════════════════════════
+    RÉSUMÉ ULTRA-RAPIDE
+═══════════════════════════════════════════════════════════════════
+
+1. Compte Gmail → https://gmail.com
+2. Validation 2 étapes → https://myaccount.google.com/security
+3. Mot de passe app → https://myaccount.google.com/apppasswords
+4. Copier le mot de passe de 16 caractères
+5. Coller dans backend/.env
+6. Tester avec une inscription
+
+TEMPS TOTAL: 5 minutes
+
+═══════════════════════════════════════════════════════════════════
+    BESOIN D'AIDE?
+═══════════════════════════════════════════════════════════════════
+
+Si ça ne fonctionne pas:
+1. Vérifier que la validation en 2 étapes est ACTIVÉE
+2. Générer un NOUVEAU mot de passe d'application
+3. Copier-coller sans modifier (avec ou sans espaces, les deux marchent)
+4. Redémarrer le serveur backend
+
+═══════════════════════════════════════════════════════════════════

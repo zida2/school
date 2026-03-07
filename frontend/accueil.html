@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniERP BF - Système de Gestion Universitaire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animations améliorées */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(2deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-80px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(80px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            }
+            50% {
+                box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px 30px;
+            animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 72px;
+            animation: float 4s ease-in-out infinite;
+            display: inline-block;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .title {
+            color: white;
+            font-size: 48px;
+            font-weight: 800;
+            margin: 16px 0 8px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+            animation: scaleIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s backwards;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.95);
+            font-size: 18px;
+            font-weight: 400;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 30px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Grid Layout */
+        .services-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+            text-shadow: 0 3px 15px rgba(0,0,0,0.3);
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            border-radius: 2px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out backwards;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+
+        .card-icon {
+            font-size: 56px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
+            position: relative;
+            z-index: 1;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 8px 20px rgba(102, 126, 234, 0.4));
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            text-align: center;
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card:hover .card-title {
+            color: #667eea;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            min-height: 42px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(241, 245, 249, 0.9);
+            color: #475569;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(226, 232, 240, 1);
+            transform: translateY(-3px);
+            border-color: rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin: 40px 30px 30px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            animation: fadeInUp 1.2s ease-out;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.4s ease;
+        }
+
+        .footer:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .footer-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .footer-link {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            display: inline-block;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #a5f3fc;
+            transition: width 0.4s ease;
+            border-radius: 2px;
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .footer-link:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 20px rgba(165, 243, 252, 0.8);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 15px 20px;
+            }
+
+            .logo {
+                font-size: 56px;
+            }
+
+            .title {
+                font-size: 36px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .card {
+                padding: 30px 20px;
+            }
+
+            .card-icon {
+                font-size: 48px;
+            }
+
+            .card-title {
+                font-size: 20px;
+            }
+
+            .card-description {
+                font-size: 14px;
+                min-height: auto;
+            }
+
+            .container {
+                padding: 0 20px 30px;
+            }
+
+            .services-section {
+                margin-bottom: 35px;
+            }
+        }
+
+        /* Decorative elements */
+        .bg-decoration {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            filter: blur(100px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .decoration-1 {
+            width: 500px;
+            height: 500px;
+            top: -200px;
+            left: -200px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .decoration-2 {
+            width: 600px;
+            height: 600px;
+            bottom: -250px;
+            right: -250px;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        .decoration-3 {
+            width: 700px;
+            height: 700px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 12s ease-in-out infinite;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+        }
+
+        body::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative elements -->
+    <div class="bg-decoration decoration-1"></div>
+    <div class="bg-decoration decoration-2"></div>
+    <div class="bg-decoration decoration-3"></div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">🎓</div>
+        <h1 class="title">UniERP BF</h1>
+        <p class="subtitle">Système de Gestion Universitaire Premium</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Services Administratifs -->
+        <div class="services-section">
+            <h2 class="section-title">📋 Services Administratifs</h2>
+            <div class="cards-grid">
+                <!-- Service Communication -->
+                <div class="card">
+                    <div class="card-icon">📢</div>
+                    <h3 class="card-title">Service Communication</h3>
+                    <p class="card-description">
+                        Gestion des publications et communication institutionnelle
+                    </p>
+                    <div class="card-actions">
+                        <a href="connexion-communication.html" class="btn btn-primary">Se connecter</a>
+                        <a href="inscription-communication.html" class="btn btn-secondary">S'inscrire</a>
+                    </div>
+                </div>
+
+                <!-- Service Académique -->
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3 class="card-title">Service Académique</h3>
+                    <p class="card-description">
+                        Gestion des emplois du temps et programmes académiques
+                    </p>
+                    <div class="card-actions">
+                        <a href="connexion-academique.html" class="btn btn-primary">Se connecter</a>
+                        <a href="inscription-academique.html" class="btn btn-secondary">S'inscrire</a>
+                    </div>
+                </div>
+
+                <!-- Service Comptabilité -->
+                <div class="card">
+                    <div class="card-icon">💰</div>
+                    <h3 class="card-title">Service Comptabilité</h3>
+                    <p class="card-description">
+                        Gestion des paiements et frais de scolarité
+                    </p>
+                    <div class="card-actions">
+                        <a href="connexion-comptabilite.html" class="btn btn-primary">Se connecter</a>
+                        <a href="inscription-comptabilite.html" class="btn btn-secondary">S'inscrire</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personnel -->
+        <div class="services-section">
+            <h2 class="section-title">👥 Personnel & Administration</h2>
+            <div class="cards-grid">
+                <!-- Professeurs -->
+                <div class="card">
+                    <div class="card-icon">👨‍🏫</div>
+                    <h3 class="card-title">Enseignants</h3>
+                    <p class="card-description">
+                        Espace dédié aux professeurs et enseignants
+                    </p>
+                    <div class="card-actions">
+                        <a href="connexion-professeur.html" class="btn btn-primary">Se connecter</a>
+                        <a href="inscription-professeur.html" class="btn btn-secondary">Postuler</a>
+                    </div>
+                </div>
+
+                <!-- Administrateur -->
+                <div class="card">
+                    <div class="card-icon">👔</div>
+                    <h3 class="card-title">Administrateur</h3>
+                    <p class="card-description">
+                        Accès administrateur - Gestion complète du système
+                    </p>
+                    <div class="card-actions">
+                        <a href="connexion-admin.html" class="btn btn-primary">Se connecter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p class="footer-title">👨‍🎓 Vous êtes étudiant ?</p>
+            <a href="/mobile/" class="footer-link">📱 Accéder à l'application mobile →</a>
+        </div>
+    </div>
+</body>
+</html>

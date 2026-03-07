@@ -10,6 +10,7 @@ import uuid
 from .models import DemandeInscription, Etudiant, Utilisateur, Promotion, Classe, Inscription
 from .serializers import DemandeInscriptionSerializer, EtudiantSerializer
 from .permissions import IsAdminOrSuperAdmin
+from .email_service import envoyer_notification_immediate
 
 
 class DemandeInscriptionViewSet(viewsets.ModelViewSet):
@@ -144,6 +145,43 @@ class DemandeInscriptionViewSet(viewsets.ModelViewSet):
                 # Mettre à jour les effectifs
                 promotion.update_effectifs()
                 
+                # Envoyer l'email avec les identifiants
+                try:
+                    sujet = "Inscription validée - Vos identifiants UniERP"
+                    contenu = f"""Bonjour {demande.prenom} {demande.nom},
+
+Votre demande d'inscription a été approuvée avec succès !
+
+Voici vos identifiants de connexion :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📧 Email : {demande.email}
+🔑 Mot de passe : {password_temp}
+🎓 Matricule : {matricule}
+🏫 Filière : {demande.filiere_demandee.nom}
+📚 Niveau : {demande.niveau_demande}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ IMPORTANT : Pour votre sécurité, veuillez changer votre mot de passe lors de votre première connexion.
+
+Vous pouvez vous connecter à votre espace étudiant via l'application mobile :
+👉 https://school-wheat-six.vercel.app/mobile/
+
+Bienvenue à l'université !
+
+Cordialement,
+L'équipe UniERP BF"""
+                    
+                    envoyer_notification_immediate(
+                        destinataire=utilisateur,
+                        type_notification='inscription',
+                        sujet=sujet,
+                        contenu=contenu,
+                        lien='/mobile/'
+                    )
+                except Exception as email_error:
+                    # Log l'erreur mais ne bloque pas la validation
+                    print(f"Erreur envoi email: {email_error}")
+                
                 return Response({
                     'detail': 'Demande approuvée avec succès',
                     'matricule': matricule,
@@ -176,6 +214,45 @@ class DemandeInscriptionViewSet(viewsets.ModelViewSet):
         demande.traite_par = request.user
         demande.commentaire_admin = commentaire
         demande.save()
+        
+        # Envoyer email de rejet
+        try:
+            sujet = "Demande d'inscription - Statut"
+            contenu = f"""Bonjour {demande.prenom} {demande.nom},
+
+Nous avons examiné votre demande d'inscription pour la filière {demande.filiere_demandee.nom}.
+
+Malheureusement, nous ne pouvons pas donner suite à votre demande pour le moment.
+
+{f"Motif : {commentaire}" if commentaire else ""}
+
+Pour plus d'informations, vous pouvez contacter le service des inscriptions.
+
+Cordialement,
+L'équipe UniERP BF"""
+            
+            # Créer un utilisateur temporaire pour l'email (si pas encore créé)
+            try:
+                utilisateur_temp = Utilisateur.objects.get(email=demande.email)
+            except Utilisateur.DoesNotExist:
+                # Créer un utilisateur temporaire juste pour l'email
+                utilisateur_temp = Utilisateur(
+                    email=demande.email,
+                    prenom=demande.prenom,
+                    nom=demande.nom,
+                    role='etudiant',
+                    is_active=False
+                )
+                utilisateur_temp.save()
+            
+            envoyer_notification_immediate(
+                destinataire=utilisateur_temp,
+                type_notification='inscription',
+                sujet=sujet,
+                contenu=contenu
+            )
+        except Exception as email_error:
+            print(f"Erreur envoi email rejet: {email_error}")
         
         return Response({
             'detail': 'Demande rejetée',
@@ -375,8 +452,39 @@ class DemandeInscriptionProfesseurViewSet(viewsets.ModelViewSet):
                 demande.professeur_cree = enseignant
                 demande.save()
                 
-                # TODO: Envoyer email avec identifiants
-                # send_mail(...)
+                # Envoyer email avec identifiants
+                try:
+                    sujet = "Inscription validée - Accès Professeur UniERP"
+                    contenu = f"""Bonjour {demande.prenom} {demande.nom},
+
+Votre demande d'inscription en tant qu'enseignant a été validée !
+
+Voici vos identifiants de connexion :
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📧 Email : {demande.email}
+🔑 Mot de passe : {password}
+🎓 Spécialité : {demande.filiere_enseignee.nom}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ IMPORTANT : Veuillez changer votre mot de passe lors de votre première connexion.
+
+Vous pouvez vous connecter à votre espace enseignant :
+👉 https://school-wheat-six.vercel.app/connexion-professeur.html
+
+Bienvenue dans l'équipe pédagogique !
+
+Cordialement,
+L'équipe UniERP BF"""
+                    
+                    envoyer_notification_immediate(
+                        destinataire=utilisateur,
+                        type_notification='inscription',
+                        sujet=sujet,
+                        contenu=contenu,
+                        lien='/connexion-professeur.html'
+                    )
+                except Exception as email_error:
+                    print(f"Erreur envoi email professeur: {email_error}")
                 
                 return Response({
                     'message': 'Demande validée avec succès',
@@ -410,8 +518,42 @@ class DemandeInscriptionProfesseurViewSet(viewsets.ModelViewSet):
         demande.commentaire_admin = commentaire
         demande.save()
         
-        # TODO: Envoyer email de rejet
-        # send_mail(...)
+        # Envoyer email de rejet
+        try:
+            sujet = "Demande d'inscription enseignant - Statut"
+            contenu = f"""Bonjour {demande.prenom} {demande.nom},
+
+Nous avons examiné votre candidature pour un poste d'enseignant.
+
+Malheureusement, nous ne pouvons pas donner suite à votre demande pour le moment.
+
+{f"Motif : {commentaire}" if commentaire else ""}
+
+Nous vous remercions de l'intérêt que vous portez à notre établissement.
+
+Cordialement,
+L'équipe UniERP BF"""
+            
+            try:
+                utilisateur_temp = Utilisateur.objects.get(email=demande.email)
+            except Utilisateur.DoesNotExist:
+                utilisateur_temp = Utilisateur(
+                    email=demande.email,
+                    prenom=demande.prenom,
+                    nom=demande.nom,
+                    role='professeur',
+                    is_active=False
+                )
+                utilisateur_temp.save()
+            
+            envoyer_notification_immediate(
+                destinataire=utilisateur_temp,
+                type_notification='inscription',
+                sujet=sujet,
+                contenu=contenu
+            )
+        except Exception as email_error:
+            print(f"Erreur envoi email rejet professeur: {email_error}")
         
         return Response({
             'message': 'Demande rejetée'
@@ -447,6 +589,12 @@ from .serializers import (
     DemandeInscriptionCommunicationSerializer,
     DemandeInscriptionAcademiqueSerializer,
     DemandeInscriptionComptabiliteSerializer
+)
+from .views_inscription_emails import (
+    envoyer_email_validation_communication,
+    envoyer_email_validation_academique,
+    envoyer_email_validation_comptabilite,
+    envoyer_email_rejet_service
 )
 
 # Service Communication

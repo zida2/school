@@ -1,148 +1,255 @@
-# 🎓 ERP Universitaire - Burkina Faso
+# 🎓 UniERP BF - Système de Gestion Universitaire
 
-Système de gestion universitaire complet pour l'Université Aube Nouvelle.
+Système ERP complet pour la gestion universitaire avec backend Django, frontend web et application mobile PWA.
 
-## 🚀 Démarrage Rapide
-
-### Backend (Django)
-
-```bash
-cd backend
-python manage.py runserver 8000
-```
-
-### Frontend
-
-```bash
-python -m http.server 8080
-```
-
-### Accès
-
-- **Frontend:** http://127.0.0.1:8080/
-- **Backend API:** http://127.0.0.1:8000/api/
-- **Admin Django:** http://127.0.0.1:8000/admin/
-
-## 👥 Comptes de Test
-
-| Rôle | Email | Mot de passe |
-|------|-------|--------------|
-| Super Admin | superadmin@uan.bf | super123 |
-| Admin | admin@uan.bf | admin123 |
-| Enseignant | j.ouedraogo@uan.bf | enseignant123 |
-| Étudiant | m.diallo@etu.bf | etudiant123 |
-| Bureau Exécutif | bureau@uan.bf | bureau123 |
-
-## 📁 Structure
+## � Structure du projet
 
 ```
-├── backend/              # Backend Django
+unierp/
+├── backend/              # Backend Django REST API
 │   ├── api/             # Application principale
 │   ├── erp_backend/     # Configuration Django
-│   └── manage.py        # Script de gestion Django
-├── css/                 # Styles CSS
-├── js/                  # Scripts JavaScript
-├── dashboard-*.html     # Interfaces utilisateur
-└── index.html          # Page de connexion
+│   ├── manage.py
+│   └── requirements.txt
+│
+├── frontend/            # Frontend Web (Admin, Services, Professeurs)
+│   ├── css/            # Styles
+│   ├── js/             # Scripts JavaScript
+│   ├── *.html          # Pages HTML
+│   └── vercel.json     # Configuration Vercel
+│
+├── mobile/             # Application Mobile PWA (Étudiants)
+│   ├── index.html      # Page principale
+│   ├── dashboard.html  # Dashboard étudiant
+│   ├── inscription.html
+│   ├── styles.css
+│   ├── sw.js          # Service Worker
+│   └── manifest.json  # Manifest PWA
+│
+├── nginx/              # Configuration Nginx
+│   ├── nginx.conf
+│   └── conf.d/
+│
+├── docker-compose.yml  # Configuration Docker production
+├── docker-compose.dev.yml  # Configuration Docker développement
+└── .env.docker        # Variables d'environnement
 ```
 
-## ✨ Fonctionnalités
+## 🚀 Démarrage rapide
 
-### Espace Administrateur
-- Gestion des étudiants et enseignants
-- Gestion des filières et matières
-- Gestion des paiements
-- Statistiques et rapports
-- Emploi du temps
+### Avec Docker (Recommandé)
 
-### Espace Enseignant
-- Saisie des notes
-- Gestion des évaluations
-- Emploi du temps
-- Supports de cours
-- Statistiques de classe
+```bash
+# 1. Configuration
+cp .env.docker .env
+nano .env  # Modifier les valeurs
 
-### Espace Étudiant
-- Consultation des notes
-- Emploi du temps
-- Supports de cours
-- Paiements
-- Absences
-- Demandes administratives
+# 2. Lancer tous les services
+docker compose up -d
 
-### Bureau Exécutif
-- Messagerie interne
-- Publications
-- Sondages
-- Événements
-- Gestion des membres
-- + Toutes les fonctionnalités étudiant
+# 3. Accéder à l'application
+# Frontend: http://localhost
+# Mobile: http://localhost/mobile/
+# Admin: http://localhost/admin/
+```
+
+### Sans Docker (Développement local)
+
+**Backend:**
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+```
+
+**Frontend:**
+```bash
+cd frontend
+# Ouvrir index.html dans un navigateur
+# Ou utiliser un serveur local: python -m http.server 8080
+```
+
+## 🌐 URLs de l'application
+
+### Production
+- **Frontend**: https://school-wheat-six.vercel.app
+- **Mobile**: https://school-wheat-six.vercel.app/mobile/
+- **Backend API**: https://wendlasida.pythonanywhere.com/api/
+- **Django Admin**: https://wendlasida.pythonanywhere.com/admin/
+
+### Local (Docker)
+- **Frontend**: http://localhost
+- **Mobile**: http://localhost/mobile/
+- **Backend API**: http://localhost/api/
+- **Django Admin**: http://localhost/admin/
+
+## 👥 Utilisateurs du système
+
+### 1. Administrateur
+- **Accès**: `frontend/connexion-admin.html`
+- **Rôle**: Gestion complète du système
+- **Identifiants par défaut**: admin@unierp.bf / Admin2026
+
+### 2. Services Administratifs
+- **Communication**: `frontend/connexion-communication.html`
+- **Académique**: `frontend/connexion-academique.html`
+- **Comptabilité**: `frontend/connexion-comptabilite.html`
+
+### 3. Professeurs
+- **Accès**: `frontend/connexion-professeur.html`
+- **Inscription**: `frontend/inscription-professeur.html`
+
+### 4. Étudiants
+- **Accès**: `mobile/index.html`
+- **Inscription**: `mobile/inscription.html`
 
 ## 🔧 Configuration
 
-### Prérequis
+### Variables d'environnement (.env)
 
-- Python 3.8+
-- Django 6.0+
-- SQLite (inclus)
+```env
+# Django
+SECRET_KEY=votre-clé-secrète
+DEBUG=False
+ALLOWED_HOSTS=localhost,votre-domaine.com
 
-### Installation Backend
+# Base de données
+DB_NAME=erp_universitaire
+DB_USER=postgres
+DB_PASSWORD=mot_de_passe_securise
+DB_HOST=db
+DB_PORT=5432
 
+# Email
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=votre-email@gmail.com
+EMAIL_HOST_PASSWORD=votre-mot-de-passe-app
+DEFAULT_FROM_EMAIL=noreply@unierp.bf
+
+# Admin
+ADMIN_EMAIL=admin@unierp.bf
+ADMIN_PASSWORD=Admin2026
+```
+
+## � Déploiement
+
+### Frontend (Vercel)
+```bash
+cd frontend
+vercel --prod
+```
+
+### Mobile (Vercel)
+```bash
+cd mobile
+vercel --prod
+```
+
+### Backend (Docker)
+```bash
+docker compose up -d
+```
+
+Voir les guides détaillés:
+- [GUIDE_DOCKER.md](GUIDE_DOCKER.md) - Guide complet Docker
+- [README_DOCKER.md](README_DOCKER.md) - Documentation Docker rapide
+
+## 🛠️ Commandes utiles
+
+### Docker
+```bash
+# Démarrer
+docker compose up -d
+
+# Arrêter
+docker compose down
+
+# Logs
+docker compose logs -f
+
+# Shell Django
+docker compose exec backend python manage.py shell
+
+# Migrations
+docker compose exec backend python manage.py migrate
+
+# Créer superadmin
+docker compose exec backend python manage.py createsuperuser
+```
+
+### Backend (sans Docker)
 ```bash
 cd backend
-pip install -r requirements.txt
+
+# Migrations
+python manage.py makemigrations
 python manage.py migrate
-python manage.py runserver 8000
-```
 
-### Créer un Super Admin
-
-```bash
-cd backend
+# Créer superadmin
 python manage.py createsuperuser
+
+# Collecter fichiers statiques
+python manage.py collectstatic
+
+# Lancer serveur
+python manage.py runserver
 ```
 
-## 📊 Technologies
+## 📚 Fonctionnalités
 
-- **Backend:** Django 6.0.2, Django REST Framework
-- **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
-- **Base de données:** SQLite
-- **API:** REST API avec JWT Authentication
+### Administration
+- ✅ Gestion des étudiants
+- ✅ Gestion des enseignants
+- ✅ Gestion des filières et matières
+- ✅ Validation des inscriptions
+- ✅ Gestion des paiements
+- ✅ Emploi du temps
+- ✅ Statistiques et rapports
 
-## 🎨 Thèmes
+### Services Administratifs
+- ✅ Communication: Publications, événements
+- ✅ Académique: Emploi du temps, programmes
+- ✅ Comptabilité: Paiements, frais
 
-L'application supporte les thèmes clair et sombre. Utilisez le bouton de changement de thème (🌙/☀️) en bas à droite.
+### Étudiants (Mobile)
+- ✅ Inscription en ligne
+- ✅ Consultation des notes
+- ✅ Emploi du temps
+- ✅ Paiements
+- ✅ Notifications
+- ✅ Mode hors ligne (PWA)
 
-## 📱 Responsive
-
-L'interface est entièrement responsive et fonctionne sur:
-- Desktop (1920x1080+)
-- Laptop (1366x768+)
-- Tablet (768x1024+)
-- Mobile (375x667+)
+### Professeurs
+- ✅ Saisie des notes
+- ✅ Gestion des présences
+- ✅ Emploi du temps
+- ✅ Liste des étudiants
 
 ## 🔐 Sécurité
 
 - Authentification JWT
 - Permissions par rôle
-- Protection CSRF
+- HTTPS en production
+- CORS configuré
 - Validation des données
-- Filtrage des requêtes
+- Protection CSRF
 
 ## 📞 Support
 
 Pour toute question ou problème:
-1. Vérifier que le backend est lancé
-2. Vérifier que le frontend est lancé
-3. Consulter les logs du serveur Django
-4. Ouvrir la console du navigateur (F12)
+- Documentation: Voir les fichiers MD dans le projet
+- Issues: Créer une issue sur GitHub
 
-## 📝 Licence
+## 📄 Licence
 
-MIT License - Libre d'utilisation
+Propriétaire - UniERP BF
 
 ---
 
-**Version:** 1.0.0  
-**Université:** Aube Nouvelle  
-**Pays:** Burkina Faso 🇧🇫
+**Version**: 1.0.0  
+**Dernière mise à jour**: 6 Mars 2026

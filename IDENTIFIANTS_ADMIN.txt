@@ -1,0 +1,43 @@
+═══════════════════════════════════════════════════════════
+    IDENTIFIANTS ADMINISTRATEUR - UniERP BF
+═══════════════════════════════════════════════════════════
+
+📧 EMAIL: admin@unierp.bf
+🔑 MOT DE PASSE: Admin2026
+
+═══════════════════════════════════════════════════════════
+    URLS D'ACCÈS
+═══════════════════════════════════════════════════════════
+
+🌐 PRODUCTION (Actuel):
+   • Frontend Admin: https://school-wheat-six.vercel.app/frontend/connexion-admin.html
+   • Dashboard: https://school-wheat-six.vercel.app/frontend/dashboard-admin.html
+   • Django Admin: https://wendlasida.pythonanywhere.com/admin/
+
+💻 LOCAL (Docker):
+   • Frontend Admin: http://localhost/connexion-admin.html
+   • Dashboard: http://localhost/dashboard-admin.html
+   • Django Admin: http://localhost/admin/
+
+═══════════════════════════════════════════════════════════
+    FONCTIONNALITÉS ADMIN
+═══════════════════════════════════════════════════════════
+
+✅ Gestion des étudiants
+✅ Gestion des enseignants
+✅ Gestion des filières et matières
+✅ Validation des inscriptions (Étudiants, Professeurs, Services)
+✅ Gestion des paiements
+✅ Emploi du temps
+✅ Statistiques et rapports
+✅ Envoi automatique des identifiants par email
+
+═══════════════════════════════════════════════════════════
+    IMPORTANT
+═══════════════════════════════════════════════════════════
+
+⚠️  Changez le mot de passe après la première connexion
+⚠️  Configurez l'email SMTP pour l'envoi des identifiants
+⚠️  Sauvegardez régulièrement la base de données
+
+═══════════════════════════════════════════════════════════
