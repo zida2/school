@@ -82,8 +82,13 @@
                     <div class="nav-label-ultra">SERVICES</div>
                     <a class="nav-item-ultra" data-page="inscriptions" onclick="navToUltra('inscriptions',this)">
                         <span class="nav-icon-ultra">✅</span>
-                        <span class="nav-text-ultra">Inscriptions</span>
+                        <span class="nav-text-ultra">Inscriptions Staff</span>
                         <span class="nav-badge-ultra" id="badgeInscriptions">0</span>
+                    </a>
+                    <a class="nav-item-ultra" data-page="inscriptions-etudiants" onclick="navToUltra('inscriptions-etudiants',this)">
+                        <span class="nav-icon-ultra">🎓</span>
+                        <span class="nav-text-ultra">Inscriptions Étudiants</span>
+                        <span class="nav-badge-ultra" id="badgeInscriptionsEtudiants">0</span>
                     </a>
                     <a class="nav-item-ultra" data-page="demandes" onclick="navToUltra('demandes',this)">
                         <span class="nav-icon-ultra">📝</span>
@@ -517,8 +522,8 @@
                                         <th>Horaire</th>
                                         <th>Matière</th>
                                         <th>Enseignant</th>
-                                        <th>Filière</th>
                                         <th>Salle</th>
+                                        <th>Classe</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -545,6 +550,13 @@
                                     <label class="form-label-ultra">Matière *</label>
                                     <select id="emploiMatiere" class="form-input-ultra" required>
                                         <option value="">Sélectionner une matière</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group-ultra">
+                                    <label class="form-label-ultra">Classe</label>
+                                    <select id="emploiClasse" class="form-input-ultra">
+                                        <option value="">Toutes les classes</option>
                                     </select>
                                 </div>
 
@@ -864,6 +876,59 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyInscriptions">
+                                    <tr><td colspan="8" style="text-align:center;padding:40px">Chargement...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: INSCRIPTIONS ÉTUDIANTS -->
+                <div class="page-ultra" id="page-inscriptions-etudiants" style="display:none">
+                    <div class="page-header-ultra">
+                        <div>
+                            <h1 class="page-title-ultra">🎓 Inscriptions Étudiants</h1>
+                            <p class="page-subtitle-ultra">Gérer les demandes d'inscription des étudiants</p>
+                        </div>
+                        <div class="page-actions-ultra">
+                            <button class="btn-ultra btn-secondary-ultra" onclick="chargerInscriptionsEtudiants()">
+                                🔄 Actualiser
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-ultra">
+                        <!-- Filtres -->
+                        <div class="filters-bar-ultra" style="margin-bottom:24px;padding:20px">
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+                                <select id="filterStatutInscription" class="form-input-ultra" onchange="chargerInscriptionsEtudiants()">
+                                    <option value="">📋 Tous les statuts</option>
+                                    <option value="en_attente">En attente</option>
+                                    <option value="validee">Validée</option>
+                                    <option value="rejetee">Rejetée</option>
+                                </select>
+                                <select id="filterFiliereInscription" class="form-input-ultra" onchange="chargerInscriptionsEtudiants()">
+                                    <option value="">🎓 Toutes les filières</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tableau -->
+                        <div class="table-responsive-ultra">
+                            <table class="table-ultra">
+                                <thead>
+                                    <tr>
+                                        <th>Nom & Prénom</th>
+                                        <th>Email</th>
+                                        <th>Téléphone</th>
+                                        <th>Filière</th>
+                                        <th>Niveau</th>
+                                        <th>Date</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyInscriptionsEtudiants">
                                     <tr><td colspan="8" style="text-align:center;padding:40px">Chargement...</td></tr>
                                 </tbody>
                             </table>
@@ -1511,6 +1576,7 @@
     <script src="js/api.js?v=7"></script>
     <script src="js/fix-navigation.js?v=7"></script>
     <script src="js/theme-toggle.js?v=7"></script>
+    <script src="js/admin-gestion.js?v=1.0"></script>
 
     <!-- Script inline après -->
     <script>
@@ -1531,8 +1597,12 @@
                 chargerPaiements();
             } else if (page === 'emploi') {
                 chargerEmploi();
+                chargerMatieresEtEnseignants();
+                chargerEmploiDuTemps();
             } else if (page === 'inscriptions') {
                 chargerInscriptions();
+            } else if (page === 'inscriptions-etudiants') {
+                chargerInscriptionsEtudiants();
             }
         }
 
