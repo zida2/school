@@ -3045,173 +3045,25 @@
         });
 
         // ===== GESTION EMPLOI DU TEMPS =====
+        // TOUTES CES FONCTIONS SONT MAINTENANT DANS admin-gestion.js
+        // NE PAS DUPLIQUER ICI POUR ÉVITER LES CONFLITS
+        
+        /*
+        // Variables déjà déclarées dans admin-gestion.js
         let emploiDuTempsData = [];
         let matieresData = [];
         let enseignantsData = [];
 
-        async function chargerEmploiDuTemps() {
-            try {
-                const jour = document.getElementById('filterJourEmploi').value;
-                const matiere = document.getElementById('filterMatiereEmploi').value;
-                const enseignant = document.getElementById('filterEnseignantEmploi').value;
-
-                let url = '/emploi-du-temps/';
-                const params = [];
-                if (jour) params.push(`jour=${jour}`);
-                if (matiere) params.push(`matiere=${matiere}`);
-                if (enseignant) params.push(`enseignant=${enseignant}`);
-                if (params.length) url += '?' + params.join('&');
-
-                emploiDuTempsData = await API.get(url);
-                afficherEmploiDuTemps();
-            } catch (error) {
-                console.error('Erreur chargement emploi du temps:', error);
-                document.getElementById('tbodyEmploiAdmin').innerHTML = 
-                    '<tr><td colspan="7" style="text-align:center;padding:40px;color:#ef4444">Erreur de chargement</td></tr>';
-            }
-        }
-
-        function afficherEmploiDuTemps() {
-            const tbody = document.getElementById('tbodyEmploiAdmin');
-            
-            if (!emploiDuTempsData || emploiDuTempsData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px">Aucun cours programmé</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = emploiDuTempsData.map(emploi => `
-                <tr>
-                    <td>${emploi.jour}</td>
-                    <td>${emploi.heure_debut} - ${emploi.heure_fin}</td>
-                    <td>${emploi.matiere_nom || 'N/A'}</td>
-                    <td>${emploi.enseignant_nom || 'Non assigné'}</td>
-                    <td>${emploi.filiere_nom || 'N/A'}</td>
-                    <td>${emploi.salle}</td>
-                    <td>
-                        <button class="btn-ultra btn-sm-ultra btn-primary-ultra" onclick="envoyerEmploiProf(${emploi.id})" 
-                            ${!emploi.enseignant_email ? 'disabled' : ''} 
-                            title="${!emploi.enseignant_email ? 'Aucun enseignant assigné' : 'Envoyer par email'}">
-                            📧 Envoyer
-                        </button>
-                        <button class="btn-ultra btn-sm-ultra btn-secondary-ultra" onclick="modifierEmploi(${emploi.id})">
-                            ✏️
-                        </button>
-                        <button class="btn-ultra btn-sm-ultra btn-danger-ultra" onclick="supprimerEmploi(${emploi.id})">
-                            🗑️
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        async function chargerMatieresEtEnseignants() {
-            try {
-                matieresData = await API.get('/matieres/');
-                enseignantsData = await API.get('/enseignants/');
-
-                // Remplir les selects
-                const selectMatiere = document.getElementById('emploiMatiere');
-                const selectFilterMatiere = document.getElementById('filterMatiereEmploi');
-                const selectFilterEnseignant = document.getElementById('filterEnseignantEmploi');
-
-                selectMatiere.innerHTML = '<option value="">Sélectionner une matière</option>' +
-                    matieresData.map(m => `<option value="${m.id}">${m.code} - ${m.nom}</option>`).join('');
-
-                selectFilterMatiere.innerHTML = '<option value="">📚 Toutes les matières</option>' +
-                    matieresData.map(m => `<option value="${m.id}">${m.code} - ${m.nom}</option>`).join('');
-
-                selectFilterEnseignant.innerHTML = '<option value="">👨‍🏫 Tous les enseignants</option>' +
-                    enseignantsData.map(e => `<option value="${e.id}">${e.prenom} ${e.nom}</option>`).join('');
-
-            } catch (error) {
-                console.error('Erreur chargement matières/enseignants:', error);
-            }
-        }
-
-        function openModalEmploiDuTemps() {
-            document.getElementById('modalEmploiDuTempsTitle').textContent = '📅 Créer un cours';
-            document.getElementById('formEmploiDuTemps').reset();
-            document.getElementById('emploiId').value = '';
-            openModal('modalEmploiDuTemps');
-        }
-
-        async function saveEmploiDuTemps(event) {
-            event.preventDefault();
-
-            const id = document.getElementById('emploiId').value;
-            const data = {
-                matiere: document.getElementById('emploiMatiere').value,
-                jour: document.getElementById('emploiJour').value,
-                heure_debut: document.getElementById('emploiHeureDebut').value,
-                heure_fin: document.getElementById('emploiHeureFin').value,
-                salle: document.getElementById('emploiSalle').value,
-                semaine: document.getElementById('emploiSemaine').value
-            };
-
-            try {
-                if (id) {
-                    await API.put(`/emploi-du-temps/${id}/`, data);
-                    showNotification('Cours modifié avec succès', 'success');
-                } else {
-                    await API.post('/emploi-du-temps/', data);
-                    showNotification('Cours créé avec succès', 'success');
-                }
-
-                closeModal('modalEmploiDuTemps');
-                await chargerEmploiDuTemps();
-            } catch (error) {
-                showNotification('Erreur: ' + (error.message || 'Erreur inconnue'), 'error');
-            }
-        }
-
-        async function modifierEmploi(id) {
-            const emploi = emploiDuTempsData.find(e => e.id === id);
-            if (!emploi) return;
-
-            document.getElementById('modalEmploiDuTempsTitle').textContent = '✏️ Modifier le cours';
-            document.getElementById('emploiId').value = emploi.id;
-            document.getElementById('emploiMatiere').value = emploi.matiere;
-            document.getElementById('emploiJour').value = emploi.jour;
-            document.getElementById('emploiHeureDebut').value = emploi.heure_debut;
-            document.getElementById('emploiHeureFin').value = emploi.heure_fin;
-            document.getElementById('emploiSalle').value = emploi.salle;
-            document.getElementById('emploiSemaine').value = emploi.semaine || 'toutes';
-
-            openModal('modalEmploiDuTemps');
-        }
-
-        async function supprimerEmploi(id) {
-            if (!confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')) return;
-
-            try {
-                await API.delete(`/emploi-du-temps/${id}/`);
-                showNotification('Cours supprimé avec succès', 'success');
-                await chargerEmploiDuTemps();
-            } catch (error) {
-                showNotification('Erreur lors de la suppression', 'error');
-            }
-        }
-
-        async function envoyerEmploiProf(id) {
-            if (!confirm('Envoyer cet emploi du temps au professeur par email ?')) return;
-
-            try {
-                const result = await API.post(`/emploi-du-temps/${id}/envoyer_prof/`);
-                showNotification(`Email envoyé à ${result.enseignant}`, 'success');
-            } catch (error) {
-                showNotification('Erreur lors de l\'envoi: ' + (error.message || 'Erreur inconnue'), 'error');
-            }
-        }
-
-        // Charger les données au changement de page
-        const originalNavToUltra = navToUltra;
-        navToUltra = function(page, elem) {
-            originalNavToUltra(page, elem);
-            if (page === 'emploi') {
-                chargerMatieresEtEnseignants();
-                chargerEmploiDuTemps();
-            }
-        };
+        // Fonctions déjà définies dans admin-gestion.js:
+        // - chargerEmploiDuTemps()
+        // - afficherEmploiDuTemps()
+        // - chargerMatieresEtEnseignants()
+        // - openModalEmploiDuTemps()
+        // - saveEmploiDuTemps()
+        // - modifierEmploi()
+        // - supprimerEmploi()
+        // - envoyerEmploiProf()
+        */
     </script>
 </body>
 </html>
