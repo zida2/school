@@ -1,5 +1,13 @@
 # 🔗 LIENS DE L'APPLICATION UNIERP BF
 
+## ⭐ LIEN PRINCIPAL
+
+**ADMINISTRATION**: https://school-wheat-six.vercel.app/frontend/connexion-admin.html
+- Email: `admin@unierp.bf`
+- Mot de passe: `Admin2026`
+
+---
+
 ## 📱 FRONTEND (Vercel)
 
 ### Pages Publiques
