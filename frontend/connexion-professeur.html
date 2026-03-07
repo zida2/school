@@ -118,16 +118,24 @@
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('✅ Connexion réussie:', data);
+                    console.log('👤 Rôle utilisateur:', data.user.role);
                     
                     if (data.user.role === 'professeur') {
+                        console.log('💾 Sauvegarde des données dans localStorage...');
                         localStorage.setItem('token', data.access);
                         localStorage.setItem('refresh', data.refresh);
                         localStorage.setItem('user', JSON.stringify(data.user));
-                        window.location.href = '/frontend/dashboard-prof.html';
+                        console.log('✅ Données sauvegardées');
+                        console.log('🔄 Redirection vers /frontend/dashboard-prof.html');
+                        // Force le rechargement complet pour éviter le cache
+                        window.location.replace('/frontend/dashboard-prof.html');
                     } else {
+                        console.warn('⚠️ Rôle non autorisé:', data.user.role);
                         showAlert('danger', 'Accès réservé aux professeurs uniquement');
                     }
                 } else {
+                    console.error('❌ Erreur de connexion:', response.status);
                     showAlert('danger', 'Email ou mot de passe incorrect');
                 }
             } catch (error) {

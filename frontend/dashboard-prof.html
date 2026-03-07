@@ -782,6 +782,13 @@
 
     <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
+        // Vérifier l'authentification au chargement
+        console.log('🚀 Dashboard professeur chargé');
+        const user = localStorage.getItem('user');
+        const token = localStorage.getItem('token');
+        console.log('👤 Utilisateur:', user ? JSON.parse(user) : 'Non connecté');
+        console.log('🔑 Token:', token ? 'Présent' : 'Absent');
+        
         // PAS de vérification au chargement - on fait confiance à la redirection depuis index.html
         // La vérification se fera lors des appels API qui nécessitent l'authentification
         
