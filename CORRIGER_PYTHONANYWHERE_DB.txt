@@ -1,0 +1,55 @@
+===========================================
+CORRIGER LA BASE DE DONNÉES SUR PYTHONANYWHERE
+===========================================
+
+Le problème: PythonAnywhere essaie d'utiliser PostgreSQL au lieu de SQLite.
+
+SOLUTION 1 - Supprimer les variables d'environnement PostgreSQL:
+----------------------------------------------------------------
+
+1. Allez sur: https://www.pythonanywhere.com/user/Wendlasida/
+
+2. Cliquez sur l'onglet "Web"
+
+3. Scrollez jusqu'à "Environment variables"
+
+4. SUPPRIMEZ ces variables si elles existent:
+   - DB_HOST
+   - DB_NAME
+   - DB_USER
+   - DB_PASSWORD
+   - DB_PORT
+
+5. Cliquez sur "Reload" (bouton vert en haut)
+
+
+SOLUTION 2 - Modifier le fichier .env (si existe):
+---------------------------------------------------
+
+1. Ouvrez un "Bash console"
+
+2. Exécutez:
+   cd ~/school/backend
+   nano .env
+
+3. Commentez ou supprimez ces lignes:
+   # DB_HOST=localhost
+   # DB_NAME=erp_universitaire
+   # DB_USER=postgres
+   # DB_PASSWORD=postgres
+   # DB_PORT=5432
+
+4. Sauvegardez (Ctrl+O, Enter, Ctrl+X)
+
+5. Rechargez l'app web
+
+
+VÉRIFICATION:
+-------------
+
+Après le rechargement, testez:
+https://wendlasida.pythonanywhere.com/api/filieres/
+
+Vous devriez voir les 3 filières en JSON.
+
+===========================================
