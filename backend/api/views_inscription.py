@@ -467,27 +467,39 @@ class DemandeInscriptionProfesseurViewSet(viewsets.ModelViewSet):
                 
                 # Envoyer email avec identifiants
                 try:
-                    sujet = "Inscription validée - Accès Professeur UniERP"
+                    sujet = "Bienvenue - Vos identifiants d'accès UniERP BF"
                     contenu = f"""Bonjour {demande.prenom} {demande.nom},
 
-Votre demande d'inscription en tant qu'enseignant a été validée !
+Félicitations ! Votre candidature en tant qu'enseignant a été acceptée.
 
-Voici vos identifiants de connexion :
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VOS IDENTIFIANTS DE CONNEXION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 📧 Email : {demande.email}
 🔑 Mot de passe : {password}
 🎓 Spécialité : {demande.filiere_enseignee.nom}
+👤 Matricule : {matricule}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ACCÉDER À VOTRE ESPACE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-⚠️ IMPORTANT : Veuillez changer votre mot de passe lors de votre première connexion.
+Connectez-vous dès maintenant :
+🔗 https://school-wheat-six.vercel.app/frontend/connexion-professeur.html
 
-Vous pouvez vous connecter à votre espace enseignant :
-👉 https://school-wheat-six.vercel.app/frontend/connexion-professeur.html
+⚠️ SÉCURITÉ : Changez votre mot de passe dès votre première connexion.
 
-Bienvenue dans l'équipe pédagogique !
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Bienvenue dans notre équipe pédagogique !
 
 Cordialement,
-L'équipe UniERP BF"""
+L'Administration UniERP BF
+Université Aube Nouvelle
+
+---
+Cet email a été envoyé automatiquement. Si vous n'êtes pas concerné, veuillez ignorer ce message."""
                     
                     envoyer_notification_immediate(
                         destinataire=utilisateur,
