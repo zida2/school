@@ -441,6 +441,12 @@ class DemandeInscriptionProfesseurViewSet(viewsets.ModelViewSet):
                 if not universite:
                     raise Exception("Aucune université n'est configurée dans le système")
                 
+                # Générer un matricule unique
+                import random
+                matricule = f"PROF{random.randint(10000, 99999)}"
+                while Enseignant.objects.filter(matricule=matricule).exists():
+                    matricule = f"PROF{random.randint(10000, 99999)}"
+                
                 enseignant = Enseignant.objects.create(
                     utilisateur=utilisateur,
                     nom=demande.nom,
@@ -448,7 +454,8 @@ class DemandeInscriptionProfesseurViewSet(viewsets.ModelViewSet):
                     email=demande.email,
                     telephone=demande.telephone or '',
                     specialite=demande.filiere_enseignee.nom,
-                    universite=universite
+                    universite=universite,
+                    matricule=matricule
                 )
                 
                 # Mettre à jour la demande
