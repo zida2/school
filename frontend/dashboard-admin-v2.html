@@ -100,15 +100,22 @@
             <header class="topbar-ultra">
                 <div class="topbar-left-ultra">
                     <button class="btn-menu-ultra" onclick="toggleSidebarUltra()">☰</button>
-                    <div class="search-ultra">
-                        <span class="search-icon-ultra">🔍</span>
-                        <input type="text" class="search-input-ultra" placeholder="Rechercher...">
+                    <div class="breadcrumb-ultra">
+                        <span class="breadcrumb-item-ultra">🏠 Accueil</span>
+                        <span class="breadcrumb-separator-ultra">/</span>
+                        <span class="breadcrumb-item-ultra active-ultra" id="currentPageName">Tableau de bord</span>
                     </div>
                 </div>
                 <div class="topbar-right-ultra">
-                    <button class="topbar-btn-ultra">
-                        <span>�</span>
+                    <button class="topbar-btn-ultra" title="Notifications">
+                        <span>🔔</span>
                         <span class="notification-dot"></span>
+                    </button>
+                    <button class="topbar-btn-ultra" title="Messages">
+                        <span>💬</span>
+                    </button>
+                    <button class="topbar-btn-ultra" onclick="toggleTheme()" title="Changer de thème">
+                        <span id="themeIcon">🌙</span>
                     </button>
                     <div class="user-menu-ultra" onclick="logout()">
                         <div class="user-avatar-ultra">AD</div>
@@ -1557,8 +1564,49 @@
     <script>
         // PAS de vérification au chargement - on fait confiance à la redirection depuis index.html
         
+        window.toggleTheme = function() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+                showToast('Thème clair activé', 'success');
+            } else {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+                showToast('Thème sombre activé', 'success');
+            }
+        }
+
+        window.updateBreadcrumb = function(pageName) {
+            const breadcrumb = document.getElementById('currentPageName');
+            if (breadcrumb) {
+                const pageNames = {
+                    'dashboard': 'Tableau de bord',
+                    'etudiants': 'Étudiants',
+                    'enseignants': 'Enseignants',
+                    'filieres': 'Filières',
+                    'emploi': 'Emploi du temps',
+                    'paiements': 'Paiements',
+                    'demandes': 'Demandes',
+                    'inscriptions': 'Inscriptions Staff',
+                    'inscriptions-etudiants': 'Inscriptions Étudiants',
+                    'reclamations': 'Réclamations'
+                };
+                breadcrumb.textContent = pageNames[pageName] || pageName;
+            }
+        }
+
         window.navToUltra = function(page, el) {
             console.log('🔄 Scroll vers:', page);
+            
+            // Mettre à jour le breadcrumb
+            updateBreadcrumb(page);
             
             // Scroll vers la page cible
             const target = document.getElementById('page-' + page);
@@ -3037,6 +3085,19 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Charger le thème sauvegardé
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                if (themeIcon) themeIcon.textContent = '☀️';
+            } else {
+                document.body.classList.add('dark-theme');
+                if (themeIcon) themeIcon.textContent = '🌙';
+            }
+            
             const user = requireAuth(['admin', 'superadmin']);
             if (user) {
                 chargerDonnees();

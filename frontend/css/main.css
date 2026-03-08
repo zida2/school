@@ -305,43 +305,37 @@ body.dark-theme .topbar-ultra {
     gap: 16px;
 }
 
-.search-ultra {
-    position: relative;
-    width: 400px;
-}
-
-.search-input-ultra {
-    width: 100%;
-    height: 48px;
-    background: #f8fafc;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 0 48px 0 20px;
-    color: var(--dark);
+/* Breadcrumb */
+.breadcrumb-ultra {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 14px;
-    transition: all 0.3s ease;
 }
 
-body.dark-theme .search-input-ultra {
-    background: #334155;
-    border-color: #475569;
-    color: #e2e8f0;
+.breadcrumb-item-ultra {
+    color: var(--gray);
+    transition: color 0.2s ease;
 }
 
-.search-input-ultra:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+.breadcrumb-item-ultra.active-ultra {
+    color: var(--primary);
+    font-weight: 600;
 }
 
-.search-icon-ultra {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
+body.dark-theme .breadcrumb-item-ultra {
+    color: #94a3b8;
+}
+
+body.dark-theme .breadcrumb-item-ultra.active-ultra {
+    color: #818cf8;
+}
+
+.breadcrumb-separator-ultra {
     color: var(--gray);
 }
+
+/* Search removed - replaced by breadcrumb */
 
 .topbar-btn-ultra {
     width: 48px;
