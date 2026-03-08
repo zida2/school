@@ -10,16 +10,18 @@ function loadThemeCSS(theme) {
         oldLink.remove();
     }
     
-    // Créer un nouveau lien CSS - THÈME FUTURISTE
+    // Créer un nouveau lien CSS - THÈME FUTURISTE avec timestamp pour éviter le cache
     const link = document.createElement('link');
     link.id = 'theme-css';
     link.rel = 'stylesheet';
-    link.href = 'css/futuristic-theme.css?v=10.0';
+    // Utiliser un timestamp unique pour forcer le rechargement
+    const timestamp = new Date().getTime();
+    link.href = `css/futuristic-theme.css?v=11.0&t=${timestamp}`;
     
     // Ajouter le lien dans le head
     document.head.appendChild(link);
     
-    console.log('🚀 Thème futuriste chargé v10.0');
+    console.log('🚀 Thème futuriste chargé v11.0 avec timestamp:', timestamp);
 }
 
 // Fonction pour basculer le thème (désactivée - thème futuriste permanent)
