@@ -96,34 +96,8 @@
         })();
     </script>
     <script>
-        // Script IMMÉDIAT - s'exécute AVANT le chargement du DOM
-        (function() {
-            // Fonction pour cacher les pages
-            function hideAllPagesExceptDashboard() {
-                // Attendre que le DOM soit prêt
-                if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', hideAllPagesExceptDashboard);
-                    return;
-                }
-                
-                // Cacher toutes les pages sauf dashboard - SIMPLE, sans !important
-                const pages = document.querySelectorAll('.page-ultra');
-                console.log('🔧 Initialisation pages:', pages.length);
-                
-                pages.forEach(function(page) {
-                    if (page.id === 'page-dashboard') {
-                        page.style.display = 'block';
-                        console.log('✅ Dashboard visible');
-                    } else {
-                        page.style.display = 'none';
-                        console.log('❌ Caché:', page.id);
-                    }
-                });
-            }
-            
-            // Exécuter immédiatement
-            hideAllPagesExceptDashboard();
-        })();
+        // Toutes les pages sont visibles - pas de masquage
+        console.log('✅ Mode scroll: toutes les pages visibles');
     </script>
 </head>
 <body class="dark-theme">
@@ -1673,22 +1647,18 @@
         // PAS de vérification au chargement - on fait confiance à la redirection depuis index.html
         
         window.navToUltra = function(page, el) {
-            console.log('🔄 Navigation vers:', page);
+            console.log('🔄 Scroll vers:', page);
             
-            // Cacher toutes les pages
-            document.querySelectorAll('.page-ultra').forEach(p => {
-                p.style.display = 'none';
-            });
-            
-            // Afficher la page cible
+            // Scroll vers la page cible
             const target = document.getElementById('page-' + page);
             if (target) {
-                target.style.display = 'block';
-                console.log('✅ Page affichée:', page);
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                console.log('✅ Scroll vers:', page);
             } else {
                 console.error('❌ Page non trouvée:', 'page-' + page);
             }
             
+            // Mettre à jour l'élément actif dans la navigation
             document.querySelectorAll('.nav-item-ultra').forEach(i => i.classList.remove('active'));
             if (el) el.classList.add('active');
 

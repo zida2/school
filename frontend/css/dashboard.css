@@ -38,13 +38,37 @@ body.dark-theme {
     color: #e2e8f0;
 }
 
-/* ===== MASQUAGE DES PAGES ===== */
+/* ===== AFFICHAGE DES PAGES ===== */
 .page-ultra {
-    display: none;
+    display: block;
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid var(--border);
+    scroll-margin-top: 20px;
 }
 
-#page-dashboard {
-    display: block;
+body.dark-theme .page-ultra {
+    border-bottom-color: #334155;
+}
+
+.page-ultra:last-child {
+    border-bottom: none;
+}
+
+/* Titre de section pour chaque page */
+.page-ultra > .header-ultra {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    padding: 16px 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+body.dark-theme .page-ultra > .header-ultra {
+    background: #0f172a;
+    border-bottom-color: #334155;
 }
 
 /* ===== LAYOUT ===== */
