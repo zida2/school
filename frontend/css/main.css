@@ -110,7 +110,7 @@ body.light-theme .page-ultra > .page-header-ultra {
     position: fixed;
     height: 100vh;
     overflow-y: auto;
-    z-index: 100;
+    z-index: 50;
 }
 
 body.dark-theme .sidebar-ultra {
