@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniERP BF - Système de Gestion Universitaire Futuriste</title>
+    <title>UniERP BF - Plateforme Administrative</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -16,9 +16,11 @@
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #e0e7ff 0%, #f0f4f8 50%, #e0e7ff 100%);
             min-height: 100vh;
-            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            color: #1a202c;
+            overflow: hidden;
         }
 
         /* Particules en arrière-plan */
@@ -43,128 +45,78 @@
             50% { opacity: 1; }
         }
 
-        /* Container principal */
         .container {
             position: relative;
             z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 40px 20px;
         }
 
-        /* Header futuriste */
-        header {
-            padding: 30px 0;
-            position: relative;
-            z-index: 10;
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease;
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 20px;
-            padding: 20px 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .logo {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 15px;
+            margin-bottom: 20px;
         }
 
         .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #00f0ff, #8b5cf6);
-            border-radius: 12px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00d4ff, #8b5cf6);
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+            font-size: 32px;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
             animation: pulse-glow 2s ease-in-out infinite;
         }
 
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.5); }
-            50% { box-shadow: 0 0 50px rgba(0, 240, 255, 0.8); }
+            0%, 100% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(0, 212, 255, 0.8); }
         }
 
-        .logo-text h1 {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #00f0ff, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .logo-text p {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.6);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #00f0ff, #8b5cf6);
-            color: white;
-            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 6px 25px rgba(0, 240, 255, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0, 240, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 100px 0;
-            text-align: center;
-        }
-
-        .hero h2 {
-            font-size: 56px;
+        .header h1 {
+            font-size: 48px;
             font-weight: 800;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #00f0ff, #8b5cf6, #ff006e);
+            background: linear-gradient(135deg, #00d4ff, #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: fadeInUp 1s ease;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #718096;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            animation: fadeInUp 1s ease 0.3s both;
         }
 
         @keyframes fadeInUp {
@@ -178,59 +130,19 @@
             }
         }
 
-        .hero p {
-            font-size: 20px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 40px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .btn-large {
-            padding: 18px 40px;
-            font-size: 16px;
-        }
-
-        /* Cards Section */
-        .cards-section {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 40px;
-            font-weight: 700;
-            margin-bottom: 60px;
-            background: linear-gradient(135deg, #00f0ff, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
         .card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 212, 255, 0.3);
             border-radius: 20px;
-            padding: 40px;
+            padding: 40px 30px;
+            text-align: center;
             transition: all 0.3s ease;
+            cursor: pointer;
             position: relative;
             overflow: hidden;
+            text-decoration: none;
+            display: block;
         }
 
         .card::before {
@@ -240,7 +152,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, #00f0ff, #8b5cf6);
+            background: linear-gradient(90deg, #00d4ff, #8b5cf6);
         }
 
         .card:hover {
@@ -250,7 +162,7 @@
         }
 
         .card-icon {
-            font-size: 48px;
+            font-size: 56px;
             margin-bottom: 20px;
             display: inline-block;
             animation: float 3s ease-in-out infinite;
@@ -262,88 +174,32 @@
         }
 
         .card h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #00d4ff;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 10px;
         }
 
         .card p {
-            color: #4a5568;
+            font-size: 14px;
+            color: #718096;
             line-height: 1.6;
         }
 
-        /* Features Section */
-        .features-section {
-            padding: 80px 0;
-            background: rgba(21, 25, 50, 0.3);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 60px;
-        }
-
-        .feature {
+        /* Footer */
+        .footer {
             text-align: center;
-            padding: 30px;
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #00f0ff, #8b5cf6);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            margin: 0 auto 20px;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
-        }
-
-        .feature h4 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #00d4ff;
-        }
-
-        .feature p {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
             color: #718096;
             font-size: 14px;
         }
 
-        /* Footer */
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            border-top: 1px solid rgba(0, 212, 255, 0.3);
-            margin-top: 80px;
-        }
-
-        footer p {
-            color: #718096;
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-                padding: 20px;
-            }
-
-            .hero h2 {
+            .header h1 {
                 font-size: 36px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
             }
 
             .cards-grid {
@@ -364,7 +220,7 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
             animation: scan 3s ease-in-out infinite;
             opacity: 0.3;
         }
@@ -373,107 +229,56 @@
 <body>
     <div class="container">
         <!-- Header -->
-        <header>
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">🎓</div>
-                    <div class="logo-text">
-                        <h1>UniERP BF</h1>
-                        <p>Système Futuriste</p>
-                    </div>
-                </div>
-                <div class="nav-buttons">
-                    <a href="index.html" class="btn btn-secondary">Connexion</a>
-                    <a href="inscription.html" class="btn btn-primary">Inscription</a>
-                </div>
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">🎓</div>
             </div>
-        </header>
+            <h1>UniERP BF</h1>
+            <p>Plateforme Administrative Intelligente</p>
+        </div>
 
-        <!-- Hero Section -->
-        <section class="hero">
-            <h2>Gestion Universitaire<br>Nouvelle Génération</h2>
-            <p>Plateforme ERP complète pour la gestion moderne des établissements d'enseignement supérieur au Burkina Faso</p>
-            <div class="hero-buttons">
-                <a href="index.html" class="btn btn-primary btn-large">🚀 Commencer</a>
-                <a href="#features" class="btn btn-secondary btn-large">📖 En savoir plus</a>
-            </div>
-        </section>
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+            <!-- Service Communication -->
+            <a href="connexion-communication.html" class="card">
+                <div class="card-icon">📢</div>
+                <h3>Communication</h3>
+                <p>Gestion des annonces, notifications et sondages</p>
+            </a>
 
-        <!-- Cards Section -->
-        <section class="cards-section">
-            <h2 class="section-title">Accès Rapide</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">🎓</div>
-                    <h3>Étudiants</h3>
-                    <p>Consultez vos notes, emploi du temps, et gérez vos inscriptions en ligne</p>
-                    <a href="index.html" class="btn btn-primary" style="margin-top: 20px;">Accéder</a>
-                </div>
+            <!-- Service Académique -->
+            <a href="connexion-academique.html" class="card">
+                <div class="card-icon">📚</div>
+                <h3>Service Académique</h3>
+                <p>Emplois du temps, notes et gestion pédagogique</p>
+            </a>
 
-                <div class="card">
-                    <div class="card-icon">👨‍🏫</div>
-                    <h3>Enseignants</h3>
-                    <p>Saisissez les notes, gérez vos cours et consultez votre emploi du temps</p>
-                    <a href="connexion-professeur.html" class="btn btn-primary" style="margin-top: 20px;">Accéder</a>
-                </div>
+            <!-- Service Comptabilité -->
+            <a href="connexion-comptabilite.html" class="card">
+                <div class="card-icon">💰</div>
+                <h3>Comptabilité</h3>
+                <p>Gestion des paiements et finances</p>
+            </a>
 
-                <div class="card">
-                    <div class="card-icon">⚙️</div>
-                    <h3>Administration</h3>
-                    <p>Gérez les étudiants, enseignants, filières et toutes les opérations</p>
-                    <a href="connexion-admin.html" class="btn btn-primary" style="margin-top: 20px;">Accéder</a>
-                </div>
-            </div>
-        </section>
+            <!-- Enseignants -->
+            <a href="connexion-professeur.html" class="card">
+                <div class="card-icon">👨‍🏫</div>
+                <h3>Enseignants</h3>
+                <p>Saisie des notes et gestion des cours</p>
+            </a>
 
-        <!-- Features Section -->
-        <section class="features-section" id="features">
-            <div class="container">
-                <h2 class="section-title">Fonctionnalités Avancées</h2>
-                <div class="features-grid">
-                    <div class="feature">
-                        <div class="feature-icon">📊</div>
-                        <h4>Gestion Complète</h4>
-                        <p>Étudiants, enseignants, notes, finances</p>
-                    </div>
-
-                    <div class="feature">
-                        <div class="feature-icon">📅</div>
-                        <h4>Emploi du Temps</h4>
-                        <p>Grille visuelle interactive et moderne</p>
-                    </div>
-
-                    <div class="feature">
-                        <div class="feature-icon">💰</div>
-                        <h4>Finances</h4>
-                        <p>Suivi des paiements et frais de scolarité</p>
-                    </div>
-
-                    <div class="feature">
-                        <div class="feature-icon">📝</div>
-                        <h4>Notes & Évaluations</h4>
-                        <p>Saisie et consultation en temps réel</p>
-                    </div>
-
-                    <div class="feature">
-                        <div class="feature-icon">📱</div>
-                        <h4>Responsive</h4>
-                        <p>Accessible sur tous les appareils</p>
-                    </div>
-
-                    <div class="feature">
-                        <div class="feature-icon">🔒</div>
-                        <h4>Sécurisé</h4>
-                        <p>Authentification et protection des données</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+            <!-- Administration -->
+            <a href="connexion-admin.html" class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>Administration</h3>
+                <p>Gestion complète du système</p>
+            </a>
+        </div>
 
         <!-- Footer -->
-        <footer>
-            <p>&copy; 2024 UniERP BF - Tous droits réservés | Design Futuriste v8.0</p>
-        </footer>
+        <div class="footer">
+            <p>&copy; 2024 UniERP BF - Plateforme Administrative | Design Futuriste v8.0</p>
+        </div>
     </div>
 </body>
 </html>
