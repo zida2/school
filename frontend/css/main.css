@@ -340,7 +340,7 @@ body.dark-theme .page-title-ultra {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 32px;
+    padding: 0 32px 0 0;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -396,10 +396,12 @@ body.dark-theme .topbar-ultra::before {
 .topbar-left-ultra {
     flex: 1;
     min-width: 0;
+    padding-left: 32px;
 }
 
 .topbar-right-ultra {
     flex-shrink: 0;
+    padding-right: 0;
 }
 
 /* Breadcrumb */
