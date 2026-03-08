@@ -82,18 +82,24 @@
 
                 const data = await response.json();
 
-                if (response.ok && data.role === 'comptabilite') {
-                    localStorage.setItem('access_token', data.access);
-                    localStorage.setItem('refresh_token', data.refresh);
-                    localStorage.setItem('user_role', data.role);
-                    localStorage.setItem('user_email', email);
+                if (response.ok) {
+                    const userRole = data.user?.role || data.role;
+                    if (userRole === 'comptabilite') {
+                        localStorage.setItem('access_token', data.access);
+                        localStorage.setItem('refresh_token', data.refresh);
+                        localStorage.setItem('user_role', userRole);
+                        localStorage.setItem('user_email', email);
+                        localStorage.setItem('user_data', JSON.stringify(data.user));
 
-                    successMessage.textContent = 'Connexion réussie ! Redirection...';
-                    successMessage.classList.add('show');
+                        successMessage.textContent = 'Connexion réussie ! Redirection...';
+                        successMessage.classList.add('show');
 
-                    setTimeout(() => {
-                        window.location.href = 'dashboard-admin.html';
-                    }, 1000);
+                        setTimeout(() => {
+                            window.location.href = 'dashboard-admin.html';
+                        }, 1000);
+                    } else {
+                        throw new Error('Accès non autorisé. Cette page est réservée au service comptabilité.');
+                    }
                 } else {
                     throw new Error(data.error || 'Email ou mot de passe incorrect');
                 }

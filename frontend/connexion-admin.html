@@ -119,12 +119,14 @@
 
                 if (response.ok) {
                     // Vérifier le rôle
-                    if (data.role === 'admin' || data.role === 'superadmin') {
+                    const userRole = data.user?.role || data.role;
+                    if (userRole === 'admin' || userRole === 'superadmin') {
                         // Sauvegarder les tokens
                         localStorage.setItem('access_token', data.access);
                         localStorage.setItem('refresh_token', data.refresh);
-                        localStorage.setItem('user_role', data.role);
+                        localStorage.setItem('user_role', userRole);
                         localStorage.setItem('user_email', email);
+                        localStorage.setItem('user_data', JSON.stringify(data.user));
 
                         // Message de succès
                         successMessage.textContent = 'Connexion réussie ! Redirection...';
@@ -132,7 +134,7 @@
 
                         // Redirection
                         setTimeout(() => {
-                            if (data.role === 'superadmin') {
+                            if (userRole === 'superadmin') {
                                 window.location.href = 'dashboard-superadmin.html';
                             } else {
                                 window.location.href = 'dashboard-admin.html';
