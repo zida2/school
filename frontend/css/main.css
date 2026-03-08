@@ -327,8 +327,8 @@ body.dark-theme .page-title-ultra {
 /* Topbar */
 .topbar-ultra {
     height: 80px;
-    background: white;
-    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #87CEEB 0%, #E0F6FF 50%, #87CEEB 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -338,11 +338,41 @@ body.dark-theme .page-title-ultra {
     z-index: 100;
     max-width: 100%;
     overflow-x: hidden;
+    position: relative;
+    transition: background 0.5s ease;
+}
+
+/* Effet de nuages animés */
+.topbar-ultra::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse 80px 40px at 20% 50%, rgba(255, 255, 255, 0.8) 0%, transparent 50%),
+        radial-gradient(ellipse 100px 50px at 60% 30%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
+        radial-gradient(ellipse 90px 45px at 85% 60%, rgba(255, 255, 255, 0.7) 0%, transparent 50%);
+    animation: clouds 30s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes clouds {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 body.dark-theme .topbar-ultra {
-    background: #1e293b;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
     border-bottom-color: #334155;
+}
+
+body.dark-theme .topbar-ultra::before {
+    background: 
+        radial-gradient(ellipse 80px 40px at 20% 50%, rgba(30, 41, 59, 0.8) 0%, transparent 50%),
+        radial-gradient(ellipse 100px 50px at 60% 30%, rgba(30, 41, 59, 0.6) 0%, transparent 50%),
+        radial-gradient(ellipse 90px 45px at 85% 60%, rgba(30, 41, 59, 0.7) 0%, transparent 50%);
 }
 
 .topbar-left-ultra,
@@ -351,6 +381,8 @@ body.dark-theme .topbar-ultra {
     align-items: center;
     gap: 16px;
     flex-wrap: nowrap;
+    position: relative;
+    z-index: 1;
 }
 
 .topbar-left-ultra {
@@ -368,6 +400,15 @@ body.dark-theme .topbar-ultra {
     align-items: center;
     gap: 8px;
     font-size: 14px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .breadcrumb-ultra {
+    background: rgba(30, 41, 59, 0.7);
 }
 
 .breadcrumb-item-ultra {
@@ -397,9 +438,9 @@ body.dark-theme .breadcrumb-item-ultra.active-ultra {
 .topbar-btn-ultra {
     width: 48px;
     height: 48px;
-    background: #f8fafc;
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -407,20 +448,72 @@ body.dark-theme .breadcrumb-item-ultra.active-ultra {
     transition: all 0.3s ease;
     font-size: 20px;
     position: relative;
+    backdrop-filter: blur(10px);
 }
 
 body.dark-theme .topbar-btn-ultra {
-    background: #334155;
+    background: rgba(30, 41, 59, 0.5);
     border-color: #475569;
 }
 
 .topbar-btn-ultra:hover {
-    background: #eef2ff;
-    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 body.dark-theme .topbar-btn-ultra:hover {
     background: #475569;
+}
+
+/* Bouton de thème spécial - Soleil/Lune */
+.topbar-btn-ultra#themeBtn {
+    background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+    border: 3px solid #FFE55C;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    animation: pulse-sun 2s ease-in-out infinite;
+}
+
+@keyframes pulse-sun {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        transform: scale(1.05);
+    }
+}
+
+body.dark-theme .topbar-btn-ultra#themeBtn {
+    background: radial-gradient(circle, #F0E68C 0%, #E6E6FA 100%);
+    border: 3px solid #D3D3D3;
+    box-shadow: 0 0 20px rgba(240, 230, 140, 0.5);
+    animation: pulse-moon 3s ease-in-out infinite;
+}
+
+@keyframes pulse-moon {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(240, 230, 140, 0.5);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 25px rgba(240, 230, 140, 0.7);
+        transform: scale(1.03);
+    }
+}
+
+.topbar-btn-ultra#themeBtn:hover {
+    transform: scale(1.1) rotate(20deg);
+}
+
+.topbar-btn-ultra#themeBtn #themeIcon {
+    font-size: 24px;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+    transition: transform 0.5s ease;
+}
+
+body.dark-theme .topbar-btn-ultra#themeBtn #themeIcon {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
 }
 
 .notification-dot {
