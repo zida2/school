@@ -1265,13 +1265,14 @@ div[style*="background:rgba(99,102,241"] {
     border-radius: 12px !important;
 }
 
-/* Fix pour les pages cachées */
-.page-ultra[style*="display:none"] {
+/* Fix pour les pages - SEUL le dashboard est visible par défaut */
+.page-ultra {
     display: none !important;
+    visibility: hidden !important;
 }
 
-/* Fix pour les éléments visibles */
-.page-ultra:not([style*="display:none"]) {
+#page-dashboard {
     display: block !important;
+    visibility: visible !important;
     animation: fadeIn 0.5s ease;
 }
