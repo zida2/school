@@ -8,7 +8,7 @@
     <!-- Le CSS du thème est chargé dynamiquement par theme-toggle.js -->
     <link rel="stylesheet" href="css/emploi-temps-grid.css?v=11.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="js/theme-toggle.js?v=11.0"></script>
+    <script src="js/theme-toggle.js?v=13.0"></script>
     <script src="js/emploi-temps-grid.js?v=11.0"></script>
     <style>
         /* ===== RÈGLES CRITIQUES - Gestion par JavaScript ===== */
@@ -106,44 +106,19 @@
                     return;
                 }
                 
-                // Cacher toutes les pages sauf dashboard
+                // Cacher toutes les pages sauf dashboard - SIMPLE, sans !important
                 const pages = document.querySelectorAll('.page-ultra');
                 console.log('🔧 Initialisation pages:', pages.length);
                 
                 pages.forEach(function(page) {
                     if (page.id === 'page-dashboard') {
-                        page.style.cssText = 'display: block !important; visibility: visible !important; position: relative !important;';
+                        page.style.display = 'block';
                         console.log('✅ Dashboard visible');
                     } else {
-                        page.style.cssText = 'display: none !important; visibility: hidden !important; position: absolute !important; left: -9999px !important;';
+                        page.style.display = 'none';
                         console.log('❌ Caché:', page.id);
                     }
                 });
-                
-                // MUTATION OBSERVER DÉSACTIVÉ - La navigation gère l'affichage
-                // Le CSS inline + la fonction navToUltra suffisent
-                /*
-                const observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                            const target = mutation.target;
-                            if (target.classList.contains('page-ultra') && target.id !== 'page-dashboard') {
-                                const display = window.getComputedStyle(target).display;
-                                if (display !== 'none') {
-                                    target.style.cssText = 'display: none !important; visibility: hidden !important; position: absolute !important; left: -9999px !important;';
-                                    console.log('🔒 Forcé masquage:', target.id);
-                                }
-                            }
-                        }
-                    });
-                });
-                
-                pages.forEach(function(page) {
-                    observer.observe(page, { attributes: true, attributeFilter: ['style', 'class'] });
-                });
-                
-                console.log('👁️ MutationObserver activé pour', pages.length, 'pages');
-                */
             }
             
             // Exécuter immédiatement

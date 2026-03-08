@@ -10,89 +10,42 @@ function loadThemeCSS(theme) {
         oldLink.remove();
     }
     
-    // Créer un nouveau lien CSS - THÈME FUTURISTE avec timestamp pour éviter le cache
+    // Créer un nouveau lien CSS - THÈME CLASSIQUE (dark ou light)
     const link = document.createElement('link');
     link.id = 'theme-css';
     link.rel = 'stylesheet';
-    // Utiliser un timestamp unique pour forcer le rechargement
-    const timestamp = new Date().getTime();
-    link.href = `css/futuristic-theme.css?v=12.0&t=${timestamp}`;
-    
-    // CRITIQUE: Ajouter les règles de masquage APRÈS le chargement du CSS
-    link.onload = function() {
-        // Créer un style inline avec priorité maximale
-        let criticalStyle = document.getElementById('critical-page-hide');
-        if (!criticalStyle) {
-            criticalStyle = document.createElement('style');
-            criticalStyle.id = 'critical-page-hide';
-            document.head.appendChild(criticalStyle);
-        }
-        
-        criticalStyle.textContent = `
-            /* RÈGLES CRITIQUES - PRIORITÉ ABSOLUE */
-            .page-ultra {
-                display: none !important;
-                visibility: hidden !important;
-                position: absolute !important;
-                left: -9999px !important;
-                top: 0 !important;
-                width: 0 !important;
-                height: 0 !important;
-                opacity: 0 !important;
-                overflow: hidden !important;
-                pointer-events: none !important;
-            }
-            
-            #page-dashboard {
-                display: block !important;
-                visibility: visible !important;
-                position: relative !important;
-                left: 0 !important;
-                top: 0 !important;
-                width: auto !important;
-                height: auto !important;
-                opacity: 1 !important;
-                overflow: visible !important;
-                pointer-events: auto !important;
-            }
-            
-            /* Override toute règle qui pourrait forcer l'affichage */
-            .page-ultra:not([style*="display:none"]) {
-                display: none !important;
-            }
-        `;
-        
-        console.log('✅ Règles de masquage appliquées après chargement CSS');
-        
-        // Forcer l'application sur les éléments existants
-        setTimeout(() => {
-            document.querySelectorAll('.page-ultra').forEach(page => {
-                if (page.id !== 'page-dashboard') {
-                    page.style.cssText = 'display: none !important; visibility: hidden !important; position: absolute !important; left: -9999px !important;';
-                }
-            });
-        }, 100);
-    };
+    link.href = `css/dashboard.css?v=13.0`;
     
     // Ajouter le lien dans le head
     document.head.appendChild(link);
     
-    console.log('🚀 Thème futuriste chargé v12.0 avec timestamp:', timestamp);
+    console.log('✅ Thème classique chargé:', theme);
 }
 
-// Fonction pour basculer le thème (désactivée - thème futuriste permanent)
+// Fonction pour basculer le thème
 function toggleTheme() {
-    // Thème futuriste permanent - pas de toggle
-    showToast('Thème futuriste activé 🚀', 'success');
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    localStorage.setItem('theme', newTheme);
+    document.body.classList.remove('dark-theme', 'light-theme');
+    document.body.classList.add(newTheme + '-theme');
+    
+    loadThemeCSS(newTheme);
+    
+    if (typeof showToast === 'function') {
+        showToast('Thème ' + (newTheme === 'dark' ? 'sombre' : 'clair') + ' activé', 'success');
+    }
 }
 
-// Charger le thème sauvegardé (toujours futuriste)
+// Charger le thème sauvegardé
 function loadTheme() {
-    document.body.classList.add('dark-theme');
-    loadThemeCSS('futuristic');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.classList.add(savedTheme + '-theme');
+    loadThemeCSS(savedTheme);
 }
 
-// Créer le bouton de thème futuriste
+// Créer le bouton de thème
 function createThemeButton() {
     // Vérifier si le bouton existe déjà
     if (document.getElementById('theme-toggle-btn')) {
@@ -101,77 +54,54 @@ function createThemeButton() {
     
     const button = document.createElement('button');
     button.id = 'theme-toggle-btn';
-    button.innerHTML = '🚀';
-    button.title = 'Thème Futuriste';
-    button.onclick = toggleTheme;
+    button.innerHTML = '☀️';
+    button.title = 'Changer de thème';
+    button.onclick = function() {
+        toggleTheme();
+        updateThemeButton();
+    };
     
-    // Style du bouton futuriste
+    // Style du bouton simple
     button.style.cssText = `
         position: fixed;
         bottom: 20px;
         right: 20px;
-        width: 56px;
-        height: 56px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
-        border: 2px solid #00f0ff;
-        background: linear-gradient(135deg, #00f0ff 0%, #8b5cf6 100%);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        background: rgba(0, 0, 0, 0.5);
         color: white;
-        font-size: 28px;
+        font-size: 24px;
         cursor: pointer;
-        box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         z-index: 99999;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.3s ease;
         display: flex;
         align-items: center;
         justify-content: center;
-        animation: pulse-glow 2s ease-in-out infinite;
     `;
     
-    // Ajouter l'animation CSS
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes pulse-glow {
-            0%, 100% { 
-                box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
-                transform: scale(1);
-            }
-            50% { 
-                box-shadow: 0 0 50px rgba(0, 240, 255, 0.8);
-                transform: scale(1.05);
-            }
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        #theme-toggle-btn:active {
-            animation: spin 0.5s ease-in-out;
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Hover effect
+    // Hover effect simple
     button.addEventListener('mouseenter', function() {
-        this.style.transform = 'scale(1.15) rotate(10deg)';
-        this.style.boxShadow = '0 0 60px rgba(0, 240, 255, 0.8)';
+        this.style.transform = 'scale(1.1)';
+        this.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.4)';
     });
     button.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1) rotate(0deg)';
-        this.style.boxShadow = '0 0 30px rgba(0, 240, 255, 0.5)';
+        this.style.transform = 'scale(1)';
+        this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
     });
     
     document.body.appendChild(button);
-    console.log('✅ Bouton thème futuriste créé');
+    console.log('✅ Bouton thème créé');
 }
 
-// Mettre à jour l'icône du bouton (toujours fusée pour le thème futuriste)
+// Mettre à jour l'icône du bouton selon le thème
 function updateThemeButton() {
     const button = document.getElementById('theme-toggle-btn');
     if (button) {
-        button.innerHTML = '🚀';
-        button.style.background = 'linear-gradient(135deg, #00f0ff 0%, #8b5cf6 100%)';
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        button.innerHTML = currentTheme === 'dark' ? '☀️' : '🌙';
     }
 }
 
@@ -180,19 +110,22 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
         loadTheme();
         createThemeButton();
+        updateThemeButton();
     });
 } else {
     // DOM déjà chargé
     loadTheme();
     createThemeButton();
+    updateThemeButton();
 }
 
 // Aussi essayer après un court délai pour être sûr
 setTimeout(function() {
     if (!document.getElementById('theme-toggle-btn')) {
         createThemeButton();
+        updateThemeButton();
     }
 }, 500);
 
-console.log('🚀 Theme futuriste chargé');
+console.log('✅ Theme classique chargé');
 
