@@ -6,17 +6,23 @@
     <title>Administration – UniERP BF Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Le CSS du thème est chargé dynamiquement par theme-toggle.js -->
-    <link rel="stylesheet" href="css/emploi-temps-grid.css">
+    <link rel="stylesheet" href="css/emploi-temps-grid.css?v=9.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="js/theme-toggle.js?v=2.0"></script>
-    <script src="js/emploi-temps-grid.js"></script>
+    <script src="js/theme-toggle.js?v=9.0"></script>
+    <script src="js/emploi-temps-grid.js?v=9.0"></script>
     <style>
-        /* Force les pages à être cachées par défaut sauf le dashboard */
+        /* CRITICAL: Force les pages à être cachées */
         .page-ultra {
             display: none !important;
+            visibility: hidden !important;
+            position: absolute !important;
+            left: -9999px !important;
         }
         #page-dashboard {
             display: block !important;
+            visibility: visible !important;
+            position: relative !important;
+            left: 0 !important;
         }
         
         .detail-row {
