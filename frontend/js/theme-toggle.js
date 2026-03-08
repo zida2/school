@@ -14,12 +14,12 @@ function loadThemeCSS(theme) {
     const link = document.createElement('link');
     link.id = 'theme-css';
     link.rel = 'stylesheet';
-    link.href = 'css/futuristic-theme.css?v=8.0';
+    link.href = 'css/futuristic-theme.css?v=10.0';
     
     // Ajouter le lien dans le head
     document.head.appendChild(link);
     
-    console.log('🚀 Thème futuriste chargé');
+    console.log('🚀 Thème futuriste chargé v10.0');
 }
 
 // Fonction pour basculer le thème (désactivée - thème futuriste permanent)
