@@ -1,0 +1,337 @@
+/* Grille d'emploi du temps visuel */
+.emploi-grid-container {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 24px;
+    overflow-x: auto;
+}
+
+.emploi-grid {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+    gap: 2px;
+    min-width: 900px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2px;
+}
+
+.emploi-grid-header {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    padding: 16px 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
+    border-radius: 8px;
+}
+
+.emploi-grid-time {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+.emploi-grid-cell {
+    background: rgba(255, 255, 255, 0.02);
+    min-height: 80px;
+    padding: 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.emploi-grid-cell:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.emploi-grid-cell.has-cours {
+    cursor: default;
+}
+
+.emploi-grid-cell.has-cours:hover {
+    background: rgba(255, 255, 255, 0.02);
+    border: none;
+}
+
+/* Cartes de cours */
+.cours-card {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    border-radius: 8px;
+    padding: 10px;
+    height: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cours-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.cours-card.type-cm {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+.cours-card.type-td {
+    background: linear-gradient(135deg, #ec4899, #db2777);
+}
+
+.cours-card.type-tp {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+.cours-card-matiere {
+    font-weight: 600;
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.cours-card-prof {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 4px;
+}
+
+.cours-card-salle {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cours-card-horaire {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Modal */
+.modal-emploi {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal-emploi.active {
+    display: flex;
+}
+
+.modal-emploi-content {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-emploi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-emploi-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.modal-emploi-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    transition: all 0.2s;
+}
+
+.modal-emploi-close:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+.modal-emploi-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group-emploi {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label-emploi {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.form-input-emploi,
+.form-select-emploi {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.form-input-emploi:focus,
+.form-select-emploi:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.form-select-emploi option {
+    background: #1e293b;
+    color: #fff;
+}
+
+.modal-emploi-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-emploi {
+    flex: 1;
+    padding: 14px 24px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-emploi-primary {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+}
+
+.btn-emploi-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+}
+
+.btn-emploi-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+}
+
+.btn-emploi-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
+}
+
+.btn-emploi-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.btn-emploi-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Filtres */
+.emploi-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+}
+
+/* Légende */
+.emploi-legend {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.legend-color {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+}
+
+.legend-color.cm {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+.legend-color.td {
+    background: linear-gradient(135deg, #ec4899, #db2777);
+}
+
+.legend-color.tp {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+/* Messages d'erreur */
+.error-message {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: #ef4444;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.success-message {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: #10b981;
+    font-size: 13px;
+    margin-bottom: 16px;
+}

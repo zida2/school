@@ -403,11 +403,15 @@ class EmploiDuTemps(models.Model):
         ('Jeudi','Jeudi'),('Vendredi','Vendredi'),('Samedi','Samedi'),
     ]
     SEMAINES = [('toutes','Toutes'),('paire','Paire'),('impaire','Impaire')]
+    TYPES_COURS = [('CM','Cours Magistral'),('TD','Travaux Dirigés'),('TP','Travaux Pratiques')]
+    
     matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE, related_name='emplois')
+    classe = models.ForeignKey('Classe', on_delete=models.SET_NULL, null=True, blank=True, related_name='emplois')
     salle = models.CharField(max_length=50)
     jour = models.CharField(max_length=10, choices=JOURS)
     heure_debut = models.TimeField()
     heure_fin = models.TimeField()
+    type_cours = models.CharField(max_length=10, choices=TYPES_COURS, default='CM')
     semaine = models.CharField(max_length=10, choices=SEMAINES, default='toutes')
     annee_academique = models.ForeignKey(AnneeAcademique, on_delete=models.CASCADE, related_name='emplois')
     date_creation = models.DateTimeField(auto_now_add=True)

@@ -28,6 +28,9 @@ from .views_inscription import (
     DemandeInscriptionCommunicationViewSet, DemandeInscriptionAcademiqueViewSet,
     DemandeInscriptionComptabiliteViewSet
 )
+from .views_emploi_temps import (
+    verifier_conflits, envoyer_emails_emploi, emploi_par_classe, emploi_par_professeur
+)
 
 router = DefaultRouter()
 router.register(r'universites', UniversiteViewSet, basename='universite')
@@ -93,6 +96,12 @@ urlpatterns = [
     path('dashboard/prof/', DashboardProfView.as_view(), name='dashboard_prof'),
     path('dashboard/etudiant/', DashboardEtudiantView.as_view(), name='dashboard_etudiant'),
     path('dashboard/bureau/', DashboardBureauView.as_view(), name='dashboard_bureau'),
+
+    # Emploi du temps - Endpoints spécifiques
+    path('emplois-du-temps/verifier-conflits/', verifier_conflits, name='verifier_conflits'),
+    path('emplois-du-temps/envoyer-emails/', envoyer_emails_emploi, name='envoyer_emails_emploi'),
+    path('emplois-du-temps/par-classe/<int:classe_id>/', emploi_par_classe, name='emploi_par_classe'),
+    path('emplois-du-temps/par-professeur/<int:professeur_id>/', emploi_par_professeur, name='emploi_par_professeur'),
 
     # Resources
     path('', include(router.urls)),

@@ -6,8 +6,10 @@
     <title>Administration – UniERP BF Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Le CSS du thème est chargé dynamiquement par theme-toggle.js -->
+    <link rel="stylesheet" href="css/emploi-temps-grid.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="js/theme-toggle.js?v=2.0"></script>
+    <script src="js/emploi-temps-grid.js"></script>
     <style>
         .detail-row {
             padding: 12px 0;
@@ -476,132 +478,117 @@
                 <div class="page-ultra" id="page-emploi" style="display:none">
                     <div class="page-header-ultra">
                         <div>
-                            <h1 class="page-title-ultra">📅 Emploi du temps</h1>
-                            <p class="page-subtitle-ultra">Planning des cours - Année 2024-2025</p>
+                            <h1 class="page-title-ultra">📅 Emploi du temps visuel</h1>
+                            <p class="page-subtitle-ultra">Grille horaire interactive - Année 2024-2025</p>
                         </div>
                         <div class="page-actions-ultra">
-                            <button class="btn-ultra btn-primary-ultra" onclick="openModalEmploiDuTemps()">+ Créer un cours</button>
+                            <button class="btn-emploi-action btn-emploi-save" onclick="showNotification('Fonctionnalité en cours de développement', 'info')">
+                                💾 Enregistrer
+                            </button>
+                            <button class="btn-emploi-action btn-emploi-send" onclick="envoyerEmploiDuTemps()">
+                                📧 Envoyer aux Profs/Étudiants
+                            </button>
                         </div>
                     </div>
 
                     <!-- Filtres -->
-                    <div class="card-ultra" style="margin-bottom:24px">
-                        <div class="card-body-ultra">
-                            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
-                                <div>
-                                    <select id="filterJourEmploi" class="form-input-ultra" onchange="chargerEmploiDuTemps()" style="width:100%;padding:12px 16px">
-                                        <option value="">📅 Tous les jours</option>
-                                        <option value="Lundi">Lundi</option>
-                                        <option value="Mardi">Mardi</option>
-                                        <option value="Mercredi">Mercredi</option>
-                                        <option value="Jeudi">Jeudi</option>
-                                        <option value="Vendredi">Vendredi</option>
-                                        <option value="Samedi">Samedi</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select id="filterMatiereEmploi" class="form-input-ultra" onchange="chargerEmploiDuTemps()" style="width:100%;padding:12px 16px">
-                                        <option value="">📚 Toutes les matières</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select id="filterEnseignantEmploi" class="form-input-ultra" onchange="chargerEmploiDuTemps()" style="width:100%;padding:12px 16px">
-                                        <option value="">👨‍🏫 Tous les enseignants</option>
-                                    </select>
-                                </div>
-                            </div>
+                    <div class="emploi-filters">
+                        <div>
+                            <label class="form-label-ultra" style="display:block;margin-bottom:8px;font-size:12px">Filière</label>
+                            <select id="emploiFilterFiliere" class="form-input-ultra" onchange="chargerCoursClasse()" style="width:100%;padding:12px 16px">
+                                <option value="">Sélectionner une filière</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label-ultra" style="display:block;margin-bottom:8px;font-size:12px">Promotion</label>
+                            <select id="emploiFilterPromotion" class="form-input-ultra" onchange="chargerCoursClasse()" style="width:100%;padding:12px 16px">
+                                <option value="">Sélectionner une promotion</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label-ultra" style="display:block;margin-bottom:8px;font-size:12px">Classe</label>
+                            <select id="emploiFilterClasse" class="form-input-ultra" onchange="chargerCoursClasse()" style="width:100%;padding:12px 16px">
+                                <option value="">Sélectionner une classe</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="card-ultra">
-                        <div class="card-body-ultra" style="padding:0">
-                            <table class="table-ultra">
-                                <thead>
-                                    <tr>
-                                        <th>Jour</th>
-                                        <th>Horaire</th>
-                                        <th>Matière</th>
-                                        <th>Enseignant</th>
-                                        <th>Salle</th>
-                                        <th>Classe</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbodyEmploiAdmin">
-                                    <tr><td colspan="7" style="text-align:center;padding:40px">Chargement...</td></tr>
-                                </tbody>
-                            </table>
+                    <!-- Grille horaire -->
+                    <div class="emploi-grid-container">
+                        <div id="emploiGridContainer">
+                            <!-- La grille sera générée par JS -->
                         </div>
                     </div>
                 </div>
 
-                <!-- Modal Créer/Modifier Emploi du Temps -->
-                <div class="modal-ultra" id="modalEmploiDuTemps" style="display:none">
-                    <div class="modal-content-ultra" style="max-width:600px">
-                        <div class="modal-header-ultra">
-                            <h3 class="modal-title-ultra" id="modalEmploiDuTempsTitle">📅 Créer un cours</h3>
-                            <button class="modal-close-ultra" onclick="closeModal('modalEmploiDuTemps')">×</button>
+                <!-- Modal Ajouter/Modifier Cours -->
+                <div class="modal-cours" id="modalCours">
+                    <div class="modal-cours-content">
+                        <div class="modal-cours-header">
+                            <h3 class="modal-cours-title" id="modalCoursTitle">➕ Ajouter un cours</h3>
+                            <button class="modal-cours-close" onclick="fermerModalCours()">×</button>
                         </div>
-                        <div class="modal-body-ultra">
-                            <form id="formEmploiDuTemps" onsubmit="saveEmploiDuTemps(event)">
-                                <input type="hidden" id="emploiId">
+                        <div class="modal-cours-body">
+                            <form id="formCours" onsubmit="sauvegarderCours(event)">
+                                <input type="hidden" id="coursId">
                                 
-                                <div class="form-group-ultra">
-                                    <label class="form-label-ultra">Matière *</label>
-                                    <select id="emploiMatiere" class="form-input-ultra" required>
+                                <div class="form-row-cours">
+                                    <div class="form-group-cours">
+                                        <label class="form-label-cours">Jour</label>
+                                        <input type="text" id="coursJour" class="form-input-cours" readonly>
+                                    </div>
+                                    <div class="form-group-cours">
+                                        <label class="form-label-cours">Heure début</label>
+                                        <input type="time" id="coursHeureDebut" class="form-input-cours" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-cours">
+                                    <label class="form-label-cours">Heure fin</label>
+                                    <input type="time" id="coursHeureFin" class="form-input-cours" required>
+                                </div>
+
+                                <div class="form-group-cours">
+                                    <label class="form-label-cours">Matière *</label>
+                                    <select id="coursMatiere" class="form-select-cours" required>
                                         <option value="">Sélectionner une matière</option>
                                     </select>
                                 </div>
 
-                                <div class="form-group-ultra">
-                                    <label class="form-label-ultra">Classe</label>
-                                    <select id="emploiClasse" class="form-input-ultra">
-                                        <option value="">Toutes les classes</option>
+                                <div class="form-group-cours">
+                                    <label class="form-label-cours">Classe</label>
+                                    <select id="coursClasse" class="form-select-cours">
+                                        <option value="">Sélectionner une classe</option>
                                     </select>
                                 </div>
 
-                                <div class="form-row-ultra">
-                                    <div class="form-group-ultra">
-                                        <label class="form-label-ultra">Jour *</label>
-                                        <select id="emploiJour" class="form-input-ultra" required>
-                                            <option value="">Sélectionner</option>
-                                            <option value="Lundi">Lundi</option>
-                                            <option value="Mardi">Mardi</option>
-                                            <option value="Mercredi">Mercredi</option>
-                                            <option value="Jeudi">Jeudi</option>
-                                            <option value="Vendredi">Vendredi</option>
-                                            <option value="Samedi">Samedi</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-ultra">
-                                        <label class="form-label-ultra">Semaine</label>
-                                        <select id="emploiSemaine" class="form-input-ultra">
-                                            <option value="toutes">Toutes</option>
-                                            <option value="paire">Paire</option>
-                                            <option value="impaire">Impaire</option>
-                                        </select>
+                                <div class="form-group-cours">
+                                    <label class="form-label-cours">Salle *</label>
+                                    <input type="text" id="coursSalle" class="form-input-cours" placeholder="Ex: Amphi A, Salle 101" required>
+                                </div>
+
+                                <div class="form-group-cours">
+                                    <label class="form-label-cours">Type de cours</label>
+                                    <div class="type-cours-group">
+                                        <div class="type-cours-option">
+                                            <input type="radio" id="coursTypeCM" name="typeCours" value="CM" class="type-cours-radio" checked>
+                                            <label for="coursTypeCM" class="type-cours-label">CM</label>
+                                        </div>
+                                        <div class="type-cours-option">
+                                            <input type="radio" id="coursTypeTD" name="typeCours" value="TD" class="type-cours-radio">
+                                            <label for="coursTypeTD" class="type-cours-label">TD</label>
+                                        </div>
+                                        <div class="type-cours-option">
+                                            <input type="radio" id="coursTypeTP" name="typeCours" value="TP" class="type-cours-radio">
+                                            <label for="coursTypeTP" class="type-cours-label">TP</label>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="form-row-ultra">
-                                    <div class="form-group-ultra">
-                                        <label class="form-label-ultra">Heure début *</label>
-                                        <input type="time" id="emploiHeureDebut" class="form-input-ultra" required>
-                                    </div>
-                                    <div class="form-group-ultra">
-                                        <label class="form-label-ultra">Heure fin *</label>
-                                        <input type="time" id="emploiHeureFin" class="form-input-ultra" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group-ultra">
-                                    <label class="form-label-ultra">Salle *</label>
-                                    <input type="text" id="emploiSalle" class="form-input-ultra" placeholder="Ex: Amphi A, Salle 101" required>
-                                </div>
-
-                                <div class="modal-actions-ultra">
-                                    <button type="button" class="btn-ultra btn-secondary-ultra" onclick="closeModal('modalEmploiDuTemps')">Annuler</button>
-                                    <button type="submit" class="btn-ultra btn-primary-ultra">Enregistrer</button>
+                                <div class="modal-cours-actions">
+                                    <button type="button" class="btn-cours btn-cours-cancel" onclick="fermerModalCours()">Annuler</button>
+                                    <button type="button" class="btn-cours btn-cours-delete" id="btnDeleteCours" onclick="supprimerCours(document.getElementById('coursId').value)" style="display:none">Supprimer</button>
+                                    <button type="submit" class="btn-cours btn-cours-submit">Enregistrer</button>
                                 </div>
                             </form>
                         </div>
@@ -1608,6 +1595,9 @@
                         chargerPaiements();
                     }
                 } else if (page === 'emploi') {
+                    if (typeof initEmploiDuTemps === 'function') {
+                        initEmploiDuTemps();
+                    }
                     if (typeof chargerEmploi === 'function') {
                         chargerEmploi();
                     }

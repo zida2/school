@@ -295,8 +295,12 @@ class EmploiDuTempsSerializer(serializers.ModelSerializer):
     matiere_code = serializers.CharField(source='matiere.code', read_only=True)
     enseignant_nom = serializers.SerializerMethodField()
     enseignant_email = serializers.SerializerMethodField()
+    enseignant_id = serializers.SerializerMethodField()
     filiere_nom = serializers.CharField(source='matiere.filiere.nom', read_only=True)
     filiere_id = serializers.IntegerField(source='matiere.filiere.id', read_only=True)
+    classe_nom = serializers.CharField(source='classe.nom', read_only=True, allow_null=True)
+    classe_code = serializers.CharField(source='classe.code', read_only=True, allow_null=True)
+    type_cours_display = serializers.CharField(source='get_type_cours_display', read_only=True)
 
     class Meta:
         model = EmploiDuTemps
@@ -307,6 +311,9 @@ class EmploiDuTempsSerializer(serializers.ModelSerializer):
     
     def get_enseignant_email(self, obj):
         return obj.matiere.enseignant.email if obj.matiere.enseignant else None
+    
+    def get_enseignant_id(self, obj):
+        return obj.matiere.enseignant.id if obj.matiere.enseignant else None
 
 
 # ===== PRÉSENCE =====
