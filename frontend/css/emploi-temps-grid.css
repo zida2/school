@@ -1,37 +1,80 @@
-/* Grille d'emploi du temps visuel */
+/* 🚀 GRILLE D'EMPLOI DU TEMPS FUTURISTE */
 .emploi-grid-container {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(21, 25, 50, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 255, 0.2);
     border-radius: 16px;
     padding: 24px;
     overflow-x: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.emploi-grid-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+    animation: scan-line 3s ease-in-out infinite;
+}
+
+@keyframes scan-line {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
 }
 
 .emploi-grid {
     display: grid;
     grid-template-columns: 80px repeat(7, 1fr);
-    gap: 2px;
+    gap: 3px;
     min-width: 900px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 240, 255, 0.05);
     border-radius: 12px;
-    padding: 2px;
+    padding: 3px;
 }
 
 .emploi-grid-header {
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    background: linear-gradient(135deg, #00f0ff, #8b5cf6);
     padding: 16px 12px;
     text-align: center;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 14px;
     color: #fff;
     border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.emploi-grid-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    50%, 100% { left: 100%; }
 }
 
 .emploi-grid-time {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 240, 255, 0.05);
+    border: 1px solid rgba(0, 240, 255, 0.2);
     padding: 12px 8px;
     text-align: center;
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    color: #00f0ff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,18 +82,21 @@
 }
 
 .emploi-grid-cell {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(21, 25, 50, 0.4);
+    border: 1px solid rgba(0, 240, 255, 0.1);
     min-height: 80px;
     padding: 4px;
     border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
     position: relative;
 }
 
 .emploi-grid-cell:hover {
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    transform: scale(1.02);
 }
 
 .emploi-grid-cell.has-cours {
@@ -62,32 +108,52 @@
     border: none;
 }
 
-/* Cartes de cours */
+/* Cartes de cours futuristes */
 .cours-card {
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
-    border-radius: 8px;
-    padding: 10px;
+    background: linear-gradient(135deg, #00f0ff, #8b5cf6);
+    border-radius: 10px;
+    padding: 12px;
     height: 100%;
     cursor: pointer;
-    transition: all 0.2s;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+}
+
+.cours-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
 .cours-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 240, 255, 0.5);
 }
 
 .cours-card.type-cm {
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    background: linear-gradient(135deg, #00f0ff, #8b5cf6);
 }
 
 .cours-card.type-td {
-    background: linear-gradient(135deg, #ec4899, #db2777);
+    background: linear-gradient(135deg, #ff006e, #ec4899);
 }
 
 .cours-card.type-tp {
-    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    background: linear-gradient(135deg, #06b6d4, #10b981);
 }
 
 .cours-card-matiere {

@@ -10,51 +10,31 @@ function loadThemeCSS(theme) {
         oldLink.remove();
     }
     
-    // Créer un nouveau lien CSS
+    // Créer un nouveau lien CSS - THÈME FUTURISTE
     const link = document.createElement('link');
     link.id = 'theme-css';
     link.rel = 'stylesheet';
-    link.href = theme === 'light' ? 'css/dashboard-light.css?v=7.0' : 'css/dashboard-dark-premium.css?v=7.0';
+    link.href = 'css/futuristic-theme.css?v=8.0';
     
     // Ajouter le lien dans le head
     document.head.appendChild(link);
+    
+    console.log('🚀 Thème futuriste chargé');
 }
 
-// Fonction pour basculer le thème
+// Fonction pour basculer le thème (désactivée - thème futuriste permanent)
 function toggleTheme() {
-    const body = document.body;
-    const isDark = body.classList.contains('dark-theme');
-    
-    if (isDark) {
-        body.classList.remove('dark-theme');
-        body.classList.add('light-theme');
-        localStorage.setItem('erp_theme', 'light');
-        loadThemeCSS('light');
-    } else {
-        body.classList.remove('light-theme');
-        body.classList.add('dark-theme');
-        localStorage.setItem('erp_theme', 'dark');
-        loadThemeCSS('dark');
-    }
-    
-    // Animation de transition
-    body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
-    updateThemeButton();
-    
-    // Afficher un toast
-    showToast(`Thème ${isDark ? 'clair' : 'sombre'} activé`, 'success');
+    // Thème futuriste permanent - pas de toggle
+    showToast('Thème futuriste activé 🚀', 'success');
 }
 
-// Charger le thème sauvegardé
+// Charger le thème sauvegardé (toujours futuriste)
 function loadTheme() {
-    const savedTheme = localStorage.getItem('erp_theme') || 'dark';
-    if (!document.body.classList.contains('dark-theme') && !document.body.classList.contains('light-theme')) {
-        document.body.classList.add(savedTheme + '-theme');
-    }
-    loadThemeCSS(savedTheme);
+    document.body.classList.add('dark-theme');
+    loadThemeCSS('futuristic');
 }
 
-// Créer le bouton de thème
+// Créer le bouton de thème futuriste
 function createThemeButton() {
     // Vérifier si le bouton existe déjà
     if (document.getElementById('theme-toggle-btn')) {
@@ -63,11 +43,11 @@ function createThemeButton() {
     
     const button = document.createElement('button');
     button.id = 'theme-toggle-btn';
-    button.innerHTML = '🌙';
-    button.title = 'Changer le thème';
+    button.innerHTML = '🚀';
+    button.title = 'Thème Futuriste';
     button.onclick = toggleTheme;
     
-    // Style du bouton
+    // Style du bouton futuriste
     button.style.cssText = `
         position: fixed;
         bottom: 20px;
@@ -75,31 +55,31 @@ function createThemeButton() {
         width: 56px;
         height: 56px;
         border-radius: 50%;
-        border: none;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: 2px solid #00f0ff;
+        background: linear-gradient(135deg, #00f0ff 0%, #8b5cf6 100%);
         color: white;
         font-size: 28px;
         cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
         z-index: 99999;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         align-items: center;
         justify-content: center;
-        animation: fadeInUp 0.5s ease-out;
+        animation: pulse-glow 2s ease-in-out infinite;
     `;
     
     // Ajouter l'animation CSS
     const style = document.createElement('style');
     style.textContent = `
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+                transform: scale(1);
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            50% { 
+                box-shadow: 0 0 50px rgba(0, 240, 255, 0.8);
+                transform: scale(1.05);
             }
         }
         
@@ -116,32 +96,24 @@ function createThemeButton() {
     
     // Hover effect
     button.addEventListener('mouseenter', function() {
-        this.style.transform = 'scale(1.1) rotate(10deg)';
-        this.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.6)';
+        this.style.transform = 'scale(1.15) rotate(10deg)';
+        this.style.boxShadow = '0 0 60px rgba(0, 240, 255, 0.8)';
     });
     button.addEventListener('mouseleave', function() {
         this.style.transform = 'scale(1) rotate(0deg)';
-        this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
+        this.style.boxShadow = '0 0 30px rgba(0, 240, 255, 0.5)';
     });
     
     document.body.appendChild(button);
-    console.log('✅ Bouton de thème créé');
-    updateThemeButton();
+    console.log('✅ Bouton thème futuriste créé');
 }
 
-// Mettre à jour l'icône du bouton
+// Mettre à jour l'icône du bouton (toujours fusée pour le thème futuriste)
 function updateThemeButton() {
     const button = document.getElementById('theme-toggle-btn');
     if (button) {
-        const isDark = document.body.classList.contains('dark-theme');
-        button.innerHTML = isDark ? '🌙' : '☀️';
-        
-        // Changer le gradient selon le thème
-        if (isDark) {
-            button.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-        } else {
-            button.style.background = 'linear-gradient(135deg, #0891B2 0%, #14B8A6 100%)';
-        }
+        button.innerHTML = '🚀';
+        button.style.background = 'linear-gradient(135deg, #00f0ff 0%, #8b5cf6 100%)';
     }
 }
 
@@ -164,5 +136,5 @@ setTimeout(function() {
     }
 }, 500);
 
-console.log('✅ Theme toggle chargé');
+console.log('🚀 Theme futuriste chargé');
 
