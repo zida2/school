@@ -89,7 +89,7 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/demandes-inscription-communication/`, {
+                const response = await fetch(`${CONFIG.API_URL}/demandes-inscription-communication/`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
