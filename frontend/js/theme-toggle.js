@@ -18,6 +18,57 @@ function loadThemeCSS(theme) {
     const timestamp = new Date().getTime();
     link.href = `css/futuristic-theme.css?v=11.0&t=${timestamp}`;
     
+    // CRITIQUE: Ajouter les règles de masquage APRÈS le chargement du CSS
+    link.onload = function() {
+        // Créer un style inline avec priorité maximale
+        let criticalStyle = document.getElementById('critical-page-hide');
+        if (!criticalStyle) {
+            criticalStyle = document.createElement('style');
+            criticalStyle.id = 'critical-page-hide';
+            document.head.appendChild(criticalStyle);
+        }
+        
+        criticalStyle.textContent = `
+            /* RÈGLES CRITIQUES - PRIORITÉ ABSOLUE */
+            .page-ultra {
+                display: none !important;
+                visibility: hidden !important;
+                position: absolute !important;
+                left: -9999px !important;
+                opacity: 0 !important;
+                height: 0 !important;
+                overflow: hidden !important;
+                pointer-events: none !important;
+            }
+            
+            #page-dashboard {
+                display: block !important;
+                visibility: visible !important;
+                position: relative !important;
+                left: 0 !important;
+                opacity: 1 !important;
+                height: auto !important;
+                pointer-events: auto !important;
+            }
+            
+            /* Override toute règle qui pourrait forcer l'affichage */
+            .page-ultra:not([style*="display:none"]) {
+                display: none !important;
+            }
+        `;
+        
+        console.log('✅ Règles de masquage appliquées après chargement CSS');
+        
+        // Forcer l'application sur les éléments existants
+        setTimeout(() => {
+            document.querySelectorAll('.page-ultra').forEach(page => {
+                if (page.id !== 'page-dashboard') {
+                    page.style.cssText = 'display: none !important; visibility: hidden !important; position: absolute !important; left: -9999px !important;';
+                }
+            });
+        }, 100);
+    };
+    
     // Ajouter le lien dans le head
     document.head.appendChild(link);
     
