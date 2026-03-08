@@ -114,15 +114,37 @@
                 
                 pages.forEach(function(page) {
                     if (page.id === 'page-dashboard') {
-                        page.style.display = 'block';
-                        page.style.visibility = 'visible';
+                        page.style.cssText = 'display: block !important; visibility: visible !important; position: relative !important;';
                         console.log('✅ Dashboard visible');
                     } else {
-                        page.style.display = 'none';
-                        page.style.visibility = 'hidden';
+                        page.style.cssText = 'display: none !important; visibility: hidden !important; position: absolute !important; left: -9999px !important;';
                         console.log('❌ Caché:', page.id);
                     }
                 });
+                
+                // MUTATION OBSERVER - Surveille et force le masquage en continu
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                            const target = mutation.target;
+                            if (target.classList.contains('page-ultra') && target.id !== 'page-dashboard') {
+                                // Si une page autre que dashboard essaie de devenir visible, la cacher
+                                const display = window.getComputedStyle(target).display;
+                                if (display !== 'none') {
+                                    target.style.cssText = 'display: none !important; visibility: hidden !important; position: absolute !important; left: -9999px !important;';
+                                    console.log('🔒 Forcé masquage:', target.id);
+                                }
+                            }
+                        }
+                    });
+                });
+                
+                // Observer toutes les pages
+                pages.forEach(function(page) {
+                    observer.observe(page, { attributes: true, attributeFilter: ['style', 'class'] });
+                });
+                
+                console.log('👁️ MutationObserver activé pour', pages.length, 'pages');
             }
             
             // Exécuter immédiatement
