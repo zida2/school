@@ -2007,12 +2007,20 @@
         }
 
         async function chargerDonnees() {
+            console.log('🔄 Début chargement données...');
             try {
+                console.log('📡 Appel API pour étudiants, enseignants, filières...');
                 const [etudiants, enseignants, filieres] = await Promise.all([
                     API.getEtudiants(),
                     API.getEnseignants(),
                     API.getFilieres()
                 ]);
+
+                console.log('✅ Données reçues:', {
+                    etudiants: etudiants?.length || 0,
+                    enseignants: enseignants?.length || 0,
+                    filieres: filieres?.length || 0
+                });
 
                 // Stocker les étudiants globalement
                 tousLesEtudiants = etudiants;
@@ -2082,9 +2090,10 @@
                     }
                 }, 100);
             } catch (err) {
-                console.error('Erreur:', err);
+                console.error('❌ Erreur chargement données:', err);
                 showToast('Erreur de chargement: ' + err.message, 'danger');
             }
+        }
         }
 
         async function chargerFilieresEtMatieres() {
