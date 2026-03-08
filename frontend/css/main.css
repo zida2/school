@@ -60,7 +60,6 @@ html {
     padding-bottom: 40px;
     border-bottom: 2px solid var(--border);
     scroll-margin-top: 20px;
-    max-width: 1400px;
     width: 100%;
     overflow-x: hidden;
 }
@@ -82,7 +81,6 @@ body.dark-theme .page-ultra {
     padding: 16px 0;
     margin-bottom: 24px;
     border-bottom: 1px solid var(--border);
-    max-width: 100%;
     width: 100%;
 }
 
@@ -650,10 +648,9 @@ body.dark-theme .btn-secondary-ultra:hover {
 /* Stats Cards */
 .stats-grid-ultra {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     margin-bottom: 32px;
-    max-width: 100%;
     width: 100%;
 }
 
@@ -810,10 +807,9 @@ body.dark-theme .stat-value-ultra {
 /* Charts */
 .charts-grid-ultra {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
     gap: 20px;
     margin-bottom: 32px;
-    max-width: 100%;
     width: 100%;
 }
 
