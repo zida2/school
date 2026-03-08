@@ -1790,10 +1790,16 @@
                 } else if (page === 'etudiants') {
                     if (typeof chargerEtudiants === 'function') {
                         chargerEtudiants();
+                    } else if (typeof afficherEtudiants === 'function') {
+                        // Si chargerEtudiants n'existe pas, utiliser afficherEtudiants directement
+                        afficherEtudiants();
                     }
                 } else if (page === 'enseignants') {
                     if (typeof chargerEnseignants === 'function') {
                         chargerEnseignants();
+                    } else if (typeof afficherEnseignants === 'function') {
+                        // Si chargerEnseignants n'existe pas, utiliser afficherEnseignants directement
+                        afficherEnseignants();
                     }
                 }
             } catch (error) {
