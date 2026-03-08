@@ -5,100 +5,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Administration – UniERP BF Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Le CSS du thème est chargé dynamiquement par theme-toggle.js -->
+    <!-- CSS UNIQUE POUR TOUT GÉRER -->
+    <link rel="stylesheet" href="css/main.css?v=14.0">
+    <link rel="stylesheet" href="css/main.css?v=14.0">
     <link rel="stylesheet" href="css/emploi-temps-grid.css?v=11.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="js/theme-toggle.js?v=13.0"></script>
     <script src="js/emploi-temps-grid.js?v=11.0"></script>
-    <style>
-        /* ===== RÈGLES CRITIQUES - Gestion par JavaScript ===== */
-        
-        /* Par défaut, toutes les pages sont cachées */
-        .page-ultra {
-            display: none;
-        }
-        
-        /* Le dashboard est visible au démarrage */
-        #page-dashboard {
-            display: block;
-        }
-        
-        /* MASQUAGE DES MODALS PAR DÉFAUT */
-        .modal-ultra,
-        .modal-cours {
-            display: none;
-        }
-        
-        /* Modals actifs */
-        .modal-ultra.active,
-        .modal-cours.active {
-            display: flex;
-        }
-        
-        .detail-row {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-        .detail-row strong {
-            color: rgba(255,255,255,0.7);
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-    </style>
-    <script>
-        // SCRIPT ULTRA-PRIORITAIRE - Force le masquage IMMÉDIAT
-        (function() {
-            const style = document.createElement('style');
-            style.textContent = `
-                .page-ultra { 
-                    display: none !important; 
-                    visibility: hidden !important;
-                    position: absolute !important;
-                    left: -9999px !important;
-                    opacity: 0 !important;
-                    height: 0 !important;
-                    overflow: hidden !important;
-                }
-                #page-dashboard { 
-                    display: block !important; 
-                    visibility: visible !important;
-                    position: relative !important;
-                    left: 0 !important;
-                    opacity: 1 !important;
-                    height: auto !important;
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Force l'application immédiate
-            if (document.body) {
-                applyPageVisibility();
-            } else {
-                document.addEventListener('DOMContentLoaded', applyPageVisibility);
-            }
-            
-            function applyPageVisibility() {
-                const pages = document.querySelectorAll('.page-ultra');
-                pages.forEach(page => {
-                    if (page.id !== 'page-dashboard') {
-                        page.style.cssText = 'display: none !important; visibility: hidden !important; position: absolute !important; left: -9999px !important; opacity: 0 !important; height: 0 !important; overflow: hidden !important;';
-                    }
-                });
-                const dashboard = document.getElementById('page-dashboard');
-                if (dashboard) {
-                    dashboard.style.cssText = 'display: block !important; visibility: visible !important; position: relative !important; left: 0 !important; opacity: 1 !important; height: auto !important;';
-                }
-            }
-        })();
-    </script>
-    <script>
-        // Toutes les pages sont visibles - pas de masquage
-        console.log('✅ Mode scroll: toutes les pages visibles');
-    </script>
 </head>
 <body class="dark-theme">
 
