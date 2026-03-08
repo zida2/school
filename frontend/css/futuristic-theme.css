@@ -704,6 +704,9 @@ body::before {
 }
 
 .page-ultra {
+    /* CRITIQUE: Cacher par défaut */
+    display: none !important;
+    visibility: hidden !important;
     animation: fadeIn 0.5s ease;
 }
 
@@ -1266,11 +1269,6 @@ div[style*="background:rgba(99,102,241"] {
 }
 
 /* Fix pour les pages - SEUL le dashboard est visible par défaut */
-.page-ultra {
-    display: none !important;
-    visibility: hidden !important;
-}
-
 #page-dashboard {
     display: block !important;
     visibility: visible !important;
