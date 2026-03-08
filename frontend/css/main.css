@@ -218,15 +218,16 @@ body.dark-theme .nav-item-ultra.active {
 .content-ultra {
     flex: 1;
     margin-left: 260px;
-    padding: 24px;
+    padding: 32px;
     min-height: 100vh;
     width: calc(100% - 260px);
+    background: #0f172a;
 }
 
 .main-content-ultra {
     flex: 1;
     margin-left: 260px;
-    padding: 24px;
+    padding: 32px;
     min-height: 100vh;
 }
 
@@ -236,6 +237,7 @@ body.dark-theme .nav-item-ultra.active {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: #0f172a;
 }
 
 /* Header */
@@ -516,6 +518,30 @@ body.dark-theme .btn-secondary-ultra:hover {
 body.dark-theme .stat-card-ultra {
     background: #1e293b;
     border-color: #334155;
+}
+
+body.dark-theme .stat-card-ultra:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .stat-card-ultra.primary-ultra .stat-icon-ultra {
+    background: rgba(79, 70, 229, 0.2);
+    color: #818cf8;
+}
+
+body.dark-theme .stat-card-ultra.success-ultra .stat-icon-ultra {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+body.dark-theme .stat-card-ultra.warning-ultra .stat-icon-ultra {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+body.dark-theme .stat-card-ultra.danger-ultra .stat-icon-ultra {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
 }
 
 .stat-card-ultra:hover {
