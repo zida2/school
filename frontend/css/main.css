@@ -63,6 +63,7 @@ html {
     max-width: 1400px;
     width: 100%;
     overflow-x: hidden;
+    align-self: flex-start;
 }
 
 body.dark-theme .page-ultra {
@@ -252,7 +253,7 @@ body.dark-theme .nav-item-ultra.active {
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
 body.dark-theme .content-ultra {
