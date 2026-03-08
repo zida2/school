@@ -85,6 +85,9 @@
                 if (response.ok) {
                     const userRole = data.user?.role || data.role;
                     if (userRole === 'communication') {
+                        localStorage.setItem('erp_access_token', data.access);
+                        localStorage.setItem('erp_refresh_token', data.refresh);
+                        localStorage.setItem('erp_user', JSON.stringify(data.user));
                         localStorage.setItem('access_token', data.access);
                         localStorage.setItem('refresh_token', data.refresh);
                         localStorage.setItem('user_role', userRole);
