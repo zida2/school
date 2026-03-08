@@ -159,13 +159,14 @@
                     }
                 });
                 
-                // MUTATION OBSERVER - Surveille et force le masquage en continu
+                // MUTATION OBSERVER DÉSACTIVÉ - La navigation gère l'affichage
+                // Le CSS inline + la fonction navToUltra suffisent
+                /*
                 const observer = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
                         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
                             const target = mutation.target;
                             if (target.classList.contains('page-ultra') && target.id !== 'page-dashboard') {
-                                // Si une page autre que dashboard essaie de devenir visible, la cacher
                                 const display = window.getComputedStyle(target).display;
                                 if (display !== 'none') {
                                     target.style.cssText = 'display: none !important; visibility: hidden !important; position: absolute !important; left: -9999px !important;';
@@ -176,12 +177,12 @@
                     });
                 });
                 
-                // Observer toutes les pages
                 pages.forEach(function(page) {
                     observer.observe(page, { attributes: true, attributeFilter: ['style', 'class'] });
                 });
                 
                 console.log('👁️ MutationObserver activé pour', pages.length, 'pages');
+                */
             }
             
             // Exécuter immédiatement
