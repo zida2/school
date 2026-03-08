@@ -16,7 +16,7 @@ function loadThemeCSS(theme) {
     link.rel = 'stylesheet';
     // Utiliser un timestamp unique pour forcer le rechargement
     const timestamp = new Date().getTime();
-    link.href = `css/futuristic-theme.css?v=11.0&t=${timestamp}`;
+    link.href = `css/futuristic-theme.css?v=12.0&t=${timestamp}`;
     
     // CRITIQUE: Ajouter les règles de masquage APRÈS le chargement du CSS
     link.onload = function() {
@@ -35,8 +35,10 @@ function loadThemeCSS(theme) {
                 visibility: hidden !important;
                 position: absolute !important;
                 left: -9999px !important;
-                opacity: 0 !important;
+                top: 0 !important;
+                width: 0 !important;
                 height: 0 !important;
+                opacity: 0 !important;
                 overflow: hidden !important;
                 pointer-events: none !important;
             }
@@ -46,8 +48,11 @@ function loadThemeCSS(theme) {
                 visibility: visible !important;
                 position: relative !important;
                 left: 0 !important;
-                opacity: 1 !important;
+                top: 0 !important;
+                width: auto !important;
                 height: auto !important;
+                opacity: 1 !important;
+                overflow: visible !important;
                 pointer-events: auto !important;
             }
             
@@ -72,7 +77,7 @@ function loadThemeCSS(theme) {
     // Ajouter le lien dans le head
     document.head.appendChild(link);
     
-    console.log('🚀 Thème futuriste chargé v11.0 avec timestamp:', timestamp);
+    console.log('🚀 Thème futuriste chargé v12.0 avec timestamp:', timestamp);
 }
 
 // Fonction pour basculer le thème (désactivée - thème futuriste permanent)
