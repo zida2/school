@@ -279,7 +279,7 @@ body.light-theme .content-ultra {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    max-width: calc(100vw - 260px);
+    width: calc(100vw - 260px);
     overflow-x: hidden;
 }
 
