@@ -34,19 +34,35 @@
         }
     </style>
     <script>
-        // Script immédiat pour cacher toutes les pages sauf dashboard
+        // Script IMMÉDIAT - s'exécute AVANT le chargement du DOM
         (function() {
-            document.addEventListener('DOMContentLoaded', function() {
+            // Fonction pour cacher les pages
+            function hideAllPagesExceptDashboard() {
+                // Attendre que le DOM soit prêt
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', hideAllPagesExceptDashboard);
+                    return;
+                }
+                
+                // Cacher toutes les pages sauf dashboard
                 const pages = document.querySelectorAll('.page-ultra');
+                console.log('🔧 Initialisation pages:', pages.length);
+                
                 pages.forEach(function(page) {
-                    if (page.id !== 'page-dashboard') {
-                        page.style.display = 'none';
-                    } else {
+                    if (page.id === 'page-dashboard') {
                         page.style.display = 'block';
+                        page.style.visibility = 'visible';
+                        console.log('✅ Dashboard visible');
+                    } else {
+                        page.style.display = 'none';
+                        page.style.visibility = 'hidden';
+                        console.log('❌ Caché:', page.id);
                     }
                 });
-                console.log('✅ Pages initialisées:', pages.length);
-            });
+            }
+            
+            // Exécuter immédiatement
+            hideAllPagesExceptDashboard();
         })();
     </script>
 </head>
