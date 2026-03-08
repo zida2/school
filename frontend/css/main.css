@@ -30,13 +30,23 @@ body {
 }
 
 body.light-theme {
-    background: #ffffff;
+    background: #f8fafc;
     color: #1e293b;
+}
+
+body.light-theme .content-ultra,
+body.light-theme .main-ultra {
+    background: #f8fafc;
 }
 
 body.dark-theme {
     background: #0f172a;
     color: #e2e8f0;
+}
+
+body.dark-theme .content-ultra,
+body.dark-theme .main-ultra {
+    background: #0f172a;
 }
 
 html {
@@ -77,6 +87,11 @@ body.dark-theme .page-ultra {
 body.dark-theme .page-ultra > .page-header-ultra {
     background: #0f172a;
     border-bottom-color: #334155;
+}
+
+body.light-theme .page-ultra > .page-header-ultra {
+    background: #f8fafc;
+    border-bottom-color: #e2e8f0;
 }
 
 /* ===== LAYOUT ===== */
@@ -228,18 +243,25 @@ body.dark-theme .nav-item-ultra.active {
 .content-ultra {
     flex: 1;
     margin-left: 260px;
-    padding: 32px;
+    padding: 40px;
     min-height: 100vh;
     max-width: calc(100vw - 260px);
     width: 100%;
     overflow-x: hidden;
+}
+
+body.dark-theme .content-ultra {
     background: #0f172a;
+}
+
+body.light-theme .content-ultra {
+    background: #f8fafc;
 }
 
 .main-content-ultra {
     flex: 1;
     margin-left: 260px;
-    padding: 32px;
+    padding: 40px;
     min-height: 100vh;
     max-width: calc(100vw - 260px);
     overflow-x: hidden;
@@ -251,9 +273,16 @@ body.dark-theme .nav-item-ultra.active {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: #0f172a;
     max-width: calc(100vw - 260px);
     overflow-x: hidden;
+}
+
+body.dark-theme .main-ultra {
+    background: #0f172a;
+}
+
+body.light-theme .main-ultra {
+    background: #f8fafc;
 }
 
 /* Header */
@@ -544,8 +573,18 @@ body.dark-theme .stat-card-ultra {
     border-color: #334155;
 }
 
+body.light-theme .stat-card-ultra {
+    background: white;
+    border-color: #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 body.dark-theme .stat-card-ultra:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.light-theme .stat-card-ultra:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 body.dark-theme .stat-card-ultra.primary-ultra .stat-icon-ultra {
@@ -553,9 +592,19 @@ body.dark-theme .stat-card-ultra.primary-ultra .stat-icon-ultra {
     color: #818cf8;
 }
 
+body.light-theme .stat-card-ultra.primary-ultra .stat-icon-ultra {
+    background: #eef2ff;
+    color: var(--primary);
+}
+
 body.dark-theme .stat-card-ultra.success-ultra .stat-icon-ultra {
     background: rgba(16, 185, 129, 0.2);
     color: #34d399;
+}
+
+body.light-theme .stat-card-ultra.success-ultra .stat-icon-ultra {
+    background: #d1fae5;
+    color: var(--success);
 }
 
 body.dark-theme .stat-card-ultra.warning-ultra .stat-icon-ultra {
@@ -563,9 +612,19 @@ body.dark-theme .stat-card-ultra.warning-ultra .stat-icon-ultra {
     color: #fbbf24;
 }
 
+body.light-theme .stat-card-ultra.warning-ultra .stat-icon-ultra {
+    background: #fef3c7;
+    color: var(--warning);
+}
+
 body.dark-theme .stat-card-ultra.danger-ultra .stat-icon-ultra {
     background: rgba(239, 68, 68, 0.2);
     color: #f87171;
+}
+
+body.light-theme .stat-card-ultra.danger-ultra .stat-icon-ultra {
+    background: #fee2e2;
+    color: var(--danger);
 }
 
 .stat-card-ultra:hover {
@@ -670,6 +729,12 @@ body.dark-theme .chart-card-ultra {
     border-color: #334155;
 }
 
+body.light-theme .chart-card-ultra {
+    background: white;
+    border-color: #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 .chart-header-ultra {
     margin-bottom: 20px;
 }
@@ -698,8 +763,18 @@ body.dark-theme .card-ultra {
     border-color: #334155;
 }
 
+body.light-theme .card-ultra {
+    background: white;
+    border-color: #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 .card-ultra:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .card-ultra:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .card-header-ultra {
@@ -740,6 +815,12 @@ body.dark-theme .card-title-ultra {
 body.dark-theme .table-card-ultra {
     background: #1e293b;
     border-color: #334155;
+}
+
+body.light-theme .table-card-ultra {
+    background: white;
+    border-color: #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .table-header-ultra {
