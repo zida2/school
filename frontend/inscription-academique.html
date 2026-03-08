@@ -3,143 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription Service Académique</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .inscription-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            padding: 40px;
-            max-width: 500px;
-            width: 100%;
-        }
-        .logo-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .logo-section i {
-            font-size: 60px;
-            color: #f5576c;
-            margin-bottom: 15px;
-        }
-        .logo-section h2 {
-            color: #333;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .logo-section p {
-            color: #666;
-            font-size: 14px;
-        }
-        .form-label {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-        }
-        .form-control {
-            border-radius: 10px;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            transition: all 0.3s;
-        }
-        .form-control:focus {
-            border-color: #f5576c;
-            box-shadow: 0 0 0 0.2rem rgba(245, 87, 108, 0.25);
-        }
-        .btn-inscription {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            border: none;
-            border-radius: 10px;
-            padding: 12px;
-            font-weight: 600;
-            color: white;
-            width: 100%;
-            margin-top: 20px;
-            transition: transform 0.2s;
-        }
-        .btn-inscription:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
-        }
-        .alert {
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .back-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .back-link a {
-            color: #f5576c;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <title>Inscription Service Académique - UniERP BF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/inscription-futuristic.css">
 </head>
 <body>
-    <div class="inscription-card">
-        <div class="logo-section">
-            <i class="fas fa-graduation-cap"></i>
-            <h2>Service Académique</h2>
-            <p>Inscription au service académique</p>
-        </div>
+    <div class="inscription-container">
+        <a href="accueil.html" class="btn-back">← Retour à l'accueil</a>
 
-        <div id="alertContainer"></div>
-
-        <form id="inscriptionForm">
-            <div class="mb-3">
-                <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="nom" required>
+        <div class="inscription-card">
+            <div class="inscription-header">
+                <div class="inscription-logo">📚</div>
+                <h1 class="inscription-title">Service Académique</h1>
+                <p class="inscription-subtitle">Demande d'inscription au service</p>
             </div>
 
-            <div class="mb-3">
-                <label for="prenom" class="form-label">Prénom <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="prenom" required>
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+
+            <form id="inscriptionForm" class="inscription-form" onsubmit="handleInscription(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="nom">Nom *</label>
+                        <input type="text" id="nom" class="form-input" placeholder="Votre nom" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="prenom">Prénom *</label>
+                        <input type="text" id="prenom" class="form-input" placeholder="Votre prénom" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email *</label>
+                    <input type="email" id="email" class="form-input" placeholder="academique@unierp.bf" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="telephone">Téléphone</label>
+                    <input type="tel" id="telephone" class="form-input" placeholder="+226 XX XX XX XX">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="poste_souhaite">Poste souhaité</label>
+                    <input type="text" id="poste_souhaite" class="form-input" value="Responsable académique">
+                </div>
+
+                <button type="submit" class="btn-inscription" id="btnInscription">
+                    Envoyer ma demande
+                </button>
+            </form>
+
+            <div class="inscription-links">
+                <span style="color: #718096;">Vous avez déjà un compte ? </span>
+                <a href="connexion-academique.html" class="inscription-link">Se connecter</a>
             </div>
 
-            <div class="mb-3">
-                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                <input type="email" class="form-control" id="email" required>
+            <div class="inscription-footer">
+                <p>&copy; 2024 UniERP BF - Design Futuriste v8.0</p>
             </div>
-
-            <div class="mb-3">
-                <label for="telephone" class="form-label">Téléphone</label>
-                <input type="tel" class="form-control" id="telephone">
-            </div>
-
-            <div class="mb-3">
-                <label for="poste_souhaite" class="form-label">Poste souhaité</label>
-                <input type="text" class="form-control" id="poste_souhaite" value="Responsable académique">
-            </div>
-
-            <button type="submit" class="btn btn-inscription">
-                <i class="fas fa-paper-plane me-2"></i>Envoyer ma demande
-            </button>
-        </form>
-
-        <div class="back-link">
-            <a href="accueil.html"><i class="fas fa-arrow-left me-2"></i>Retour à l'accueil</a>
         </div>
     </div>
 
     <script>
         const API_URL = 'https://wendlasida.pythonanywhere.com/api';
 
-        document.getElementById('inscriptionForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        async function handleInscription(event) {
+            event.preventDefault();
+
+            const btnInscription = document.getElementById('btnInscription');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+            btnInscription.classList.add('loading');
+            btnInscription.disabled = true;
 
             const formData = {
                 nom: document.getElementById('nom').value,
@@ -152,34 +91,32 @@
             try {
                 const response = await fetch(`${API_URL}/demandes-inscription-academique/`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
 
                 if (response.ok) {
-                    showAlert('success', 'Demande envoyée avec succès! Vous recevrez un email une fois votre compte validé.');
+                    successMessage.textContent = 'Demande envoyée avec succès ! Vous recevrez un email une fois votre compte validé.';
+                    successMessage.classList.add('show');
                     document.getElementById('inscriptionForm').reset();
+                    
+                    setTimeout(() => {
+                        window.location.href = 'connexion-academique.html';
+                    }, 3000);
                 } else {
                     const error = await response.json();
-                    showAlert('danger', 'Erreur: ' + (error.detail || 'Une erreur est survenue'));
+                    throw new Error(error.detail || 'Une erreur est survenue');
                 }
             } catch (error) {
-                showAlert('danger', 'Erreur de connexion au serveur');
+                errorMessage.textContent = error.message;
+                errorMessage.classList.add('show');
+            } finally {
+                btnInscription.classList.remove('loading');
+                btnInscription.disabled = false;
             }
-        });
-
-        function showAlert(type, message) {
-            const alertContainer = document.getElementById('alertContainer');
-            alertContainer.innerHTML = `
-                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            `;
         }
+
+        document.getElementById('nom').focus();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
