@@ -2590,45 +2590,57 @@
         }
 
         function creerGraphiques(etudiants, filieres) {
-            new Chart(document.getElementById('chartInscriptions'), {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
-                    datasets: [{
-                        label: 'Inscriptions',
-                        data: [12, 19, 15, 25, 22, 30],
-                        borderColor: '#6366f1',
-                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.6)' } },
-                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.6)' } }
+            // Vérifier si Chart.js est chargé
+            if (typeof Chart === 'undefined') {
+                console.error('❌ Chart.js n\'est pas chargé');
+                return;
+            }
+            
+            try {
+                new Chart(document.getElementById('chartInscriptions'), {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+                        datasets: [{
+                            label: 'Inscriptions',
+                            data: [12, 19, 15, 25, 22, 30],
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.6)' } },
+                            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.6)' } }
+                        }
                     }
-                }
-            });
+                });
 
-            new Chart(document.getElementById('chartFilieres'), {
-                type: 'doughnut',
-                data: {
-                    labels: filieres.slice(0, 5).map(f => f.nom),
-                    datasets: [{
-                        data: filieres.slice(0, 5).map(() => Math.floor(Math.random() * 50) + 10),
-                        backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.8)' } } }
-                }
-            });
+                new Chart(document.getElementById('chartFilieres'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: filieres.slice(0, 5).map(f => f.nom),
+                        datasets: [{
+                            data: filieres.slice(0, 5).map(() => Math.floor(Math.random() * 50) + 10),
+                            backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.8)' } } }
+                    }
+                });
+                
+                console.log('✅ Graphiques créés avec succès');
+            } catch (error) {
+                console.error('❌ Erreur création graphiques:', error);
+            }
         }
 
         async function ajouterEtudiant(e) {
