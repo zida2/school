@@ -9,7 +9,7 @@ const CONFIG = {
     // En production: https://votre-username.pythonanywhere.com/api
     API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
         ? 'http://localhost:8000/api'
-        : 'https://Wendlasida.pythonanywhere.com/api',
+        : 'https://wendlasida.pythonanywhere.com/api',
     
     // Mode de l'application
     IS_PRODUCTION: window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1',
