@@ -154,6 +154,9 @@
 </head>
 <body class="dark-theme">
 
+    <!-- Bouton menu mobile -->
+    <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">☰</button>
+
     <div class="app-wrapper">
         <!-- SIDEBAR -->
         <aside class="sidebar-ultra" id="sidebar">
@@ -3180,6 +3183,34 @@
         // - supprimerEmploi()
         // - envoyerEmploiProf()
         */
+    </script>
+    
+    <script>
+        // Toggle sidebar mobile
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+        
+        // Fermer sidebar quand on clique sur un lien (mobile)
+        document.querySelectorAll('.nav-item-ultra').forEach(item => {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('active');
+                }
+            });
+        });
+        
+        // Fermer sidebar si on clique en dehors (mobile)
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                const menuBtn = document.querySelector('.mobile-menu-btn');
+                if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
     </script>
 </body>
 </html>

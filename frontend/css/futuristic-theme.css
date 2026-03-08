@@ -1274,3 +1274,173 @@ div[style*="background:rgba(99,102,241"] {
     visibility: visible !important;
     animation: fadeIn 0.5s ease;
 }
+
+/* ============================================
+   RESPONSIVE DESIGN - MOBILE & TABLET
+   ============================================ */
+
+/* Tablettes et petits écrans */
+@media (max-width: 1024px) {
+    .sidebar-ultra {
+        width: 70px;
+    }
+    
+    .logo-text-ultra,
+    .nav-label-ultra,
+    .nav-link-ultra span {
+        display: none;
+    }
+    
+    .main-content-ultra {
+        margin-left: 70px;
+    }
+    
+    .stats-grid-ultra {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    /* Sidebar en overlay sur mobile */
+    .sidebar-ultra {
+        position: fixed;
+        left: -280px;
+        width: 280px;
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+    
+    .sidebar-ultra.active {
+        left: 0;
+    }
+    
+    .main-content-ultra {
+        margin-left: 0;
+        padding: 15px;
+    }
+    
+    .header-ultra {
+        padding: 15px;
+    }
+    
+    /* Stats en colonne unique */
+    .stats-grid-ultra {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .stat-card-ultra {
+        padding: 20px;
+    }
+    
+    /* Charts en colonne */
+    .charts-grid-ultra {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    /* Tables responsive */
+    .table-ultra {
+        font-size: 13px;
+    }
+    
+    .table-ultra th,
+    .table-ultra td {
+        padding: 10px 8px;
+    }
+    
+    /* Boutons plus petits */
+    .btn-ultra {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+    
+    /* Modals plein écran sur mobile */
+    .modal-content-ultra {
+        width: 95%;
+        max-width: 95%;
+        margin: 10px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    /* Form en colonne */
+    .form-row-ultra {
+        flex-direction: column;
+    }
+    
+    .form-group-ultra {
+        width: 100%;
+    }
+    
+    /* Header actions en colonne */
+    .header-actions-ultra {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Logo plus petit */
+    .logo-ultra {
+        padding: 15px;
+    }
+    
+    .logo-name-ultra {
+        font-size: 18px;
+    }
+    
+    .logo-tag-ultra {
+        font-size: 9px;
+    }
+}
+
+/* Très petits mobiles */
+@media (max-width: 480px) {
+    .page-header-ultra h1 {
+        font-size: 24px;
+    }
+    
+    .stat-card-ultra h3 {
+        font-size: 24px;
+    }
+    
+    .card-ultra {
+        padding: 15px;
+    }
+    
+    /* Cacher certaines colonnes sur très petit écran */
+    .table-ultra th:nth-child(n+4),
+    .table-ultra td:nth-child(n+4) {
+        display: none;
+    }
+}
+
+/* Bouton hamburger pour mobile */
+.mobile-menu-btn {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .header-ultra {
+        padding-left: 75px;
+    }
+}
