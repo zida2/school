@@ -1738,10 +1738,15 @@
         window.navToUltra = function(page, el) {
             console.log('🔄 Navigation vers:', page);
             
-            document.querySelectorAll('.page-ultra').forEach(p => p.style.display = 'none');
+            // Cacher toutes les pages avec cssText pour override le CSS inline
+            document.querySelectorAll('.page-ultra').forEach(p => {
+                p.style.cssText = 'display: none !important; visibility: hidden !important; position: absolute !important; left: -9999px !important;';
+            });
+            
+            // Afficher la page cible
             const target = document.getElementById('page-' + page);
             if (target) {
-                target.style.display = 'block';
+                target.style.cssText = 'display: block !important; visibility: visible !important; position: relative !important; left: 0 !important;';
                 console.log('✅ Page affichée:', page);
             } else {
                 console.error('❌ Page non trouvée:', 'page-' + page);
