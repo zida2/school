@@ -33,6 +33,22 @@
             letter-spacing: 0.5px;
         }
     </style>
+    <script>
+        // Script immédiat pour cacher toutes les pages sauf dashboard
+        (function() {
+            document.addEventListener('DOMContentLoaded', function() {
+                const pages = document.querySelectorAll('.page-ultra');
+                pages.forEach(function(page) {
+                    if (page.id !== 'page-dashboard') {
+                        page.style.display = 'none';
+                    } else {
+                        page.style.display = 'block';
+                    }
+                });
+                console.log('✅ Pages initialisées:', pages.length);
+            });
+        })();
+    </script>
 </head>
 <body class="dark-theme">
 
