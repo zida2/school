@@ -43,6 +43,24 @@
             z-index: 1 !important;
         }
         
+        /* MASQUAGE DES MODALS PAR DÉFAUT */
+        .modal-ultra,
+        .modal-cours {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
+        /* Modals actifs */
+        .modal-ultra.active,
+        .modal-cours.active {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        
         /* Override toute règle externe */
         .page-ultra:not(#page-dashboard) {
             display: none !important;
