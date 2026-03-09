@@ -58,13 +58,27 @@ async function chargerPromotionsEmploi() {
         const response = await fetch(`${CONFIG.API_URL}/promotions/?filiere=${filiereId}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
         });
-        const promotions = await response.json();
+        
+        if (!response.ok) {
+            console.error(`Erreur API: ${response.status}`);
+            selectPromo.innerHTML += '<option value="">Erreur de chargement</option>';
+            return;
+        }
+        
+        const data = await response.json();
+        const promotions = Array.isArray(data) ? data : (data.results || []);
+        
+        if (promotions.length === 0) {
+            selectPromo.innerHTML += '<option value="">Aucune promotion disponible</option>';
+            return;
+        }
         
         promotions.forEach(p => {
             selectPromo.innerHTML += `<option value="${p.id}">${p.nom}</option>`;
         });
     } catch (error) {
         console.error('Erreur chargement promotions:', error);
+        selectPromo.innerHTML += '<option value="">Erreur de chargement</option>';
     }
 }
 
@@ -85,13 +99,27 @@ async function chargerClassesEmploi() {
         const response = await fetch(`${CONFIG.API_URL}/classes/?promotion=${promotionId}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
         });
-        const classes = await response.json();
+        
+        if (!response.ok) {
+            console.error(`Erreur API: ${response.status}`);
+            selectClasse.innerHTML += '<option value="">Erreur de chargement</option>';
+            return;
+        }
+        
+        const data = await response.json();
+        const classes = Array.isArray(data) ? data : (data.results || []);
+        
+        if (classes.length === 0) {
+            selectClasse.innerHTML += '<option value="">Aucune classe disponible</option>';
+            return;
+        }
         
         classes.forEach(c => {
             selectClasse.innerHTML += `<option value="${c.id}">${c.nom} (${c.code})</option>`;
         });
     } catch (error) {
         console.error('Erreur chargement classes:', error);
+        selectClasse.innerHTML += '<option value="">Erreur de chargement</option>';
     }
 }
 
