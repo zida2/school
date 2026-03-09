@@ -272,9 +272,18 @@
                     <input type="text" class="form-input" id="lieu_naissance" required>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-label">Genre <span class="required">*</span></label>
+                    <select class="form-select" id="genre" required>
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="M">Masculin</option>
+                        <option value="F">Féminin</option>
+                    </select>
+                </div>
+
                 <div class="form-group full-width">
-                    <label class="form-label">Adresse complète <span class="required">*</span></label>
-                    <input type="text" class="form-input" id="adresse" required>
+                    <label class="form-label">Adresse complète</label>
+                    <input type="text" class="form-input" id="adresse">
                 </div>
 
                 <div class="form-group">
@@ -324,9 +333,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Promotion (Année) <span class="required">*</span></label>
-                    <select class="form-select" id="promotion" required>
-                        <option value="">-- Sélectionnez une année --</option>
+                    <label class="form-label">Niveau souhaité <span class="required">*</span></label>
+                    <select class="form-select" id="niveau" required>
+                        <option value="">-- Sélectionnez un niveau --</option>
+                        <option value="L1">Licence 1 (L1)</option>
+                        <option value="L2">Licence 2 (L2)</option>
+                        <option value="L3">Licence 3 (L3)</option>
+                        <option value="M1">Master 1 (M1)</option>
+                        <option value="M2">Master 2 (M2)</option>
                     </select>
                 </div>
             </div>
@@ -373,20 +387,25 @@
             }
         }
 
-        // Générer les promotions de 2015 à 2029
-        function genererPromotions() {
-            const selectPromotion = document.getElementById('promotion');
-            selectPromotion.innerHTML = '<option value="">-- Sélectionnez une année --</option>';
-            
-            for (let annee = 2029; annee >= 2015; annee--) {
-                selectPromotion.innerHTML += `<option value="${annee}">${annee}</option>`;
+        // Charger l'année académique active
+        async function getAnneeAcademiqueActive() {
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/annees-academiques/`);
+                const data = await response.json();
+                const annees = Array.isArray(data) ? data : (data.results || []);
+                
+                // Trouver l'année active
+                const anneeActive = annees.find(a => a.active) || annees[0];
+                return anneeActive ? anneeActive.id : null;
+            } catch (error) {
+                console.error('Erreur chargement année académique:', error);
+                return null;
             }
         }
 
-        // Charger les filières et promotions au démarrage
+        // Charger les filières au démarrage
         window.addEventListener('DOMContentLoaded', () => {
             chargerFilieres();
-            genererPromotions();
         });
 
         function showAlert(message, type = 'error') {
@@ -409,6 +428,15 @@
             submitBtn.innerHTML = '<span class="spinner"></span>Envoi en cours...';
 
             // Récupérer les données du formulaire
+            const anneeAcademique = await getAnneeAcademiqueActive();
+            
+            if (!anneeAcademique) {
+                showAlert('Impossible de récupérer l\'année académique. Veuillez réessayer.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                return;
+            }
+            
             const formData = {
                 nom: document.getElementById('nom').value.trim(),
                 prenom: document.getElementById('prenom').value.trim(),
@@ -416,14 +444,15 @@
                 telephone: document.getElementById('telephone').value.trim(),
                 date_naissance: document.getElementById('date_naissance').value,
                 lieu_naissance: document.getElementById('lieu_naissance').value.trim(),
-                adresse: document.getElementById('adresse').value.trim(),
+                genre: document.getElementById('genre').value,
                 lycee_provenance: document.getElementById('lycee_provenance').value.trim(),
                 ville_origine: document.getElementById('ville_origine').value.trim(),
                 serie_bac: document.getElementById('serie_bac').value,
                 annee_bac: parseInt(document.getElementById('annee_bac').value),
                 mention_bac: document.getElementById('mention_bac').value,
-                filiere: parseInt(document.getElementById('filiere').value),
-                promotion: document.getElementById('promotion').value
+                filiere_demandee: parseInt(document.getElementById('filiere').value),
+                niveau_demande: document.getElementById('niveau').value,
+                annee_academique: anneeAcademique
             };
 
             console.log('📦 Données à envoyer:', formData);
@@ -452,7 +481,6 @@
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalText;
                         submitBtn.style.background = '';
-                        genererPromotions();
                     }, 3000);
                 } else {
                     console.error('❌ Erreur serveur:', data);
