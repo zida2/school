@@ -494,6 +494,8 @@
 
                 const data = await response.json();
                 console.log('📥 Réponse serveur:', data);
+                console.log('📊 Status:', response.status);
+                console.log('✅ Response OK:', response.ok);
 
                 if (response.ok) {
                     console.log('✅ Inscription réussie');
@@ -510,6 +512,7 @@
                     }, 3000);
                 } else {
                     console.error('❌ Erreur serveur:', data);
+                    console.error('🔍 Détails erreur:', JSON.stringify(data, null, 2));
                     let errorMessage = 'Une erreur est survenue lors de l\'envoi de votre demande.';
                     
                     if (data.email && data.email.includes('existe déjà')) {
@@ -517,7 +520,16 @@
                     } else if (data.detail) {
                         errorMessage = data.detail;
                     } else if (typeof data === 'object') {
-                        errorMessage = Object.values(data).flat().join(' ');
+                        // Afficher toutes les erreurs de validation
+                        const errors = [];
+                        for (const [field, messages] of Object.entries(data)) {
+                            if (Array.isArray(messages)) {
+                                errors.push(`${field}: ${messages.join(', ')}`);
+                            } else {
+                                errors.push(`${field}: ${messages}`);
+                            }
+                        }
+                        errorMessage = errors.join('\n');
                     }
                     
                     showAlert(errorMessage, 'error');
