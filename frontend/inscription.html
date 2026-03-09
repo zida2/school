@@ -370,19 +370,37 @@
 
         // Charger les filières au chargement de la page
         async function chargerFilieres() {
+            console.log('🔄 Chargement des filières...');
             try {
-                const response = await fetch(`${CONFIG.API_URL}/filieres/`);
+                const url = `${CONFIG.API_URL}/filieres/`;
+                console.log('📡 URL:', url);
+                
+                const response = await fetch(url);
+                console.log('📥 Response status:', response.status);
+                
                 const data = await response.json();
+                console.log('📦 Données reçues:', data);
+                
                 const filieres = Array.isArray(data) ? data : (data.results || []);
+                console.log('📚 Filières extraites:', filieres);
                 
                 const selectFiliere = document.getElementById('filiere');
                 selectFiliere.innerHTML = '<option value="">-- Sélectionnez une filière --</option>';
                 
+                if (filieres.length === 0) {
+                    console.warn('⚠️ Aucune filière trouvée');
+                    selectFiliere.innerHTML = '<option value="">Aucune filière disponible</option>';
+                    return;
+                }
+                
                 filieres.forEach(f => {
+                    console.log('➕ Ajout filière:', f.nom, '(ID:', f.id, ')');
                     selectFiliere.innerHTML += `<option value="${f.id}">${f.nom}</option>`;
                 });
+                
+                console.log('✅ Filières chargées avec succès');
             } catch (error) {
-                console.error('Erreur chargement filières:', error);
+                console.error('❌ Erreur chargement filières:', error);
                 document.getElementById('filiere').innerHTML = '<option value="">Erreur de chargement</option>';
             }
         }
