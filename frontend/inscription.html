@@ -318,15 +318,15 @@
 
                 <div class="form-group">
                     <label class="form-label">Filière souhaitée <span class="required">*</span></label>
-                    <select class="form-select" id="filiere" onchange="chargerPromotions()" required>
+                    <select class="form-select" id="filiere" required>
                         <option value="">-- Chargement des filières... --</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Promotion souhaitée <span class="required">*</span></label>
+                    <label class="form-label">Promotion (Année) <span class="required">*</span></label>
                     <select class="form-select" id="promotion" required>
-                        <option value="">-- Sélectionnez d'abord une filière --</option>
+                        <option value="">-- Sélectionnez une année --</option>
                     </select>
                 </div>
             </div>
@@ -373,45 +373,21 @@
             }
         }
 
-        // Charger les promotions quand une filière est sélectionnée
-        async function chargerPromotions() {
-            const filiereId = document.getElementById('filiere').value;
+        // Générer les promotions de 2015 à 2029
+        function genererPromotions() {
             const selectPromotion = document.getElementById('promotion');
+            selectPromotion.innerHTML = '<option value="">-- Sélectionnez une année --</option>';
             
-            selectPromotion.innerHTML = '<option value="">-- Sélectionnez une promotion --</option>';
-            
-            if (!filiereId) {
-                selectPromotion.innerHTML = '<option value="">-- Sélectionnez d\'abord une filière --</option>';
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${CONFIG.API_URL}/promotions/?filiere=${filiereId}`);
-                
-                if (!response.ok) {
-                    selectPromotion.innerHTML = '<option value="">Erreur de chargement</option>';
-                    return;
-                }
-                
-                const data = await response.json();
-                const promotions = Array.isArray(data) ? data : (data.results || []);
-                
-                if (promotions.length === 0) {
-                    selectPromotion.innerHTML = '<option value="">Aucune promotion disponible</option>';
-                    return;
-                }
-                
-                promotions.forEach(p => {
-                    selectPromotion.innerHTML += `<option value="${p.id}">${p.nom}</option>`;
-                });
-            } catch (error) {
-                console.error('Erreur chargement promotions:', error);
-                selectPromotion.innerHTML = '<option value="">Erreur de chargement</option>';
+            for (let annee = 2029; annee >= 2015; annee--) {
+                selectPromotion.innerHTML += `<option value="${annee}">${annee}</option>`;
             }
         }
 
-        // Charger les filières au démarrage
-        window.addEventListener('DOMContentLoaded', chargerFilieres);
+        // Charger les filières et promotions au démarrage
+        window.addEventListener('DOMContentLoaded', () => {
+            chargerFilieres();
+            genererPromotions();
+        });
 
         function showAlert(message, type = 'error') {
             const alertBox = document.getElementById('alertBox');
@@ -447,7 +423,7 @@
                 annee_bac: parseInt(document.getElementById('annee_bac').value),
                 mention_bac: document.getElementById('mention_bac').value,
                 filiere: parseInt(document.getElementById('filiere').value),
-                promotion: parseInt(document.getElementById('promotion').value)
+                promotion: document.getElementById('promotion').value
             };
 
             console.log('📦 Données à envoyer:', formData);
@@ -476,7 +452,7 @@
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalText;
                         submitBtn.style.background = '';
-                        chargerFilieres();
+                        genererPromotions();
                     }, 3000);
                 } else {
                     console.error('❌ Erreur serveur:', data);
