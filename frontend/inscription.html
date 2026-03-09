@@ -318,14 +318,15 @@
 
                 <div class="form-group">
                     <label class="form-label">Filière souhaitée <span class="required">*</span></label>
-                    <select class="form-select" id="filiere" required>
-                        <option value="">-- Sélectionnez --</option>
-                        <option value="Informatique">Informatique</option>
-                        <option value="Gestion">Gestion</option>
-                        <option value="Droit">Droit</option>
-                        <option value="Économie">Économie</option>
-                        <option value="Lettres">Lettres</option>
-                        <option value="Sciences">Sciences</option>
+                    <select class="form-select" id="filiere" onchange="chargerPromotions()" required>
+                        <option value="">-- Chargement des filières... --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Promotion souhaitée <span class="required">*</span></label>
+                    <select class="form-select" id="promotion" required>
+                        <option value="">-- Sélectionnez d'abord une filière --</option>
                     </select>
                 </div>
             </div>
@@ -352,6 +353,65 @@
             particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
             particlesContainer.appendChild(particle);
         }
+
+        // Charger les filières au chargement de la page
+        async function chargerFilieres() {
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/filieres/`);
+                const data = await response.json();
+                const filieres = Array.isArray(data) ? data : (data.results || []);
+                
+                const selectFiliere = document.getElementById('filiere');
+                selectFiliere.innerHTML = '<option value="">-- Sélectionnez une filière --</option>';
+                
+                filieres.forEach(f => {
+                    selectFiliere.innerHTML += `<option value="${f.id}">${f.nom}</option>`;
+                });
+            } catch (error) {
+                console.error('Erreur chargement filières:', error);
+                document.getElementById('filiere').innerHTML = '<option value="">Erreur de chargement</option>';
+            }
+        }
+
+        // Charger les promotions quand une filière est sélectionnée
+        async function chargerPromotions() {
+            const filiereId = document.getElementById('filiere').value;
+            const selectPromotion = document.getElementById('promotion');
+            
+            selectPromotion.innerHTML = '<option value="">-- Sélectionnez une promotion --</option>';
+            
+            if (!filiereId) {
+                selectPromotion.innerHTML = '<option value="">-- Sélectionnez d\'abord une filière --</option>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/promotions/?filiere=${filiereId}`);
+                
+                if (!response.ok) {
+                    selectPromotion.innerHTML = '<option value="">Erreur de chargement</option>';
+                    return;
+                }
+                
+                const data = await response.json();
+                const promotions = Array.isArray(data) ? data : (data.results || []);
+                
+                if (promotions.length === 0) {
+                    selectPromotion.innerHTML = '<option value="">Aucune promotion disponible</option>';
+                    return;
+                }
+                
+                promotions.forEach(p => {
+                    selectPromotion.innerHTML += `<option value="${p.id}">${p.nom}</option>`;
+                });
+            } catch (error) {
+                console.error('Erreur chargement promotions:', error);
+                selectPromotion.innerHTML = '<option value="">Erreur de chargement</option>';
+            }
+        }
+
+        // Charger les filières au démarrage
+        window.addEventListener('DOMContentLoaded', chargerFilieres);
 
         function showAlert(message, type = 'error') {
             const alertBox = document.getElementById('alertBox');
@@ -386,13 +446,14 @@
                 serie_bac: document.getElementById('serie_bac').value,
                 annee_bac: parseInt(document.getElementById('annee_bac').value),
                 mention_bac: document.getElementById('mention_bac').value,
-                filiere_souhaitee: document.getElementById('filiere').value
+                filiere: parseInt(document.getElementById('filiere').value),
+                promotion: parseInt(document.getElementById('promotion').value)
             };
 
             console.log('📦 Données à envoyer:', formData);
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/demandes-inscription/`, {
+                const response = await fetch(`${CONFIG.API_URL}/demandes-inscription/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -415,6 +476,7 @@
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalText;
                         submitBtn.style.background = '';
+                        chargerFilieres();
                     }, 3000);
                 } else {
                     console.error('❌ Erreur serveur:', data);
