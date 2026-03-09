@@ -6,7 +6,7 @@
     <title>Administration – UniERP BF Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- CSS UNIQUE POUR TOUT GÉRER -->
-    <link rel="stylesheet" href="css/main.css?v=22.0">
+    <link rel="stylesheet" href="css/main.css?v=23.0">
     <link rel="stylesheet" href="css/emploi-temps-grid.css?v=13.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <script src="js/config.js?v=7"></script>
@@ -2993,14 +2993,14 @@
                     
                     return `
                         <tr>
-                            <td><strong>${d.prenom} ${d.nom}</strong></td>
-                            <td>${d.email}</td>
-                            <td>${d.telephone}</td>
-                            <td>${d.filiere_nom || 'N/A'}</td>
-                            <td><span class="badge-ultra primary">${d.niveau_demande}</span></td>
-                            <td>${new Date(d.date_demande).toLocaleDateString('fr-FR')}</td>
-                            <td><span class="badge-ultra ${statutClass}">${statutText}</span></td>
-                            <td>${actions}</td>
+                            <td style="white-space:nowrap;padding:12px 16px"><strong>${d.prenom} ${d.nom}</strong></td>
+                            <td style="padding:12px 16px;max-width:200px;overflow:hidden;text-overflow:ellipsis">${d.email}</td>
+                            <td style="white-space:nowrap;padding:12px 16px">${d.telephone}</td>
+                            <td style="padding:12px 16px">${d.filiere_nom || 'N/A'}</td>
+                            <td style="padding:12px 16px"><span class="badge-ultra primary">${d.niveau_demande}</span></td>
+                            <td style="white-space:nowrap;padding:12px 16px">${new Date(d.date_demande).toLocaleDateString('fr-FR')}</td>
+                            <td style="padding:12px 16px"><span class="badge-ultra ${statutClass}">${statutText}</span></td>
+                            <td style="white-space:nowrap;padding:12px 16px">${actions}</td>
                         </tr>
                     `;
                 }).join('');
