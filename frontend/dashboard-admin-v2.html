@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/emploi-temps-grid.css?v=12.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <script src="js/config.js?v=7"></script>
-    <script src="js/emploi-temps-grid.js?v=12.0"></script>
+    <script src="js/emploi-temps-grid.js?v=13.0"></script>
 </head>
 <body class="dark-theme">
 
@@ -490,19 +490,19 @@
                     <div class="emploi-filters">
                         <div>
                             <label class="form-label-ultra" style="display:block;margin-bottom:8px;font-size:12px">Filière</label>
-                            <select id="emploiFilterFiliere" class="form-input-ultra" onchange="chargerCoursClasse()" style="width:100%;padding:12px 16px">
+                            <select id="emploiFilterFiliere" class="form-input-ultra" onchange="chargerPromotionsEmploi()" style="width:100%;padding:12px 16px">
                                 <option value="">Sélectionner une filière</option>
                             </select>
                         </div>
                         <div>
                             <label class="form-label-ultra" style="display:block;margin-bottom:8px;font-size:12px">Promotion</label>
-                            <select id="emploiFilterPromotion" class="form-input-ultra" onchange="chargerCoursClasse()" style="width:100%;padding:12px 16px">
+                            <select id="emploiFilterPromotion" class="form-input-ultra" onchange="chargerClassesEmploi()" style="width:100%;padding:12px 16px">
                                 <option value="">Sélectionner une promotion</option>
                             </select>
                         </div>
                         <div>
                             <label class="form-label-ultra" style="display:block;margin-bottom:8px;font-size:12px">Classe</label>
-                            <select id="emploiFilterClasse" class="form-input-ultra" onchange="chargerCoursClasse()" style="width:100%;padding:12px 16px">
+                            <select id="emploiFilterClasse" class="form-input-ultra" onchange="chargerEmploiClasse()" style="width:100%;padding:12px 16px">
                                 <option value="">Sélectionner une classe</option>
                             </select>
                         </div>

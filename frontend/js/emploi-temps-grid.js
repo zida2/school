@@ -21,7 +21,12 @@ async function chargerFilieres() {
         });
         const filieres = await response.json();
         
-        const select = document.getElementById('selectFiliereEmploi');
+        const select = document.getElementById('emploiFilterFiliere');
+        if (!select) {
+            console.log('⚠️ Element emploiFilterFiliere non trouvé');
+            return;
+        }
+        
         select.innerHTML = '<option value="">Sélectionner une filière...</option>';
         filieres.forEach(f => {
             select.innerHTML += `<option value="${f.id}">${f.nom}</option>`;
@@ -33,9 +38,13 @@ async function chargerFilieres() {
 
 // Charger les promotions
 async function chargerPromotionsEmploi() {
-    const filiereId = document.getElementById('selectFiliereEmploi').value;
-    const selectPromo = document.getElementById('selectPromotionEmploi');
-    const selectClasse = document.getElementById('selectClasseEmploi');
+    const selectFiliere = document.getElementById('emploiFilterFiliere');
+    const selectPromo = document.getElementById('emploiFilterPromotion');
+    const selectClasse = document.getElementById('emploiFilterClasse');
+    
+    if (!selectFiliere || !selectPromo || !selectClasse) return;
+    
+    const filiereId = selectFiliere.value;
     
     selectPromo.innerHTML = '<option value="">Sélectionner une promotion...</option>';
     selectClasse.innerHTML = '<option value="">Sélectionner une classe...</option>';
@@ -58,8 +67,12 @@ async function chargerPromotionsEmploi() {
 
 // Charger les classes
 async function chargerClassesEmploi() {
-    const promotionId = document.getElementById('selectPromotionEmploi').value;
-    const selectClasse = document.getElementById('selectClasseEmploi');
+    const selectPromo = document.getElementById('emploiFilterPromotion');
+    const selectClasse = document.getElementById('emploiFilterClasse');
+    
+    if (!selectPromo || !selectClasse) return;
+    
+    const promotionId = selectPromo.value;
     
     selectClasse.innerHTML = '<option value="">Sélectionner une classe...</option>';
     
@@ -81,7 +94,10 @@ async function chargerClassesEmploi() {
 
 // Charger l'emploi du temps d'une classe
 async function chargerEmploiClasse() {
-    const classeId = document.getElementById('selectClasseEmploi').value;
+    const selectClasse = document.getElementById('emploiFilterClasse');
+    if (!selectClasse) return;
+    
+    const classeId = selectClasse.value;
     
     if (!classeId) {
         emploisData = [];
