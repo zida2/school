@@ -395,8 +395,19 @@
                 const annees = Array.isArray(data) ? data : (data.results || []);
                 
                 // Trouver l'année active
-                const anneeActive = annees.find(a => a.active) || annees[0];
-                return anneeActive ? anneeActive.id : null;
+                const anneeActive = annees.find(a => a.active);
+                if (anneeActive) {
+                    return anneeActive.id;
+                }
+                
+                // Si pas d'année active, prendre la première
+                if (annees.length > 0) {
+                    return annees[0].id;
+                }
+                
+                // Si aucune année, retourner null (le backend devrait gérer)
+                console.warn('Aucune année académique trouvée');
+                return null;
             } catch (error) {
                 console.error('Erreur chargement année académique:', error);
                 return null;
@@ -430,13 +441,6 @@
             // Récupérer les données du formulaire
             const anneeAcademique = await getAnneeAcademiqueActive();
             
-            if (!anneeAcademique) {
-                showAlert('Impossible de récupérer l\'année académique. Veuillez réessayer.', 'error');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-                return;
-            }
-            
             const formData = {
                 nom: document.getElementById('nom').value.trim(),
                 prenom: document.getElementById('prenom').value.trim(),
@@ -451,9 +455,13 @@
                 annee_bac: parseInt(document.getElementById('annee_bac').value),
                 mention_bac: document.getElementById('mention_bac').value,
                 filiere_demandee: parseInt(document.getElementById('filiere').value),
-                niveau_demande: document.getElementById('niveau').value,
-                annee_academique: anneeAcademique
+                niveau_demande: document.getElementById('niveau').value
             };
+            
+            // Ajouter l'année académique seulement si elle existe
+            if (anneeAcademique) {
+                formData.annee_academique = anneeAcademique;
+            }
 
             console.log('📦 Données à envoyer:', formData);
 
