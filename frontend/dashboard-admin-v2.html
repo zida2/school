@@ -6,7 +6,7 @@
     <title>Administration – UniERP BF Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- CSS UNIQUE POUR TOUT GÉRER -->
-    <link rel="stylesheet" href="css/main.css?v=21.0">
+    <link rel="stylesheet" href="css/main.css?v=22.0">
     <link rel="stylesheet" href="css/emploi-temps-grid.css?v=13.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <script src="js/config.js?v=7"></script>
@@ -1944,8 +1944,9 @@
 
                 creerGraphiques(etudiants, filieres);
                 
-                // Charger les demandes et réclamations (après un court délai pour laisser les fonctions se charger)
+                // Charger les demandes et réclamations
                 setTimeout(() => {
+                    updateBadgeInscriptions();
                     if (typeof chargerDemandes === 'function') {
                         chargerDemandes();
                     }
@@ -2953,6 +2954,98 @@
             chargerTabInscriptions(tab);
         }
 
+        // Fonction pour charger les inscriptions étudiants
+        async function chargerInscriptionsEtudiants() {
+            try {
+                const statut = document.getElementById('filterStatutInscription').value;
+                const filiere = document.getElementById('filterFiliereInscription').value;
+                
+                let url = '/demandes-inscription/';
+                const params = [];
+                if (statut) params.push(`statut=${statut}`);
+                if (filiere) params.push(`filiere_demandee=${filiere}`);
+                if (params.length > 0) url += '?' + params.join('&');
+                
+                const data = await API.get(url);
+                const demandes = Array.isArray(data) ? data : (data.results || []);
+                
+                const tbody = document.getElementById('tbodyInscriptionsEtudiants');
+                
+                if (demandes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucune demande d\'inscription</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = demandes.map(d => {
+                    const statutClass = d.statut === 'en_attente' ? 'warning' : 
+                                       d.statut === 'approuvee' ? 'success' : 'danger';
+                    const statutText = d.statut === 'en_attente' ? 'En attente' :
+                                      d.statut === 'approuvee' ? 'Approuvée' : 'Rejetée';
+                    
+                    const actions = d.statut === 'en_attente' ? `
+                        <button class="btn-icon-ultra success" onclick="validerInscriptionEtudiant(${d.id})" title="Valider">
+                            ✓
+                        </button>
+                        <button class="btn-icon-ultra danger" onclick="rejeterInscriptionEtudiant(${d.id})" title="Rejeter">
+                            ✗
+                        </button>
+                    ` : '-';
+                    
+                    return `
+                        <tr>
+                            <td><strong>${d.prenom} ${d.nom}</strong></td>
+                            <td>${d.email}</td>
+                            <td>${d.telephone}</td>
+                            <td>${d.filiere_nom || 'N/A'}</td>
+                            <td><span class="badge-ultra primary">${d.niveau_demande}</span></td>
+                            <td>${new Date(d.date_demande).toLocaleDateString('fr-FR')}</td>
+                            <td><span class="badge-ultra ${statutClass}">${statutText}</span></td>
+                            <td>${actions}</td>
+                        </tr>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Erreur chargement inscriptions étudiants:', error);
+                document.getElementById('tbodyInscriptionsEtudiants').innerHTML = `
+                    <tr><td colspan="8" style="text-align:center;padding:40px;color:#ef4444">
+                        Erreur de chargement
+                    </td></tr>
+                `;
+            }
+        }
+
+        // Valider une inscription étudiant
+        async function validerInscriptionEtudiant(id) {
+            if (!confirm('Valider cette demande d\'inscription ?')) return;
+            
+            try {
+                await API.post(`/demandes-inscription/${id}/valider/`);
+                showNotification('Demande validée avec succès', 'success');
+                chargerInscriptionsEtudiants();
+                updateBadgeInscriptions();
+            } catch (error) {
+                console.error('Erreur validation:', error);
+                const errorMsg = error.response?.data?.error || error.message || 'Erreur lors de l\'approbation';
+                showNotification(`Erreur lors de l'approbation: ${errorMsg}`, 'error');
+            }
+        }
+
+        // Rejeter une inscription étudiant
+        async function rejeterInscriptionEtudiant(id) {
+            if (!confirm('Rejeter cette demande d\'inscription ?')) return;
+            
+            try {
+                await API.post(`/demandes-inscription/${id}/rejeter/`);
+                showNotification('Demande rejetée', 'info');
+                chargerInscriptionsEtudiants();
+                updateBadgeInscriptions();
+            } catch (error) {
+                console.error('Erreur rejet:', error);
+                showNotification('Erreur lors du rejet', 'error');
+            }
+        }
+
         async function chargerTabInscriptions(tab) {
             const endpoints = {
                 'communication': '/demandes-inscription-communication/',
@@ -3034,6 +3127,7 @@
         async function updateBadgeInscriptions() {
             try {
                 const endpoints = [
+                    '/demandes-inscription/',  // Étudiants
                     '/demandes-inscription-communication/',
                     '/demandes-inscription-academique/',
                     '/demandes-inscription-comptabilite/',
@@ -3042,8 +3136,20 @@
                 
                 let totalEnAttente = 0;
                 for (const endpoint of endpoints) {
-                    const demandes = await API.get(endpoint);
-                    totalEnAttente += demandes.filter(d => d.statut === 'en_attente').length;
+                    try {
+                        const demandes = await API.get(endpoint);
+                        const demandesArray = Array.isArray(demandes) ? demandes : (demandes.results || []);
+                        totalEnAttente += demandesArray.filter(d => d.statut === 'en_attente').length;
+                    } catch (err) {
+                        console.warn(`Erreur chargement ${endpoint}:`, err);
+                    }
+                }
+                
+                // Mettre à jour le badge "Demandes"
+                const badgeDemandes = document.getElementById('badgeDemandes');
+                if (badgeDemandes) {
+                    badgeDemandes.textContent = totalEnAttente;
+                    badgeDemandes.style.display = totalEnAttente > 0 ? 'flex' : 'none';
                 }
                 
                 const badge = document.getElementById('badgeInscriptions');
