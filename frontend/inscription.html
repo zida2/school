@@ -473,13 +473,10 @@
                 annee_bac: parseInt(document.getElementById('annee_bac').value),
                 mention_bac: document.getElementById('mention_bac').value,
                 filiere_demandee: parseInt(document.getElementById('filiere').value),
-                niveau_demande: document.getElementById('niveau').value
+                niveau_demande: document.getElementById('niveau').value,
+                // Utiliser l'année académique si disponible, sinon utiliser 1 par défaut
+                annee_academique: anneeAcademique || 1
             };
-            
-            // Ajouter l'année académique seulement si elle existe
-            if (anneeAcademique) {
-                formData.annee_academique = anneeAcademique;
-            }
 
             console.log('📦 Données à envoyer:', formData);
 
