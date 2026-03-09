@@ -242,10 +242,10 @@ body.dark-theme .nav-item-ultra.active {
 /* ===== MAIN CONTENT ===== */
 .content-ultra {
     flex: 1;
-    margin-left: 260px;
+    margin-left: 0;
     padding: 24px 32px;
     min-height: 100vh;
-    max-width: calc(100vw - 260px);
+    max-width: 100%;
     width: 100%;
     overflow-x: hidden;
     display: block;
@@ -335,7 +335,7 @@ body.dark-theme .page-title-ultra {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 32px 0 0;
+    padding: 0 32px;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -391,7 +391,7 @@ body.dark-theme .topbar-ultra::before {
 .topbar-left-ultra {
     flex: 1;
     min-width: 0;
-    padding-left: 32px;
+    padding-left: 0;
 }
 
 .topbar-right-ultra {
@@ -410,6 +410,7 @@ body.dark-theme .topbar-ultra::before {
     border-radius: 20px;
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-left: 0;
 }
 
 body.dark-theme .breadcrumb-ultra {

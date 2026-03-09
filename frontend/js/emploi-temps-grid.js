@@ -16,7 +16,7 @@ async function initEmploiDuTemps() {
 // Charger les filières
 async function chargerFilieres() {
     try {
-        const response = await fetch(`${API_URL}/filieres/`, {
+        const response = await fetch(`${CONFIG.API_URL}/filieres/`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
         });
         const filieres = await response.json();
@@ -43,7 +43,7 @@ async function chargerPromotionsEmploi() {
     if (!filiereId) return;
     
     try {
-        const response = await fetch(`${API_URL}/promotions/?filiere=${filiereId}`, {
+        const response = await fetch(`${CONFIG.API_URL}/promotions/?filiere=${filiereId}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
         });
         const promotions = await response.json();
@@ -66,7 +66,7 @@ async function chargerClassesEmploi() {
     if (!promotionId) return;
     
     try {
-        const response = await fetch(`${API_URL}/classes/?promotion=${promotionId}`, {
+        const response = await fetch(`${CONFIG.API_URL}/classes/?promotion=${promotionId}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
         });
         const classes = await response.json();
@@ -92,7 +92,7 @@ async function chargerEmploiClasse() {
     currentClasse = classeId;
     
     try {
-        const response = await fetch(`${API_URL}/emplois-du-temps/par-classe/${classeId}/`, {
+        const response = await fetch(`${CONFIG.API_URL}/emplois-du-temps/par-classe/${classeId}/`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
         });
         const data = await response.json();
@@ -215,7 +215,7 @@ async function ouvrirModalModifier(emploiId) {
 // Charger les matières
 async function chargerMatieresEmploi() {
     try {
-        const response = await fetch(`${API_URL}/matieres/`, {
+        const response = await fetch(`${CONFIG.API_URL}/matieres/`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
         });
         const matieres = await response.json();
@@ -263,7 +263,7 @@ async function sauvegarderCours() {
     };
     
     // Vérifier les conflits
-    const conflitsResponse = await fetch(`${API_URL}/emplois-du-temps/verifier-conflits/`, {
+    const conflitsResponse = await fetch(`${CONFIG.API_URL}/emplois-du-temps/verifier-conflits/`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
@@ -288,8 +288,8 @@ async function sauvegarderCours() {
     
     try {
         const url = editingEmploi 
-            ? `${API_URL}/emplois-du-temps/${editingEmploi.id}/`
-            : `${API_URL}/emplois-du-temps/`;
+            ? `${CONFIG.API_URL}/emplois-du-temps/${editingEmploi.id}/`
+            : `${CONFIG.API_URL}/emplois-du-temps/`;
         
         const method = editingEmploi ? 'PUT' : 'POST';
         
@@ -323,7 +323,7 @@ async function supprimerCours() {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')) return;
     
     try {
-        const response = await fetch(`${API_URL}/emplois-du-temps/${editingEmploi.id}/`, {
+        const response = await fetch(`${CONFIG.API_URL}/emplois-du-temps/${editingEmploi.id}/`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
