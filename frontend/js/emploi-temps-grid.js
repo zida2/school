@@ -19,13 +19,16 @@ async function chargerFilieres() {
         const response = await fetch(`${CONFIG.API_URL}/filieres/`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
         });
-        const filieres = await response.json();
+        const data = await response.json();
         
         const select = document.getElementById('emploiFilterFiliere');
         if (!select) {
             console.log('⚠️ Element emploiFilterFiliere non trouvé');
             return;
         }
+        
+        // L'API peut retourner un tableau ou un objet avec results
+        const filieres = Array.isArray(data) ? data : (data.results || []);
         
         select.innerHTML = '<option value="">Sélectionner une filière...</option>';
         filieres.forEach(f => {
