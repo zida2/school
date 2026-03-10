@@ -3020,7 +3020,7 @@
             if (!confirm('Valider cette demande d\'inscription ?')) return;
             
             try {
-                await API.post(`/demandes-inscription/${id}/valider/`);
+                await API.post(`/demandes-inscription/${id}/approuver/`);
                 showNotification('Demande validée avec succès', 'success');
                 chargerInscriptionsEtudiants();
                 updateBadgeInscriptions();
