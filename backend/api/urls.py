@@ -29,7 +29,7 @@ from .views_inscription import (
     DemandeInscriptionComptabiliteViewSet
 )
 from .views_emploi_temps import (
-    verifier_conflits, envoyer_emails_emploi, emploi_par_classe, emploi_par_professeur
+    verifier_conflits, emploi_par_classe, emploi_par_professeur
 )
 
 router = DefaultRouter()
@@ -99,7 +99,6 @@ urlpatterns = [
 
     # Emploi du temps - Endpoints spécifiques
     path('emplois-du-temps/verifier-conflits/', verifier_conflits, name='verifier_conflits'),
-    path('emplois-du-temps/envoyer-emails/', envoyer_emails_emploi, name='envoyer_emails_emploi'),
     path('emplois-du-temps/par-classe/<int:classe_id>/', emploi_par_classe, name='emploi_par_classe'),
     path('emplois-du-temps/par-professeur/<int:professeur_id>/', emploi_par_professeur, name='emploi_par_professeur'),
 
