@@ -389,3 +389,100 @@ async function supprimerCours() {
         alert('Erreur lors de la suppression');
     }
 }
+
+
+// Sauvegarder l'emploi du temps
+async function sauvegarderEmploiDuTemps() {
+    const selectClasse = document.getElementById('emploiFilterClasse');
+    
+    if (!selectClasse || !selectClasse.value) {
+        showToast('Veuillez sélectionner une classe', 'warning');
+        return;
+    }
+    
+    const classeId = selectClasse.value;
+    
+    try {
+        // Récupérer tous les emplois de la classe
+        const response = await fetch(`${CONFIG.API_URL}/emplois-du-temps/?classe=${classeId}`, {
+            headers: { 
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Erreur lors de la récupération des emplois');
+        }
+        
+        const emplois = await response.json();
+        const emploisArray = Array.isArray(emplois) ? emplois : (emplois.results || []);
+        
+        // Vérifier les conflits
+        const conflits = [];
+        for (let i = 0; i < emploisArray.length; i++) {
+            for (let j = i + 1; j < emploisArray.length; j++) {
+                const e1 = emploisArray[i];
+                const e2 = emploisArray[j];
+                
+                // Vérifier si même jour et horaires qui se chevauchent
+                if (e1.jour === e2.jour) {
+                    const debut1 = e1.heure_debut;
+                    const fin1 = e1.heure_fin;
+                    const debut2 = e2.heure_debut;
+                    const fin2 = e2.heure_fin;
+                    
+                    if ((debut1 < fin2 && fin1 > debut2)) {
+                        conflits.push({
+                            jour: e1.jour,
+                            cours1: e1.matiere_nom,
+                            cours2: e2.matiere_nom,
+                            horaire: `${debut1}-${fin1} / ${debut2}-${fin2}`
+                        });
+                    }
+                }
+            }
+        }
+        
+        if (conflits.length > 0) {
+            const message = `⚠️ ${conflits.length} conflit(s) détecté(s):\n\n` + 
+                conflits.map(c => `${c.jour}: ${c.cours1} ⚔️ ${c.cours2} (${c.horaire})`).join('\n');
+            
+            if (!confirm(message + '\n\nVoulez-vous quand même sauvegarder ?')) {
+                return;
+            }
+        }
+        
+        // Tout est OK, afficher un message de succès
+        showToast(`✅ Emploi du temps sauvegardé avec succès (${emploisArray.length} cours)`, 'success');
+        
+        // Optionnel: Envoyer une notification aux enseignants
+        if (confirm('Voulez-vous envoyer l\'emploi du temps par email aux enseignants ?')) {
+            await envoyerEmploiDuTemps();
+        }
+        
+    } catch (error) {
+        console.error('Erreur sauvegarde emploi du temps:', error);
+        showToast('Erreur lors de la sauvegarde de l\'emploi du temps', 'error');
+    }
+}
+
+// Fonction showToast si elle n'existe pas déjà
+if (typeof showToast === 'undefined') {
+    function showToast(message, type = 'info') {
+        const icons = { success: '✅', danger: '❌', warning: '⚠️', info: 'ℹ️' };
+        let container = document.getElementById('toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'toast-container';
+            container.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;';
+            document.body.appendChild(container);
+        }
+        const toast = document.createElement('div');
+        const colors = { success: '#059669', danger: '#dc2626', warning: '#d97706', info: '#2563eb' };
+        toast.style.cssText = `background:rgba(10,14,39,0.95);border-radius:12px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:12px;min-width:280px;max-width:400px;border-left:4px solid ${colors[type]};animation:slideIn .3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)`;
+        toast.innerHTML = `<span style="font-size:20px">${icons[type]}</span><span style="color:#fff;font-size:14px;font-weight:500">${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => { toast.style.animation = 'slideOut .3s ease'; setTimeout(() => toast.remove(), 300); }, 4000);
+    }
+}
