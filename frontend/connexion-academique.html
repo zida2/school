@@ -98,7 +98,14 @@
                         successMessage.classList.add('show');
 
                         setTimeout(() => {
-                            window.location.href = 'dashboard-admin.html';
+                            // Rediriger selon le rôle
+                            if (data.user.role === 'etudiant') {
+                                window.location.href = 'dashboard-etudiant.html';
+                            } else if (data.user.role === 'academique') {
+                                window.location.href = 'dashboard-bureau.html';
+                            } else {
+                                window.location.href = 'dashboard-admin.html';
+                            }
                         }, 1000);
                     } else {
                         throw new Error('Accès non autorisé. Cette page est réservée au service académique.');
