@@ -143,7 +143,10 @@
             <div class="notification-panel" id="notificationPanel" style="display:none">
                 <div class="notification-panel-header">
                     <h3>🔔 Notifications</h3>
-                    <button onclick="marquerToutLu()" class="btn-link">Tout marquer comme lu</button>
+                    <div style="display:flex;gap:12px">
+                        <button onclick="marquerToutLu()" class="btn-link">Tout marquer comme lu</button>
+                        <button onclick="toggleNotifications()" class="btn-link" style="color:#ef4444">✕</button>
+                    </div>
                 </div>
                 <div class="notification-panel-body" id="notificationList">
                     <div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">
@@ -156,7 +159,7 @@
             <div class="notification-panel" id="messagePanel" style="display:none">
                 <div class="notification-panel-header">
                     <h3>💬 Messages</h3>
-                    <button onclick="nouveauMessage()" class="btn-link">+ Nouveau message</button>
+                    <button onclick="toggleMessages()" class="btn-link" style="color:#ef4444">✕ Fermer</button>
                 </div>
                 <div class="notification-panel-body" id="messageList">
                     <div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">
@@ -170,16 +173,9 @@
                 <!-- PAGE: DASHBOARD -->
                 <div class="erp-page" id="page-dashboard">
                     <div class="page-header-ultra">
-                        <div class="breadcrumb">
-                            <span class="breadcrumb-item">🏠 Accueil</span>
-                            <span class="breadcrumb-separator">›</span>
-                            <span class="breadcrumb-item">Tableau de bord</span>
-                        </div>
-                        <div class="page-title-ultra-row-ultra">
-                            <div>
-                                <h1 class="page-title-ultra">Tableau de bord</h1>
-                                <p class="page-subtitle-ultra">Espace étudiant · Année 2024-2025</p>
-                            </div>
+                        <div>
+                            <h1 class="page-title-ultra">Tableau de bord</h1>
+                            <p class="page-subtitle-ultra">Espace étudiant · Année 2024-2025</p>
                         </div>
                     </div>
 
