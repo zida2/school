@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>�tudiant � UniERP BF Premium</title>
+    <title>Étudiant – UniERP BF Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css?v=23.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
@@ -11,95 +11,94 @@
 <body class="dark-theme">
 
     <!-- Bouton menu mobile -->
-    <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">?</button>
+    <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">☰</button>
 
     <div class="app-wrapper">
         <!-- SIDEBAR -->
         <aside class="sidebar-ultra" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo-ultra">
-                    <div class="logo-icon-ultra">??</div>
+                    <div class="logo-icon-ultra">🎓</div>
                     <div class="logo-text-ultra">
                         <div class="logo-name-ultra">UniERP BF</div>
-                        <div class="logo-tag-ultra">Espace �tudiant</div>
+                        <div class="logo-tag-ultra">Espace Étudiant</div>
                     </div>
                 </div>
             </div>
 
             <nav class="sidebar-nav-ultra">
                 <div class="nav-section-ultra">
-                    <div class="nav-label-ultra">PRINCIPAL</div>
+                    <div class="nav-label-ultra">Principal</div>
                     <a class="nav-item-ultra active" data-page="dashboard" onclick="navToUltra('dashboard',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">📊</span>
                         <span class="nav-text-ultra">Tableau de bord</span>
-                        <span class="nav-indicator"></span>
                     </a>
                 </div>
 
                 <div class="nav-section-ultra">
-                    <div class="nav-label-ultra">ACAD�MIQUE</div>
+                    <div class="nav-label-ultra">Académique</div>
                     <a class="nav-item-ultra" data-page="notes" onclick="navToUltra('notes',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">📝</span>
                         <span class="nav-text-ultra">Mes notes</span>
                     </a>
                     <a class="nav-item-ultra" data-page="emploi" onclick="navToUltra('emploi',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">📅</span>
                         <span class="nav-text-ultra">Emploi du temps</span>
                     </a>
                     <a class="nav-item-ultra" data-page="enseignants" onclick="navToUltra('enseignants',this)">
-                        <span class="nav-icon-ultra">?????</span>
+                        <span class="nav-icon-ultra">👨‍🏫</span>
                         <span class="nav-text-ultra">Mes enseignants</span>
                     </a>
                     <a class="nav-item-ultra" data-page="absence" onclick="navToUltra('absence',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">📋</span>
                         <span class="nav-text-ultra">Absences</span>
                     </a>
                     <a class="nav-item-ultra" data-page="cours" onclick="navToUltra('cours',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">📚</span>
                         <span class="nav-text-ultra">Cours</span>
                     </a>
                     <a class="nav-item-ultra" data-page="supports" onclick="navToUltra('supports',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">📄</span>
                         <span class="nav-text-ultra">Supports de cours</span>
                     </a>
                     <a class="nav-item-ultra" data-page="evaluation" onclick="navToUltra('evaluation',this)">
-                        <span class="nav-icon-ultra">??</span>
-                        <span class="nav-text-ultra">�valuations</span>
+                        <span class="nav-icon-ultra">✍️</span>
+                        <span class="nav-text-ultra">Évaluations</span>
                     </a>
                 </div>
 
                 <div class="nav-section-ultra">
-                    <div class="nav-label-ultra">SERVICES</div>
+                    <div class="nav-label-ultra">Services</div>
                     <a class="nav-item-ultra" data-page="demande" onclick="navToUltra('demande',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">📨</span>
                         <span class="nav-text-ultra">Demandes</span>
                     </a>
                     <a class="nav-item-ultra" data-page="reclamation" onclick="navToUltra('reclamation',this)">
-                        <span class="nav-icon-ultra">??</span>
-                        <span class="nav-text-ultra">R�clamations</span>
+                        <span class="nav-icon-ultra">📢</span>
+                        <span class="nav-text-ultra">Réclamations</span>
                     </a>
                     <a class="nav-item-ultra" data-page="publications" onclick="navToUltra('publications',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">📰</span>
                         <span class="nav-text-ultra">Publications</span>
                     </a>
                     <a class="nav-item-ultra" data-page="sondage" onclick="navToUltra('sondage',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">📊</span>
                         <span class="nav-text-ultra">Sondages</span>
                     </a>
                     <a class="nav-item-ultra" data-page="questionnaire" onclick="navToUltra('questionnaire',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">📝</span>
                         <span class="nav-text-ultra">Questionnaires</span>
                     </a>
                     <a class="nav-item-ultra" data-page="objetperdu" onclick="navToUltra('objetperdu',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">🔍</span>
                         <span class="nav-text-ultra">Objets perdus</span>
                     </a>
                 </div>
 
                 <div class="nav-section-ultra">
-                    <div class="nav-label-ultra">FINANCE</div>
+                    <div class="nav-label-ultra">Finance</div>
                     <a class="nav-item-ultra" data-page="paiements" onclick="navToUltra('paiements',this)">
-                        <span class="nav-icon-ultra">??</span>
+                        <span class="nav-icon-ultra">💰</span>
                         <span class="nav-text-ultra">Mes paiements</span>
                     </a>
                 </div>
@@ -112,27 +111,27 @@
             <header class="topbar-ultra">
                 <div class="topbar-left-ultra">
                     <div class="breadcrumb-ultra">
-                        <span class="breadcrumb-item-ultra">?? Accueil</span>
+                        <span class="breadcrumb-item-ultra">🏠 Accueil</span>
                         <span class="breadcrumb-separator-ultra">/</span>
                         <span class="breadcrumb-item-ultra active-ultra" id="currentPageName">Tableau de bord</span>
                     </div>
                 </div>
                 <div class="topbar-right-ultra">
                     <button class="topbar-btn-ultra" title="Notifications">
-                        <span>??</span>
+                        <span>🔔</span>
                         <span class="notification-dot"></span>
                     </button>
                     <button class="topbar-btn-ultra" title="Messages">
-                        <span>??</span>
+                        <span>💬</span>
                     </button>
-                    <button class="topbar-btn-ultra" id="themeBtn" onclick="toggleTheme()" title="Changer de th�me">
-                        <span id="themeIcon">??</span>
+                    <button class="topbar-btn-ultra" id="themeBtn" onclick="toggleTheme()" title="Changer de thème">
+                        <span id="themeIcon">☀️</span>
                     </button>
                     <div class="user-menu-ultra" onclick="logout()">
                         <div class="user-avatar-ultra">ET</div>
                         <div class="user-info-ultra">
-                            <div class="user-name-ultra">�tudiant</div>
-                            <div class="user-role-ultra">�tudiant</div>
+                            <div class="user-name-ultra">Étudiant</div>
+                            <div class="user-role-ultra">Étudiant</div>
                         </div>
                     </div>
                 </div>
@@ -141,54 +140,61 @@
             <!-- CONTENT AREA -->
             <div class="content-ultra">
                 <!-- PAGE: DASHBOARD -->
-                <div class="page-ultra" id="page-dashboard">
+                <div class="erp-page" id="page-dashboard">
                     <div class="page-header-ultra">
-                        <div>
-                            <h1 class="page-title-ultra">Tableau de bord</h1>
-                            <p class="page-subtitle-ultra">Espace �tudiant � Ann�e 2024-2025</p>
+                        <div class="breadcrumb">
+                            <span class="breadcrumb-item">🏠 Accueil</span>
+                            <span class="breadcrumb-separator">›</span>
+                            <span class="breadcrumb-item">Tableau de bord</span>
+                        </div>
+                        <div class="page-title-ultra-row-ultra">
+                            <div>
+                                <h1 class="page-title-ultra">Tableau de bord</h1>
+                                <p class="page-subtitle-ultra">Espace étudiant · Année 2024-2025</p>
+                            </div>
                         </div>
                     </div>
 
                     <!-- STATS CARDS -->
                     <div class="stats-grid-ultra">
-                        <div class="stat-card-ultra warning-ultra">
-                            <div class="stat-icon-ultra">??</div>
-                            <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statMatieres">0</div>
-                                <div class="stat-label-ultra">Mati�res inscrites</div>
+                        <div class="stat-card-ultra">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-ultra warning">📚</div>
                             </div>
+                            <div class="stat-value-ultra" id="statMatieres">0</div>
+                            <div class="stat-label-ultra">Matières inscrites</div>
                         </div>
 
-                        <div class="stat-card-ultra success-ultra">
-                            <div class="stat-icon-ultra">??</div>
-                            <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statMoyenne">0.00</div>
-                                <div class="stat-label-ultra">Moyenne g�n�rale</div>
+                        <div class="stat-card-ultra">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-ultra success">📊</div>
                             </div>
+                            <div class="stat-value-ultra" id="statMoyenne">0.00</div>
+                            <div class="stat-label-ultra">Moyenne générale</div>
                         </div>
 
-                        <div class="stat-card-ultra primary-ultra">
-                            <div class="stat-icon-ultra">?</div>
-                            <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statPresence">0%</div>
-                                <div class="stat-label-ultra">Taux de pr�sence</div>
+                        <div class="stat-card-ultra">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-ultra primary">✅</div>
                             </div>
+                            <div class="stat-value-ultra" id="statPresence">0%</div>
+                            <div class="stat-label-ultra">Taux de présence</div>
                         </div>
 
-                        <div class="stat-card-ultra danger-ultra">
-                            <div class="stat-icon-ultra">??</div>
-                            <div class="stat-content-ultra">
-                                <div class="stat-value-ultra" id="statSolde">0 FCFA</div>
-                                <div class="stat-label-ultra">Solde d�</div>
+                        <div class="stat-card-ultra">
+                            <div class="stat-card-header">
+                                <div class="stat-icon-ultra danger">💰</div>
                             </div>
+                            <div class="stat-value-ultra" id="statSolde">0 FCFA</div>
+                            <div class="stat-label-ultra">Solde dû</div>
                         </div>
                     </div>
 
                     <!-- CONTENT CARDS -->
-                    <div class="charts-grid-ultra">
+                    <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px">
                         <div class="card-ultra">
                             <div class="card-header-ultra">
-                                <h3 class="card-title-ultra">?? �volution de vos notes</h3>
+                                <h3 class="card-title-ultra">📈 Évolution de vos notes</h3>
                             </div>
                             <div class="card-body-ultra">
                                 <canvas id="chartNotes" height="80"></canvas>
@@ -197,7 +203,7 @@
 
                         <div class="card-ultra">
                             <div class="card-header-ultra">
-                                <h3 class="card-title-ultra">?? R�partition</h3>
+                                <h3 class="card-title-ultra">🎯 Répartition</h3>
                             </div>
                             <div class="card-body-ultra">
                                 <canvas id="chartRepartition" height="200"></canvas>
@@ -208,14 +214,14 @@
                     <!-- RECENT NOTES -->
                     <div class="card-ultra">
                         <div class="card-header-ultra">
-                            <h3 class="card-title-ultra">?? Notes r�centes</h3>
+                            <h3 class="card-title-ultra">📝 Notes récentes</h3>
                             <button class="btn-ultra btn-secondary-ultra" onclick="navToUltra('notes')">Voir tout</button>
                         </div>
                         <div class="card-body-ultra" style="padding:0">
                             <table class="table-ultra">
                                 <thead>
                                     <tr>
-                                        <th>Mati�re</th>
+                                        <th>Matière</th>
                                         <th>CC</th>
                                         <th>Examen</th>
                                         <th>Moyenne</th>
@@ -232,14 +238,16 @@
                 </div>
 
                 <!-- PAGE: NOTES -->
-                <div class="page-ultra" id="page-notes" style="display:none">
+                <div class="erp-page" id="page-notes" style="display:none">
                     <div class="page-header-ultra">
-                        <div>
-                            <h1 class="page-title-ultra">Mes notes</h1>
-                            <p class="page-subtitle-ultra">Consultez vos résultats académiques</p>
-                        </div>
-                        <div class="page-actions-ultra">
-                            <button class="btn-ultra btn-secondary-ultra">📥 Télécharger bulletin</button>
+                        <div class="page-title-ultra-row-ultra">
+                            <div>
+                                <h1 class="page-title-ultra">Mes notes</h1>
+                                <p class="page-subtitle-ultra">Consultez vos résultats académiques</p>
+                            </div>
+                            <div class="page-actions-ultra">
+                                <button class="btn-ultra btn-secondary-ultra">📥 Télécharger bulletin</button>
+                            </div>
                         </div>
                     </div>
 
@@ -248,7 +256,7 @@
                             <table class="table-ultra">
                                 <thead>
                                     <tr>
-                                        <th>Mati�re</th>
+                                        <th>Matière</th>
                                         <th>Coefficient</th>
                                         <th>CC</th>
                                         <th>Examen</th>
@@ -266,16 +274,16 @@
                 </div>
 
                 <!-- PAGE: EMPLOI -->
-                <div class="page-ultra" id="page-emploi" style="display:none">
+                <div class="erp-page" id="page-emploi" style="display:none">
                     <div class="page-header-ultra">
-                        <div>
-                            <h1 class="page-title-ultra">Emploi du temps</h1>
-                            <p class="page-subtitle-ultra">Votre programme de la semaine</p>
-                        </div>
-                        <div class="page-actions-ultra">
-                            <button class="btn-ultra btn-secondary-ultra" onclick="imprimerEmploi()">🖨️ Imprimer</button>
-                        </div>
-                    </div>
+                        <div class="page-title-ultra-row-ultra">
+                            <div>
+                                <h1 class="page-title-ultra">Emploi du temps</h1>
+                                <p class="page-subtitle-ultra">Votre programme de la semaine</p>
+                            </div>
+                            <div class="page-actions-ultra">
+                                <button class="btn-ultra btn-secondary-ultra" onclick="imprimerEmploi()">🖨️ Imprimer</button>
+                            </div>
                         </div>
                     </div>
 
@@ -287,7 +295,7 @@
                                         <tr>
                                             <th>Jour</th>
                                             <th>Heure</th>
-                                            <th>Mati�re</th>
+                                            <th>Matière</th>
                                             <th>Enseignant</th>
                                             <th>Salle</th>
                                             <th>Type</th>
@@ -303,12 +311,12 @@
                 </div>
 
                 <!-- PAGE: MES ENSEIGNANTS -->
-                <div class="page-ultra" id="page-enseignants" style="display:none">
+                <div class="erp-page" id="page-enseignants" style="display:none">
                     <div class="page-header-ultra">
-                        <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
-                                <h1 class="page-title-ultra">????? Mes enseignants</h1>
-                                <p class="page-subtitle-ultra">Liste de vos enseignants et leurs mati�res</p>
+                                <h1 class="page-title-ultra">👨‍🏫 Mes enseignants</h1>
+                                <p class="page-subtitle-ultra">Liste de vos enseignants et leurs matières</p>
                             </div>
                         </div>
                     </div>
@@ -319,12 +327,12 @@
                 </div>
 
                 <!-- PAGE: SUPPORTS -->
-                <div class="page-ultra" id="page-supports" style="display:none">
+                <div class="erp-page" id="page-supports" style="display:none">
                     <div class="page-header-ultra">
-                        <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
                                 <h1 class="page-title-ultra">Supports de cours</h1>
-                                <p class="page-subtitle-ultra">Documents p�dagogiques mis � disposition par vos enseignants</p>
+                                <p class="page-subtitle-ultra">Documents pédagogiques mis à disposition par vos enseignants</p>
                             </div>
                         </div>
                     </div>
@@ -334,17 +342,17 @@
                         <div class="card-body-ultra">
                             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
                                 <div>
-                                    <input type="text" id="searchSupports" class="search-input-ultra" placeholder="?? Rechercher..." 
+                                    <input type="text" id="searchSupports" class="search-input-ultra" placeholder="🔍 Rechercher..." 
                                         style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff"
                                         onkeyup="filtrerSupports()">
                                 </div>
                                 <div>
                                     <select id="filterTypeSupport" class="form-input-premium" onchange="filtrerSupports()" style="width:100%;padding:12px 16px">
-                                        <option value="">?? Tous les types</option>
+                                        <option value="">📄 Tous les types</option>
                                         <option value="cours">Cours magistral</option>
                                         <option value="td">TD</option>
                                         <option value="tp">TP</option>
-                                        <option value="examen_corrige">Examen corrig�</option>
+                                        <option value="examen_corrige">Examen corrigé</option>
                                         <option value="ressource">Ressource</option>
                                     </select>
                                 </div>
@@ -360,7 +368,7 @@
                                     <thead>
                                         <tr>
                                             <th>Titre</th>
-                                            <th>Mati�re</th>
+                                            <th>Matière</th>
                                             <th>Enseignant</th>
                                             <th>Type</th>
                                             <th>Date</th>
@@ -377,28 +385,28 @@
                 </div>
 
                 <!-- PAGE: PAIEMENTS -->
-                <div class="page-ultra" id="page-paiements" style="display:none">
+                <div class="erp-page" id="page-paiements" style="display:none">
                     <div class="page-header-ultra">
-                        <div class="page-header-ultra">
+                        <div class="page-title-ultra-row-ultra">
                             <div>
                                 <h1 class="page-title-ultra">Mes paiements</h1>
-                                <p class="page-subtitle-ultra">Historique de vos paiements et situation financi�re</p>
+                                <p class="page-subtitle-ultra">Historique de vos paiements et situation financière</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Situation financi�re -->
+                    <!-- Situation financière -->
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
                         <div style="padding:20px;background:rgba(16,185,129,0.1);border-radius:12px;border:1px solid rgba(16,185,129,0.2)">
                             <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">FRAIS D'INSCRIPTION</div>
                             <div style="font-size:24px;font-weight:700;color:#10b981" id="statFraisInscription">0 FCFA</div>
                         </div>
                         <div style="padding:20px;background:rgba(99,102,241,0.1);border-radius:12px;border:1px solid rgba(99,102,241,0.2)">
-                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">MONTANT PAY�</div>
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">MONTANT PAYÉ</div>
                             <div style="font-size:24px;font-weight:700;color:#6366f1" id="statMontantPaye">0 FCFA</div>
                         </div>
                         <div style="padding:20px;background:rgba(239,68,68,0.1);border-radius:12px;border:1px solid rgba(239,68,68,0.2)">
-                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">SOLDE D�</div>
+                            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px">SOLDE DÛ</div>
                             <div style="font-size:24px;font-weight:700;color:#ef4444" id="statSoldeDu">0 FCFA</div>
                         </div>
                     </div>
@@ -406,14 +414,14 @@
                     <!-- Historique des paiements -->
                     <div class="card-ultra">
                         <div class="card-header-ultra">
-                            <h3 class="card-title-ultra">?? Historique des paiements</h3>
+                            <h3 class="card-title-ultra">💰 Historique des paiements</h3>
                         </div>
                         <div class="card-body-ultra">
                             <div style="overflow-x:auto">
                                 <table class="table-ultra">
                                     <thead>
                                         <tr>
-                                            <th>N� Re�u</th>
+                                            <th>N° Reçu</th>
                                             <th>Date</th>
                                             <th>Montant</th>
                                             <th>Mode</th>
@@ -432,33 +440,33 @@
                 </div>
 
                 <!-- PAGE: ABSENCE -->
-                <div class="page-ultra" id="page-absence" style="display:none">
+                <div class="erp-page" id="page-absence" style="display:none">
                     <div class="page-header-ultra">
-                        <h1 class="page-title-ultra">?? Mes absences</h1>
-                        <p class="page-subtitle-ultra">Suivi de vos absences et pr�sences</p>
+                        <h1 class="page-title-ultra">📋 Mes absences</h1>
+                        <p class="page-subtitle-ultra">Suivi de vos absences et présences</p>
                     </div>
                     
                     <!-- Stats absences -->
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
                         <div class="stat-card-ultra success-ultra">
-                            <div class="stat-icon-ultra">?</div>
+                            <div class="stat-icon-ultra">✅</div>
                             <div class="stat-content-ultra">
                                 <div class="stat-value-ultra-ultra" id="statPresences">0</div>
-                                <div class="stat-label-ultra-ultra">Pr�sences</div>
+                                <div class="stat-label-ultra-ultra">Présences</div>
                             </div>
                         </div>
                         <div class="stat-card-ultra warning-ultra">
-                            <div class="stat-icon-ultra">??</div>
+                            <div class="stat-icon-ultra">⚠️</div>
                             <div class="stat-content-ultra">
                                 <div class="stat-value-ultra-ultra" id="statAbsences">0</div>
                                 <div class="stat-label-ultra-ultra">Absences</div>
                             </div>
                         </div>
                         <div class="stat-card-ultra primary-ultra">
-                            <div class="stat-icon-ultra">??</div>
+                            <div class="stat-icon-ultra">📊</div>
                             <div class="stat-content-ultra">
                                 <div class="stat-value-ultra-ultra" id="statTauxPresence">0%</div>
-                                <div class="stat-label-ultra-ultra">Taux de pr�sence</div>
+                                <div class="stat-label-ultra-ultra">Taux de présence</div>
                             </div>
                         </div>
                     </div>
@@ -472,14 +480,14 @@
                                 <thead>
                                     <tr>
                                         <th>Date</th>
-                                        <th>Mati�re</th>
+                                        <th>Matière</th>
                                         <th>Type</th>
                                         <th>Statut</th>
                                         <th>Justification</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyAbsences">
-                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune absence enregistr�e</td></tr>
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune absence enregistrée</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -487,10 +495,10 @@
                 </div>
 
                 <!-- PAGE: COURS -->
-                <div class="page-ultra" id="page-cours" style="display:none">
+                <div class="erp-page" id="page-cours" style="display:none">
                     <div class="page-header-ultra">
-                        <h1 class="page-title-ultra">?? Mes cours</h1>
-                        <p class="page-subtitle-ultra">Liste de vos cours et mati�res</p>
+                        <h1 class="page-title-ultra">📚 Mes cours</h1>
+                        <p class="page-subtitle-ultra">Liste de vos cours et matières</p>
                     </div>
                     
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
@@ -501,29 +509,29 @@
                 </div>
 
                 <!-- PAGE: EVALUATION -->
-                <div class="page-ultra" id="page-evaluation" style="display:none">
+                <div class="erp-page" id="page-evaluation" style="display:none">
                     <div class="page-header-ultra">
-                        <h1 class="page-title-ultra">?? �valuations</h1>
-                        <p class="page-subtitle-ultra">Calendrier des �valuations et examens</p>
+                        <h1 class="page-title-ultra">✍️ Évaluations</h1>
+                        <p class="page-subtitle-ultra">Calendrier des évaluations et examens</p>
                     </div>
                     
                     <div class="card-ultra">
                         <div class="card-header-ultra">
-                            <h3 class="card-title-ultra">Prochaines �valuations</h3>
+                            <h3 class="card-title-ultra">Prochaines évaluations</h3>
                         </div>
                         <div class="card-body-ultra" style="padding:0">
                             <table class="table-ultra">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
-                                        <th>Mati�re</th>
+                                        <th>Matière</th>
                                         <th>Type</th>
-                                        <th>Dur�e</th>
+                                        <th>Durée</th>
                                         <th>Salle</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyEvaluations">
-                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune �valuation programm�e</td></tr>
+                                    <tr><td colspan="5" style="text-align:center;padding:40px">Aucune évaluation programmée</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -531,11 +539,11 @@
                 </div>
 
                 <!-- PAGE: DEMANDE -->
-                <div class="page-ultra" id="page-demande" style="display:none">
+                <div class="erp-page" id="page-demande" style="display:none">
                     <div class="page-header-ultra">
                         <div>
-                            <h1 class="page-title-ultra">?? Mes demandes</h1>
-                            <p class="page-subtitle-ultra">Soumettre et suivre vos demandes administratives et p�dagogiques</p>
+                            <h1 class="page-title-ultra">📨 Mes demandes</h1>
+                            <p class="page-subtitle-ultra">Soumettre et suivre vos demandes administratives et pédagogiques</p>
                         </div>
                         <button class="btn-ultra btn-primary-ultra" onclick="openModalDemande()">+ Nouvelle demande</button>
                     </div>
@@ -562,10 +570,10 @@
                 </div>
 
                 <!-- PAGE: PUBLICATIONS -->
-                <div class="page-ultra" id="page-publications" style="display:none">
+                <div class="erp-page" id="page-publications" style="display:none">
                     <div class="page-header-ultra">
-                        <h1 class="page-title-ultra">?? Publications</h1>
-                        <p class="page-subtitle-ultra">Actualit�s et annonces de l'universit�</p>
+                        <h1 class="page-title-ultra">📰 Publications</h1>
+                        <p class="page-subtitle-ultra">Actualités et annonces de l'université</p>
                     </div>
                     
                     <div id="listePublications" style="display:grid;gap:20px">
@@ -574,10 +582,10 @@
                 </div>
 
                 <!-- PAGE: SONDAGE -->
-                <div class="page-ultra" id="page-sondage" style="display:none">
+                <div class="erp-page" id="page-sondage" style="display:none">
                     <div class="page-header-ultra">
-                        <h1 class="page-title-ultra">?? Sondages</h1>
-                        <p class="page-subtitle-ultra">Participez aux sondages de l'universit�</p>
+                        <h1 class="page-title-ultra">📊 Sondages</h1>
+                        <p class="page-subtitle-ultra">Participez aux sondages de l'université</p>
                     </div>
                     
                     <div id="listeSondages" style="display:grid;gap:20px">
@@ -586,10 +594,10 @@
                 </div>
 
                 <!-- PAGE: QUESTIONNAIRE -->
-                <div class="page-ultra" id="page-questionnaire" style="display:none">
+                <div class="erp-page" id="page-questionnaire" style="display:none">
                     <div class="page-header-ultra">
-                        <h1 class="page-title-ultra">?? Questionnaires</h1>
-                        <p class="page-subtitle-ultra">�valuez vos enseignants et cours</p>
+                        <h1 class="page-title-ultra">📝 Questionnaires</h1>
+                        <p class="page-subtitle-ultra">Évaluez vos enseignants et cours</p>
                     </div>
                     
                     <div id="listeQuestionnaires" style="display:grid;gap:20px">
@@ -598,13 +606,13 @@
                 </div>
 
                 <!-- PAGE: RECLAMATION -->
-                <div class="page-ultra" id="page-reclamation" style="display:none">
+                <div class="erp-page" id="page-reclamation" style="display:none">
                     <div class="page-header-ultra">
                         <div>
-                            <h1 class="page-title-ultra">?? Mes r�clamations</h1>
-                            <p class="page-subtitle-ultra">Suivez vos r�clamations sur les notes</p>
+                            <h1 class="page-title-ultra">📢 Mes réclamations</h1>
+                            <p class="page-subtitle-ultra">Suivez vos réclamations sur les notes</p>
                         </div>
-                        <button class="btn-ultra btn-primary-ultra" onclick="openModalReclamation()">+ Nouvelle r�clamation</button>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModalReclamation()">+ Nouvelle réclamation</button>
                     </div>
                     
                     <div class="card-ultra">
@@ -613,8 +621,8 @@
                                 <thead>
                                     <tr>
                                         <th>Date</th>
-                                        <th>Mati�re</th>
-                                        <th>Type de probl�me</th>
+                                        <th>Matière</th>
+                                        <th>Type de problème</th>
                                         <th>Description</th>
                                         <th>Statut</th>
                                         <th>Actions</th>
@@ -629,13 +637,13 @@
                 </div>
 
                 <!-- PAGE: OBJET PERDU -->
-                <div class="page-ultra" id="page-objetperdu" style="display:none">
+                <div class="erp-page" id="page-objetperdu" style="display:none">
                     <div class="page-header-ultra">
                         <div>
-                            <h1 class="page-title-ultra">?? Objets perdus</h1>
-                            <p class="page-subtitle-ultra">D�clarer ou rechercher des objets perdus</p>
+                            <h1 class="page-title-ultra">🔍 Objets perdus</h1>
+                            <p class="page-subtitle-ultra">Déclarer ou rechercher des objets perdus</p>
                         </div>
-                        <button class="btn-ultra btn-primary-ultra" onclick="openModalObjetPerdu()">+ D�clarer un objet</button>
+                        <button class="btn-ultra btn-primary-ultra" onclick="openModalObjetPerdu()">+ Déclarer un objet</button>
                     </div>
                     
                     <div class="card-ultra">
@@ -662,31 +670,31 @@
         </div>
     </div>
 
-    <!-- MODAL R�CLAMATION NOTE -->
+    <!-- MODAL RÉCLAMATION NOTE -->
     <div class="modal-overlay-premium" id="modalReclamation" style="display:none">
         <div class="modal-premium">
             <div class="modal-header-premium">
-                <h3 class="modal-title-premium">?? Signaler un probl�me sur une note</h3>
-                <button class="modal-close-premium" onclick="closeModalReclamation()">?</button>
+                <h3 class="modal-title-premium">⚠️ Signaler un problème sur une note</h3>
+                <button class="modal-close-premium" onclick="closeModalReclamation()">✕</button>
             </div>
             <form onsubmit="soumettreReclamation(event)">
                 <div class="modal-body-premium">
                     <div class="alert-info-premium" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:14px;margin-bottom:20px;color:#fbbf24;font-size:13px;">
-                        ?? Cette r�clamation sera envoy�e � l'enseignant pour v�rification. Assurez-vous de bien d�crire le probl�me.
+                        ⚠️ Cette réclamation sera envoyée à l'enseignant pour vérification. Assurez-vous de bien décrire le problème.
                     </div>
                     
                     <input type="hidden" id="reclamationNoteId" name="note_id">
                     
-                    <!-- S�lecteur de note (visible uniquement si ouvert depuis l'onglet r�clamations) -->
+                    <!-- Sélecteur de note (visible uniquement si ouvert depuis l'onglet réclamations) -->
                     <div class="form-group-premium" id="groupeSelectNote" style="display:none">
-                        <label class="form-label-premium">S�lectionner la note concern�e *</label>
+                        <label class="form-label-premium">Sélectionner la note concernée *</label>
                         <select id="reclamationSelectNote" class="form-input-premium" onchange="updateNoteReclamation()">
                             <option value="">Chargement...</option>
                         </select>
                     </div>
                     
                     <div class="form-group-premium" id="groupeMatiereReadonly">
-                        <label class="form-label-premium">Mati�re concern�e</label>
+                        <label class="form-label-premium">Matière concernée</label>
                         <input type="text" class="form-input-premium" id="reclamationMatiere" readonly style="background:rgba(255,255,255,0.03);">
                     </div>
 
@@ -702,20 +710,20 @@
                     </div>
 
                     <div class="form-group-premium">
-                        <label class="form-label-premium">Type de probl�me *</label>
+                        <label class="form-label-premium">Type de problème *</label>
                         <select name="type_probleme" required class="form-input-premium">
-                            <option value="">S�lectionner</option>
+                            <option value="">Sélectionner</option>
                             <option value="note_incorrecte">Note incorrecte / erreur de saisie</option>
                             <option value="note_manquante">Note manquante</option>
-                            <option value="mauvaise_matiere">Note attribu�e � la mauvaise mati�re</option>
+                            <option value="mauvaise_matiere">Note attribuée à la mauvaise matière</option>
                             <option value="calcul_errone">Erreur de calcul de moyenne</option>
-                            <option value="autre">Autre probl�me</option>
+                            <option value="autre">Autre problème</option>
                         </select>
                     </div>
 
                     <div class="form-group-premium">
-                        <label class="form-label-premium">Description du probl�me *</label>
-                        <textarea name="description" required class="form-input-premium" rows="4" placeholder="D�crivez pr�cis�ment le probl�me constat�..."></textarea>
+                        <label class="form-label-premium">Description du problème *</label>
+                        <textarea name="description" required class="form-input-premium" rows="4" placeholder="Décrivez précisément le problème constaté..."></textarea>
                     </div>
 
                     <div class="form-group-premium">
@@ -725,7 +733,7 @@
                 </div>
                 <div class="modal-footer-premium">
                     <button type="button" class="btn-ultra btn-secondary-ultra" onclick="closeModalReclamation()">Annuler</button>
-                    <button type="submit" class="btn-ultra btn-primary-ultra" style="background:linear-gradient(135deg,#f59e0b,#d97706)">?? Envoyer la r�clamation</button>
+                    <button type="submit" class="btn-ultra btn-primary-ultra" style="background:linear-gradient(135deg,#f59e0b,#d97706)">📤 Envoyer la réclamation</button>
                 </div>
             </form>
         </div>
@@ -735,24 +743,24 @@
     <div class="modal-overlay-premium" id="modalDemande" style="display:none">
         <div class="modal-premium">
             <div class="modal-header-premium">
-                <h3 class="modal-title-premium">?? Nouvelle demande</h3>
-                <button class="modal-close-premium" onclick="closeModalDemande()">?</button>
+                <h3 class="modal-title-premium">📨 Nouvelle demande</h3>
+                <button class="modal-close-premium" onclick="closeModalDemande()">✕</button>
             </div>
             <form onsubmit="soumettreDemande(event)">
                 <div class="modal-body-premium">
                     <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:14px;margin-bottom:20px;display:flex;align-items:start;gap:12px">
-                        <span style="font-size:20px;flex-shrink:0">??</span>
+                        <span style="font-size:20px;flex-shrink:0">💡</span>
                         <div style="color:#fbbf24;font-size:13px;line-height:1.5">
-                            <strong>Conseil:</strong> Soyez pr�cis dans votre demande pour obtenir une r�ponse rapide et adapt�e.
+                            <strong>Conseil:</strong> Soyez précis dans votre demande pour obtenir une réponse rapide et adaptée.
                         </div>
                     </div>
 
                     <div class="form-group-premium">
                         <label class="form-label-premium">Destinataire *</label>
                         <select id="demandeDestinataire" name="destinataire" required class="form-input-premium" onchange="updateTypeDemande()">
-                            <option value="">S�lectionner</option>
-                            <option value="administration">??? Administration (Service administratif)</option>
-                            <option value="professeur">????? Professeur (Enseignant sp�cifique)</option>
+                            <option value="">Sélectionner</option>
+                            <option value="administration">🏛️ Administration (Service administratif)</option>
+                            <option value="professeur">👨‍🏫 Professeur (Enseignant spécifique)</option>
                         </select>
                         <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:6px">
                             Choisissez qui doit traiter votre demande
@@ -760,35 +768,35 @@
                     </div>
 
                     <div class="form-group-premium" id="groupeProfesseur" style="display:none">
-                        <label class="form-label-premium">Professeur concern� *</label>
+                        <label class="form-label-premium">Professeur concerné *</label>
                         <select id="demandeProfesseur" name="professeur" class="form-input-premium">
                             <option value="">Chargement...</option>
                         </select>
                         <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:6px">
-                            Votre demande sera envoy�e directement � ce professeur
+                            Votre demande sera envoyée directement à ce professeur
                         </div>
                     </div>
 
                     <div class="form-group-premium">
                         <label class="form-label-premium">Type de demande *</label>
                         <select id="demandeType" name="type" required class="form-input-premium">
-                            <option value="">S�lectionner d'abord un destinataire</option>
+                            <option value="">Sélectionner d'abord un destinataire</option>
                         </select>
                     </div>
 
                     <div class="form-group-premium">
                         <label class="form-label-premium">Objet *</label>
-                        <input type="text" name="objet" required class="form-input-premium" placeholder="R�sum� de votre demande">
+                        <input type="text" name="objet" required class="form-input-premium" placeholder="Résumé de votre demande">
                     </div>
 
                     <div class="form-group-premium">
                         <label class="form-label-premium">Description *</label>
-                        <textarea name="description" required class="form-input-premium" rows="5" placeholder="D�crivez votre demande en d�tail..."></textarea>
+                        <textarea name="description" required class="form-input-premium" rows="5" placeholder="Décrivez votre demande en détail..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer-premium">
                     <button type="button" class="btn-ultra btn-secondary-ultra" onclick="closeModalDemande()">Annuler</button>
-                    <button type="submit" class="btn-ultra btn-primary-ultra">?? Envoyer</button>
+                    <button type="submit" class="btn-ultra btn-primary-ultra">📤 Envoyer</button>
                 </div>
             </form>
         </div>
@@ -798,8 +806,8 @@
     <div class="modal-overlay-premium" id="modalObjetPerdu" style="display:none">
         <div class="modal-premium">
             <div class="modal-header-premium">
-                <h3 class="modal-title-premium">?? D�clarer un objet perdu/trouv�</h3>
-                <button class="modal-close-premium" onclick="closeModalObjetPerdu()">?</button>
+                <h3 class="modal-title-premium">🔍 Déclarer un objet perdu/trouvé</h3>
+                <button class="modal-close-premium" onclick="closeModalObjetPerdu()">✕</button>
             </div>
             <form onsubmit="soumettreObjetPerdu(event)">
                 <div class="modal-body-premium">
@@ -807,23 +815,23 @@
                         <label class="form-label-premium">Type *</label>
                         <select name="type" required class="form-input-premium">
                             <option value="perdu">J'ai perdu un objet</option>
-                            <option value="trouve">J'ai trouv� un objet</option>
+                            <option value="trouve">J'ai trouvé un objet</option>
                         </select>
                     </div>
 
                     <div class="form-group-premium">
                         <label class="form-label-premium">Nom de l'objet *</label>
-                        <input type="text" name="nom_objet" required class="form-input-premium" placeholder="Ex: T�l�phone Samsung, Cl�s, Sac...">
+                        <input type="text" name="nom_objet" required class="form-input-premium" placeholder="Ex: Téléphone Samsung, Clés, Sac...">
                     </div>
 
                     <div class="form-group-premium">
                         <label class="form-label-premium">Description *</label>
-                        <textarea name="description" required class="form-input-premium" rows="3" placeholder="D�crivez l'objet (couleur, marque, signes distinctifs...)"></textarea>
+                        <textarea name="description" required class="form-input-premium" rows="3" placeholder="Décrivez l'objet (couleur, marque, signes distinctifs...)"></textarea>
                     </div>
 
                     <div class="form-group-premium">
                         <label class="form-label-premium">Lieu *</label>
-                        <input type="text" name="lieu" required class="form-input-premium" placeholder="Ex: Amphith��tre A, Biblioth�que, Cantine...">
+                        <input type="text" name="lieu" required class="form-input-premium" placeholder="Ex: Amphithéâtre A, Bibliothèque, Cantine...">
                     </div>
 
                     <div class="form-group-premium">
@@ -833,7 +841,7 @@
                 </div>
                 <div class="modal-footer-premium">
                     <button type="button" class="btn-ultra btn-secondary-ultra" onclick="closeModalObjetPerdu()">Annuler</button>
-                    <button type="submit" class="btn-ultra btn-primary-ultra">?? D�clarer</button>
+                    <button type="submit" class="btn-ultra btn-primary-ultra">📤 Déclarer</button>
                 </div>
             </form>
         </div>
@@ -847,8 +855,6 @@
 
     <!-- Puis le script inline qui utilise ces fonctions -->
     <script>
-        // PAS de vérification au chargement - on fait confiance à la redirection depuis index.html
-        
         // Fonction pour changer de thème
         function toggleTheme() {
             const body = document.body;
@@ -875,28 +881,11 @@
             }
         }
         
-        // Charger le thème sauvegardé
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('theme');
-            const themeIcon = document.getElementById('themeIcon');
-            
-            if (savedTheme === 'light') {
-                document.body.classList.remove('dark-theme');
-                document.body.classList.add('light-theme');
-                if (themeIcon) themeIcon.textContent = '🌙';
-            } else {
-                document.body.classList.add('dark-theme');
-                if (themeIcon) themeIcon.textContent = '☀️';
-            }
-        });
-        
         function navToUltra(page, el) {
-            // Masquer toutes les pages
-            document.querySelectorAll('.page-ultra').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.erp-page').forEach(p => p.style.display = 'none');
             const target = document.getElementById('page-' + page);
             if (target) target.style.display = 'block';
             
-            // Mettre à jour la navigation
             document.querySelectorAll('.nav-item-ultra').forEach(i => i.classList.remove('active'));
             if (el) el.classList.add('active');
             
@@ -905,7 +894,7 @@
             const breadcrumb = document.getElementById('currentPageName');
             if (breadcrumb) breadcrumb.textContent = pageName;
 
-            // Charger les donn�es sp�cifiques � la page
+            // Charger les données spécifiques à la page
             if (page === 'paiements') {
                 chargerPaiements();
             } else if (page === 'emploi') {
@@ -934,13 +923,13 @@
         }
 
         function ouvrirReclamation(noteId, matiere, noteCC, noteExamen) {
-            // Ouverture depuis une note sp�cifique (depuis la page notes)
+            // Ouverture depuis une note spécifique (depuis la page notes)
             document.getElementById('reclamationNoteId').value = noteId;
             document.getElementById('reclamationMatiere').value = matiere;
             document.getElementById('reclamationCC').value = noteCC || 'Non saisie';
             document.getElementById('reclamationExamen').value = noteExamen || 'Non saisie';
             
-            // Cacher le s�lecteur, afficher les champs en lecture seule
+            // Cacher le sélecteur, afficher les champs en lecture seule
             document.getElementById('groupeSelectNote').style.display = 'none';
             document.getElementById('groupeMatiereReadonly').style.display = 'block';
             
@@ -972,14 +961,14 @@
                     return;
                 }
                 
-                select.innerHTML = '<option value="">S�lectionner une mati�re</option>' + 
+                select.innerHTML = '<option value="">Sélectionner une matière</option>' + 
                     notesDisponibles.map(n => 
                         `<option value="${n.id}" data-matiere="${n.matiere_nom}" data-cc="${n.note_cc || ''}" data-examen="${n.note_examen || ''}">
                             ${n.matiere_nom} - CC: ${n.note_cc || '-'} / Examen: ${n.note_examen || '-'}
                         </option>`
                     ).join('');
                 
-                // Afficher le s�lecteur, cacher les champs en lecture seule
+                // Afficher le sélecteur, cacher les champs en lecture seule
                 document.getElementById('groupeSelectNote').style.display = 'block';
                 document.getElementById('groupeMatiereReadonly').style.display = 'none';
                 
@@ -1013,7 +1002,7 @@
             
             const noteId = document.getElementById('reclamationNoteId').value;
             if (!noteId) {
-                showToast('Veuillez s�lectionner une note', 'warning');
+                showToast('Veuillez sélectionner une note', 'warning');
                 return;
             }
             
@@ -1026,7 +1015,7 @@
                     statut: 'en_attente'
                 };
 
-                // Appel API pour cr�er la r�clamation
+                // Appel API pour créer la réclamation
                 const response = await fetch('http://127.0.0.1:8000/api/reclamations/', {
                     method: 'POST',
                     headers: {
@@ -1038,18 +1027,18 @@
 
                 if (!response.ok) throw new Error('Erreur lors de l\'envoi');
 
-                showToast('? R�clamation envoy�e avec succ�s! L\'enseignant sera notifi�.', 'success');
+                showToast('✅ Réclamation envoyée avec succès! L\'enseignant sera notifié.', 'success');
                 closeModalReclamation();
                 form.reset();
                 
-                // Recharger la liste des r�clamations si on est sur cette page
+                // Recharger la liste des réclamations si on est sur cette page
                 const pageReclamation = document.getElementById('page-reclamation');
                 if (pageReclamation && pageReclamation.style.display !== 'none') {
                     chargerReclamations();
                 }
             } catch (err) {
                 console.error('Erreur:', err);
-                showToast('? Erreur: ' + err.message, 'danger');
+                showToast('❌ Erreur: ' + err.message, 'danger');
             }
         }
 
@@ -1063,7 +1052,7 @@
                 document.getElementById('statPresence').textContent = (dashboard.taux_presence || 0) + '%';
                 document.getElementById('statSolde').textContent = formatCFA(dashboard.solde_du || 0);
 
-                // Notes r�centes
+                // Notes récentes
                 if (dashboard.notes && dashboard.notes.length > 0) {
                     const recent = dashboard.notes.slice(0, 5);
                     document.getElementById('tbodyNotes').innerHTML = recent.map(n => `
@@ -1072,16 +1061,16 @@
                             <td>${n.note_cc || '-'}</td>
                             <td>${n.note_examen || '-'}</td>
                             <td style="font-weight:700;color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'}">${n.moyenne ? n.moyenne.toFixed(2) : '-'}</td>
-                            <td><span style="background:${n.moyenne >= 10 ? 'var(--success-50)' : 'var(--danger-50)'};color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'};padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">${n.moyenne >= 10 ? 'Valid�' : 'Non valid�'}</span></td>
+                            <td><span style="background:${n.moyenne >= 10 ? 'var(--success-50)' : 'var(--danger-50)'};color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'};padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">${n.moyenne >= 10 ? 'Validé' : 'Non validé'}</span></td>
                             <td>
                                 <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="ouvrirReclamation(${n.id}, '${n.matiere_nom}', '${n.note_cc || ''}', '${n.note_examen || ''}')">
-                                    ?? Signaler
+                                    ⚠️ Signaler
                                 </button>
                             </td>
                         </tr>
                     `).join('');
 
-                    // Notes compl�tes
+                    // Notes complètes
                     document.getElementById('tbodyNotesComplete').innerHTML = dashboard.notes.map(n => `
                         <tr>
                             <td style="font-weight:600">${n.matiere_nom}</td>
@@ -1089,10 +1078,10 @@
                             <td>${n.note_cc || '-'}</td>
                             <td>${n.note_examen || '-'}</td>
                             <td style="font-weight:700;color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'}">${n.moyenne ? n.moyenne.toFixed(2) : '-'}</td>
-                            <td><span style="background:${n.moyenne >= 10 ? 'var(--success-50)' : 'var(--danger-50)'};color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'};padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">${n.moyenne >= 10 ? 'Valid�' : 'Non valid�'}</span></td>
+                            <td><span style="background:${n.moyenne >= 10 ? 'var(--success-50)' : 'var(--danger-50)'};color:${n.moyenne >= 10 ? 'var(--success-600)' : 'var(--danger-600)'};padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">${n.moyenne >= 10 ? 'Validé' : 'Non validé'}</span></td>
                             <td>
                                 <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="ouvrirReclamation(${n.id}, '${n.matiere_nom}', '${n.note_cc || ''}', '${n.note_examen || ''}')">
-                                    ?? Signaler
+                                    ⚠️ Signaler
                                 </button>
                             </td>
                         </tr>
@@ -1110,7 +1099,7 @@
         }
 
         function creerGraphiques(dashboard) {
-            // Chart �volution notes
+            // Chart évolution notes
             new Chart(document.getElementById('chartNotes'), {
                 type: 'line',
                 data: {
@@ -1170,11 +1159,11 @@
                 }
             });
 
-            // Chart r�partition
+            // Chart répartition
             new Chart(document.getElementById('chartRepartition'), {
                 type: 'doughnut',
                 data: {
-                    labels: ['Valid�', 'Non valid�'],
+                    labels: ['Validé', 'Non validé'],
                     datasets: [{
                         data: [70, 30],
                         backgroundColor: ['#10B981', '#F43F5E'],
@@ -1217,7 +1206,7 @@
                 const me = await API.getMe();
                 const etudiant = me.etudiant;
                 
-                // Charger les paiements de l'�tudiant
+                // Charger les paiements de l'étudiant
                 const paiements = await API.getPaiements({ etudiant: etudiant.id });
                 
                 // Calculer les statistiques
@@ -1234,21 +1223,21 @@
                 // Afficher les paiements
                 const tbody = document.getElementById('tbodyPaiements');
                 if (paiements.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun paiement enregistr�</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun paiement enregistré</td></tr>';
                     return;
                 }
 
                 const modeLabels = {
-                    'especes': 'Esp�ces',
+                    'especes': 'Espèces',
                     'orange_money': 'Orange Money',
                     'moov_money': 'Moov Money',
                     'virement': 'Virement',
-                    'cheque': 'Ch�que'
+                    'cheque': 'Chèque'
                 };
 
                 const typeLabels = {
                     'inscription': 'Inscription',
-                    'reinscription': 'R�inscription',
+                    'reinscription': 'Réinscription',
                     'acompte': 'Acompte',
                     'solde': 'Solde',
                     'autre': 'Autre'
@@ -1256,7 +1245,7 @@
 
                 tbody.innerHTML = paiements.map(p => `
                     <tr>
-                        <td data-label="N� Re�u" style="font-weight:600">${p.numero_recu}</td>
+                        <td data-label="N° Reçu" style="font-weight:600">${p.numero_recu}</td>
                         <td data-label="Date">${formatDate(p.date_paiement)}</td>
                         <td data-label="Montant" style="font-weight:600;color:#10b981">${formatCFA(p.montant)}</td>
                         <td data-label="Mode"><span class="badge-ultra primary">${modeLabels[p.mode] || p.mode}</span></td>
@@ -1268,7 +1257,7 @@
                         </td>
                         <td data-label="Action">
                             <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="telechargerRecu(${p.id})">
-                                ?? Re�u
+                                📥 Reçu
                             </button>
                         </td>
                     </tr>
@@ -1285,12 +1274,12 @@
                 const me = await API.getMe();
                 const etudiant = me.etudiant;
                 
-                // Charger l'emploi du temps de la fili�re de l'�tudiant
+                // Charger l'emploi du temps de la filière de l'étudiant
                 const emplois = await API.getEmploisDuTemps({ filiere: etudiant.filiere });
                 
                 const tbody = document.getElementById('tbodyEmploi');
                 if (emplois.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun cours programm�</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun cours programmé</td></tr>';
                     return;
                 }
 
@@ -1307,8 +1296,8 @@
                     <tr>
                         <td data-label="Jour" style="font-weight:600">${e.jour}</td>
                         <td data-label="Heure">${e.heure_debut} - ${e.heure_fin}</td>
-                        <td data-label="Mati�re" style="font-weight:600;color:#6366f1">${e.matiere_nom || 'N/A'}</td>
-                        <td data-label="Enseignant">${e.enseignant_nom || 'Non assign�'}</td>
+                        <td data-label="Matière" style="font-weight:600;color:#6366f1">${e.matiere_nom || 'N/A'}</td>
+                        <td data-label="Enseignant">${e.enseignant_nom || 'Non assigné'}</td>
                         <td data-label="Salle"><span class="badge-ultra primary">${e.salle}</span></td>
                         <td data-label="Type"><span class="badge-ultra warning">${e.semaine === 'toutes' ? 'Toutes' : e.semaine}</span></td>
                     </tr>
@@ -1364,20 +1353,20 @@
                 'cours': 'Cours',
                 'td': 'TD',
                 'tp': 'TP',
-                'examen_corrige': 'Examen corrig�',
+                'examen_corrige': 'Examen corrigé',
                 'ressource': 'Ressource'
             };
 
             tbody.innerHTML = supportsFiltres.map(s => `
                 <tr>
                     <td data-label="Titre" style="font-weight:600">${s.titre}</td>
-                    <td data-label="Mati�re">${s.matiere_nom || 'N/A'}</td>
+                    <td data-label="Matière">${s.matiere_nom || 'N/A'}</td>
                     <td data-label="Enseignant">${s.enseignant_nom || 'N/A'}</td>
                     <td data-label="Type"><span class="badge-ultra primary">${typeLabels[s.type_support] || s.type_support}</span></td>
                     <td data-label="Date">${formatDate(s.date_depot)}</td>
                     <td data-label="Action">
                         <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="telechargerSupport(${s.id})">
-                            ?? T�l�charger
+                            📥 Télécharger
                         </button>
                     </td>
                 </tr>
@@ -1385,16 +1374,16 @@
         }
 
         function formatDate(dateStr) {
-            if (!dateStr) return '�';
+            if (!dateStr) return '—';
             return new Date(dateStr).toLocaleDateString('fr-FR');
         }
 
         function telechargerRecu(id) {
-            showToast('Fonctionnalit� de t�l�chargement en cours de d�veloppement', 'info');
+            showToast('Fonctionnalité de téléchargement en cours de développement', 'info');
         }
 
         function telechargerSupport(id) {
-            showToast('Fonctionnalit� de t�l�chargement en cours de d�veloppement', 'info');
+            showToast('Fonctionnalité de téléchargement en cours de développement', 'info');
         }
 
         function imprimerEmploi() {
@@ -1404,14 +1393,14 @@
         // ========== MES ENSEIGNANTS ==========
 
         async function chargerMesEnseignants() {
-            console.log('?? Chargement des enseignants...');
+            console.log('🔍 Chargement des enseignants...');
             try {
                 const dashboard = await API.getDashboardEtudiant();
-                console.log('?? Dashboard re�u:', dashboard);
+                console.log('📊 Dashboard reçu:', dashboard);
                 const notes = dashboard.notes || [];
-                console.log('?? Notes:', notes);
+                console.log('📝 Notes:', notes);
                 
-                // Grouper les mati�res par enseignant
+                // Grouper les matières par enseignant
                 const enseignantsMap = new Map();
                 notes.forEach(note => {
                     console.log('Note:', note);
@@ -1431,22 +1420,22 @@
                     }
                 });
                 
-                console.log('????? Enseignants trouv�s:', enseignantsMap.size);
+                console.log('👨‍🏫 Enseignants trouvés:', enseignantsMap.size);
                 const mesEnseignants = Array.from(enseignantsMap.values());
                 const container = document.getElementById('listeEnseignants');
                 
                 if (mesEnseignants.length === 0) {
-                    console.log('?? Aucun enseignant trouv�');
+                    console.log('⚠️ Aucun enseignant trouvé');
                     container.innerHTML = `
                         <div style="grid-column:1/-1;text-align:center;padding:60px">
-                            <div style="font-size:48px;margin-bottom:20px;opacity:0.3">?????</div>
-                            <h3 style="color:rgba(255,255,255,0.8);margin-bottom:12px;font-size:18px">Aucun enseignant trouv�</h3>
+                            <div style="font-size:48px;margin-bottom:20px;opacity:0.3">👨‍🏫</div>
+                            <h3 style="color:rgba(255,255,255,0.8);margin-bottom:12px;font-size:18px">Aucun enseignant trouvé</h3>
                             <p style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:20px">
-                                Vos enseignants appara�tront ici une fois que vos notes seront saisies.
+                                Vos enseignants apparaîtront ici une fois que vos notes seront saisies.
                             </p>
                             <div style="padding:16px;background:rgba(245,158,11,0.1);border-radius:10px;border:1px solid rgba(245,158,11,0.2);max-width:500px;margin:0 auto">
                                 <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6">
-                                    ?? <strong>Info:</strong> Les enseignants sont automatiquement d�tect�s � partir de vos notes.<br>
+                                    💡 <strong>Info:</strong> Les enseignants sont automatiquement détectés à partir de vos notes.<br>
                                     Si vous n'avez pas encore de notes, cette liste sera vide.
                                 </div>
                             </div>
@@ -1455,30 +1444,30 @@
                     return;
                 }
                 
-                console.log('? Affichage de', mesEnseignants.length, 'enseignant(s)');
+                console.log('✅ Affichage de', mesEnseignants.length, 'enseignant(s)');
                 container.innerHTML = mesEnseignants.map(e => `
                     <div class="card-ultra" style="transition:all 0.3s ease">
                         <div class="card-body-ultra">
                             <!-- Avatar et nom -->
                             <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.05)">
                                 <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#F59E0B,#D97706);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:0 4px 12px rgba(245,158,11,0.3)">
-                                    ?????
+                                    👨‍🏫
                                 </div>
                                 <div style="flex:1">
                                     <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px">${e.nom}</h3>
                                     <div style="font-size:13px;color:rgba(255,255,255,0.6)">
-                                        ${e.matieres.length} mati�re${e.matieres.length > 1 ? 's' : ''}
+                                        ${e.matieres.length} matière${e.matieres.length > 1 ? 's' : ''}
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- Liste des mati�res -->
+                            <!-- Liste des matières -->
                             <div style="margin-bottom:16px">
-                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:10px;font-weight:600">MATI�RES ENSEIGN�ES</div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:10px;font-weight:600">MATIÈRES ENSEIGNÉES</div>
                                 <div style="display:flex;flex-direction:column;gap:8px">
                                     ${e.matieres.map(m => `
                                         <div style="padding:8px 12px;background:rgba(245,158,11,0.1);border-radius:8px;border:1px solid rgba(245,158,11,0.2);font-size:13px;color:rgba(255,255,255,0.9)">
-                                            ?? ${m}
+                                            📚 ${m}
                                         </div>
                                     `).join('')}
                                 </div>
@@ -1487,23 +1476,23 @@
                             <!-- Actions -->
                             <div style="display:flex;gap:8px">
                                 <button class="btn-ultra btn-secondary-ultra" style="flex:1;padding:10px;font-size:13px" onclick="contacterEnseignant(${e.id}, '${e.nom.replace(/'/g, "\\'")}')">
-                                    ?? Contacter
+                                    📨 Contacter
                                 </button>
                             </div>
                         </div>
                     </div>
                 `).join('');
             } catch (err) {
-                console.error('? Erreur chargement enseignants:', err);
+                console.error('❌ Erreur chargement enseignants:', err);
                 document.getElementById('listeEnseignants').innerHTML = `
                     <div style="grid-column:1/-1;text-align:center;padding:60px">
-                        <div style="font-size:48px;margin-bottom:20px;opacity:0.3">??</div>
+                        <div style="font-size:48px;margin-bottom:20px;opacity:0.3">⚠️</div>
                         <h3 style="color:rgba(255,255,255,0.8);margin-bottom:12px;font-size:18px">Erreur de chargement</h3>
                         <p style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:20px">
                             Impossible de charger la liste des enseignants.
                         </p>
                         <button class="btn-ultra btn-primary-ultra" onclick="chargerMesEnseignants()">
-                            ?? R�essayer
+                            🔄 Réessayer
                         </button>
                     </div>
                 `;
@@ -1511,15 +1500,15 @@
         }
 
         function contacterEnseignant(enseignantId, enseignantNom) {
-            // Ouvrir le modal de demande avec le professeur pr�-s�lectionn�
+            // Ouvrir le modal de demande avec le professeur pré-sélectionné
             openModalDemande();
             
-            // Attendre que le modal soit ouvert et les professeurs charg�s
+            // Attendre que le modal soit ouvert et les professeurs chargés
             setTimeout(() => {
                 document.getElementById('demandeDestinataire').value = 'professeur';
                 updateTypeDemande();
                 
-                // Attendre que la liste des professeurs soit charg�e
+                // Attendre que la liste des professeurs soit chargée
                 setTimeout(() => {
                     document.getElementById('demandeProfesseur').value = enseignantId;
                 }, 300);
@@ -1554,7 +1543,7 @@
                                 <span style="font-weight:600">${destinataireLabels[d.destinataire] || d.destinataire}</span>
                                 ${d.professeur_nom ? `
                                     <span style="font-size:12px;color:rgba(255,255,255,0.6)">
-                                        ????? ${d.professeur_nom}
+                                        👨‍🏫 ${d.professeur_nom}
                                     </span>
                                 ` : ''}
                             </div>
@@ -1564,7 +1553,7 @@
                         <td><span class="badge-ultra ${statutColors[d.statut]}">${d.statut.replace('_', ' ')}</span></td>
                         <td>
                             <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="voirDetailDemande(${d.id})">
-                                ??? Voir
+                                👁️ Voir
                             </button>
                         </td>
                     </tr>
@@ -1582,15 +1571,15 @@
                 const tbody = document.getElementById('tbodyReclamations');
                 
                 if (!reclamations || reclamations.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucune r�clamation</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucune réclamation</td></tr>';
                     return;
                 }
 
                 const typeLabels = {
                     'note_incorrecte': 'Note incorrecte',
                     'note_manquante': 'Note manquante',
-                    'mauvaise_matiere': 'Mauvaise mati�re',
-                    'calcul_errone': 'Calcul erron�',
+                    'mauvaise_matiere': 'Mauvaise matière',
+                    'calcul_errone': 'Calcul erroné',
                     'autre': 'Autre'
                 };
 
@@ -1611,7 +1600,7 @@
                         <td>
                             ${r.reponse_enseignant ? `
                                 <button class="btn-ultra btn-secondary-ultra" style="padding:6px 12px;font-size:12px;" onclick="voirReponseReclamation(${r.id})">
-                                    ??? Voir r�ponse
+                                    👁️ Voir réponse
                                 </button>
                             ` : `
                                 <span style="color:rgba(255,255,255,0.5);font-size:13px">En attente</span>
@@ -1620,7 +1609,7 @@
                     </tr>
                 `).join('');
             } catch (err) {
-                console.error('Erreur chargement r�clamations:', err);
+                console.error('Erreur chargement réclamations:', err);
                 document.getElementById('tbodyReclamations').innerHTML = 
                     '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Erreur de chargement</td></tr>';
             }
@@ -1641,18 +1630,18 @@
                         <div class="card-body-ultra">
                             <div style="display:flex;align-items:start;gap:16px;margin-bottom:12px">
                                 <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#a855f7);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">
-                                    ??
+                                    📰
                                 </div>
                                 <div style="flex:1">
                                     <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:6px">${p.titre}</h3>
                                     <div style="display:flex;gap:12px;font-size:13px;color:rgba(255,255,255,0.6)">
-                                        <span>?? ${formatDate(p.date_publication)}</span>
-                                        <span>?? ${p.auteur_nom || 'Bureau Ex�cutif'}</span>
+                                        <span>📅 ${formatDate(p.date_publication)}</span>
+                                        <span>👤 ${p.auteur_nom || 'Bureau Exécutif'}</span>
                                     </div>
                                 </div>
                             </div>
                             <p style="color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:12px">${p.contenu}</p>
-                            ${p.fichier ? `<a href="${p.fichier}" target="_blank" class="btn-ultra btn-secondary-ultra" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px">?? Pi�ce jointe</a>` : ''}
+                            ${p.fichier ? `<a href="${p.fichier}" target="_blank" class="btn-ultra btn-secondary-ultra" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px">📎 Pièce jointe</a>` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -1664,23 +1653,23 @@
         }
 
         async function chargerSondages() {
-            console.log('?? Chargement des sondages...');
+            console.log('🔍 Chargement des sondages...');
             try {
                 const sondages = await API.get('/sondages/');
-                console.log('?? Sondages re�us:', sondages);
+                console.log('📊 Sondages reçus:', sondages);
                 const container = document.getElementById('listeSondages');
-                console.log('?? Container trouv�:', container);
+                console.log('📦 Container trouvé:', container);
                 
                 if (!sondages || sondages.length === 0) {
-                    console.log('?? Aucun sondage trouv�');
+                    console.log('⚠️ Aucun sondage trouvé');
                     container.innerHTML = '<p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Aucun sondage disponible</p>';
                     return;
                 }
 
-                console.log(`? ${sondages.length} sondage(s) trouv�(s)`);
+                console.log(`✅ ${sondages.length} sondage(s) trouvé(s)`);
                 
                 const html = sondages.map(s => {
-                    console.log('G�n�ration HTML pour:', s.titre);
+                    console.log('Génération HTML pour:', s.titre);
                     return `
                     <div class="card-ultra">
                         <div class="card-body-ultra">
@@ -1692,7 +1681,7 @@
                                 <span class="badge-ultra ${s.statut === 'actif' ? 'success' : 'danger'}">${s.statut}</span>
                             </div>
                             <div style="display:flex;gap:12px;font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px">
-                                <span>?? ${formatDate(s.date_debut)} - ${formatDate(s.date_fin)}</span>
+                                <span>📅 ${formatDate(s.date_debut)} - ${formatDate(s.date_fin)}</span>
                             </div>
                             ${s.statut === 'actif' ? `<button class="btn-ultra btn-primary-ultra" onclick="participerSondage(${s.id})">Participer</button>` : ''}
                         </div>
@@ -1700,11 +1689,11 @@
                 `;
                 }).join('');
                 
-                console.log('?? HTML g�n�r�, longueur:', html.length);
+                console.log('📝 HTML généré, longueur:', html.length);
                 container.innerHTML = html;
-                console.log('? HTML ins�r� dans le container');
+                console.log('✅ HTML inséré dans le container');
             } catch (err) {
-                console.error('? Erreur chargement sondages:', err);
+                console.error('❌ Erreur chargement sondages:', err);
                 document.getElementById('listeSondages').innerHTML = 
                     '<p style="text-align:center;padding:60px;color:rgba(255,255,255,0.5)">Erreur de chargement</p>';
             }
@@ -1726,13 +1715,13 @@
                             <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:16px">
                                 <div>
                                     <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px">${e.titre}</h3>
-                                    <p style="color:rgba(255,255,255,0.6);font-size:14px">Mati�re: ${e.matiere_nom || 'N/A'}</p>
+                                    <p style="color:rgba(255,255,255,0.6);font-size:14px">Matière: ${e.matiere_nom || 'N/A'}</p>
                                     <p style="color:rgba(255,255,255,0.6);font-size:14px">Enseignant: ${e.enseignant_nom || 'N/A'}</p>
                                 </div>
-                                <span class="badge-ultra ${e.actif ? 'success' : 'danger'}">${e.actif ? 'Actif' : 'Ferm�'}</span>
+                                <span class="badge-ultra ${e.actif ? 'success' : 'danger'}">${e.actif ? 'Actif' : 'Fermé'}</span>
                             </div>
                             <div style="display:flex;gap:12px;font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px">
-                                <span>?? ${formatDate(e.date_debut)} - ${formatDate(e.date_fin)}</span>
+                                <span>📅 ${formatDate(e.date_debut)} - ${formatDate(e.date_fin)}</span>
                             </div>
                             ${e.actif ? `<button class="btn-ultra btn-primary-ultra" onclick="remplirQuestionnaire(${e.id})">Remplir le questionnaire</button>` : ''}
                         </div>
@@ -1746,20 +1735,20 @@
         }
 
         async function chargerObjetsPerdu() {
-            console.log('?? Chargement des objets perdus...');
+            console.log('🔍 Chargement des objets perdus...');
             try {
                 const objets = await API.get('/objets-perdus/');
-                console.log('?? Objets re�us:', objets);
+                console.log('📦 Objets reçus:', objets);
                 const tbody = document.getElementById('tbodyObjetsPerdu');
                 
                 if (!objets || objets.length === 0) {
-                    console.log('?? Aucun objet trouv�');
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun objet d�clar�</td></tr>';
+                    console.log('⚠️ Aucun objet trouvé');
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Aucun objet déclaré</td></tr>';
                     return;
                 }
 
-                console.log(`? ${objets.length} objet(s) trouv�(s)`);
-                const typeLabels = { 'perdu': 'Perdu', 'trouve': 'Trouv�' };
+                console.log(`✅ ${objets.length} objet(s) trouvé(s)`);
+                const typeLabels = { 'perdu': 'Perdu', 'trouve': 'Trouvé' };
                 const statutColors = {
                     'actif': 'warning',
                     'recupere': 'success',
@@ -1777,7 +1766,7 @@
                     </tr>
                 `).join('');
             } catch (err) {
-                console.error('? Erreur chargement objets perdus:', err);
+                console.error('❌ Erreur chargement objets perdus:', err);
                 document.getElementById('tbodyObjetsPerdu').innerHTML = 
                     '<tr><td colspan="6" style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">Erreur de chargement</td></tr>';
             }
@@ -1813,11 +1802,11 @@
 
         async function chargerProfesseursPourDemande() {
             try {
-                // Charger les notes de l'�tudiant pour obtenir ses mati�res et enseignants
+                // Charger les notes de l'étudiant pour obtenir ses matières et enseignants
                 const dashboard = await API.getDashboardEtudiant();
                 const notes = dashboard.notes || [];
                 
-                // Extraire les enseignants uniques de ses mati�res
+                // Extraire les enseignants uniques de ses matières
                 const enseignantsMap = new Map();
                 notes.forEach(note => {
                     if (note.enseignant_id && note.enseignant_nom) {
@@ -1834,14 +1823,14 @@
                 const select = document.getElementById('demandeProfesseur');
                 
                 if (mesEnseignants.length === 0) {
-                    select.innerHTML = '<option value="">Aucun enseignant trouv�</option>';
+                    select.innerHTML = '<option value="">Aucun enseignant trouvé</option>';
                     return;
                 }
                 
-                // Grouper par enseignant pour afficher leurs mati�res
-                select.innerHTML = '<option value="">S�lectionner un professeur</option>' + 
+                // Grouper par enseignant pour afficher leurs matières
+                select.innerHTML = '<option value="">Sélectionner un professeur</option>' + 
                     mesEnseignants.map(e => {
-                        // Trouver toutes les mati�res de cet enseignant
+                        // Trouver toutes les matières de cet enseignant
                         const matieres = notes
                             .filter(n => n.enseignant_id === e.id)
                             .map(n => n.matiere_nom)
@@ -1864,18 +1853,18 @@
             if (destinataire === 'administration') {
                 groupeProfesseur.style.display = 'none';
                 typeSelect.innerHTML = `
-                    <option value="">S�lectionner</option>
-                    <option value="attestation_scolarite">Attestation de scolarit�</option>
-                    <option value="releve_notes">Relev� de notes</option>
+                    <option value="">Sélectionner</option>
+                    <option value="attestation_scolarite">Attestation de scolarité</option>
+                    <option value="releve_notes">Relevé de notes</option>
                     <option value="certificat_inscription">Certificat d'inscription</option>
-                    <option value="changement_filiere">Changement de fili�re</option>
+                    <option value="changement_filiere">Changement de filière</option>
                     <option value="report_paiement">Report de paiement</option>
                     <option value="autre">Autre</option>
                 `;
             } else if (destinataire === 'professeur') {
                 groupeProfesseur.style.display = 'block';
                 typeSelect.innerHTML = `
-                    <option value="">S�lectionner</option>
+                    <option value="">Sélectionner</option>
                     <option value="rendez_vous">Demande de rendez-vous</option>
                     <option value="explication_cours">Explication de cours</option>
                     <option value="rattrapage">Demande de rattrapage</option>
@@ -1884,7 +1873,7 @@
                 `;
             } else {
                 groupeProfesseur.style.display = 'none';
-                typeSelect.innerHTML = '<option value="">S�lectionner d\'abord un destinataire</option>';
+                typeSelect.innerHTML = '<option value="">Sélectionner d\'abord un destinataire</option>';
             }
         }
 
@@ -1907,13 +1896,13 @@
                 }
 
                 await API.post('/demandes-administratives/', data);
-                showToast('? Demande envoy�e avec succ�s!', 'success');
+                showToast('✅ Demande envoyée avec succès!', 'success');
                 closeModalDemande();
                 form.reset();
                 chargerDemandes();
             } catch (err) {
                 console.error('Erreur:', err);
-                showToast('? Erreur lors de l\'envoi de la demande', 'danger');
+                showToast('❌ Erreur lors de l\'envoi de la demande', 'danger');
             }
         }
 
@@ -1934,13 +1923,13 @@
                 };
 
                 await API.post('/objets-perdus/', data);
-                showToast('? Objet d�clar� avec succ�s!', 'success');
+                showToast('✅ Objet déclaré avec succès!', 'success');
                 closeModalObjetPerdu();
                 form.reset();
                 chargerObjetsPerdu();
             } catch (err) {
                 console.error('Erreur:', err);
-                showToast('? Erreur lors de la d�claration', 'danger');
+                showToast('❌ Erreur lors de la déclaration', 'danger');
             }
         }
 
@@ -1956,7 +1945,7 @@
                     return;
                 }
 
-                // Ouvrir le modal de d�tail
+                // Ouvrir le modal de détail
                 const modal = document.getElementById('modalDetailDemande');
                 if (!modal) {
                     creerModalDetailDemande();
@@ -1965,7 +1954,7 @@
                 afficherDetailDemande();
             } catch (err) {
                 console.error('Erreur:', err);
-                showToast('Erreur lors du chargement des d�tails', 'danger');
+                showToast('Erreur lors du chargement des détails', 'danger');
             }
         }
 
@@ -1974,8 +1963,8 @@
                 <div class="modal-overlay-premium" id="modalDetailDemande" style="display:none">
                     <div class="modal-premium" style="max-width:600px">
                         <div class="modal-header-premium">
-                            <h3 class="modal-title-premium">?? D�tails de la demande</h3>
-                            <button class="modal-close-premium" onclick="closeModalDetailDemande()">?</button>
+                            <h3 class="modal-title-premium">📨 Détails de la demande</h3>
+                            <button class="modal-close-premium" onclick="closeModalDetailDemande()">✕</button>
                         </div>
                         <div class="modal-body-premium" id="modalDetailDemandeBody">
                             <!-- Contenu dynamique -->
@@ -2005,13 +1994,13 @@
             const statutLabels = {
                 'en_attente': 'En attente',
                 'en_cours': 'En cours de traitement',
-                'traitee': 'Trait�e',
-                'rejetee': 'Rejet�e'
+                'traitee': 'Traitée',
+                'rejetee': 'Rejetée'
             };
 
             body.innerHTML = `
                 <div style="display:grid;gap:20px">
-                    <!-- Informations g�n�rales -->
+                    <!-- Informations générales -->
                     <div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(255,255,255,0.1)">
                         <div style="display:grid;gap:12px">
                             <div>
@@ -2019,7 +2008,7 @@
                                 <div style="font-weight:600;color:#fff">${destinataireLabels[demandeSelectionnee.destinataire] || demandeSelectionnee.destinataire}</div>
                                 ${demandeSelectionnee.professeur_nom ? `
                                     <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px">
-                                        ????? ${demandeSelectionnee.professeur_nom}
+                                        👨‍🏫 ${demandeSelectionnee.professeur_nom}
                                     </div>
                                 ` : ''}
                             </div>
@@ -2028,7 +2017,7 @@
                                 <div><span class="badge-ultra primary">${demandeSelectionnee.type}</span></div>
                             </div>
                             <div>
-                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">DATE DE CR�ATION</div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">DATE DE CRÉATION</div>
                                 <div style="color:#fff">${formatDate(demandeSelectionnee.date_creation)}</div>
                             </div>
                             <div>
@@ -2050,13 +2039,13 @@
                         <div style="padding:12px;background:rgba(255,255,255,0.03);border-radius:8px;color:rgba(255,255,255,0.8);line-height:1.6">${demandeSelectionnee.description}</div>
                     </div>
 
-                    <!-- R�ponse (si disponible) -->
+                    <!-- Réponse (si disponible) -->
                     ${demandeSelectionnee.reponse ? `
                         <div style="padding:16px;background:rgba(16,185,129,0.1);border-radius:10px;border:1px solid rgba(16,185,129,0.3)">
                             <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-                                <span style="font-size:20px">??</span>
+                                <span style="font-size:20px">💬</span>
                                 <div style="font-size:14px;font-weight:700;color:#10b981">
-                                    R�PONSE ${demandeSelectionnee.destinataire === 'professeur' && demandeSelectionnee.professeur_nom ? 
+                                    RÉPONSE ${demandeSelectionnee.destinataire === 'professeur' && demandeSelectionnee.professeur_nom ? 
                                         'DE ' + demandeSelectionnee.professeur_nom.toUpperCase() : 
                                         'DE L\'ADMINISTRATION'}
                                 </div>
@@ -2064,14 +2053,14 @@
                             <div style="color:rgba(255,255,255,0.9);line-height:1.6">${demandeSelectionnee.reponse}</div>
                             ${demandeSelectionnee.date_reponse ? `
                                 <div style="margin-top:12px;font-size:12px;color:rgba(255,255,255,0.6)">
-                                    R�pondu le ${formatDate(demandeSelectionnee.date_reponse)}
+                                    Répondu le ${formatDate(demandeSelectionnee.date_reponse)}
                                 </div>
                             ` : ''}
                         </div>
                     ` : demandeSelectionnee.statut === 'en_attente' ? `
                         <div style="padding:16px;background:rgba(245,158,11,0.1);border-radius:10px;border:1px solid rgba(245,158,11,0.3)">
                             <div style="display:flex;align-items:center;gap:8px;color:#fbbf24">
-                                <span style="font-size:20px">?</span>
+                                <span style="font-size:20px">⏳</span>
                                 <div style="font-size:14px;font-weight:600">
                                     Votre demande est en attente de traitement${demandeSelectionnee.destinataire === 'professeur' && demandeSelectionnee.professeur_nom ? 
                                         ' par ' + demandeSelectionnee.professeur_nom : 
@@ -2082,7 +2071,7 @@
                     ` : demandeSelectionnee.statut === 'en_cours' ? `
                         <div style="padding:16px;background:rgba(99,102,241,0.1);border-radius:10px;border:1px solid rgba(99,102,241,0.3)">
                             <div style="display:flex;align-items:center;gap:8px;color:#6366f1">
-                                <span style="font-size:20px">??</span>
+                                <span style="font-size:20px">🔄</span>
                                 <div style="font-size:14px;font-weight:600">
                                     Votre demande est en cours de traitement${demandeSelectionnee.destinataire === 'professeur' && demandeSelectionnee.professeur_nom ? 
                                         ' par ' + demandeSelectionnee.professeur_nom : 
@@ -2106,7 +2095,7 @@
             }
         }
 
-        // ========== R�CLAMATIONS - D�TAILS ==========
+        // ========== RÉCLAMATIONS - DÉTAILS ==========
 
         let reclamationSelectionnee = null;
 
@@ -2116,11 +2105,11 @@
                 reclamationSelectionnee = reclamations.find(r => r.id === id);
                 
                 if (!reclamationSelectionnee) {
-                    showToast('R�clamation introuvable', 'danger');
+                    showToast('Réclamation introuvable', 'danger');
                     return;
                 }
 
-                // Ouvrir le modal de d�tail
+                // Ouvrir le modal de détail
                 const modal = document.getElementById('modalDetailReclamation');
                 if (!modal) {
                     creerModalDetailReclamation();
@@ -2129,7 +2118,7 @@
                 afficherDetailReclamation();
             } catch (err) {
                 console.error('Erreur:', err);
-                showToast('Erreur lors du chargement des d�tails', 'danger');
+                showToast('Erreur lors du chargement des détails', 'danger');
             }
         }
 
@@ -2138,8 +2127,8 @@
                 <div class="modal-overlay-premium" id="modalDetailReclamation" style="display:none">
                     <div class="modal-premium" style="max-width:700px">
                         <div class="modal-header-premium">
-                            <h3 class="modal-title-premium">?? D�tails de la r�clamation</h3>
-                            <button class="modal-close-premium" onclick="closeModalDetailReclamation()">?</button>
+                            <h3 class="modal-title-premium">📢 Détails de la réclamation</h3>
+                            <button class="modal-close-premium" onclick="closeModalDetailReclamation()">✕</button>
                         </div>
                         <div class="modal-body-premium" id="modalDetailReclamationBody">
                             <!-- Contenu dynamique -->
@@ -2162,9 +2151,9 @@
             const typeLabels = {
                 'note_incorrecte': 'Note incorrecte / erreur de saisie',
                 'note_manquante': 'Note manquante',
-                'mauvaise_matiere': 'Note attribu�e � la mauvaise mati�re',
+                'mauvaise_matiere': 'Note attribuée à la mauvaise matière',
                 'calcul_errone': 'Erreur de calcul de moyenne',
-                'autre': 'Autre probl�me'
+                'autre': 'Autre problème'
             };
 
             const statutColors = {
@@ -2177,23 +2166,23 @@
             const statutLabels = {
                 'en_attente': 'En attente',
                 'en_cours': 'En cours de traitement',
-                'resolue': 'R�solue',
-                'rejetee': 'Rejet�e'
+                'resolue': 'Résolue',
+                'rejetee': 'Rejetée'
             };
 
             const decisionLabels = {
-                'accepter': 'Accept�e',
-                'rejeter': 'Rejet�e',
+                'accepter': 'Acceptée',
+                'rejeter': 'Rejetée',
                 'en_cours': 'En cours'
             };
 
             body.innerHTML = `
                 <div style="display:grid;gap:20px">
-                    <!-- Informations g�n�rales -->
+                    <!-- Informations générales -->
                     <div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(255,255,255,0.1)">
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
                             <div>
-                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">MATI�RE</div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">MATIÈRE</div>
                                 <div style="font-weight:600;color:#fff">${reclamationSelectionnee.matiere_nom || 'N/A'}</div>
                             </div>
                             <div>
@@ -2201,7 +2190,7 @@
                                 <div style="color:#fff">${reclamationSelectionnee.enseignant_nom || 'N/A'}</div>
                             </div>
                             <div>
-                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">DATE DE CR�ATION</div>
+                                <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">DATE DE CRÉATION</div>
                                 <div style="color:#fff">${formatDate(reclamationSelectionnee.date_creation)}</div>
                             </div>
                             <div>
@@ -2213,7 +2202,7 @@
 
                     <!-- Notes -->
                     <div style="padding:16px;background:rgba(99,102,241,0.1);border-radius:10px;border:1px solid rgba(99,102,241,0.3)">
-                        <div style="font-size:14px;font-weight:700;color:#6366f1;margin-bottom:12px">?? NOTES CONCERN�ES</div>
+                        <div style="font-size:14px;font-weight:700;color:#6366f1;margin-bottom:12px">📊 NOTES CONCERNÉES</div>
                         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
                             <div>
                                 <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:4px">NOTE CC</div>
@@ -2230,9 +2219,9 @@
                         </div>
                     </div>
 
-                    <!-- Type de probl�me -->
+                    <!-- Type de problème -->
                     <div>
-                        <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">TYPE DE PROBL�ME</div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">TYPE DE PROBLÈME</div>
                         <div><span class="badge-ultra warning">${typeLabels[reclamationSelectionnee.type_probleme] || reclamationSelectionnee.type_probleme}</span></div>
                     </div>
 
@@ -2249,13 +2238,13 @@
                         </div>
                     ` : ''}
 
-                    <!-- R�ponse de l'enseignant -->
+                    <!-- Réponse de l'enseignant -->
                     ${reclamationSelectionnee.reponse_enseignant ? `
                         <div style="padding:16px;background:${reclamationSelectionnee.statut === 'resolue' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)'};border-radius:10px;border:1px solid ${reclamationSelectionnee.statut === 'resolue' ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}">
                             <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-                                <span style="font-size:20px">${reclamationSelectionnee.statut === 'resolue' ? '?' : '?'}</span>
+                                <span style="font-size:20px">${reclamationSelectionnee.statut === 'resolue' ? '✅' : '❌'}</span>
                                 <div style="font-size:14px;font-weight:700;color:${reclamationSelectionnee.statut === 'resolue' ? '#10b981' : '#ef4444'}">
-                                    R�PONSE DE L'ENSEIGNANT
+                                    RÉPONSE DE L'ENSEIGNANT
                                     ${reclamationSelectionnee.decision ? ` - ${decisionLabels[reclamationSelectionnee.decision] || reclamationSelectionnee.decision}` : ''}
                                 </div>
                             </div>
@@ -2263,7 +2252,7 @@
                             
                             ${reclamationSelectionnee.nouvelle_note_cc || reclamationSelectionnee.nouvelle_note_examen ? `
                                 <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1)">
-                                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">NOTES CORRIG�ES</div>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600">NOTES CORRIGÉES</div>
                                     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
                                         ${reclamationSelectionnee.nouvelle_note_cc ? `
                                             <div>
@@ -2289,22 +2278,22 @@
                             
                             ${reclamationSelectionnee.date_traitement ? `
                                 <div style="margin-top:12px;font-size:12px;color:rgba(255,255,255,0.6)">
-                                    Trait�e le ${formatDate(reclamationSelectionnee.date_traitement)}
+                                    Traitée le ${formatDate(reclamationSelectionnee.date_traitement)}
                                 </div>
                             ` : ''}
                         </div>
                     ` : reclamationSelectionnee.statut === 'en_attente' ? `
                         <div style="padding:16px;background:rgba(245,158,11,0.1);border-radius:10px;border:1px solid rgba(245,158,11,0.3)">
                             <div style="display:flex;align-items:center;gap:8px;color:#fbbf24">
-                                <span style="font-size:20px">?</span>
-                                <div style="font-size:14px;font-weight:600">Votre r�clamation est en attente de traitement par l'enseignant</div>
+                                <span style="font-size:20px">⏳</span>
+                                <div style="font-size:14px;font-weight:600">Votre réclamation est en attente de traitement par l'enseignant</div>
                             </div>
                         </div>
                     ` : reclamationSelectionnee.statut === 'en_cours' ? `
                         <div style="padding:16px;background:rgba(99,102,241,0.1);border-radius:10px;border:1px solid rgba(99,102,241,0.3)">
                             <div style="display:flex;align-items:center;gap:8px;color:#6366f1">
-                                <span style="font-size:20px">??</span>
-                                <div style="font-size:14px;font-weight:600">Votre r�clamation est en cours de traitement</div>
+                                <span style="font-size:20px">🔄</span>
+                                <div style="font-size:14px;font-weight:600">Votre réclamation est en cours de traitement</div>
                             </div>
                         </div>
                     ` : ''}
@@ -2324,15 +2313,15 @@
         }
 
         function participerSondage(id) {
-            showToast('Fonctionnalit� en cours de d�veloppement', 'info');
+            showToast('Fonctionnalité en cours de développement', 'info');
         }
 
         function remplirQuestionnaire(id) {
-            showToast('Fonctionnalit� en cours de d�veloppement', 'info');
+            showToast('Fonctionnalité en cours de développement', 'info');
         }
 
         function showToast(message, type = 'info') {
-            const icons = { success: '?', danger: '?', warning: '??', info: '??' };
+            const icons = { success: '✅', danger: '❌', warning: '⚠️', info: 'ℹ️' };
             let container = document.getElementById('toast-container');
             if (!container) {
                 container = document.createElement('div');
@@ -2343,7 +2332,7 @@
             const toast = document.createElement('div');
             const colors = { success: '#059669', danger: '#dc2626', warning: '#d97706', info: '#2563eb' };
             toast.style.cssText = `background:rgba(10,14,39,0.95);border-radius:12px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:12px;min-width:280px;max-width:400px;border-left:4px solid ${colors[type]};animation:slideIn .3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)`;
-            toast.innerHTML = `<span style="font-size:18px">${icons[type]}</span><span style="font-size:14px;font-weight:500;flex:1;color:#fff">${message}</span><span onclick="this.parentElement.remove()" style="cursor:poPoppins;color:#94a3b8;flex-shrink:0;font-size:18px">?</span>`;
+            toast.innerHTML = `<span style="font-size:18px">${icons[type]}</span><span style="font-size:14px;font-weight:500;flex:1;color:#fff">${message}</span><span onclick="this.parentElement.remove()" style="cursor:poPoppins;color:#94a3b8;flex-shrink:0;font-size:18px">✕</span>`;
             container.appendChild(toast);
             setTimeout(() => { if (toast.parentElement) toast.remove(); }, 3500);
         }
@@ -2357,5 +2346,3 @@
     </script>
 </body>
 </html>
-
-
