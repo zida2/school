@@ -832,6 +832,51 @@ class NotificationViewSet(viewsets.ModelViewSet):
         notif.lue = True
         notif.save()
         return Response({'detail': 'Notification lue.'})
+    
+    @action(detail=False, methods=['post'], permission_classes=[IsAdminOrSuperAdmin])
+    def diffuser(self, request):
+        """Diffuser une notification à tous les étudiants ou à un groupe spécifique"""
+        titre = request.data.get('titre')
+        message = request.data.get('message')
+        type_notif = request.data.get('type_notif', 'info')
+        groupe_cible = request.data.get('groupe_cible', 'tous_etudiants')  # tous_etudiants, filiere, classe
+        filiere_id = request.data.get('filiere_id')
+        classe_id = request.data.get('classe_id')
+        
+        if not titre or not message:
+            return Response({'error': 'Titre et message requis'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Déterminer les destinataires
+        destinataires = []
+        if groupe_cible == 'tous_etudiants':
+            destinataires = Utilisateur.objects.filter(role='etudiant', is_active=True)
+        elif groupe_cible == 'filiere' and filiere_id:
+            from .models import Etudiant
+            etudiants = Etudiant.objects.filter(filiere_id=filiere_id)
+            destinataires = [e.utilisateur for e in etudiants if e.utilisateur]
+        elif groupe_cible == 'classe' and classe_id:
+            from .models import Inscription
+            inscriptions = Inscription.objects.filter(classe_id=classe_id, statut='actif')
+            destinataires = [i.etudiant.utilisateur for i in inscriptions if i.etudiant.utilisateur]
+        
+        if not destinataires:
+            return Response({'error': 'Aucun destinataire trouvé'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Créer une notification pour chaque destinataire
+        notifications_creees = 0
+        for destinataire in destinataires:
+            Notification.objects.create(
+                destinataire=destinataire,
+                titre=titre,
+                message=message,
+                type_notif=type_notif
+            )
+            notifications_creees += 1
+        
+        return Response({
+            'detail': f'{notifications_creees} notification(s) envoyée(s)',
+            'destinataires': notifications_creees
+        })
 
 
 # ===== RÉCLAMATION NOTE =====
