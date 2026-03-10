@@ -857,6 +857,60 @@ class SupportCoursViewSet(viewsets.ModelViewSet):
                 qs = qs.filter(enseignant=self.request.user.enseignant)
             except: qs = qs.none()
         return qs
+    
+    @action(detail=True, methods=['get'])
+    def telecharger(self, request, pk=None):
+        """Télécharger un support de cours"""
+        support = self.get_object()
+        
+        # Vérifier les permissions
+        if request.user.role == 'etudiant':
+            # Vérifier que l'étudiant est dans la bonne filière
+            if not hasattr(request.user, 'etudiant'):
+                return Response(
+                    {'error': 'Profil étudiant non trouvé'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            if support.matiere.filiere != request.user.etudiant.filiere:
+                return Response(
+                    {'error': 'Vous n\'avez pas accès à ce support'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            if not support.visible:
+                return Response(
+                    {'error': 'Ce support n\'est pas encore disponible'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        
+        # Vérifier que le fichier existe
+        if not support.fichier:
+            return Response(
+                {'error': 'Aucun fichier associé à ce support'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        try:
+            from django.http import FileResponse
+            import os
+            
+            # Ouvrir le fichier
+            file_handle = support.fichier.open('rb')
+            
+            # Déterminer le type de contenu
+            filename = os.path.basename(support.fichier.name)
+            
+            # Créer la réponse
+            response = FileResponse(file_handle)
+            response['Content-Type'] = 'application/octet-stream'
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            
+            return response
+            
+        except Exception as e:
+            return Response(
+                {'error': f'Erreur lors du téléchargement: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 # ===== NOTIFICATION =====
@@ -2124,6 +2178,23 @@ class MessageViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("Vous ne pouvez supprimer que vos propres messages")
         
         instance.delete()
+    
+    @action(detail=True, methods=['post'])
+    def marquer_lu(self, request, pk=None):
+        """Marquer un message comme lu"""
+        message = self.get_object()
+        
+        # Créer ou récupérer la lecture
+        from .models import LectureMessage
+        lecture, created = LectureMessage.objects.get_or_create(
+            message=message,
+            utilisateur=request.user
+        )
+        
+        return Response({
+            'detail': 'Message marqué comme lu',
+            'created': created
+        })
     
     @action(detail=True, methods=['post'])
     def marquer_lu(self, request, pk=None):

@@ -168,6 +168,51 @@
                 </div>
             </div>
 
+            <!-- MODAL AFFICHER MESSAGE -->
+            <div id="modalMessage" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:10000; align-items:center; justify-content:center;">
+                <div style="background:white; border-radius:12px; max-width:700px; width:90%; max-height:80vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+                    <div style="padding:24px; border-bottom:1px solid #e5e7eb;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h2 style="margin:0; color:#1f2937; font-size:20px;">📧 Message</h2>
+                            <button onclick="fermerModalMessage()" style="background:none; border:none; font-size:24px; cursor:pointer; color:#6b7280;">&times;</button>
+                        </div>
+                    </div>
+                    <div id="messageContent" style="padding:24px;">
+                        <!-- Contenu du message sera inséré ici -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL NOUVEAU MESSAGE -->
+            <div id="modalNouveauMessage" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:10000; align-items:center; justify-content:center;">
+                <div style="background:white; border-radius:12px; max-width:600px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+                    <div style="padding:24px; border-bottom:1px solid #e5e7eb;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h2 style="margin:0; color:#1f2937; font-size:20px;">✉️ Nouveau message</h2>
+                            <button onclick="fermerModalNouveauMessage()" style="background:none; border:none; font-size:24px; cursor:pointer; color:#6b7280;">&times;</button>
+                        </div>
+                    </div>
+                    <div style="padding:24px;">
+                        <form id="formNouveauMessage" onsubmit="envoyerNouveauMessage(event)">
+                            <div style="margin-bottom:20px;">
+                                <label style="display:block; margin-bottom:8px; color:#374151; font-weight:500;">Canal</label>
+                                <select id="canalMessage" required style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; font-size:14px;">
+                                    <option value="">Sélectionner un canal...</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom:20px;">
+                                <label style="display:block; margin-bottom:8px; color:#374151; font-weight:500;">Message</label>
+                                <textarea id="contenuMessage" required rows="6" style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; font-size:14px; resize:vertical;" placeholder="Écrivez votre message..."></textarea>
+                            </div>
+                            <div style="display:flex; gap:12px; justify-content:flex-end;">
+                                <button type="button" onclick="fermerModalNouveauMessage()" style="padding:10px 20px; background:#f3f4f6; border:none; border-radius:6px; cursor:pointer; font-weight:500; color:#374151;">Annuler</button>
+                                <button type="submit" style="padding:10px 20px; background:#3b82f6; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:500;">📤 Envoyer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <!-- CONTENT AREA -->
             <div class="content-ultra">
                 <!-- PAGE: DASHBOARD -->
@@ -1474,7 +1519,47 @@
         }
 
         async function telechargerSupport(id) {
-            showToast('Fonctionnalité de téléchargement en cours de développement', 'info');
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/supports/${id}/telecharger/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Erreur lors du téléchargement');
+                }
+
+                // Récupérer le nom du fichier depuis les headers
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = `Support_${id}.pdf`;
+                if (contentDisposition) {
+                    const matches = /filename="([^"]+)"/.exec(contentDisposition);
+                    if (matches && matches[1]) {
+                        filename = matches[1];
+                    }
+                }
+
+                // Récupérer le blob
+                const blob = await response.blob();
+                
+                // Créer un lien de téléchargement
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                showToast('Support téléchargé avec succès', 'success');
+            } catch (error) {
+                console.error('Erreur téléchargement support:', error);
+                showToast(error.message || 'Erreur lors du téléchargement du support', 'error');
+            }
         }
 
         function imprimerEmploi() {
@@ -2571,12 +2656,144 @@
             }
         }
         
-        function ouvrirMessage(id) {
-            showToast('Fonctionnalité en cours de développement', 'info');
+        async function ouvrirMessage(id) {
+            try {
+                const token = localStorage.getItem('token');
+                
+                // Récupérer le message
+                const response = await fetch(`${API_URL}/messages/${id}/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erreur lors du chargement du message');
+
+                const message = await response.json();
+                
+                // Afficher le message dans le modal
+                const content = document.getElementById('messageContent');
+                content.innerHTML = `
+                    <div style="margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #e5e7eb;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                            <div>
+                                <div style="font-weight:600; color:#1f2937; font-size:16px;">${message.expediteur_nom}</div>
+                                <div style="color:#6b7280; font-size:13px;">${message.expediteur_role}</div>
+                            </div>
+                            <div style="text-align:right; color:#6b7280; font-size:13px;">
+                                ${new Date(message.date_envoi).toLocaleString('fr-FR')}
+                            </div>
+                        </div>
+                        <div style="background:#f3f4f6; padding:8px 12px; border-radius:6px; display:inline-block; font-size:13px; color:#374151;">
+                            📢 ${message.canal_nom}
+                        </div>
+                    </div>
+                    <div style="color:#374151; line-height:1.6; white-space:pre-wrap;">
+                        ${message.contenu}
+                    </div>
+                `;
+                
+                // Afficher le modal
+                document.getElementById('modalMessage').style.display = 'flex';
+                
+                // Marquer comme lu
+                await fetch(`${API_URL}/messages/${id}/marquer_lu/`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                // Rafraîchir la liste des messages
+                chargerMessages();
+                
+            } catch (error) {
+                console.error('Erreur ouverture message:', error);
+                showToast('Erreur lors de l\'ouverture du message', 'error');
+            }
         }
         
-        function nouveauMessage() {
-            showToast('Fonctionnalité en cours de développement', 'info');
+        function fermerModalMessage() {
+            document.getElementById('modalMessage').style.display = 'none';
+        }
+        
+        async function nouveauMessage() {
+            try {
+                const token = localStorage.getItem('token');
+                
+                // Charger la liste des canaux
+                const response = await fetch(`${API_URL}/canaux/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erreur lors du chargement des canaux');
+
+                const canaux = await response.json();
+                
+                // Remplir le select des canaux
+                const select = document.getElementById('canalMessage');
+                select.innerHTML = '<option value="">Sélectionner un canal...</option>';
+                canaux.forEach(canal => {
+                    select.innerHTML += `<option value="${canal.id}">${canal.nom}</option>`;
+                });
+                
+                // Réinitialiser le formulaire
+                document.getElementById('formNouveauMessage').reset();
+                
+                // Afficher le modal
+                document.getElementById('modalNouveauMessage').style.display = 'flex';
+                
+            } catch (error) {
+                console.error('Erreur ouverture nouveau message:', error);
+                showToast('Erreur lors de l\'ouverture du formulaire', 'error');
+            }
+        }
+        
+        function fermerModalNouveauMessage() {
+            document.getElementById('modalNouveauMessage').style.display = 'none';
+        }
+        
+        async function envoyerNouveauMessage(event) {
+            event.preventDefault();
+            
+            const canalId = document.getElementById('canalMessage').value;
+            const contenu = document.getElementById('contenuMessage').value;
+            
+            if (!canalId || !contenu.trim()) {
+                showToast('Veuillez remplir tous les champs', 'warning');
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/messages/`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        canal: canalId,
+                        contenu: contenu
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Erreur lors de l\'envoi');
+                }
+
+                showToast('Message envoyé avec succès', 'success');
+                fermerModalNouveauMessage();
+                chargerMessages();
+                
+            } catch (error) {
+                console.error('Erreur envoi message:', error);
+                showToast(error.message || 'Erreur lors de l\'envoi du message', 'error');
+            }
         }
         
         function formatRelativeTime(dateStr) {
