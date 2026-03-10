@@ -13,9 +13,9 @@
 
         <div class="login-card">
             <div class="login-header">
-                <div class="login-logo">📚</div>
-                <h1 class="login-title">Service Académique</h1>
-                <p class="login-subtitle">Emplois du temps et gestion pédagogique</p>
+                <div class="login-logo">🎓</div>
+                <h1 class="login-title">Espace Étudiant & Académique</h1>
+                <p class="login-subtitle">Connexion pour étudiants et service académique</p>
             </div>
 
             <div id="errorMessage" class="error-message"></div>
@@ -84,7 +84,8 @@
 
                 if (response.ok) {
                     const userRole = data.user?.role || data.role;
-                    if (userRole === 'academique') {
+                    // Accepter les étudiants et le service académique
+                    if (userRole === 'academique' || userRole === 'etudiant') {
                         localStorage.setItem('erp_access_token', data.access);
                         localStorage.setItem('erp_refresh_token', data.refresh);
                         localStorage.setItem('erp_user', JSON.stringify(data.user));
@@ -108,7 +109,7 @@
                             }
                         }, 1000);
                     } else {
-                        throw new Error('Accès non autorisé. Cette page est réservée au service académique.');
+                        throw new Error('Accès non autorisé. Cette page est réservée aux étudiants et au service académique.');
                     }
                 } else {
                     throw new Error(data.error || 'Email ou mot de passe incorrect');

@@ -163,8 +163,8 @@ Voici vos identifiants de connexion :
 
 ⚠️ IMPORTANT : Pour votre sécurité, veuillez changer votre mot de passe lors de votre première connexion.
 
-Vous pouvez vous connecter à votre espace étudiant via l'application mobile :
-👉 https://school-wheat-six.vercel.app/mobile/
+Connectez-vous à votre espace étudiant :
+👉 https://school-wheat-six.vercel.app/frontend/connexion-academique.html
 
 Bienvenue à l'université !
 
@@ -176,7 +176,7 @@ L'équipe UniERP BF"""
                         type_notification='inscription',
                         sujet=sujet,
                         contenu=contenu,
-                        lien='/mobile/'
+                        lien='/frontend/connexion-academique.html'
                     )
                 except Exception as email_error:
                     # Log l'erreur mais ne bloque pas la validation
