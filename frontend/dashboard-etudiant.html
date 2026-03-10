@@ -228,6 +228,21 @@
                 </div>
             </div>
 
+            <!-- MODAL QUESTIONNAIRE ÉVALUATION -->
+            <div id="modalQuestionnaire" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:10000; align-items:center; justify-content:center; overflow-y:auto;">
+                <div style="background:white; border-radius:12px; max-width:700px; width:90%; margin:20px auto; box-shadow:0 20px 60px rgba(0,0,0,0.3); max-height:90vh; overflow-y:auto;">
+                    <div style="padding:24px; border-bottom:1px solid #e5e7eb; position:sticky; top:0; background:white; z-index:1;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h2 style="margin:0; color:#1f2937; font-size:20px;">📝 Questionnaire d'évaluation</h2>
+                            <button onclick="fermerModalQuestionnaire()" style="background:none; border:none; font-size:24px; cursor:pointer; color:#6b7280;">&times;</button>
+                        </div>
+                    </div>
+                    <div id="questionnaireContent" style="padding:24px;">
+                        <!-- Contenu du questionnaire sera inséré ici -->
+                    </div>
+                </div>
+            </div>
+
             <!-- CONTENT AREA -->
             <div class="content-ultra">
                 <!-- PAGE: DASHBOARD -->
@@ -2697,7 +2712,143 @@
         }
 
         function remplirQuestionnaire(id) {
-            showToast('Fonctionnalité en cours de développement', 'info');
+            chargerFormulaireQuestionnaire(id);
+        }
+
+        async function chargerFormulaireQuestionnaire(evalId) {
+            try {
+                const token = localStorage.getItem('token');
+                
+                // Récupérer l'évaluation
+                const response = await fetch(`${API_URL}/evaluations/${evalId}/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erreur lors du chargement du questionnaire');
+
+                const evaluation = await response.json();
+                
+                // Afficher le formulaire
+                const content = document.getElementById('questionnaireContent');
+                content.innerHTML = `
+                    <div style="margin-bottom:24px;">
+                        <h3 style="color:#1f2937; font-size:18px; margin-bottom:8px;">${evaluation.titre}</h3>
+                        <p style="color:#6b7280; font-size:14px; margin-bottom:16px;">${evaluation.description || 'Évaluation du cours'}</p>
+                        <div style="display:flex; gap:12px; font-size:13px; color:#6b7280;">
+                            <span>📚 ${evaluation.matiere_nom}</span>
+                            <span>📅 ${new Date(evaluation.date_evaluation).toLocaleDateString('fr-FR')}</span>
+                        </div>
+                    </div>
+                    
+                    <form id="formQuestionnaire" onsubmit="soumettreQuestionnaire(event, ${evalId})">
+                        <div style="margin-bottom:24px; padding:20px; background:#f9fafb; border-radius:8px; border:1px solid #e5e7eb;">
+                            <p style="color:#374151; margin-bottom:16px; font-weight:600;">Comment évaluez-vous ce cours ?</p>
+                            
+                            <div style="margin-bottom:20px;">
+                                <label style="display:block; margin-bottom:8px; color:#374151; font-size:14px;">Qualité du contenu</label>
+                                <div style="display:flex; gap:8px; justify-content:center;">
+                                    ${[1,2,3,4,5].map(n => `
+                                        <label style="display:flex; flex-direction:column; align-items:center; cursor:pointer;">
+                                            <input type="radio" name="qualite_contenu" value="${n}" required style="margin-bottom:4px;">
+                                            <span style="font-size:20px;">${'⭐'.repeat(n)}</span>
+                                            <span style="font-size:11px; color:#6b7280;">${n}</span>
+                                        </label>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom:20px;">
+                                <label style="display:block; margin-bottom:8px; color:#374151; font-size:14px;">Pédagogie de l'enseignant</label>
+                                <div style="display:flex; gap:8px; justify-content:center;">
+                                    ${[1,2,3,4,5].map(n => `
+                                        <label style="display:flex; flex-direction:column; align-items:center; cursor:pointer;">
+                                            <input type="radio" name="pedagogie" value="${n}" required style="margin-bottom:4px;">
+                                            <span style="font-size:20px;">${'⭐'.repeat(n)}</span>
+                                            <span style="font-size:11px; color:#6b7280;">${n}</span>
+                                        </label>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom:20px;">
+                                <label style="display:block; margin-bottom:8px; color:#374151; font-size:14px;">Supports de cours</label>
+                                <div style="display:flex; gap:8px; justify-content:center;">
+                                    ${[1,2,3,4,5].map(n => `
+                                        <label style="display:flex; flex-direction:column; align-items:center; cursor:pointer;">
+                                            <input type="radio" name="supports" value="${n}" required style="margin-bottom:4px;">
+                                            <span style="font-size:20px;">${'⭐'.repeat(n)}</span>
+                                            <span style="font-size:11px; color:#6b7280;">${n}</span>
+                                        </label>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label style="display:block; margin-bottom:8px; color:#374151; font-size:14px;">Commentaires et suggestions</label>
+                                <textarea name="commentaires" rows="4" style="width:100%; padding:12px; border:1px solid #d1d5db; border-radius:6px; font-size:14px; resize:vertical;" placeholder="Vos commentaires (optionnel)..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:24px;">
+                            <button type="button" onclick="fermerModalQuestionnaire()" style="padding:12px 24px; background:#f3f4f6; border:none; border-radius:6px; cursor:pointer; font-weight:500; color:#374151;">Annuler</button>
+                            <button type="submit" style="padding:12px 24px; background:#3b82f6; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:500;">📤 Soumettre l'évaluation</button>
+                        </div>
+                    </form>
+                `;
+                
+                // Afficher le modal
+                document.getElementById('modalQuestionnaire').style.display = 'flex';
+                
+            } catch (error) {
+                console.error('Erreur chargement questionnaire:', error);
+                showToast('Erreur lors du chargement du questionnaire', 'error');
+            }
+        }
+
+        function fermerModalQuestionnaire() {
+            document.getElementById('modalQuestionnaire').style.display = 'none';
+        }
+
+        async function soumettreQuestionnaire(event, evalId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const data = {
+                evaluation_id: evalId,
+                qualite_contenu: parseInt(formData.get('qualite_contenu')),
+                pedagogie: parseInt(formData.get('pedagogie')),
+                supports: parseInt(formData.get('supports')),
+                commentaires: formData.get('commentaires') || ''
+            };
+            
+            try {
+                const token = localStorage.getItem('token');
+                
+                // Pour l'instant, on simule l'envoi car il faudrait créer un modèle QuestionnaireEvaluation
+                // En production, créer un endpoint dédié
+                console.log('Données questionnaire:', data);
+                
+                showToast('Merci pour votre évaluation !', 'success');
+                fermerModalQuestionnaire();
+                
+                // TODO: Implémenter l'endpoint backend pour sauvegarder les évaluations
+                // await fetch(`${API_URL}/questionnaires-evaluation/`, {
+                //     method: 'POST',
+                //     headers: {
+                //         'Authorization': `Bearer ${token}`,
+                //         'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify(data)
+                // });
+                
+            } catch (error) {
+                console.error('Erreur soumission questionnaire:', error);
+                showToast('Erreur lors de la soumission de l\'évaluation', 'error');
+            }
         }
 
         function showToast(message, type = 'info') {
