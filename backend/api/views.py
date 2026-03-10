@@ -568,8 +568,22 @@ class PaiementViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['numero_recu', 'etudiant__matricule', 'etudiant__nom']
 
+    def get_permissions(self):
+        # Les étudiants peuvent télécharger leurs propres reçus
+        if self.action in ['telecharger_recu']:
+            return [permissions.IsAuthenticated()]
+        return [IsAdminOrSuperAdmin()]
+
     def get_queryset(self):
         qs = super().get_queryset()
+        
+        # Les étudiants ne voient que leurs propres paiements
+        if self.request.user.role == 'etudiant':
+            try:
+                qs = qs.filter(etudiant=self.request.user.etudiant)
+            except:
+                qs = qs.none()
+        
         etudiant = self.request.query_params.get('etudiant')
         annee = self.request.query_params.get('annee_academique')
         if etudiant: qs = qs.filter(etudiant_id=etudiant)
@@ -590,6 +604,39 @@ class PaiementViewSet(viewsets.ModelViewSet):
         frais = etudiant.filiere.frais_inscription
         etudiant.solde_du = max(0, int(frais) - int(montant_paye_total))
         etudiant.save()
+    
+    @action(detail=True, methods=['get'])
+    def telecharger_recu(self, request, pk=None):
+        """Télécharger le reçu de paiement en PDF"""
+        paiement = self.get_object()
+        
+        # Vérifier les permissions: étudiant ne peut télécharger que ses propres reçus
+        if request.user.role == 'etudiant':
+            if not hasattr(request.user, 'etudiant') or paiement.etudiant != request.user.etudiant:
+                return Response(
+                    {'error': 'Vous ne pouvez télécharger que vos propres reçus'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        
+        try:
+            from .pdf_generator import generer_recu_paiement
+            from django.http import HttpResponse
+            
+            # Générer le PDF
+            pdf_buffer = generer_recu_paiement(paiement)
+            
+            # Créer la réponse HTTP
+            response = HttpResponse(pdf_buffer.getvalue(), content_type='application/pdf')
+            filename = f"Recu_{paiement.numero_recu}_{paiement.etudiant.matricule}.pdf"
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            
+            return response
+            
+        except Exception as e:
+            return Response(
+                {'error': f'Erreur lors de la génération du PDF: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 # ===== EMPLOI DU TEMPS =====

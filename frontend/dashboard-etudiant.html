@@ -1402,11 +1402,78 @@
             return new Date(dateStr).toLocaleDateString('fr-FR');
         }
 
-        function telechargerRecu(id) {
-            showToast('Fonctionnalité de téléchargement en cours de développement', 'info');
+        async function telechargerRecu(id) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/paiements/${id}/telecharger_recu/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors du téléchargement');
+                }
+
+                // Récupérer le blob PDF
+                const blob = await response.blob();
+                
+                // Créer un lien de téléchargement
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Recu_Paiement_${id}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                showToast('Reçu téléchargé avec succès', 'success');
+            } catch (error) {
+                console.error('Erreur téléchargement reçu:', error);
+                showToast('Erreur lors du téléchargement du reçu', 'error');
+            }
         }
 
-        function telechargerSupport(id) {
+        async function imprimerRecu(id) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/paiements/${id}/telecharger_recu/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors du chargement');
+                }
+
+                // Récupérer le blob PDF
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                
+                // Ouvrir dans une nouvelle fenêtre pour impression
+                const printWindow = window.open(url, '_blank');
+                if (printWindow) {
+                    printWindow.onload = function() {
+                        printWindow.print();
+                    };
+                } else {
+                    showToast('Veuillez autoriser les pop-ups pour imprimer', 'warning');
+                }
+                
+                // Nettoyer après un délai
+                setTimeout(() => {
+                    window.URL.revokeObjectURL(url);
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Erreur impression reçu:', error);
+                showToast('Erreur lors de l\'impression du reçu', 'error');
+            }
+        }
+
+        async function telechargerSupport(id) {
             showToast('Fonctionnalité de téléchargement en cours de développement', 'info');
         }
 
